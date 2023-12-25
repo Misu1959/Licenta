@@ -21,7 +21,13 @@ public class TimeManager : MonoBehaviour
     {
         yield return null;
 
-        currentDay = PlayerPrefs.GetInt("currentDay");
+        if (currentDay == 0)
+        {
+            currentDay = 1;
+            PlayerPrefs.SetInt("currentDay", currentDay);
+        }
+        else
+            currentDay = PlayerPrefs.GetInt("currentDay");
 
         UIManager.instance.SetClock(dayTime);
         UIManager.instance.ShowDayCount(currentDay);
@@ -42,6 +48,8 @@ public class TimeManager : MonoBehaviour
             
             StartCoroutine(SetDayTime(true));
             SaveLoadManager.instance.SaveWorld();
+
+            UIManager.instance.ShowDayCount(currentDay);
             PlayerPrefs.SetInt("currentDay", currentDay); // Save day
 
         }

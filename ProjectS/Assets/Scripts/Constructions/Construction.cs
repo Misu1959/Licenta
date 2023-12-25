@@ -8,7 +8,6 @@ public class Construction : MonoBehaviour
     private Color color;
 
     private bool isPlaced;
-    private bool canBePlaced;
 
     private void Start()
     {
@@ -28,43 +27,39 @@ public class Construction : MonoBehaviour
 
         transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        if (!CheckIfCanBePlaced())
+        bool canBePlaced = CheckIfCanBePlaced() & CheckIfItIsOverUI();
+        Debug.Log(canBePlaced);
+
+
+        if(canBePlaced)
         {
-            if (canBePlaced)
-            {
-                GetComponent<SpriteRenderer>().color = new Color(1f, 0, 0, .5f);
-                canBePlaced = false;
-            }
-        }
-        else
-        {
-            if (!canBePlaced)
-            {
-                GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, .5f);
-                canBePlaced = true;
-            }
+            GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, .5f);
+            
             if (Input.GetMouseButtonDown(0))
             {
-                if (CheckIfItIsOverUI())
-                {
-                    GetComponent<SpriteRenderer>().color = color;
-                    GetComponent<Collider2D>().isTrigger = false;
+                CraftingManager.instance.ActivateCraftingButtons(true);
 
-                    if (GetComponent<Fire>())
-                        GetComponent<Fire>().enabled = true;
+                GetComponent<SpriteRenderer>().color = color;
+                GetComponent<Collider2D>().isTrigger = false;
 
-                    CraftingRecipe currentRecipe = CraftingManager.instance.currentRecipe.GetComponent<CraftingRecipe>();
-                    for (int i = 0; i < currentRecipe.requirements.Length; i++)
-                        InventoryManager.instance.SpendResources(currentRecipe.requirements[i].type, currentRecipe.requirements[i].quantity);
+                if (GetComponent<Fire>())
+                    GetComponent<Fire>().enabled = true;
 
-                    isPlaced = true;
-                    return;
-                }
+                CraftingRecipe currentRecipe = CraftingManager.instance.currentRecipe.GetComponent<CraftingRecipe>();
+                for (int i = 0; i < currentRecipe.requirements.Length; i++)
+                    InventoryManager.instance.SpendResources(currentRecipe.requirements[i].type, currentRecipe.requirements[i].quantity);
+
+                isPlaced = true;
+                return;
             }
         }
-        
+        else 
+            GetComponent<SpriteRenderer>().color = new Color(1f, 0, 0, .5f);
+
+
         if (Input.GetMouseButtonDown(1))
         {
+            CraftingManager.instance.ActivateCraftingButtons(true);
             Destroy(this.gameObject);
             return;
         }
@@ -77,15 +72,12 @@ public class Construction : MonoBehaviour
         List<Collider2D> results = new List<Collider2D>();
 
         Physics2D.OverlapCollider(GetComponent<Collider2D>(),filter,results);
-        
-        for (int i = 0; i < results.Count; i++)
-            if (results[i].gameObject.layer == 3)
-                results.RemoveAt(i--);
-        
-        if (results.Count == 0)
-            return true;
 
-        return false;
+        for (int i = 0; i < results.Count; i++)
+            if (results[i].gameObject.layer == 2)
+                results.RemoveAt(i--);
+
+        return results.Count > 0 ? false : true;
     }
 
     bool CheckIfItIsOverUI()
@@ -96,14 +88,12 @@ public class Construction : MonoBehaviour
         List<RaycastResult> raycastResultsList = new List<RaycastResult>();
 
         EventSystem.current.RaycastAll(pointerEventData, raycastResultsList);
-
+    
         for(int i=0;i<raycastResultsList.Count;i++)
             if (raycastResultsList[i].gameObject==this.gameObject)
-            {
-                raycastResultsList.RemoveAt(i);
-                i--;
-            }
+                raycastResultsList.RemoveAt(i--);
 
-        return !(raycastResultsList.Count > 0);
+
+        return raycastResultsList.Count > 0 ? false : true;
     }
 }

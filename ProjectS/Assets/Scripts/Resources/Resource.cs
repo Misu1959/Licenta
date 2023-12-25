@@ -19,9 +19,10 @@ public class Resource : MonoBehaviour, IPointerDownHandler
     private float maxTimeToGather = 1;
     private float timeToGather;
 
-    private bool  isGrown = true;
+    public bool isGrown { get; private set; }
+    
     private float maxTimeToGrow = 20;
-    private float timeToGrow;
+    public float timeToGrow { get; private set; }
 
     private void Update()
     {
@@ -36,6 +37,25 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         if(CheckIfCanBeGathered())
             SetToGather();
     }
+
+    private void OnMouseEnter()
+    {
+        string popUpText = "";
+        if (howToGather == 0)
+            popUpText = "LMB - Gather";
+        else if(howToGather == 1 && CheckIfCanBeGathered())
+            popUpText = "LMB - Chop";
+        else if (howToGather == 2 && CheckIfCanBeGathered())
+            popUpText = "LMB - Mine";
+
+        PopUpManager.instance.ShowMousePopUp(popUpText);
+    }
+
+    private void OnMouseExit()
+    {
+        PopUpManager.instance.ShowMousePopUp();
+    }
+
 
     public void SetType(string  _type)
     {
@@ -166,6 +186,16 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         
         timeToGrow = maxTimeToGrow;
         timeToGather = maxTimeToGather;
+    }
+
+    public void SetIsGrown(bool _isGrown)
+    {
+        isGrown= _isGrown;
+    }
+
+    public void SetTimeToGrow(float _timeToGrow)
+    {
+        timeToGrow = _timeToGrow;
     }
 
     public bool CheckIfCanBeGathered()

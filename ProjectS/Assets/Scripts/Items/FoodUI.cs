@@ -100,13 +100,11 @@ public class FoodUI : Food
                 if (fire)
                 {
 
-                    if (fuelValue > 0)
-                        PlayerGatherManager.instance.SetTarget(fire.transform.gameObject, 31);
-
-                   
                     if (fire.fireType >= 10)
+                    {
                         PlayerGatherManager.instance.SetTarget(fire.transform.gameObject, 32);
-
+                        PopUpManager.instance.ShowMousePopUp("LMB - Cook\nRMB - Cancel");
+                    }
                     return;
                 }
                 CreateItem();
@@ -114,9 +112,13 @@ public class FoodUI : Food
                 CraftingManager.instance.SetTooltipCraftButton();
             }
 
-        if (Input.GetMouseButtonDown(1))
-            InventoryManager.instance.SetBackToSlot();
+        PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
 
+        if (Input.GetMouseButtonDown(1))
+        {
+            PopUpManager.instance.ShowMousePopUp();
+            InventoryManager.instance.SetBackToSlot();
+        }
     }
 
     void CreateItem()

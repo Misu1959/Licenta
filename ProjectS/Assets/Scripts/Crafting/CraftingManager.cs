@@ -99,17 +99,24 @@ public class CraftingManager : MonoBehaviour
         if (currentRecipe.GetComponent<CraftingRecipe>().isLearned == false)
             currentRecipe.GetComponent<CraftingRecipe>().isLearned = true;
 
-        //if (!currentRecipe.GetComponent<CraftingRecipe>().prefabItem.GetComponent<Construction>())
-        for (int i = 0; i < currentRecipe.GetComponent<CraftingRecipe>().requirements.Length; i++)
-            InventoryManager.instance.SpendResources(currentRecipe.GetComponent<CraftingRecipe>().requirements[i].type, currentRecipe.GetComponent<CraftingRecipe>().requirements[i].quantity);
-        
+        InventoryManager.instance.SetBackToSlot();
 
-        if(craftedItem.GetComponent<Equipment>())
+        if (craftedItem.GetComponent<Equipment>())
         {
             craftedItem.GetComponent<Item>().SetType(currentRecipe.GetComponent<CraftingRecipe>().prefabItem.name);
             craftedItem.GetComponent<Equipment>().SetDurability(-1);
             InventoryManager.instance.AddItemToSlot(craftedItem);
         }
+
+        // Bug constructi din cauza la linie comentata
+        if (!currentRecipe.GetComponent<CraftingRecipe>().prefabItem.GetComponent<Construction>())
+        {
+            for (int i = 0; i < currentRecipe.GetComponent<CraftingRecipe>().requirements.Length; i++)
+                InventoryManager.instance.SpendResources(currentRecipe.GetComponent<CraftingRecipe>().requirements[i].type, currentRecipe.GetComponent<CraftingRecipe>().requirements[i].quantity);
+        }
+        else
+            ActivateCraftingButtons(false);
+
 
         toolTip.SetActive(false);
     }
@@ -143,10 +150,8 @@ public class CraftingManager : MonoBehaviour
 
     }
 
-    public void ActivateButtons()
+    public void ActivateCraftingButtons(bool mode)
     {
-        bool mode = Time.timeScale == 0 ? false : true;
-
         for (int i = 1; i < transform.childCount; i++)
             transform.GetChild(i).GetChild(0).GetComponent<Button>().interactable = mode;
     }

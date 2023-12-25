@@ -54,7 +54,7 @@ public class PlayerStats : MonoBehaviour
             starveTimer -= Time.deltaTime;
             if(starveTimer<=0)
             {
-                TakeDmg(2);
+                Starve(2);
                 starveTimer = 1;
             }
 
@@ -81,7 +81,17 @@ public class PlayerStats : MonoBehaviour
 
 
         if (hp <= 0)
-            Die();
+            Die("by taking damage!");
+    }
+
+    private void Starve(float dmgAmount)
+    {
+        hp = Mathf.Clamp(hp - dmgAmount, 0, maxHp);
+        UIManager.instance.ShowHp(maxHp, hp);
+
+
+        if (hp <= 0)
+            Die("by starvation!");
     }
 
     public void Heal(float healAmount)
@@ -96,17 +106,16 @@ public class PlayerStats : MonoBehaviour
         hp = Mathf.Clamp(hp + healAmount, 0, maxHp);
 
         if (hp <= 0)
-            Die();
+            Die("by eating bad food!");
 
         UIManager.instance.ShowHunger(maxHunger, hunger);
         UIManager.instance.ShowHp(maxHp, hp);
     }
 
-    void Die()
+    void Die(string causeOfDeath)
     {
-        UIManager.instance.ShowDeathScreen();
-        Time.timeScale = 0;
-        PlayerPrefs.SetInt("prevWorld", 0);
+        UIManager.instance.ShowDeathScreen(causeOfDeath);
+
     }
 
     public void SetResearchLevel(int newResearchLevel)

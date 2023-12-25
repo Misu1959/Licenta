@@ -98,17 +98,24 @@ public class ItemUI : Item
                 if (fire)
                 {
                     if (fuelValue > 0)
+                    {
                         PlayerGatherManager.instance.SetTarget(fire.transform.gameObject, 31);
+                        PopUpManager.instance.ShowMousePopUp("LMB - Add fuel\nRMB - Cancel");
+                    }
                     return;
                 }
                 CreateItem();
                 Destroy(this.gameObject);
                 CraftingManager.instance.SetTooltipCraftButton();
             }
+        
+        PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
 
         if (Input.GetMouseButtonDown(1))
+        {
             InventoryManager.instance.SetBackToSlot();
-
+            PopUpManager.instance.ShowMousePopUp();
+        }
     }
 
     void CreateItem()

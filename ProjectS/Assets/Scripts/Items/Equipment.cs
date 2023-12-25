@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Equipment : Item
 {
@@ -11,6 +12,23 @@ public class Equipment : Item
     [SerializeField] private float maxDurability;
     public float durability { get; private set;}
 
+
+
+    public override void OnPointerDown(PointerEventData eventData)
+    {
+        base.OnPointerDown(eventData);
+
+        //  if (GetComponent<Equipment>())
+        //      PlayerGatherManager.instance.SetTarget(this.gameObject, 33);
+
+    }
+    
+    public override void OnMouseEnter()
+    {
+        string popUpText = "LMB - Pick\nRMB - Equip";
+        PopUpManager.instance.ShowMousePopUp(popUpText);
+    }
+
     public void SetDurability(float _durability)
     {
         if (_durability == -1)
@@ -18,26 +36,18 @@ public class Equipment : Item
         else
             durability = _durability;
 
-        DisplayDurability();
+        GetComponent<EquipmentUI>()?.DisplayStack();
     }
 
     public void UseTool()
     {
         durability--;
-        DisplayDurability();
+        GetComponent<EquipmentUI>()?.DisplayStack();
 
         if (durability <= 0)
         {
             //EquipmentManager.instance.SetEquipment(InventoryManager.instance.FindItem(GetComponent<Item>().type).GetComponent<Equipment>());
             Destroy(this.gameObject);
-        }
-    }
-
-    public void DisplayDurability()
-    {
-        if(GetComponent<EquipmentUI>())
-        {
-            transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = durability.ToString();
         }
     }
 

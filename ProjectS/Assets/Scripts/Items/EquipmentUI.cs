@@ -104,8 +104,11 @@ public class EquipmentUI : Equipment
                 {
 
                     if (fuelValue > 0)
+                    {
                         PlayerGatherManager.instance.SetTarget(fire.transform.gameObject, 31);
+                        PopUpManager.instance.ShowMousePopUp("LMB - Add fuel\nRMB - Cancel");
 
+                    }
                     return;
                 }
                 CreateItem();
@@ -113,9 +116,13 @@ public class EquipmentUI : Equipment
                 CraftingManager.instance.SetTooltipCraftButton();
             }
 
-        if (Input.GetMouseButtonDown(1))
-            InventoryManager.instance.SetBackToSlot();
+        PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
 
+        if (Input.GetMouseButtonDown(1))
+        {
+            PopUpManager.instance.ShowMousePopUp();
+            InventoryManager.instance.SetBackToSlot();
+        }
     }
 
     void CreateItem()
@@ -152,7 +159,7 @@ public class EquipmentUI : Equipment
 
     public void DisplayStack()
     {
-         GetComponent<Equipment>().DisplayDurability();
+        transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = durability.ToString();
 
     }
 

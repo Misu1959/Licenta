@@ -18,7 +18,10 @@ public class SaveLoadManager : MonoBehaviour
         instance = this;
 
         if (PlayerPrefs.GetInt("prevWorld") == 0)
+        {
             PlayerPrefs.SetInt("prevWorld", 1);
+            Invoke("SaveWorld", 1); // Should save when everything in the world is initialized
+        }
         else
             StartCoroutine(LoadWorld());
     
@@ -56,6 +59,7 @@ public class SaveLoadManager : MonoBehaviour
         PlayerPrefs.SetFloat("playerPosY", PlayerStats.instance.gameObject.transform.position.y);
 
         SaveInventory();
+        // Save equipment
     }
 
     void SaveInventory()
@@ -66,12 +70,20 @@ public class SaveLoadManager : MonoBehaviour
             {
                 Item item = InventoryManager.instance.inventory.transform.GetChild(i).GetChild(0).GetComponent<Item>();
                 if (item.GetComponent<ItemUI>())
-                    PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + "typeOfItem", 1);
+                    PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " typeOfItem", 1);
                 else if (item.GetComponent<FoodUI>())
-                    PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + "typeOfItem", 2);
+                {
+                    PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " typeOfItem", 2);
+                    PlayerPrefs.SetFloat("itemUI " + nrOfItemsInInventory + " foodHpAmount",item.GetComponent<Food>().hpAmount);
+                    PlayerPrefs.SetFloat("itemUI " + nrOfItemsInInventory + " foodHungerAmount",item.GetComponent<Food>().hungerAmount);
+                }
                 if (item.GetComponent<EquipmentUI>())
-                    PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + "typeOfItem", 3);
-
+                {
+                    PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " typeOfItem", 3);
+                    PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " equipmentNumber", item.GetComponent<Equipment>().equipmentNumber);
+                    PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " equipmentActionNumber", item.GetComponent<Equipment>().actionNumber);
+                    PlayerPrefs.SetFloat("itemUI " + nrOfItemsInInventory + " equipmentDurability", item.GetComponent<Equipment>().durability);
+                }
 
 
 
@@ -89,6 +101,25 @@ public class SaveLoadManager : MonoBehaviour
         if(InventoryManager.instance.selectedItem)
         {
             PlayerPrefs.SetInt("selectedItem", 1);
+
+            Item selectedItem = InventoryManager.instance.selectedItem;
+
+            if (selectedItem.GetComponent<ItemUI>())
+                PlayerPrefs.SetInt("selectedItem typeOfItem", 1);
+            else if (selectedItem.GetComponent<FoodUI>())
+            {
+                PlayerPrefs.SetInt("selectedItem typeOfItem", 2);
+                PlayerPrefs.SetFloat("selectedItem foodHpAmount", selectedItem.GetComponent<Food>().hpAmount);
+                PlayerPrefs.SetFloat("selectedItem hungerHpAmount", selectedItem.GetComponent<Food>().hungerAmount);
+            }
+            if (selectedItem.GetComponent<EquipmentUI>())
+            {
+                PlayerPrefs.SetInt("selectedItem typeOfItem", 3);
+                PlayerPrefs.SetInt("selectedItem equipmentNumber", selectedItem.GetComponent<Equipment>().equipmentNumber);
+                PlayerPrefs.SetInt("selectedItem equipmentActionNumber", selectedItem.GetComponent<Equipment>().actionNumber);
+                PlayerPrefs.SetFloat("selectedItem equipmentDurability", selectedItem.GetComponent<Equipment>().durability);
+            }
+
 
             PlayerPrefs.SetString("selectedItem type", InventoryManager.instance.selectedItem.type);
 
@@ -115,8 +146,6 @@ public class SaveLoadManager : MonoBehaviour
 
             PlayerPrefs.SetFloat("item " + i + " posX", item.transform.position.x);
             PlayerPrefs.SetFloat("item " + i + " posY", item.transform.position.y);
-        
-
         }
     }
 
@@ -128,6 +157,8 @@ public class SaveLoadManager : MonoBehaviour
             Resource resource = resources.transform.GetChild(i).GetComponent<Resource>();
 
             PlayerPrefs.SetString("resource " + i + " type", resource.type);
+            PlayerPrefs.SetInt("resource " + i + " isGrown", resource.isGrown == true ? 1 : 0);
+            PlayerPrefs.SetFloat("resource " + i + " timeToGrow", resource.timeToGrow);
 
             PlayerPrefs.SetFloat("resource " + i + " posX", resource.transform.position.x);
             PlayerPrefs.SetFloat("resource " + i + " posY", resource.transform.position.y);
@@ -176,13 +207,24 @@ public class SaveLoadManager : MonoBehaviour
         for (int i = 0; i < PlayerPrefs.GetInt("nrOfItemsInInventory"); i++)
         {
             GameObject itemUI = Instantiate(ItemsManager.instance.itemUI);
-            if (PlayerPrefs.GetInt("itemUI " + i + "typeOfItem") == 1)
+            if (PlayerPrefs.GetInt("itemUI " + i + " typeOfItem") == 1)
                 itemUI.AddComponent<ItemUI>();
-            else if (PlayerPrefs.GetInt("itemUI " + i + "typeOfItem") == 2)
+            else if (PlayerPrefs.GetInt("itemUI " + i + " typeOfItem") == 2)
+            {
                 itemUI.AddComponent<FoodUI>();
-            else if (PlayerPrefs.GetInt("itemUI " + i + "typeOfItem") == 3)
+
+                itemUI.GetComponent<Food>().hpAmount     = PlayerPrefs.GetFloat("itemUI " + i + " foodHpAmount");
+                itemUI.GetComponent<Food>().hungerAmount = PlayerPrefs.GetFloat("itemUI " + i + " foodHungerAmount");
+
+            }
+            else if (PlayerPrefs.GetInt("itemUI " + i + " typeOfItem") == 3)
+            {
                 itemUI.AddComponent<EquipmentUI>();
 
+                itemUI.GetComponent<Equipment>().equipmentNumber = PlayerPrefs.GetInt("itemUI " + i + " equipmentNumber");
+                itemUI.GetComponent<Equipment>().actionNumber = PlayerPrefs.GetInt("itemUI " + i + " equipmentActionNumber");
+                itemUI.GetComponent<Equipment>().SetDurability(PlayerPrefs.GetFloat("itemUI " + i + " equipmentDurability"));
+            }
 
 
             itemUI.GetComponent<Item>().SetType(PlayerPrefs.GetString("itemUI " + i + " type"));
@@ -194,32 +236,43 @@ public class SaveLoadManager : MonoBehaviour
             itemUI.GetComponent<Item>().transform.SetParent(InventoryManager.instance.inventory.transform.GetChild(PlayerPrefs.GetInt("itemUI " + i + " parentSlot")));
             itemUI.GetComponent<Item>().transform.localPosition = Vector2.zero;
 
-            itemUI.GetComponent<Item>().GetComponent<Image>().sprite = ItemsManager.instance.SearchItemsList(itemUI.GetComponent<Item>().type).GetComponent<Item>().uiImg;
+            itemUI.GetComponent<Item>().uiImg = ItemsManager.instance.SearchItemsList(itemUI.GetComponent<Item>().type).GetComponent<Item>().uiImg;
+            itemUI.GetComponent<Item>().GetComponent<Image>().sprite = itemUI.GetComponent<Item>().uiImg;
         }
 
         if (PlayerPrefs.GetInt("selectedItem") == 1)
         {
-            ItemUI itemUI = Instantiate(ItemsManager.instance.itemUI).GetComponent<ItemUI>();
-           
+            GameObject selectedItem = Instantiate(ItemsManager.instance.itemUI);
+
             if (PlayerPrefs.GetInt("selectedItem typeOfItem") == 1)
-                itemUI.AddComponent<ItemUI>();
+                selectedItem.AddComponent<ItemUI>();
             else if (PlayerPrefs.GetInt("selectedItem typeOfItem") == 2)
-                itemUI.AddComponent<FoodUI>();
+            {
+                selectedItem.AddComponent<FoodUI>();
+
+                selectedItem.GetComponent<Food>().hpAmount = PlayerPrefs.GetFloat("selectedItem foodHpAmount");
+                selectedItem.GetComponent<Food>().hungerAmount = PlayerPrefs.GetFloat("selectedItem foodHungerAmount");
+
+            }
             else if (PlayerPrefs.GetInt("selectedItem typeOfItem") == 3)
-                itemUI.AddComponent<EquipmentUI>();
+            {
+                selectedItem.AddComponent<EquipmentUI>();
 
+                selectedItem.GetComponent<Equipment>().equipmentNumber = PlayerPrefs.GetInt("selectedItem equipmentNumber");
+                selectedItem.GetComponent<Equipment>().actionNumber = PlayerPrefs.GetInt("selectedItem equipmentActionNumber");
+                selectedItem.GetComponent<Equipment>().SetDurability(PlayerPrefs.GetFloat("selectedItem equipmentDurability"));
+            }
 
+            selectedItem.GetComponent<Item>().SetType(PlayerPrefs.GetString("selectedItem type"));
+            selectedItem.GetComponent<Item>().AddToStack(PlayerPrefs.GetInt("selectedItem currentStack"));
 
-            itemUI.SetType(PlayerPrefs.GetString("selectedItem type"));
-            itemUI.AddToStack(PlayerPrefs.GetInt("selectedItem currentStack"));
+            selectedItem.GetComponent<Item>().maxStack = PlayerPrefs.GetInt("selectedItem maxStack");
+            selectedItem.GetComponent<Item>().fuelValue = PlayerPrefs.GetInt("selectedItem fuelValue");
 
-            itemUI.maxStack = PlayerPrefs.GetInt("selectedItem maxStack");
-            itemUI.fuelValue = PlayerPrefs.GetInt("selectedItem fuelValue");
+            selectedItem.GetComponent<Item>().transform.SetParent(InventoryManager.instance.inventory.transform);
+            InventoryManager.instance.selectedItem = selectedItem.GetComponent<Item>();
 
-            itemUI.transform.SetParent(InventoryManager.instance.inventory.transform);
-            InventoryManager.instance.selectedItem = itemUI;
-
-            itemUI.GetComponent<Image>().color = ItemsManager.instance.SearchItemsList(itemUI.type).GetComponent<SpriteRenderer>().color;
+            selectedItem.GetComponent<Image>().color = ItemsManager.instance.SearchItemsList(selectedItem.GetComponent<Item>().type).GetComponent<SpriteRenderer>().color;
         }
     }
 
@@ -244,6 +297,9 @@ public class SaveLoadManager : MonoBehaviour
         {
             GameObject resource = Instantiate(ItemsManager.instance.SearchResourcesList(PlayerPrefs.GetString("resource " + i + " type")));
             resource.GetComponent<Resource>().SetType(PlayerPrefs.GetString("resource " + i + " type"));
+
+            resource.GetComponent<Resource>().SetIsGrown(PlayerPrefs.GetInt("resource " + i + " isGrown") == 0 ? false : true);
+            resource.GetComponent<Resource>().SetTimeToGrow(PlayerPrefs.GetFloat("resource " + i + " timeToGrow"));
 
             resource.transform.SetParent(resources.transform);
             resource.transform.position = new Vector2(PlayerPrefs.GetFloat("resource " + i + " posX"), PlayerPrefs.GetFloat("resource " + i + " posY"));

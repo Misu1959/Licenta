@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3663658957458906184}
   - component: {fileID: 2090462224292863149}
-  m_Layer: 3
+  m_Layer: 2
   m_Name: FireAnim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.011345018, y: 0.10777931}
@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 5828877398815914068}
   - component: {fileID: 32431834656008855}
   - component: {fileID: 192261961593286181}
-  m_Layer: 3
+  m_Layer: 2
   m_Name: LightRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}

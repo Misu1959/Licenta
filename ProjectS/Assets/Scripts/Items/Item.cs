@@ -24,17 +24,18 @@ public class Item : MonoBehaviour,IPointerDownHandler
     public virtual void OnPointerDown(PointerEventData eventData)
     {
         if (Input.GetMouseButtonDown(0))
-        {
             PlayerGatherManager.instance.SetTarget(this.gameObject, 1);
-        }
-        else if (Input.GetMouseButtonDown(1))
-        {
-            if (GetComponent<Food>())
-                PlayerGatherManager.instance.SetTarget(this.gameObject, 33);
-//            if (GetComponent<Equipment>())
-//                PlayerGatherManager.instance.SetTarget(this.gameObject, 33);
 
-        }
+    }
+
+    public virtual void OnMouseEnter()
+    {
+        PopUpManager.instance.ShowMousePopUp("LMB - Pick");
+    }
+
+    private void OnMouseExit()
+    {
+        PopUpManager.instance.ShowMousePopUp();
     }
 
     public void SetType(string _type)
@@ -82,6 +83,8 @@ public class Item : MonoBehaviour,IPointerDownHandler
 
     public bool CheckIfStackIsFull()
     {
+        if (GetComponent<Equipment>())
+            return true;
         if(currentStack == maxStack)
             return true;
 

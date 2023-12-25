@@ -19,6 +19,8 @@ public class PlayerGatherManager : MonoBehaviour
 
         21 - Destroy
         22 - Build
+        23 - Place
+
 
         31 - AddFuel
         32 - Cook
@@ -102,12 +104,15 @@ public class PlayerGatherManager : MonoBehaviour
 
         if (actionCanceled == true)
             CancelAction(true);
+
     }
 
     void SearchForItemInRange()
     {
         if (!Input.GetKeyDown(KeyCode.Space))
             return;
+
+        InventoryManager.instance.SetBackToSlot();
 
         float closestDim = 1000;
         GameObject closestItem = null;
@@ -131,8 +136,7 @@ public class PlayerGatherManager : MonoBehaviour
             if(closestItem.GetComponent<Item>())
                 SetTarget(closestItem, 1);
 
-            if (closestItem.GetComponent<Resource>())
-                closestItem.GetComponent<Resource>().SetToGather();
+            closestItem.GetComponent<Resource>()?.SetToGather();
         }
     }
 

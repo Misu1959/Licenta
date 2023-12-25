@@ -123,8 +123,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0034806393, y: -0.2850322}
-  m_Size: {x: 0.68869555, y: 0.23985156}
+  m_Offset: {x: 0.0034806393, y: -0.02}
+  m_Size: {x: 0.69, y: 0.33}
   m_Direction: 1
 --- !u!60 &7436552149939357536
 PolygonCollider2D:

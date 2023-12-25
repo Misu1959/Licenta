@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Food : Item
 {
@@ -17,6 +19,19 @@ public class Food : Item
     private void Update()
     {
         Cook();
+    }
+
+    public override void OnPointerDown(PointerEventData eventData)
+    {
+        base.OnPointerDown(eventData);
+        if (Input.GetMouseButtonDown(1))
+            PlayerGatherManager.instance.SetTarget(this.gameObject, 33);
+    }
+
+    public override void OnMouseEnter()
+    {
+        string popUpText = "LMB - Pick\nRMB - Eat";
+        PopUpManager.instance.ShowMousePopUp(popUpText);
     }
 
     void Cook()

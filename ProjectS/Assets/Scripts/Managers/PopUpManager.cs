@@ -1,17 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PopUpManager : MonoBehaviour
 {
     public static PopUpManager instance;
 
+    [SerializeField] private GameObject mousePopUp;
     [SerializeField] private GameObject popUpPrefab;
 
     private void Start()
     {
         instance = this;
+    }
+
+    private void Update()
+    {
+        MoveMousePopUp();
     }
 
     void SetPopUp(GameObject popUp)
@@ -41,6 +51,37 @@ public class PopUpManager : MonoBehaviour
         SetPopUp(popUp);
 
         popUp.GetComponent<TextMeshPro>().text = "Action canceled!";
+
+    }
+
+
+    public void ShowMousePopUp(string popUpText = "")
+    {
+
+        if (mousePopUp.GetComponent<TextMeshProUGUI>().text != popUpText)
+            mousePopUp.GetComponent<TextMeshProUGUI>().text = popUpText;
+
+
+    }
+
+    private void MoveMousePopUp()
+    {
+        if (mousePopUp.GetComponent<TextMeshProUGUI>().text == "")
+            return;
+
+        mousePopUp.transform.position = Input.mousePosition;
+        mousePopUp.SetActive(!IsPointerOverUIElement());
+    }
+
+
+    private bool IsPointerOverUIElement()
+    {
+        var eventData = new PointerEventData(EventSystem.current);
+        eventData.position = Input.mousePosition;
+        var results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+        
+        return results.Where(r => r.gameObject.layer == 5).Count() > 0;
 
     }
 }

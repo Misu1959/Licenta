@@ -17,6 +17,7 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
         SetButtonsFunctionality();
+        Time.timeScale = 1;
     }
 
     private void Update()
