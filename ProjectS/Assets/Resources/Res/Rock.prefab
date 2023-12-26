@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8853479105482509439}
   - component: {fileID: 8853479105482509437}
   - component: {fileID: 8853479105482509438}
-  - component: {fileID: 8853479105482509433}
+  - component: {fileID: 1398942044121527493}
   - component: {fileID: 2747726935164066378}
   m_Layer: 15
   m_Name: Rock
@@ -234,7 +234,7 @@ PolygonCollider2D:
       - {x: 0.3046875, y: -0.78515625}
       - {x: 0.4609375, y: -0.796875}
       - {x: 0.5625, y: -0.7890625}
---- !u!114 &8853479105482509433
+--- !u!114 &1398942044121527493
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -243,13 +243,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 8853479105482509436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e2ae38218547f5469b93478dde60ee4, type: 3}
+  m_Script: {fileID: 11500000, guid: 749dabed3bbb7ad4d91b5196b723d3db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 10
   howToGather: 2
   dropTypes:
   - Stone
+  isGrown: 0
+  timeToGrow: 0
+  hp: 10
 --- !u!114 &2747726935164066378
 MonoBehaviour:
   m_ObjectHideFlags: 0

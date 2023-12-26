@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1603796599140894999}
   - component: {fileID: 1603796599140894997}
   - component: {fileID: 1603796599140895002}
-  - component: {fileID: 1603796599140895003}
+  - component: {fileID: -2621727114431176223}
   - component: {fileID: -2284650289800274874}
   m_Layer: 15
   m_Name: Tree
@@ -385,7 +385,7 @@ PolygonCollider2D:
       - {x: 0.29296875, y: -1.9296875}
       - {x: 0.28125, y: -1.9023438}
       - {x: 0.26171875, y: -1.8671875}
---- !u!114 &1603796599140895003
+--- !u!114 &-2621727114431176223
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -394,13 +394,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1603796599140895000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e2ae38218547f5469b93478dde60ee4, type: 3}
+  m_Script: {fileID: 11500000, guid: 749dabed3bbb7ad4d91b5196b723d3db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 10
   howToGather: 1
   dropTypes:
   - Log
+  isGrown: 0
+  timeToGrow: 0
+  hp: 10
 --- !u!114 &-2284650289800274874
 MonoBehaviour:
   m_ObjectHideFlags: 0

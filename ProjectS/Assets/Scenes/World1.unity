@@ -3791,7 +3791,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 123
+  m_text: '***'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a044995048512644b49739708cd6c21, type: 2}
   m_sharedMaterial: {fileID: 1891958276678591580, guid: 6a044995048512644b49739708cd6c21, type: 2}
@@ -4289,7 +4289,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Day
 
-    0'
+    ***'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a044995048512644b49739708cd6c21, type: 2}
   m_sharedMaterial: {fileID: 1891958276678591580, guid: 6a044995048512644b49739708cd6c21, type: 2}
@@ -4316,8 +4316,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4545,7 +4545,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 123
+  m_text: '***'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a044995048512644b49739708cd6c21, type: 2}
   m_sharedMaterial: {fileID: 1891958276678591580, guid: 6a044995048512644b49739708cd6c21, type: 2}
@@ -8163,8 +8163,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -8495,6 +8495,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2858239664187342934, guid: 607b558f920ed8d41a959554e9703f7f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1407364592, guid: 44f6547a92582a64fb4170ff11dbe84f, type: 3}
     - target: {fileID: 2858239664187342934, guid: 607b558f920ed8d41a959554e9703f7f, type: 3}
       propertyPath: m_SortingOrder
       value: 5

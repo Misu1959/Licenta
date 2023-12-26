@@ -69,7 +69,7 @@ public class PopUpManager : MonoBehaviour
         if (mousePopUp.GetComponent<TextMeshProUGUI>().text == "")
             return;
 
-        mousePopUp.transform.position = Input.mousePosition;
+        mousePopUp.transform.position = (Vector2)Input.mousePosition + new Vector2(0,50);
         mousePopUp.SetActive(!IsPointerOverUIElement());
     }
 

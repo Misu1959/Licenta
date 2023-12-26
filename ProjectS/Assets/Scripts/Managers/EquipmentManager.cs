@@ -57,7 +57,9 @@ public class EquipmentManager : MonoBehaviour
         if (item != handSlot.transform.GetChild(0).gameObject)
             return;
 
-        PlayerGatherManager.instance.CancelAction();
+        if (PlayerActionManagement.instance.currentAction >= PlayerActionManagement.Action.chop &&
+            PlayerActionManagement.instance.currentAction <= PlayerActionManagement.Action.mine)
+            PlayerActionManagement.instance.CancelAction();
 
     }
 

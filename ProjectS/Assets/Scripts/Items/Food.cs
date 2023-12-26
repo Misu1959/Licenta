@@ -25,7 +25,7 @@ public class Food : Item
     {
         base.OnPointerDown(eventData);
         if (Input.GetMouseButtonDown(1))
-            PlayerGatherManager.instance.SetTarget(this.gameObject, 33);
+            PlayerActionManagement.instance.PerformAction(this.gameObject, PlayerActionManagement.Action.eat);
     }
 
     public override void OnMouseEnter()
@@ -50,7 +50,7 @@ public class Food : Item
             
             InventoryManager.instance.AddItemToSlot(cookedItem);
 
-            PlayerGatherManager.instance.SetTarget(null, 0);
+            PlayerActionManagement.instance.CompleteAction();
             isCooking = false;
         }
         else

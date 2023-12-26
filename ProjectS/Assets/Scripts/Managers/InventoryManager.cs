@@ -100,7 +100,8 @@ public class InventoryManager : MonoBehaviour
         selectedItem.transform.localPosition = Vector2.zero;
         selectedItem.GetComponent<Image>().raycastTarget = true;
         selectedItem = null;
-        PlayerGatherManager.instance.CancelAction();
+
+        PopUpManager.instance.ShowMousePopUp();
     }
 
     void AddItemToEmptySlot(Transform slot)
@@ -112,7 +113,6 @@ public class InventoryManager : MonoBehaviour
         selectedItem.transform.localPosition = Vector2.zero;
         selectedItem.GetComponent<Image>().raycastTarget = true;
         selectedItem = null;
-        PlayerGatherManager.instance.CancelAction();
     }
 
     public int AmountOwnedOfType(string _type)

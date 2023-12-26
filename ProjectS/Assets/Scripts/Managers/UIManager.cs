@@ -99,6 +99,7 @@ public class UIManager : MonoBehaviour
 
     private void ShowEscapeScreen()
     {
+        escapeScreen.SetActive(!escapeScreen.activeInHierarchy);
 
         Time.timeScale = escapeScreen.activeInHierarchy ? 0.0f : 1.0f;
         escapeScreen.transform.GetChild(0).GetComponent<Button>().onClick.RemoveAllListeners();
@@ -108,11 +109,13 @@ public class UIManager : MonoBehaviour
         CraftingManager.instance.ActivateCraftingButtons(!escapeScreen.activeInHierarchy);
         InventoryManager.instance.SetBackToSlot();
 
-        escapeScreen.SetActive(!escapeScreen.activeInHierarchy);
     }
 
     public void ShowDeathScreen(string causeOfDeath)
     {
+        ShowDeathText(causeOfDeath);
+        deathScreen.SetActive(true);
+
         PlayerPrefs.SetInt("prevWorld", 0);
         Time.timeScale = 0;
         CraftingManager.instance.toolTip.SetActive(false);
@@ -123,8 +126,6 @@ public class UIManager : MonoBehaviour
         deathScreenButton.onClick.AddListener(() => SceneManager.LoadScene(0));
 
 
-        ShowDeathText(causeOfDeath);
-        deathScreen.SetActive(true);
     }
 
 

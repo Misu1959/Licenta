@@ -105,7 +105,7 @@ public class EquipmentUI : Equipment
 
                     if (fuelValue > 0)
                     {
-                        PlayerGatherManager.instance.SetTarget(fire.transform.gameObject, 31);
+                        PlayerActionManagement.instance.PerformAction(fire.transform.gameObject, PlayerActionManagement.Action.addFuel);
                         PopUpManager.instance.ShowMousePopUp("LMB - Add fuel\nRMB - Cancel");
 
                     }
@@ -136,7 +136,7 @@ public class EquipmentUI : Equipment
         item.transform.SetParent(SaveLoadManager.instance.items.transform);
 
         item.SetTransparent(true);
-        PlayerGatherManager.instance.SetTarget(item.gameObject, 2);
+        PlayerActionManagement.instance.PerformAction(item.gameObject, PlayerActionManagement.Action.drop);
 
         item.GetComponent<Equipment>().SetDurability(GetComponent<Equipment>().durability);
     }
@@ -153,8 +153,6 @@ public class EquipmentUI : Equipment
 
         InventoryManager.instance.selectedItem.transform.SetParent(this.transform.parent.parent);
         InventoryManager.instance.selectedItem.GetComponent<Image>().raycastTarget = false;
-
-        PlayerGatherManager.instance.CancelAction();
     }
 
     public void DisplayStack()

@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private Rigidbody2D rb;
     private Vector2 movementDir;
-    private Vector2 targetPos;
+
+    private GameObject currentTarget;
 
     void Start()
     {
@@ -36,67 +37,81 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if (targetPos == Vector2.zero)
+        if (currentTarget) // If player has a target
+            //transform.position = Vector2.MoveTowards(transform.position, currentTarget.transform.position, PlayerStats.instance.speed * Time.deltaTime); Old way
+            movementDir =  currentTarget.transform.position - transform.position;
+        else // Move by WASD
             movementDir = new Vector2(
                                      Input.GetAxisRaw("Horizontal"),
                                      Input.GetAxisRaw("Vertical")
                                      );
-        else
-            transform.position = Vector2.MoveTowards(transform.position, targetPos, PlayerStats.instance.speed * Time.deltaTime);
     }
+
+    public void SetTarget(GameObject target = null)
+    {
+        currentTarget = target;
+
+        if (!currentTarget)
+            movementDir = Vector2.zero;
+
+    }
+
 
     private void SetAnim()
     {
-        cam.transform.position = transform.position - new Vector3(0, 0, 10);
+        /*
+        For player animation movement
+            0 - nothing
+            1 - idle 
+            2 - moving
+         */
 
-        if(movementDir != Vector2.zero)
+
+        cam.transform.position = transform.position - new Vector3(0, 0, 10); // Set camera on player
+
+        if(movementDir == Vector2.zero) // If player is not moving
         {
-            if(movementDir.x<0)
-                transform.eulerAngles = new Vector3(0, 180, 0);
-            else
-                transform.eulerAngles = new Vector3(0, 0, 0);
+            // Seting player idle state
 
-            if (movementDir.y < 0)
-                anim.SetInteger("GoingUpDown", -2);
-            else if (movementDir.y > 0)
-                anim.SetInteger("GoingUpDown", 2);
-            else
-                anim.SetInteger("GoingUpDown", 0);
-
-            if (movementDir.x != 0)
-                anim.SetInteger("GoingSide", 2);
-            else
-                anim.SetInteger("GoingSide", 0);
-        }
-        else
-        {
             if (anim.GetInteger("GoingUpDown") == 2)
                 anim.SetInteger("GoingUpDown", 1);
             else if (anim.GetInteger("GoingUpDown") == -2)
                 anim.SetInteger("GoingUpDown", -1);
 
-            if (anim.GetInteger("GoingUpDown") != -1 && anim.GetInteger("GoingUpDown") != 1)
+            if (anim.GetInteger("GoingLeftRight") == 2)
+                anim.SetInteger("GoingLeftRight", 1);
+            else if (anim.GetInteger("GoingLeftRight") == -2)
+                anim.SetInteger("GoingLeftRight", -1);
+
+        }
+        else // If the player is moving
+        {
+            // Set player moving state
+
+            if (movementDir.y < 0) // Check If player is going downwards
             {
-                if (anim.GetInteger("GoingSide") == 2)
-                    anim.SetInteger("GoingSide", 1);
+                anim.SetInteger("GoingUpDown", -2);
+                anim.SetInteger("GoingLeftRight", 0);
             }
-            else if (anim.GetInteger("GoingSide") == 2)
-                    anim.SetInteger("GoingSide", 0);
-
-
+            else if (movementDir.y > 0) // Check If player is going upwards
+            {
+                anim.SetInteger("GoingUpDown", 2);
+                anim.SetInteger("GoingLeftRight", 0);
+            }
+            else // If it;s not moving on Y axis check for X axis
+            {
+                if (movementDir.x < 0) // Check If player is going to the left
+                {
+                    anim.SetInteger("GoingLeftRight", -2);
+                    anim.SetInteger("GoingUpDown", 0);
+                }
+                else if (movementDir.x > 0) // Check If player is going to the right
+                {
+                    anim.SetInteger("GoingLeftRight", 2);
+                    anim.SetInteger("GoingUpDown", 0);
+                }
+            }
         }
     }
 
-    public void SetTargetPos(GameObject target)
-    {
-        if (target)
-            targetPos = new Vector2(
-                                    target.transform.position.x,
-                                    target.transform.position.y - GetComponent<SpriteRenderer>().bounds.size.y / 2
-                                    );
-        else
-            targetPos = Vector2.zero;
-
-        movementDir = Vector2.zero;
-    }
 }

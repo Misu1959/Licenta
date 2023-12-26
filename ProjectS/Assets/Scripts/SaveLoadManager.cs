@@ -157,11 +157,13 @@ public class SaveLoadManager : MonoBehaviour
             Resource resource = resources.transform.GetChild(i).GetComponent<Resource>();
 
             PlayerPrefs.SetString("resource " + i + " type", resource.type);
+
             PlayerPrefs.SetInt("resource " + i + " isGrown", resource.isGrown == true ? 1 : 0);
             PlayerPrefs.SetFloat("resource " + i + " timeToGrow", resource.timeToGrow);
 
             PlayerPrefs.SetFloat("resource " + i + " posX", resource.transform.position.x);
             PlayerPrefs.SetFloat("resource " + i + " posY", resource.transform.position.y);
+
         }
     }
     void SaveConstructions()
@@ -298,8 +300,8 @@ public class SaveLoadManager : MonoBehaviour
             GameObject resource = Instantiate(ItemsManager.instance.SearchResourcesList(PlayerPrefs.GetString("resource " + i + " type")));
             resource.GetComponent<Resource>().SetType(PlayerPrefs.GetString("resource " + i + " type"));
 
-            resource.GetComponent<Resource>().SetIsGrown(PlayerPrefs.GetInt("resource " + i + " isGrown") == 0 ? false : true);
-            resource.GetComponent<Resource>().SetTimeToGrow(PlayerPrefs.GetFloat("resource " + i + " timeToGrow"));
+            resource.GetComponent<Resource>().isGrown    = PlayerPrefs.GetInt("resource " + i + " isGrown") == 0 ? false : true;
+            resource.GetComponent<Resource>().timeToGrow = PlayerPrefs.GetFloat("resource " + i + " timeToGrow");
 
             resource.transform.SetParent(resources.transform);
             resource.transform.position = new Vector2(PlayerPrefs.GetFloat("resource " + i + " posX"), PlayerPrefs.GetFloat("resource " + i + " posY"));

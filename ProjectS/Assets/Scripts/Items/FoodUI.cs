@@ -43,8 +43,6 @@ public class FoodUI : Food
                 }
                 else
                 {
-                    EquipmentManager.instance.UnequipHandItem(this.gameObject);
-
                     InventoryManager.instance.selectedItem = this;
                     transform.SetParent(transform.parent.parent.parent, true);
                     GetComponent<Image>().raycastTarget = false;
@@ -102,7 +100,7 @@ public class FoodUI : Food
 
                     if (fire.fireType >= 10)
                     {
-                        PlayerGatherManager.instance.SetTarget(fire.transform.gameObject, 32);
+                        PlayerActionManagement.instance.PerformAction(fire.transform.gameObject, PlayerActionManagement.Action.cook);
                         PopUpManager.instance.ShowMousePopUp("LMB - Cook\nRMB - Cancel");
                     }
                     return;
@@ -132,7 +130,7 @@ public class FoodUI : Food
         item.transform.SetParent(SaveLoadManager.instance.items.transform);
 
         item.SetTransparent(true);
-        PlayerGatherManager.instance.SetTarget(item.gameObject, 2);
+        PlayerActionManagement.instance.PerformAction(item.gameObject, PlayerActionManagement.Action.drop);
 
         if (GetComponent<Equipment>())
             item.GetComponent<Equipment>().SetDurability(GetComponent<Equipment>().durability);
@@ -151,7 +149,6 @@ public class FoodUI : Food
         InventoryManager.instance.selectedItem.transform.SetParent(this.transform.parent.parent);
         InventoryManager.instance.selectedItem.GetComponent<Image>().raycastTarget = false;
 
-        PlayerGatherManager.instance.CancelAction();
     }
 
     public void DisplayStack()

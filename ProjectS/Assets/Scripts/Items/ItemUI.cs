@@ -44,8 +44,6 @@ public class ItemUI : Item
                 }
                 else
                 {
-                    EquipmentManager.instance.UnequipHandItem(this.gameObject);
-
                     InventoryManager.instance.selectedItem = this;
                     transform.SetParent(transform.parent.parent.parent, true);
                     GetComponent<Image>().raycastTarget = false;
@@ -99,7 +97,7 @@ public class ItemUI : Item
                 {
                     if (fuelValue > 0)
                     {
-                        PlayerGatherManager.instance.SetTarget(fire.transform.gameObject, 31);
+                        PlayerActionManagement.instance.PerformAction(fire.transform.gameObject, PlayerActionManagement.Action.addFuel);
                         PopUpManager.instance.ShowMousePopUp("LMB - Add fuel\nRMB - Cancel");
                     }
                     return;
@@ -129,7 +127,7 @@ public class ItemUI : Item
         item.transform.SetParent(SaveLoadManager.instance.items.transform);
 
         item.SetTransparent(true);
-        PlayerGatherManager.instance.SetTarget(item.gameObject, 2);
+        PlayerActionManagement.instance.PerformAction(item.gameObject, PlayerActionManagement.Action.drop);
     }
 
 
@@ -145,7 +143,6 @@ public class ItemUI : Item
         InventoryManager.instance.selectedItem.transform.SetParent(this.transform.parent.parent);
         InventoryManager.instance.selectedItem.GetComponent<Image>().raycastTarget = false;
 
-        PlayerGatherManager.instance.CancelAction();
     }
 
     public void DisplayStack()

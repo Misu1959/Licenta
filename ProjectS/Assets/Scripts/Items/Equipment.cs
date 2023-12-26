@@ -19,7 +19,7 @@ public class Equipment : Item
         base.OnPointerDown(eventData);
 
         //  if (GetComponent<Equipment>())
-        //      PlayerGatherManager.instance.SetTarget(this.gameObject, 33);
+        //      PlayerActionManagement.instance.SetTarget(this.gameObject, 33);
 
     }
     

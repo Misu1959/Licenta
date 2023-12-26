@@ -8,27 +8,27 @@ public class PlayerRangeManagement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
 
-        if (CheckForSpecificCollider(PlayerGatherManager.instance.darknessCollider))
+        if (CheckForSpecificCollider(PlayerActionManagement.instance.darknessCollider))
         {
             if (other.gameObject.GetComponent<Light2D>())
                 PlayerStats.instance.SetInLight(1);
         }
-        if (CheckForSpecificCollider(PlayerGatherManager.instance.actionCollider))
+        if (CheckForSpecificCollider(PlayerActionManagement.instance.actionCollider))
         {
             if (other.gameObject.layer == 10)
                 PlayerStats.instance.SetResearchLevel(1);
         }
-        if (CheckForSpecificCollider(PlayerGatherManager.instance.searchCollider))
+        if (CheckForSpecificCollider(PlayerActionManagement.instance.searchCollider))
         {
             if (other.GetComponent<Item>() || other.GetComponent<Resource>())
-                PlayerGatherManager.instance.itemsInRange.Add(other.gameObject);
+                PlayerActionManagement.instance.itemsInRange.Add(other.gameObject);
 
         }
 
     }
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (CheckForSpecificCollider(PlayerGatherManager.instance.playerBody))
+        if (CheckForSpecificCollider(PlayerActionManagement.instance.playerBody))
             if (other.GetComponent<SpriteRenderer>().sortingOrder > GetComponent<SpriteRenderer>().sortingOrder)
             {
                 Color objColor = other.GetComponent<SpriteRenderer>().color;
@@ -40,63 +40,58 @@ public class PlayerRangeManagement : MonoBehaviour
                 other.GetComponent<SpriteRenderer>().color = new Color(objColor.r, objColor.g, objColor.b, 1);
             }
 
-        if (CheckForSpecificCollider(PlayerGatherManager.instance.actionCollider))
-            if (other.gameObject == PlayerGatherManager.instance.target)
+        if (CheckForSpecificCollider(PlayerActionManagement.instance.actionCollider))
+            if (other.gameObject == PlayerActionManagement.instance.target)
             {
-                if (PlayerGatherManager.instance.actionType == 1)
+                if (PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.pick)
                 {
                     InventoryManager.instance.AddItemToSlot(other.gameObject);
-                    PlayerGatherManager.instance.itemsInRange.Remove(other.gameObject);
-                    PlayerGatherManager.instance.SetTarget(null, 0);
+                    PlayerActionManagement.instance.itemsInRange.Remove(other.gameObject);
+                    PlayerActionManagement.instance.CompleteAction();
                 }
-                else if (PlayerGatherManager.instance.actionType == 2)
+                else if (PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.drop)
                 {
-                    PlayerGatherManager.instance.target.GetComponent<Item>().SetTransparent(false);
-                    PlayerGatherManager.instance.SetTarget(null, 0);
+                    PlayerActionManagement.instance.target.GetComponent<Item>().SetTransparent(false);
+                    PlayerActionManagement.instance.CompleteAction();
                 }
-                else if(PlayerGatherManager.instance.actionType >= 11 && PlayerGatherManager.instance.actionType <= 13)
+                else if(PlayerActionManagement.instance.currentAction >= PlayerActionManagement.Action.gather && PlayerActionManagement.instance.currentAction <= PlayerActionManagement.Action.mine)
                 {
-                    if (!other.gameObject.GetComponent<Resource>().isGathering)
-                    {
-                        other.gameObject.GetComponent<Resource>().SetIsGathering(true);
-                    }
+                    if (!other.gameObject.GetComponent<Resource>().isBeingGathered)
+                        other.gameObject.GetComponent<Resource>().SetIsBeingGathered(true);
                 }
-                else if (PlayerGatherManager.instance.actionType == 31)
+                else if (PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.addFuel)
                 {
                     other.gameObject.GetComponent<Fire>().AddFuel(InventoryManager.instance.selectedItem);
-                    PlayerGatherManager.instance.SetTarget(null, 0);
+                    PlayerActionManagement.instance.CompleteAction();
                 }
-                else if (PlayerGatherManager.instance.actionType == 32)
+                else if (PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.cook)
                 {
                     if (!InventoryManager.instance.selectedItem.GetComponent<Food>().isCooking)
-                    {
-                        PlayerGatherManager.instance.target = null;
                         InventoryManager.instance.selectedItem.GetComponent<Food>().SetIsCooking(true);
-                    }
                 }
-                else if (PlayerGatherManager.instance.actionType == 33)
+                else if (PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.eat)
                 {
                     other.GetComponent<Food>().Consume();
-                    PlayerGatherManager.instance.SetTarget(null, 0);
+                    PlayerActionManagement.instance.CompleteAction();
                 }
             }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (CheckForSpecificCollider(PlayerGatherManager.instance.playerBody))
+        if (CheckForSpecificCollider(PlayerActionManagement.instance.playerBody))
         {
             Color objColor = other.GetComponent<SpriteRenderer>().color;
             other.GetComponent<SpriteRenderer>().color = new Color(objColor.r, objColor.g, objColor.b, 1);
         }
 
-        if (CheckForSpecificCollider(PlayerGatherManager.instance.darknessCollider))
+        if (CheckForSpecificCollider(PlayerActionManagement.instance.darknessCollider))
         {
             if (other.gameObject.GetComponent<Light2D>())
                 PlayerStats.instance.SetInLight(-1);
         }
 
-        if (CheckForSpecificCollider(PlayerGatherManager.instance.actionCollider))
+        if (CheckForSpecificCollider(PlayerActionManagement.instance.actionCollider))
         {
             if (other.GetComponent<Construction>())
             {
@@ -108,10 +103,10 @@ public class PlayerRangeManagement : MonoBehaviour
             }
         }
 
-        if (CheckForSpecificCollider(PlayerGatherManager.instance.searchCollider))
+        if (CheckForSpecificCollider(PlayerActionManagement.instance.searchCollider))
         {
             if (other.GetComponent<Item>() || other.GetComponent<Resource>())
-                PlayerGatherManager.instance.itemsInRange.Remove(other.gameObject);
+                PlayerActionManagement.instance.itemsInRange.Remove(other.gameObject);
 
         }
     }
