@@ -25,7 +25,7 @@ public class Food : Item
     {
         base.OnPointerDown(eventData);
         if (Input.GetMouseButtonDown(1))
-            PlayerActionManagement.instance.PerformAction(this.gameObject, PlayerActionManagement.Action.eat);
+            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.eat);
     }
 
     public override void OnMouseEnter()
@@ -39,22 +39,29 @@ public class Food : Item
         if (!isCooking)
             return;
 
-        if(timeToCook<=0)
+        if (!PlayerActionManagement.instance.isPerformingAction)
         {
-            GetComponent<ItemUI>().TakeFromStack(1);
+            SetIsCooking(false);
+            return;
+        }
 
-            GameObject cookedItem = Instantiate(ItemsManager.instance.SearchItemsList(GetComponent<ItemUI>().type + "C"));
 
-            cookedItem.GetComponent<Item>().SetType(GetComponent<ItemUI>().type + "C");
-            cookedItem.GetComponent<Item>().AddToStack(1);
+        timeToCook -= Time.deltaTime;
+        if (timeToCook<=0)
+        {
+
+            GetComponent<Item>().TakeFromStack(1);
             
+            GameObject cookedItem = Instantiate(ItemsManager.instance.SearchItemsList(GetComponent<Item>().type + "C"));
+            cookedItem.GetComponent<Item>().SetType(GetComponent<Item>().type + "C");
+            cookedItem.GetComponent<Item>().AddToStack(1);
             InventoryManager.instance.AddItemToSlot(cookedItem);
+            
 
             PlayerActionManagement.instance.CompleteAction();
-            isCooking = false;
+            SetIsCooking(false);
+            
         }
-        else
-            timeToCook -= Time.deltaTime;
     }
 
     public void SetIsCooking(bool _isCooking)
@@ -66,11 +73,7 @@ public class Food : Item
 
     public void Consume()
     {
-        if (hungerAmount == 0 && hpAmount == 0)
-            return;
-
         GetComponent<Item>().TakeFromStack(1);
-
         PlayerStats.instance.Eat(hungerAmount, hpAmount);
     }
 }

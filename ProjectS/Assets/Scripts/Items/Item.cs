@@ -24,7 +24,7 @@ public class Item : MonoBehaviour,IPointerDownHandler
     public virtual void OnPointerDown(PointerEventData eventData)
     {
         if (Input.GetMouseButtonDown(0))
-            PlayerActionManagement.instance.PerformAction(this.gameObject, PlayerActionManagement.Action.pick);
+            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.pick);
 
     }
 
@@ -120,7 +120,10 @@ public class Item : MonoBehaviour,IPointerDownHandler
         currentStack -= _amountToTake;
 
         if (currentStack <= 0)
+        {
+            PopUpManager.instance.ShowMousePopUp();
             Destroy(this.gameObject);
+        }
 
         GetComponent<ItemUI>()?.DisplayStack();
         GetComponent<FoodUI>()?.DisplayStack();

@@ -12,8 +12,6 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 movementDir;
 
-    private GameObject currentTarget;
-
     void Start()
     {
 
@@ -37,25 +35,19 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if (currentTarget) // If player has a target
-            //transform.position = Vector2.MoveTowards(transform.position, currentTarget.transform.position, PlayerStats.instance.speed * Time.deltaTime); Old way
-            movementDir =  currentTarget.transform.position - transform.position;
+        if (PlayerActionManagement.instance.currentTarget) // If player has a target
+        {
+            if (PlayerActionManagement.instance.isPerformingAction)
+                movementDir = Vector2.zero;
+            else
+                movementDir = PlayerActionManagement.instance.currentTarget.transform.position - transform.position;
+        }
         else // Move by WASD
             movementDir = new Vector2(
                                      Input.GetAxisRaw("Horizontal"),
                                      Input.GetAxisRaw("Vertical")
                                      );
     }
-
-    public void SetTarget(GameObject target = null)
-    {
-        currentTarget = target;
-
-        if (!currentTarget)
-            movementDir = Vector2.zero;
-
-    }
-
 
     private void SetAnim()
     {

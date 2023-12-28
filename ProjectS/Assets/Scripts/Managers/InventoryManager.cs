@@ -157,14 +157,4 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-
-    public GameObject FindItem(string _type)
-    {
-        foreach (Transform slot in slots)
-            if (slot.childCount > 0)
-                if (slot.GetChild(0).GetComponent<Item>().type == _type)
-                    return slot.GetChild(0).gameObject;
-
-        return null;
-    }
 }

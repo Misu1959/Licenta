@@ -26,6 +26,12 @@ public class ComplexResource : Resource
         if (!isBeingGathered || !isGrown)
             return;
 
+        if(!PlayerActionManagement.instance.isPerformingAction)
+        {
+            SetIsBeingGathered(false);
+            return;
+        }
+
         if (timeToGather <= 0) // Gather
         {
             timeToGather = maxTimeToGather;

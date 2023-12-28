@@ -102,7 +102,7 @@ public class FoodUI : Food
             if (Input.GetMouseButtonDown(0))
                 if (fire.fireType != Fire.FireType.torch)
                 {
-                    PlayerActionManagement.instance.PerformAction(fire.transform.gameObject, PlayerActionManagement.Action.cook);
+                    PlayerActionManagement.instance.SetTargetAndAction(fire.transform.gameObject, PlayerActionManagement.Action.cook);
                     return;
                 }
         }
@@ -138,7 +138,7 @@ public class FoodUI : Food
         item.transform.SetParent(SaveLoadManager.instance.items.transform);
 
         item.SetTransparent(true);
-        PlayerActionManagement.instance.PerformAction(item.gameObject, PlayerActionManagement.Action.drop);
+        PlayerActionManagement.instance.SetTargetAndAction(item.gameObject, PlayerActionManagement.Action.drop);
 
         if (GetComponent<Equipment>())
             item.GetComponent<Equipment>().SetDurability(GetComponent<Equipment>().durability);

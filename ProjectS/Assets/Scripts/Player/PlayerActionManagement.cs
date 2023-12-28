@@ -20,28 +20,20 @@ public class PlayerActionManagement : MonoBehaviour
         cook = 32,
         eat = 33
     };
-
-    public static PlayerActionManagement instance;
     public Action currentAction { get; private set; }
 
-    [HideInInspector] public GameObject target;
+
+    public static PlayerActionManagement instance;
     
     [HideInInspector] public List<GameObject> itemsInRange = new List<GameObject>();
+    [HideInInspector] public GameObject currentTarget;
 
-    public GameObject playerBody { get; private set; }
-    public GameObject darknessCollider { get; private set; }
-    public GameObject actionCollider { get; private set; }
-    public GameObject searchCollider { get; private set; }
+    public bool isPerformingAction { get; private set; }
 
 
     void Start()
     {
         instance = this;
-
-        playerBody       = this.gameObject;
-        darknessCollider = transform.GetChild(0).gameObject;
-        actionCollider   = transform.GetChild(1).gameObject;
-        searchCollider   = transform.GetChild(2).gameObject;
     }
 
     void Update()
@@ -53,6 +45,9 @@ public class PlayerActionManagement : MonoBehaviour
     void SearchForItemInRange()
     {
         if (!Input.GetKeyDown(KeyCode.Space)) // If Space is not pressed return otherwise search for items in range
+            return;
+
+        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) // If it's moving from keyboard don't take space action
             return;
 
         InventoryManager.instance.SetBackToSlot();
@@ -76,31 +71,84 @@ public class PlayerActionManagement : MonoBehaviour
         }
 
         if (closestItem?.GetComponent<Item>()) // If closest item exist and is an item go and pick it
-            PerformAction(closestItem, Action.pick);
+            SetTargetAndAction(closestItem, Action.pick);
         else // If closest item exist and is a resource type go and gather/chop/mine it
             closestItem?.GetComponent<Resource>()?.SetToGather();
     }
 
-    public void PerformAction(GameObject _target, Action _currentAction)
+    public void SetTargetAndAction(GameObject _target, Action _currentAction)
     {
-        
-        target = _target;
-        if (_currentAction == Action.nothing)
-            _currentAction = 0;
-
+        currentTarget = _target;
         currentAction = _currentAction;
-        GetComponent<PlayerController>().SetTarget(target);
+    }
+
+    public void PerformAction()
+    {
+        isPerformingAction = true;
+
+        switch(currentAction)
+        {
+            case Action.pick:
+            {
+                InventoryManager.instance.AddItemToSlot(currentTarget);
+                itemsInRange.Remove(currentTarget);
+                CompleteAction();
+                break;
+            }
+            case Action.drop:
+            {
+                currentTarget.GetComponent<Item>().SetTransparent(false);
+                CompleteAction();
+                break;
+            }
+            case Action.gather: 
+            {
+                currentTarget.GetComponent<Resource>().SetIsBeingGathered(true);
+                break;
+            }
+            case Action.chop:
+            {
+                currentTarget.GetComponent<Resource>().SetIsBeingGathered(true);
+                break;
+            }
+            case Action.mine:
+            {
+                currentTarget.GetComponent<Resource>().SetIsBeingGathered(true);
+                break;
+            }
+            case Action.addFuel:
+            {
+                currentTarget.GetComponent<Fire>().AddFuel(InventoryManager.instance.selectedItem);
+                CompleteAction();
+                break;
+            }
+            case Action.cook:
+            {
+                InventoryManager.instance.selectedItem.GetComponent<Food>().SetIsCooking(true);
+                break;
+            }
+            case Action.eat:
+            {
+                currentTarget.GetComponent<Food>().Consume();
+                CompleteAction();
+                break;
+            }
+            default:
+                break;
+        }
     }
 
     public void CompleteAction()
     {
-        PerformAction(null, Action.nothing);
+        SetTargetAndAction(null, Action.nothing);
+        isPerformingAction = false;
     }
 
     public void CancelAction()
     {
         PopUpManager.instance.ShowPopUpActionCanceled();
-        PerformAction(null, Action.nothing);
+        SetTargetAndAction(null, Action.nothing);
+        isPerformingAction = false;
     }
 
     private void CancelActionByMoving()

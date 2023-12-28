@@ -53,11 +53,11 @@ public class Resource : MonoBehaviour, IPointerDownHandler
     public void SetToGather()
     {
         if (howToGather == 0)
-            PlayerActionManagement.instance.PerformAction(this.gameObject, PlayerActionManagement.Action.gather);
+            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.gather);
         else if (howToGather == 1)
-            PlayerActionManagement.instance.PerformAction(this.gameObject, PlayerActionManagement.Action.chop);
+            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.chop);
         else if (howToGather == 2)
-            PlayerActionManagement.instance.PerformAction(this.gameObject, PlayerActionManagement.Action.mine);
+            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.mine);
     }
 
     public void SetIsBeingGathered(bool _isBeingGathered)
@@ -74,34 +74,36 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         if (!isBeingGathered || !isGrown)
             return;
 
+        if(!PlayerActionManagement.instance.isPerformingAction)
+        {
+            SetIsBeingGathered(false);
+            return;
+        }
+
+        timeToGather -= Time.deltaTime;
         if (timeToGather <= 0)
         {
-            isGrown = false;
-            timeToGrow = maxTimeToGrow;
-
             // Next lines adds the loot to the inventory
             GameObject item = Instantiate(ItemsManager.instance.SearchItemsList(dropTypes[0]));
-            
             item.GetComponent<Item>().SetType(dropTypes[0]);
             item.GetComponent<Item>().AddToStack(1);
             InventoryManager.instance.AddItemToSlot(item);
             
             PlayerActionManagement.instance.CompleteAction(); // Complete the action
             SetIsBeingGathered(false);
+
+            timeToGrow = maxTimeToGrow;
+            isGrown = false;
         }
-        else
-            timeToGather -= Time.deltaTime;
     }
 
     void Regrow()
     {
         if (isGrown)
             return;
-
         SetAnim();
 
         timeToGrow -= Time.deltaTime;
-
         if (timeToGrow <= 0)
             isGrown = true;
     }

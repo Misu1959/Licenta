@@ -103,7 +103,7 @@ public class ItemUI : Item
                 if (Input.GetMouseButtonDown(0))
                     if (fire.fireType != Fire.FireType.torch)
                     {
-                        PlayerActionManagement.instance.PerformAction(fire.transform.gameObject, PlayerActionManagement.Action.addFuel);
+                        PlayerActionManagement.instance.SetTargetAndAction(fire.transform.gameObject, PlayerActionManagement.Action.addFuel);
                         return;
                     }
             }
@@ -140,7 +140,7 @@ public class ItemUI : Item
         item.transform.SetParent(SaveLoadManager.instance.items.transform);
 
         item.SetTransparent(true);
-        PlayerActionManagement.instance.PerformAction(item.gameObject, PlayerActionManagement.Action.drop);
+        PlayerActionManagement.instance.SetTargetAndAction(item.gameObject, PlayerActionManagement.Action.drop);
     }
 
 
