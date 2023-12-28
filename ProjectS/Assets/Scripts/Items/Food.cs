@@ -71,6 +71,6 @@ public class Food : Item
 
         GetComponent<Item>().TakeFromStack(1);
 
-        PlayerStats.instance.Eat(GetComponent<Food>().hungerAmount, GetComponent<Food>().hpAmount);
+        PlayerStats.instance.Eat(hungerAmount, hpAmount);
     }
 }

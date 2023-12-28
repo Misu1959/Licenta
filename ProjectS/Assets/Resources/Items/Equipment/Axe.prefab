@@ -184,6 +184,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d4335adb9f0ded45beb1ae4f7348a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiImg: {fileID: 0}
+  maxStack: 0
+  fuelValue: 0
   equipmentNumber: 0
   actionNumber: 1
   maxDurability: 10

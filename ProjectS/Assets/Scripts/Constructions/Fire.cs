@@ -5,8 +5,15 @@ using UnityEngine.Rendering.Universal;
 
 public class Fire : MonoBehaviour
 {
+    public enum FireType
+    {
+        torch       = 1,
+        fire        = 2,
+        campfire    = 3
+    };
+    public FireType fireType;
+
     private GameObject lightObject;
-    public int fireType;
 
     [SerializeField] float maxFireSize;
     [SerializeField] private float maxLifetime;
@@ -28,7 +35,7 @@ public class Fire : MonoBehaviour
     {
         if (lifetime < 0)
         {
-            if (fireType != 100)
+            if (fireType != FireType.campfire)
                 Destroy(this.gameObject);
             
             lifetime = 0;

@@ -196,5 +196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eab1ab89bbf20854eb6b046c88d2f925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiImg: {fileID: 0}
+  maxStack: 0
+  fuelValue: 0
   hungerAmount: 15
   hpAmount: 3

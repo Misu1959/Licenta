@@ -89,28 +89,36 @@ public class FoodUI : Food
 
         this.gameObject.transform.position = Input.mousePosition;
 
-        if (Input.GetMouseButtonDown(0))
-            if (CheckIfItIsOverUI())
-                return;
-            else
-            {
-                Fire fire = CheckIfItIsOverFire();
-                if (fire)
-                {
+        if (CheckIfItIsOverUI())
+            return;
 
-                    if (fire.fireType >= 10)
-                    {
-                        PlayerActionManagement.instance.PerformAction(fire.transform.gameObject, PlayerActionManagement.Action.cook);
-                        PopUpManager.instance.ShowMousePopUp("LMB - Cook\nRMB - Cancel");
-                    }
+
+        Fire fire = CheckIfItIsOverFire();
+
+        if (fire)
+        {
+            PopUpManager.instance.ShowMousePopUp("LMB - Cook\nRMB - Cancel");
+
+            if (Input.GetMouseButtonDown(0))
+                if (fire.fireType != Fire.FireType.torch)
+                {
+                    PlayerActionManagement.instance.PerformAction(fire.transform.gameObject, PlayerActionManagement.Action.cook);
                     return;
                 }
+        }
+        else
+        {
+            PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
+
+            if (Input.GetMouseButtonDown(0))
+            {
                 CreateItem();
                 Destroy(this.gameObject);
                 CraftingManager.instance.SetTooltipCraftButton();
-            }
 
-        PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
+                return;
+            }
+        }
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -164,13 +172,13 @@ public class FoodUI : Food
         pointerEventData.position = Input.mousePosition;
 
         List<RaycastResult> raycastResultsList = new List<RaycastResult>();
-
         EventSystem.current.RaycastAll(pointerEventData, raycastResultsList);
-        for (int i = 0; i < raycastResultsList.Count; i++)
-            if (!raycastResultsList[i].gameObject.GetComponent<CanvasRenderer>())
-                raycastResultsList.RemoveAt(i--);
 
-        return raycastResultsList.Count > 0;
+        foreach (RaycastResult objRes in raycastResultsList)
+            if (objRes.gameObject.GetComponent<CanvasRenderer>())
+                return true;
+
+        return false;
     }
 
     Fire CheckIfItIsOverFire()
@@ -179,17 +187,15 @@ public class FoodUI : Food
         pointerEventData.position = Input.mousePosition;
 
         List<RaycastResult> raycastResultsList = new List<RaycastResult>();
-
         EventSystem.current.RaycastAll(pointerEventData, raycastResultsList);
-        for (int i = 0; i < raycastResultsList.Count; i++)
-            if (!raycastResultsList[i].gameObject.GetComponent<Fire>())
-                raycastResultsList.RemoveAt(i--);
 
-        Fire fire = null;
+        Debug.Log(raycastResultsList.Count);
 
-        if (raycastResultsList.Count == 1)
-            fire = raycastResultsList[0].gameObject.GetComponent<Fire>();
+        foreach(RaycastResult objRes in raycastResultsList)
+            if (objRes.gameObject.GetComponent<Fire>())
+                return objRes.gameObject.GetComponent<Fire>();
 
-        return fire;
+        return null;
+
     }
 }

@@ -94,29 +94,39 @@ public class EquipmentUI : Equipment
 
         this.gameObject.transform.position = Input.mousePosition;
 
-        if (Input.GetMouseButtonDown(0))
-            if (CheckIfItIsOverUI())
-                return;
-            else
-            {
-                Fire fire = CheckIfItIsOverFire();
-                if (fire)
-                {
+        if (CheckIfItIsOverUI())
+            return;
 
-                    if (fuelValue > 0)
+
+        Fire fire = CheckIfItIsOverFire();
+
+        if (fire)
+        {
+            if (fuelValue != 0)
+            {
+                PopUpManager.instance.ShowMousePopUp("LMB - Add fuel\nRMB - Cancel");
+
+                if (Input.GetMouseButtonDown(0))
+                    if (fire.fireType != Fire.FireType.torch)
                     {
                         PlayerActionManagement.instance.PerformAction(fire.transform.gameObject, PlayerActionManagement.Action.addFuel);
-                        PopUpManager.instance.ShowMousePopUp("LMB - Add fuel\nRMB - Cancel");
-
+                        return;
                     }
-                    return;
-                }
+            }
+        }
+        else
+        {
+            PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
+
+            if (Input.GetMouseButtonDown(0))
+            {
                 CreateItem();
                 Destroy(this.gameObject);
                 CraftingManager.instance.SetTooltipCraftButton();
-            }
 
-        PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
+                return;
+            }
+        }
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -168,13 +178,13 @@ public class EquipmentUI : Equipment
         pointerEventData.position = Input.mousePosition;
 
         List<RaycastResult> raycastResultsList = new List<RaycastResult>();
-
         EventSystem.current.RaycastAll(pointerEventData, raycastResultsList);
-        for (int i = 0; i < raycastResultsList.Count; i++)
-            if (!raycastResultsList[i].gameObject.GetComponent<CanvasRenderer>())
-                raycastResultsList.RemoveAt(i--);
 
-        return raycastResultsList.Count > 0;
+        foreach (RaycastResult objRes in raycastResultsList)
+            if (objRes.gameObject.GetComponent<CanvasRenderer>())
+                return true;
+
+        return false;
     }
 
     Fire CheckIfItIsOverFire()
@@ -183,17 +193,12 @@ public class EquipmentUI : Equipment
         pointerEventData.position = Input.mousePosition;
 
         List<RaycastResult> raycastResultsList = new List<RaycastResult>();
-
         EventSystem.current.RaycastAll(pointerEventData, raycastResultsList);
-        for (int i = 0; i < raycastResultsList.Count; i++)
-            if (!raycastResultsList[i].gameObject.GetComponent<Fire>())
-                raycastResultsList.RemoveAt(i--);
 
-        Fire fire = null;
+        foreach (RaycastResult objRes in raycastResultsList)
+            if (objRes.gameObject.GetComponent<Fire>())
+                return objRes.gameObject.GetComponent<Fire>();
 
-        if (raycastResultsList.Count == 1)
-            fire = raycastResultsList[0].gameObject.GetComponent<Fire>();
-
-        return fire;
+        return null;
     }
 }
