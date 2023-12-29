@@ -23,15 +23,13 @@ public class ComplexResource : Resource
     public override void GatherItemOfType()
     {
         // If player isn't harvesting it or if it's not grown
-        if (!isBeingGathered || !isGrown)
-            return;
-
-        if(!PlayerActionManagement.instance.isPerformingAction)
+        if (!IsGathered())
         {
-            SetIsBeingGathered(false);
+            timeToGather = maxTimeToGather;
             return;
         }
 
+        timeToGather -= Time.deltaTime;
         if (timeToGather <= 0) // Gather
         {
             timeToGather = maxTimeToGather;
@@ -39,18 +37,11 @@ public class ComplexResource : Resource
             EquipmentManager.instance.GetHandItem().UseTool();
             TakeDmg();
 
-            if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) // If player holds space or LMB
-                if (EquipmentManager.instance.GetHandItem()?.durability > 0) // If item still has durability continue
-                {
-                    SetIsBeingGathered(true);
-                    return;
-                }
-            PlayerActionManagement.instance.CompleteAction();
-            SetIsBeingGathered(false);
-        }
-        else
-            timeToGather -= Time.deltaTime;
+            if (!Input.GetKey(KeyCode.Space) && !Input.GetMouseButton(0)) // If player don't hold space or LMB
+                if (EquipmentManager.instance.GetHandItem()?.durability > 0) // If item doesnt have durability finish action
+                    PlayerActionManagement.instance.CompleteAction();
 
+        }
     }
 
     void TakeDmg()

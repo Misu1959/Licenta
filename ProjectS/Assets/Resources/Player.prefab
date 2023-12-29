@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2732748569492193061}
   - component: {fileID: 7105521834869614469}
   - component: {fileID: 6786188651656532178}
-  m_Layer: 3
+  m_Layer: 2
   m_Name: ActionRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1950737801421609132}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -121,9 +121,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.035, y: -0.7}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.15
 --- !u!114 &6786188651656532178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,7 +146,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2858239664187342933}
   - component: {fileID: 2858239664187342934}
-  - component: {fileID: 234239264234027988}
   - component: {fileID: 2858239664187342931}
   - component: {fileID: 6906267683196259659}
   - component: {fileID: 8731011857352453302}
@@ -154,7 +153,8 @@ GameObject:
   - component: {fileID: -2040491135164662067}
   - component: {fileID: -4071741746851319578}
   - component: {fileID: 9192990623537153176}
-  m_Layer: 0
+  - component: {fileID: 637952175}
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -219,38 +219,18 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 304049018, guid: 57954addf4db20c4089c17a0aef01b5f, type: 3}
+  m_SortingOrder: 5
+  m_Sprite: {fileID: 1407364592, guid: 44f6547a92582a64fb4170ff11dbe84f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3, y: 3}
+  m_Size: {x: 0.91015625, y: 1.4732264}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &234239264234027988
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2858239664187342935}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
 --- !u!50 &2858239664187342931
 Rigidbody2D:
   serializedVersion: 4
@@ -328,9 +308,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5c8a1c27e6723b43be0bc3ad97dc14d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionType: 0
-  target: {fileID: 0}
   itemsInRange: []
+  currentTarget: {fileID: 0}
 --- !u!114 &-4071741746851319578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,6 +334,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0782d6fb9711f8a4da2425512bcab81e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &637952175
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2858239664187342935}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 45adb63e7a95c80449ec0668da2dd777, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &5984778820559131449
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,7 +367,7 @@ GameObject:
   - component: {fileID: 1835865707195955682}
   - component: {fileID: 5827362087547278036}
   - component: {fileID: 4344722642901478809}
-  m_Layer: 3
+  m_Layer: 2
   m_Name: DarknessRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -397,7 +396,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5984778820559131449}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -504,7 +503,7 @@ GameObject:
   - component: {fileID: 3083178454458149290}
   - component: {fileID: 8683627255829552292}
   - component: {fileID: 6385044021367346394}
-  m_Layer: 3
+  m_Layer: 2
   m_Name: SearchRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -533,7 +532,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7596576538886507845}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1

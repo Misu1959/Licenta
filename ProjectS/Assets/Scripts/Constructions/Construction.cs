@@ -7,7 +7,8 @@ public class Construction : MonoBehaviour
 {
     private Color color;
 
-    private bool isPlaced;
+    [SerializeField] private float maxTimeToBuild;
+    private float timeToBuild;
 
     private void Start()
     {
@@ -22,36 +23,17 @@ public class Construction : MonoBehaviour
 
     void Place()
     {
-        if (isPlaced)
+        if (!PlayerActionManagement.instance.isBuilding) // If player is not building return
             return;
 
         transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        bool canBePlaced = CheckIfCanBePlaced() & CheckIfItIsOverUI();
-        Debug.Log(canBePlaced);
-
-
-        if(canBePlaced)
+        if(CheckIfCanBePlaced() & MyMethods.CheckIfMouseIsOverUI())
         {
             GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, .5f);
             
             if (Input.GetMouseButtonDown(0))
-            {
-                CraftingManager.instance.ActivateCraftingButtons(true);
-
-                GetComponent<SpriteRenderer>().color = color;
-                GetComponent<Collider2D>().isTrigger = false;
-
-                if (GetComponent<Fire>())
-                    GetComponent<Fire>().enabled = true;
-
-                CraftingRecipe currentRecipe = CraftingManager.instance.currentRecipe.GetComponent<CraftingRecipe>();
-                for (int i = 0; i < currentRecipe.requirements.Length; i++)
-                    InventoryManager.instance.SpendResources(currentRecipe.requirements[i].type, currentRecipe.requirements[i].quantity);
-
-                isPlaced = true;
-                return;
-            }
+                PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.build);
         }
         else 
             GetComponent<SpriteRenderer>().color = new Color(1f, 0, 0, .5f);
@@ -64,6 +46,32 @@ public class Construction : MonoBehaviour
             return;
         }
 
+    }
+
+    public void Build()
+    {
+        if (!IsBuilt())
+        {
+            timeToBuild = maxTimeToBuild;
+            return;
+        }
+
+        timeToBuild -= Time.deltaTime;
+        if(timeToBuild<=0)
+        {
+            CraftingManager.instance.ActivateCraftingButtons(true);
+
+            GetComponent<SpriteRenderer>().color = color;
+            GetComponent<Collider2D>().isTrigger = false;
+
+            if (GetComponent<Fire>())
+                GetComponent<Fire>().enabled = true;
+
+            CraftingRecipe currentRecipe = CraftingManager.instance.currentRecipe.GetComponent<CraftingRecipe>();
+            for (int i = 0; i < currentRecipe.requirements.Length; i++)
+                InventoryManager.instance.SpendResources(currentRecipe.requirements[i].type, currentRecipe.requirements[i].quantity);
+
+        }
     }
 
     bool CheckIfCanBePlaced()
@@ -80,20 +88,14 @@ public class Construction : MonoBehaviour
         return results.Count > 0 ? false : true;
     }
 
-    bool CheckIfItIsOverUI()
+    protected bool IsBuilt()
     {
-        PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
-        pointerEventData.position = Input.mousePosition;
-
-        List<RaycastResult> raycastResultsList = new List<RaycastResult>();
-
-        EventSystem.current.RaycastAll(pointerEventData, raycastResultsList);
-    
-        for(int i=0;i<raycastResultsList.Count;i++)
-            if (raycastResultsList[i].gameObject==this.gameObject)
-                raycastResultsList.RemoveAt(i--);
-
-
-        return raycastResultsList.Count > 0 ? false : true;
+        if (PlayerActionManagement.instance.currentTarget == this.gameObject &&
+            PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.build &&
+            PlayerActionManagement.instance.isPerformingAction)
+            return true;
+        else
+            return false;
     }
+
 }

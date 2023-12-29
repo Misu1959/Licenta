@@ -15,7 +15,8 @@ public class PlayerActionManagement : MonoBehaviour
         chop = 12,
         mine = 13,
         craft = 21,
-        destroy = 22,
+        build = 22,
+        destroy = 23,
         addFuel = 31,
         cook = 32,
         eat = 33
@@ -29,7 +30,7 @@ public class PlayerActionManagement : MonoBehaviour
     [HideInInspector] public GameObject currentTarget;
 
     public bool isPerformingAction { get; private set; }
-
+    public bool isBuilding { get; private set; }
 
     void Start()
     {
@@ -103,17 +104,14 @@ public class PlayerActionManagement : MonoBehaviour
             }
             case Action.gather: 
             {
-                currentTarget.GetComponent<Resource>().SetIsBeingGathered(true);
                 break;
             }
             case Action.chop:
             {
-                currentTarget.GetComponent<Resource>().SetIsBeingGathered(true);
                 break;
             }
             case Action.mine:
             {
-                currentTarget.GetComponent<Resource>().SetIsBeingGathered(true);
                 break;
             }
             case Action.addFuel:
@@ -124,7 +122,6 @@ public class PlayerActionManagement : MonoBehaviour
             }
             case Action.cook:
             {
-                InventoryManager.instance.selectedItem.GetComponent<Food>().SetIsCooking(true);
                 break;
             }
             case Action.eat:
@@ -146,6 +143,55 @@ public class PlayerActionManagement : MonoBehaviour
 
     public void CancelAction()
     {
+
+        switch(currentAction)
+        {
+            case Action.pick:
+            {
+                break;
+            }
+            case Action.drop:
+            {
+                InventoryManager.instance.AddItemToSlot(currentTarget);
+                break;
+            }
+            case Action.gather:
+            {
+                break;
+            }
+            case Action.chop:
+            {
+                break;
+            }
+            case Action.mine:
+            {
+                break;
+            }
+            case Action.addFuel:
+            {
+                break;
+            }
+            case Action.cook:
+            {
+                break;
+            }
+            case Action.eat:
+            {
+                break;
+            }
+            case Action.build:
+            {
+
+                break;
+            }
+
+            default:
+                break;
+        }
+
+
+
+
         PopUpManager.instance.ShowPopUpActionCanceled();
         SetTargetAndAction(null, Action.nothing);
         isPerformingAction = false;
@@ -161,6 +207,12 @@ public class PlayerActionManagement : MonoBehaviour
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") !=0)
             CancelAction();
         
+    }
+
+
+    public void Build(bool _isBuilding)
+    {
+        isBuilding = _isBuilding;
     }
 
 

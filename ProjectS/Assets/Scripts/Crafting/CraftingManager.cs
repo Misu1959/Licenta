@@ -115,8 +115,10 @@ public class CraftingManager : MonoBehaviour
                 InventoryManager.instance.SpendResources(currentRecipe.GetComponent<CraftingRecipe>().requirements[i].type, currentRecipe.GetComponent<CraftingRecipe>().requirements[i].quantity);
         }
         else
+        {
             ActivateCraftingButtons(false);
-
+            PlayerActionManagement.instance.Build(true);
+        }
 
         toolTip.SetActive(false);
     }

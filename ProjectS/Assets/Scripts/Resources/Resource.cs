@@ -13,8 +13,6 @@ public class Resource : MonoBehaviour, IPointerDownHandler
     [SerializeField] protected  int howToGather; // 0-gather | 1-chop | 2-mine
     [SerializeField] protected  string[] dropTypes;
 
-    public bool isBeingGathered { get; private set;}
-
     protected float maxTimeToGather = 1;
     protected float timeToGather;
 
@@ -60,23 +58,13 @@ public class Resource : MonoBehaviour, IPointerDownHandler
             PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.mine);
     }
 
-    public void SetIsBeingGathered(bool _isBeingGathered)
-    {
-        isBeingGathered = _isBeingGathered;
-        timeToGather = maxTimeToGather;
-    }
-
-
     public virtual void GatherItemOfType()
     {
 
         // If player isn't harvesting it or if it's not grown
-        if (!isBeingGathered || !isGrown)
-            return;
-
-        if(!PlayerActionManagement.instance.isPerformingAction)
+        if (!IsGathered())
         {
-            SetIsBeingGathered(false);
+            timeToGather = maxTimeToGather;
             return;
         }
 
@@ -90,7 +78,6 @@ public class Resource : MonoBehaviour, IPointerDownHandler
             InventoryManager.instance.AddItemToSlot(item);
             
             PlayerActionManagement.instance.CompleteAction(); // Complete the action
-            SetIsBeingGathered(false);
 
             timeToGrow = maxTimeToGrow;
             isGrown = false;
@@ -139,4 +126,13 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     }
 
+    protected bool IsGathered()
+    {
+        if (PlayerActionManagement.instance.currentTarget == this.gameObject &&
+            PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.gather &&
+            PlayerActionManagement.instance.isPerformingAction)
+            return true;
+        else
+            return false;
+    }
 }

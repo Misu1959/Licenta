@@ -17,16 +17,20 @@ public class Equipment : Item
     public override void OnPointerDown(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);
-
+        
+        //if (IsOnTheGround())
         //  if (GetComponent<Equipment>())
         //      PlayerActionManagement.instance.SetTarget(this.gameObject, 33);
 
     }
-    
+
     public override void OnMouseEnter()
     {
-        string popUpText = "LMB - Pick\nRMB - Equip";
-        PopUpManager.instance.ShowMousePopUp(popUpText);
+        if (IsOnTheGround())
+        {
+            string popUpText = "LMB - Pick\nRMB - Equip";
+            PopUpManager.instance.ShowMousePopUp(popUpText);
+        }
     }
 
     public void SetDurability(float _durability)

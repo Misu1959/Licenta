@@ -11,8 +11,6 @@ public class Food : Item
     public float hungerAmount;
     public float hpAmount;
 
-    public bool isCooking { get; private set;}
-
     private float maxTimeToCook = 1;
     private float timeToCook;
 
@@ -25,26 +23,26 @@ public class Food : Item
     {
         base.OnPointerDown(eventData);
         if (Input.GetMouseButtonDown(1))
-            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.eat);
+            if (IsOnTheGround())
+                PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.eat);
     }
 
     public override void OnMouseEnter()
     {
-        string popUpText = "LMB - Pick\nRMB - Eat";
-        PopUpManager.instance.ShowMousePopUp(popUpText);
+        if (IsOnTheGround())
+        { 
+            string popUpText = "LMB - Pick\nRMB - Eat";
+            PopUpManager.instance.ShowMousePopUp(popUpText);
+        }
     }
 
     void Cook()
     {
-        if (!isCooking)
-            return;
-
-        if (!PlayerActionManagement.instance.isPerformingAction)
+        if (!IsBeingCooked())
         {
-            SetIsCooking(false);
+            timeToCook = maxTimeToCook;
             return;
         }
-
 
         timeToCook -= Time.deltaTime;
         if (timeToCook<=0)
@@ -59,21 +57,22 @@ public class Food : Item
             
 
             PlayerActionManagement.instance.CompleteAction();
-            SetIsCooking(false);
-            
         }
-    }
-
-    public void SetIsCooking(bool _isCooking)
-    {
-        isCooking = _isCooking;
-        timeToCook = maxTimeToCook;
-
     }
 
     public void Consume()
     {
         GetComponent<Item>().TakeFromStack(1);
         PlayerStats.instance.Eat(hungerAmount, hpAmount);
+    }
+
+    protected bool IsBeingCooked()
+    {
+        if (PlayerActionManagement.instance.currentTarget == this.gameObject &&
+            PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.cook &&
+            PlayerActionManagement.instance.isPerformingAction)
+            return true;
+        else
+            return false;
     }
 }

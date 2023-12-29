@@ -66,9 +66,9 @@ public class SaveLoadManager : MonoBehaviour
     {
         int nrOfItemsInInventory = 0;
         for (int i = 0; i < 15; i++)
-            if (InventoryManager.instance.inventory.transform.GetChild(i).childCount > 0)
+            if (InventoryManager.instance.inventory.GetChild(i).childCount > 0)
             {
-                Item item = InventoryManager.instance.inventory.transform.GetChild(i).GetChild(0).GetComponent<Item>();
+                Item item = InventoryManager.instance.inventory.GetChild(i).GetChild(0).GetComponent<Item>();
                 if (item.GetComponent<ItemUI>())
                     PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " typeOfItem", 1);
                 else if (item.GetComponent<FoodUI>())
@@ -235,7 +235,7 @@ public class SaveLoadManager : MonoBehaviour
             itemUI.GetComponent<Item>().maxStack = PlayerPrefs.GetInt("itemUI " + i + " maxStack");
             itemUI.GetComponent<Item>().fuelValue = PlayerPrefs.GetInt("itemUI " + i + " fuelValue");
 
-            itemUI.GetComponent<Item>().transform.SetParent(InventoryManager.instance.inventory.transform.GetChild(PlayerPrefs.GetInt("itemUI " + i + " parentSlot")));
+            itemUI.GetComponent<Item>().transform.SetParent(InventoryManager.instance.inventory.GetChild(PlayerPrefs.GetInt("itemUI " + i + " parentSlot")));
             itemUI.GetComponent<Item>().transform.localPosition = Vector2.zero;
 
             itemUI.GetComponent<Item>().uiImg = ItemsManager.instance.SearchItemsList(itemUI.GetComponent<Item>().type).GetComponent<Item>().uiImg;
@@ -271,7 +271,7 @@ public class SaveLoadManager : MonoBehaviour
             selectedItem.GetComponent<Item>().maxStack = PlayerPrefs.GetInt("selectedItem maxStack");
             selectedItem.GetComponent<Item>().fuelValue = PlayerPrefs.GetInt("selectedItem fuelValue");
 
-            selectedItem.GetComponent<Item>().transform.SetParent(InventoryManager.instance.inventory.transform);
+            selectedItem.GetComponent<Item>().transform.SetParent(InventoryManager.instance.inventory);
             InventoryManager.instance.selectedItem = selectedItem.GetComponent<Item>();
 
             selectedItem.GetComponent<Image>().color = ItemsManager.instance.SearchItemsList(selectedItem.GetComponent<Item>().type).GetComponent<SpriteRenderer>().color;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class Item : MonoBehaviour,IPointerDownHandler
 {
@@ -24,13 +25,15 @@ public class Item : MonoBehaviour,IPointerDownHandler
     public virtual void OnPointerDown(PointerEventData eventData)
     {
         if (Input.GetMouseButtonDown(0))
-            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.pick);
+            if(IsOnTheGround())
+                PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.pick);
 
     }
 
     public virtual void OnMouseEnter()
     {
-        PopUpManager.instance.ShowMousePopUp("LMB - Pick");
+        if(IsOnTheGround())
+            PopUpManager.instance.ShowMousePopUp("LMB - Pick");
     }
 
     private void OnMouseExit()
@@ -43,6 +46,17 @@ public class Item : MonoBehaviour,IPointerDownHandler
         type = _type;
     }
 
+    public void Drop(Vector2 dropPosition)
+    {
+        transform.localPosition = dropPosition;
+        transform.SetParent(SaveLoadManager.instance.items.transform);
+
+        SetTransparent(true);
+        PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.drop);
+        CraftingManager.instance.SetTooltipCraftButton();
+    }
+
+
     public void SetTransparent(bool setTransparent)
     {
         Color thisColor = GetComponent<SpriteRenderer>().color;
@@ -53,7 +67,7 @@ public class Item : MonoBehaviour,IPointerDownHandler
             GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, 1f);
     }
 
-    public virtual void CreateItemUI(Transform slot,int amount,bool isSelected = false)
+    public virtual Item CreateItemUI(Transform slot,int amount)
     {
 
         GameObject itemUI = Instantiate(ItemsManager.instance.itemUI);
@@ -64,31 +78,12 @@ public class Item : MonoBehaviour,IPointerDownHandler
         itemUI.GetComponent<Item>().currentStack = amount;
         itemUI.GetComponent<Item>().maxStack     = maxStack;
         itemUI.GetComponent<Item>().fuelValue    = fuelValue;
-    
-        itemUI.gameObject.transform.SetParent(slot);
-
-
-        if (!isSelected)
-            itemUI.gameObject.transform.localPosition = Vector2.zero;
-        else
-        {
-            InventoryManager.instance.selectedItem = itemUI.GetComponent<Item>();
-            itemUI.GetComponent<Image>().raycastTarget = false;
-        }
-
         itemUI.gameObject.GetComponent<Image>().sprite = uiImg;
-        
 
-    }
+        itemUI.gameObject.transform.SetParent(slot);
+        itemUI.transform.localPosition = Vector2.zero;
 
-    public bool CheckIfStackIsFull()
-    {
-        if (GetComponent<Equipment>())
-            return true;
-        if(currentStack == maxStack)
-            return true;
-
-        return false;
+        return itemUI.GetComponent<Item>();
     }
 
     void AddFunctionalityToItem(GameObject itemUI)
@@ -115,6 +110,17 @@ public class Item : MonoBehaviour,IPointerDownHandler
 
     }
 
+    public bool CheckIfStackIsFull()
+    {
+        if (GetComponent<Equipment>())
+            return true;
+        if (currentStack == maxStack)
+            return true;
+
+        return false;
+    }
+
+
     public void TakeFromStack(int _amountToTake)
     {
         currentStack -= _amountToTake;
@@ -137,6 +143,15 @@ public class Item : MonoBehaviour,IPointerDownHandler
         GetComponent<ItemUI>()?.DisplayStack();
         GetComponent<FoodUI>()?.DisplayStack();
         GetComponent<EquipmentUI>()?.DisplayStack();
+    }
+
+    protected bool IsOnTheGround()
+    {
+        if (PlayerActionManagement.instance.currentTarget == this.gameObject &&
+        PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.drop)
+            return false;
+        else
+            return true;
     }
 
 }

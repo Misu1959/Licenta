@@ -25,32 +25,14 @@ public class EquipmentUI : Equipment
         if (!InventoryManager.instance.selectedItem)
         {
             if (Input.GetMouseButtonDown(0))
-                if (Input.GetKey(KeyCode.LeftControl) && currentStack > 1)
-                {
-                    CreateItemUI(transform.parent.parent.parent, 1, true);
-                    TakeFromStack(1);
-                }
-                else if (Input.GetKey(KeyCode.LeftShift) && currentStack > 1)
-                {
-                    int amount;
-                    if (currentStack % 2 == 0)
-                        amount = currentStack / 2;
-                    else
-                        amount = currentStack / 2 + 1;
+            {
+                EquipmentManager.instance.UnequipHandItem(this.gameObject);
 
-                    CreateItemUI(transform.parent.parent.parent, amount, true);
-                    TakeFromStack(amount);
-                }
-                else
-                {
-                    EquipmentManager.instance.UnequipHandItem(this.gameObject);
-
-                    InventoryManager.instance.selectedItem = this;
-                    transform.SetParent(transform.parent.parent.parent, true);
-                    GetComponent<Image>().raycastTarget = false;
-                }
-
-            if (Input.GetMouseButtonDown(1))
+                InventoryManager.instance.selectedItem = this;
+                transform.SetParent(InventoryManager.instance.inventory, true);
+                GetComponent<Image>().raycastTarget = false;
+            }
+            else if (Input.GetMouseButtonDown(1))
             {
                 if (GetComponent<Equipment>())
                     EquipmentManager.instance.SetEquipment(GetComponent<Equipment>());
@@ -63,7 +45,7 @@ public class EquipmentUI : Equipment
                 if (InventoryManager.instance.selectedItem.type == type)
                 {
                     if (CheckIfStackIsFull() || InventoryManager.instance.selectedItem.CheckIfStackIsFull())
-                        SwapTwoSlots();
+                        InventoryManager.instance.SwapTwoSlots(this);
                     else
                     {
                         int dif = InventoryManager.instance.selectedItem.GetComponent<ItemUI>().currentStack + currentStack - maxStack;
@@ -81,7 +63,7 @@ public class EquipmentUI : Equipment
                     }
                 }
                 else
-                    SwapTwoSlots();
+                    InventoryManager.instance.SwapTwoSlots(this);
             }
         }
 
@@ -94,11 +76,11 @@ public class EquipmentUI : Equipment
 
         this.gameObject.transform.position = Input.mousePosition;
 
-        if (CheckIfItIsOverUI())
+        if (MyMethods.CheckIfMouseIsOverUI())
             return;
 
 
-        Fire fire = CheckIfItIsOverFire();
+        Fire fire = MyMethods.CheckIfMouseIsOverFire();
 
         if (fire)
         {
@@ -120,10 +102,8 @@ public class EquipmentUI : Equipment
 
             if (Input.GetMouseButtonDown(0))
             {
-                CreateItem();
-                Destroy(this.gameObject);
-                CraftingManager.instance.SetTooltipCraftButton();
-
+                CreateItem().Drop((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition)); // Create the item and drop it
+                Destroy(this.gameObject);// Destroy the Ui item
                 return;
             }
         }
@@ -135,7 +115,18 @@ public class EquipmentUI : Equipment
         }
     }
 
-    void CreateItem()
+    public override Item CreateItemUI(Transform slot, int amount)
+    {
+
+        Item itemUI = base.CreateItemUI(slot, amount);
+        itemUI.gameObject.GetComponent<Image>().raycastTarget = false;
+
+        InventoryManager.instance.selectedItem = itemUI;
+
+        return itemUI;
+
+    }
+    Item CreateItem()
     {
         Item item = Instantiate(ItemsManager.instance.SearchItemsList(type)).GetComponent<Item>();
 
@@ -149,20 +140,8 @@ public class EquipmentUI : Equipment
         PlayerActionManagement.instance.SetTargetAndAction(item.gameObject, PlayerActionManagement.Action.drop);
 
         item.GetComponent<Equipment>().SetDurability(GetComponent<Equipment>().durability);
-    }
 
-
-    void SwapTwoSlots()
-    {
-        InventoryManager.instance.selectedItem.transform.SetParent(this.transform.parent);
-        InventoryManager.instance.selectedItem.transform.localPosition = Vector2.zero;
-        InventoryManager.instance.selectedItem.GetComponent<Image>().raycastTarget = true;
-
-
-        InventoryManager.instance.selectedItem = this;
-
-        InventoryManager.instance.selectedItem.transform.SetParent(this.transform.parent.parent);
-        InventoryManager.instance.selectedItem.GetComponent<Image>().raycastTarget = false;
+        return item;
     }
 
     public void DisplayStack()
@@ -171,34 +150,4 @@ public class EquipmentUI : Equipment
 
     }
 
-
-    bool CheckIfItIsOverUI()
-    {
-        PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
-        pointerEventData.position = Input.mousePosition;
-
-        List<RaycastResult> raycastResultsList = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(pointerEventData, raycastResultsList);
-
-        foreach (RaycastResult objRes in raycastResultsList)
-            if (objRes.gameObject.GetComponent<CanvasRenderer>())
-                return true;
-
-        return false;
-    }
-
-    Fire CheckIfItIsOverFire()
-    {
-        PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
-        pointerEventData.position = Input.mousePosition;
-
-        List<RaycastResult> raycastResultsList = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(pointerEventData, raycastResultsList);
-
-        foreach (RaycastResult objRes in raycastResultsList)
-            if (objRes.gameObject.GetComponent<Fire>())
-                return objRes.gameObject.GetComponent<Fire>();
-
-        return null;
-    }
 }
