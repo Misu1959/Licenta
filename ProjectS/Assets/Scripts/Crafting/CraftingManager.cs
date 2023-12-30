@@ -108,7 +108,6 @@ public class CraftingManager : MonoBehaviour
             InventoryManager.instance.AddItemToSlot(craftedItem);
         }
 
-        // Bug constructi din cauza la linie comentata
         if (!currentRecipe.GetComponent<CraftingRecipe>().prefabItem.GetComponent<Construction>())
         {
             for (int i = 0; i < currentRecipe.GetComponent<CraftingRecipe>().requirements.Length; i++)
@@ -117,7 +116,7 @@ public class CraftingManager : MonoBehaviour
         else
         {
             ActivateCraftingButtons(false);
-            PlayerActionManagement.instance.Build(true);
+            PlayerActionManagement.instance.SetTargetAndAction(null, PlayerActionManagement.Action.place);
         }
 
         toolTip.SetActive(false);
@@ -126,10 +125,7 @@ public class CraftingManager : MonoBehaviour
     void AddRequirmentsToToolTip(int nrOfReqInToolTip)
     {
         for (int i = nrOfReqInToolTip;i< currentRecipe.GetComponent<CraftingRecipe>().requirements.Length; i++)
-        {
-            GameObject req = Instantiate(requirementPrefab);
-            req.transform.SetParent(toolTip.transform.GetChild(2));
-        }
+            Instantiate(requirementPrefab).transform.SetParent(toolTip.transform.GetChild(2));
 
     }
 

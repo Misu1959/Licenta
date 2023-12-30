@@ -12,6 +12,8 @@ public class Construction : MonoBehaviour
 
     private void Start()
     {
+        maxTimeToBuild = 3;
+
         color = GetComponent<SpriteRenderer>().color;
         GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, .5f);
     }
@@ -19,23 +21,31 @@ public class Construction : MonoBehaviour
     void Update()
     {
         Place();
+        Build();
     }
 
     void Place()
     {
-        if (!PlayerActionManagement.instance.isBuilding) // If player is not building return
+        if (PlayerActionManagement.instance.currentAction != PlayerActionManagement.Action.place) // If player is not placing return
             return;
 
         transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        PopUpManager.instance.ShowMousePopUp("RMB - cancel");
 
-        if(CheckIfCanBePlaced() & MyMethods.CheckIfMouseIsOverUI())
+
+        if (CheckIfCanBePlaced() & !MyMethods.CheckIfMouseIsOverUI())
         {
+            PopUpManager.instance.ShowMousePopUp("LMB - place\nRMB - cancel");
+
             GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, .5f);
-            
+
             if (Input.GetMouseButtonDown(0))
+            {
                 PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.build);
+                PopUpManager.instance.ShowMousePopUp();
+            }
         }
-        else 
+        else
             GetComponent<SpriteRenderer>().color = new Color(1f, 0, 0, .5f);
 
 
@@ -57,7 +67,7 @@ public class Construction : MonoBehaviour
         }
 
         timeToBuild -= Time.deltaTime;
-        if(timeToBuild<=0)
+        if (timeToBuild <= 0)
         {
             CraftingManager.instance.ActivateCraftingButtons(true);
 
@@ -71,6 +81,8 @@ public class Construction : MonoBehaviour
             for (int i = 0; i < currentRecipe.requirements.Length; i++)
                 InventoryManager.instance.SpendResources(currentRecipe.requirements[i].type, currentRecipe.requirements[i].quantity);
 
+            PlayerActionManagement.instance.CompleteAction();
+
         }
     }
 
@@ -82,10 +94,14 @@ public class Construction : MonoBehaviour
         Physics2D.OverlapCollider(GetComponent<Collider2D>(),filter,results);
 
         for (int i = 0; i < results.Count; i++)
+        {
             if (results[i].gameObject.layer == 2)
-                results.RemoveAt(i--);
+                continue;
+            else
+                return false;
 
-        return results.Count > 0 ? false : true;
+        }
+        return true;
     }
 
     protected bool IsBuilt()

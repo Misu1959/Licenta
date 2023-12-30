@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine.Rendering.Universal;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerActionManagement : MonoBehaviour
 {
@@ -15,8 +16,9 @@ public class PlayerActionManagement : MonoBehaviour
         chop = 12,
         mine = 13,
         craft = 21,
-        build = 22,
-        destroy = 23,
+        place = 22,
+        build = 23,
+        destroy = 24,
         addFuel = 31,
         cook = 32,
         eat = 33
@@ -30,7 +32,6 @@ public class PlayerActionManagement : MonoBehaviour
     [HideInInspector] public GameObject currentTarget;
 
     public bool isPerformingAction { get; private set; }
-    public bool isBuilding { get; private set; }
 
     void Start()
     {
@@ -79,6 +80,9 @@ public class PlayerActionManagement : MonoBehaviour
 
     public void SetTargetAndAction(GameObject _target, Action _currentAction)
     {
+        if(currentTarget && _target)
+            CancelAction();
+    
         currentTarget = _target;
         currentAction = _currentAction;
     }
@@ -141,65 +145,63 @@ public class PlayerActionManagement : MonoBehaviour
         isPerformingAction = false;
     }
 
-    public void CancelAction()
+    private void CancelAction()
     {
-
-        switch(currentAction)
+        switch (currentAction)
         {
             case Action.pick:
-            {
-                break;
-            }
+                {
+                    break;
+                }
             case Action.drop:
-            {
-                InventoryManager.instance.AddItemToSlot(currentTarget);
-                break;
-            }
+                {
+                    InventoryManager.instance.AddItemToSlot(currentTarget);
+                    break;
+                }
             case Action.gather:
-            {
-                break;
-            }
+                {
+                    break;
+                }
             case Action.chop:
-            {
-                break;
-            }
+                {
+                    break;
+                }
             case Action.mine:
-            {
-                break;
-            }
+                {
+                    break;
+                }
             case Action.addFuel:
-            {
-                break;
-            }
+                {
+                    break;
+                }
             case Action.cook:
-            {
-                break;
-            }
+                {
+                    break;
+                }
             case Action.eat:
-            {
-                break;
-            }
+                {
+                    break;
+                }
             case Action.build:
-            {
-
-                break;
-            }
+                {
+                    CraftingManager.instance.ActivateCraftingButtons(true);
+                    Destroy(currentTarget);
+                    break;
+                }
 
             default:
                 break;
         }
 
-
-
+        isPerformingAction = false;
 
         PopUpManager.instance.ShowPopUpActionCanceled();
         SetTargetAndAction(null, Action.nothing);
-        isPerformingAction = false;
     }
 
     private void CancelActionByMoving()
     {
-        if (currentAction == Action.nothing) // If player is doing nothing there is nothing to cancel
+        if (!currentTarget) // If player has no target there is nothing to cancel
             return;
 
 
@@ -208,12 +210,5 @@ public class PlayerActionManagement : MonoBehaviour
             CancelAction();
         
     }
-
-
-    public void Build(bool _isBuilding)
-    {
-        isBuilding = _isBuilding;
-    }
-
 
 }

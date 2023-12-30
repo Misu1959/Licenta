@@ -345,11 +345,11 @@ MonoBehaviour:
   isLearned: 1
   requirements:
   - type: Log
-    quantity: 4
+    quantity: 0
   - type: Stone
-    quantity: 12
+    quantity: 0
   - type: Grass
-    quantity: 6
+    quantity: 2
 --- !u!114 &29526655
 MonoBehaviour:
   m_ObjectHideFlags: 0
