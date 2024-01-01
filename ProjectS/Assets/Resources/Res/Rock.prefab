@@ -249,6 +249,7 @@ MonoBehaviour:
   howToGather: 2
   dropTypes:
   - Stone
+  timeToGather: 1
   isGrown: 0
   timeToGrow: 0
   hp: 10

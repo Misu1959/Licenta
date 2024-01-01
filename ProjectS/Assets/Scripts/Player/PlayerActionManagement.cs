@@ -80,6 +80,9 @@ public class PlayerActionManagement : MonoBehaviour
 
     public void SetTargetAndAction(GameObject _target, Action _currentAction)
     {
+        if (currentTarget == _target)
+            return;
+
         if(currentTarget && _target)
             CancelAction();
     
@@ -120,7 +123,7 @@ public class PlayerActionManagement : MonoBehaviour
             }
             case Action.addFuel:
             {
-                currentTarget.GetComponent<Fire>().AddFuel(InventoryManager.instance.selectedItem);
+                currentTarget.GetComponent<Fireplace>().AddFuel();
                 CompleteAction();
                 break;
             }
@@ -211,4 +214,35 @@ public class PlayerActionManagement : MonoBehaviour
         
     }
 
+    public bool IsGathering(GameObject resToGather)
+    {
+        if (currentTarget == resToGather && currentAction == Action.gather && isPerformingAction)
+            return true;
+        else
+            return false;
+    }
+
+    public bool IsPlacing(GameObject constructionToPlace = null)
+    {
+        if (currentAction != Action.place)
+            return false;
+     
+        return true; 
+    }
+
+    public bool IsBuilding(GameObject constructionToBuild)
+    {
+        if (currentTarget == constructionToBuild && currentAction == Action.build && isPerformingAction)
+            return true;
+        else
+            return false;
+    }
+
+    public bool IsCooking(GameObject foodToCook)
+    {
+        if (currentTarget == foodToCook && currentAction == Action.cook && isPerformingAction)
+            return true;
+        else
+            return false;
+    }
 }

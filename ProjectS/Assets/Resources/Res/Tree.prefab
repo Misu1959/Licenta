@@ -400,6 +400,7 @@ MonoBehaviour:
   howToGather: 1
   dropTypes:
   - Log
+  timeToGather: 1
   isGrown: 0
   timeToGrow: 0
   hp: 10

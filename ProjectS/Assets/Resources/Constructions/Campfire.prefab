@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 3800433806833962108}
   - component: {fileID: -6196397536076352716}
   - component: {fileID: -4102262700231696223}
-  - component: {fileID: -34470560733107670}
+  - component: {fileID: -1013791105269569540}
   m_Layer: 10
   m_Name: Campfire
   m_TagString: Untagged
@@ -454,22 +454,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae362fcf39f705445aac1f40a9815e1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTimeToBuild: 0
---- !u!114 &-34470560733107670
+  timeToBuild: 3
+--- !u!114 &-1013791105269569540
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6727790776693729420}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6d0a732dceb1fc44890f076a8076730, type: 3}
+  m_Script: {fileID: 11500000, guid: a54a326f70d996944967b87c18b93a7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireType: 3
-  maxFireSize: 10
-  maxLifetime: 120
+  maxFireSize: 5
+  maxLifetime: 60
+  isCampfire: 1
 --- !u!1 &7817957964515582127
 GameObject:
   m_ObjectHideFlags: 0

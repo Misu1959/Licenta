@@ -9,9 +9,9 @@ public class PlayerStats : MonoBehaviour
     #region Stats
     [SerializeField] private float maxHunger;
     public float hunger { get; private set; }
-    
-    private float hungerTimer = 1;
-    private float starveTimer = 0;
+
+    private Timer hungerTimer;
+    private Timer starveTimer;
 
     [SerializeField] private float maxHp;
     public float hp { get; private set; }
@@ -30,6 +30,11 @@ public class PlayerStats : MonoBehaviour
     {
         instance = this;
 
+        hungerTimer = new Timer(1);
+        hungerTimer.StartTimer();
+        
+        starveTimer = new Timer(1);
+
         hunger = maxHunger;
         hp = maxHp;
         //if (PlayerPrefs.GetInt("prevWorld") <= 1)
@@ -39,26 +44,29 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
-        hungerTimer -= Time.deltaTime;
-        if(hungerTimer<=0)
+        
+        hungerTimer.Tick();
+        if(hungerTimer.IsElapsed())
         {
             // Every second lose 1 hunger
             hunger = Mathf.Clamp(hunger - 1, 0, maxHunger);
             UIManager.instance.ShowHunger(maxHunger, hunger);
-            hungerTimer = 1;
+            hungerTimer.StartTimer();
         }
 
-        if (hunger==0)
+        if (hunger == 0)
         {
             // If starving every second lose 2 hp
-            starveTimer -= Time.deltaTime;
-            if(starveTimer<=0)
+            starveTimer.StartTimer();
+            starveTimer.Tick();
+            if (starveTimer.IsElapsed())
             {
                 Starve(2);
-                starveTimer = 1;
+                starveTimer.StartTimer();
             }
-
         }
+        else
+            starveTimer.RestartTimer();
     }
 
     public IEnumerator SetStats(float _hp,float _dmg,float _speed,float _hunger, Vector2 pos)

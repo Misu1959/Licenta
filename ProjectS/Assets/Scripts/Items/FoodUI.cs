@@ -21,6 +21,7 @@ public class FoodUI : Food
     public override void OnPointerDown(PointerEventData eventData)
     {
         if (Time.timeScale == 0) return;
+        if (PlayerActionManagement.instance.IsPlacing()) return;
 
         if (!InventoryManager.instance.selectedItem)
         {
@@ -89,34 +90,14 @@ public class FoodUI : Food
             return;
 
 
-        Fire fire = MyMethods.CheckIfMouseIsOverFire();
-
-        if (fire)
+        PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
+        if (Input.GetMouseButtonDown(0))
         {
-            PopUpManager.instance.ShowMousePopUp("LMB - Cook\nRMB - Cancel");
-
-            if (Input.GetMouseButtonDown(0))
-                if (fire.fireType != Fire.FireType.torch)
-                {
-                    PlayerActionManagement.instance.SetTargetAndAction(fire.transform.gameObject, PlayerActionManagement.Action.cook);
-                    return;
-                }
+            CreateItem().Drop((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition)); // Create the item and drop it
+            InventoryManager.instance.selectedItem = null;
+            Destroy(this.gameObject);// Destroy the Ui item
         }
-        else
-        {
-            PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
-
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                CreateItem().Drop((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition)); // Create the item and drop it
-                InventoryManager.instance.selectedItem = null;
-                Destroy(this.gameObject);// Destroy the Ui item
-                return;
-            }
-        }
-
-        if (Input.GetMouseButtonDown(1))
+        else if (Input.GetMouseButtonDown(1))
         {
             PopUpManager.instance.ShowMousePopUp();
             InventoryManager.instance.SetBackToSlot();

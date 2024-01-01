@@ -24,9 +24,10 @@ public class Item : MonoBehaviour,IPointerDownHandler
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        if (Input.GetMouseButtonDown(0))
-            if(IsOnTheGround())
-                PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.pick);
+        if(!PlayerActionManagement.instance.IsPlacing())
+            if (Input.GetMouseButtonDown(0))
+                if(IsOnTheGround())
+        PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.pick);
 
     }
 

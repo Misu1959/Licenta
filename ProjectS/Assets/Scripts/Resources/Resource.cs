@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Rendering.UI;
-using static UnityEditor.Progress;
 
 public class Resource : MonoBehaviour, IPointerDownHandler
 {
@@ -13,12 +11,20 @@ public class Resource : MonoBehaviour, IPointerDownHandler
     [SerializeField] protected  int howToGather; // 0-gather | 1-chop | 2-mine
     [SerializeField] protected  string[] dropTypes;
 
-    protected float maxTimeToGather = 1;
-    protected float timeToGather;
+    [SerializeField] protected float timeToGather;
+    protected Timer timerGather;
 
-    [HideInInspector] public bool isGrown;
+    [SerializeField] private float maxTimeToGrow;
     [HideInInspector] public float timeToGrow;
-    private float maxTimeToGrow = 20;
+    private Timer timerGrow;
+
+    private void Start()
+    {
+//        yield return null; // Wait a frame
+
+        timerGather = new Timer(timeToGather);
+        timerGrow = new Timer(maxTimeToGrow, timeToGrow);
+    }
 
     private void Update()
     {
@@ -28,13 +34,13 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if(CheckIfCanBeGathered())
+        if(CheckIfCanBeGathered() && !PlayerActionManagement.instance.IsPlacing())
             SetToGather();
     }
 
     public virtual void OnMouseEnter()
     {
-        if(isGrown)
+        if(!timerGrow.IsOn() && !PlayerActionManagement.instance.IsPlacing())
             PopUpManager.instance.ShowMousePopUp("LMB - Gather");
     }
 
@@ -62,37 +68,47 @@ public class Resource : MonoBehaviour, IPointerDownHandler
     {
 
         // If player isn't harvesting it or if it's not grown
-        if (!IsGathered())
+        if (!PlayerActionManagement.instance.IsGathering(this.gameObject))
         {
-            timeToGather = maxTimeToGather;
+            timerGather.RestartTimer();
             return;
         }
 
-        timeToGather -= Time.deltaTime;
-        if (timeToGather <= 0)
-        {
-            // Next lines adds the loot to the inventory
-            GameObject item = Instantiate(ItemsManager.instance.SearchItemsList(dropTypes[0]));
-            item.GetComponent<Item>().SetType(dropTypes[0]);
-            item.GetComponent<Item>().AddToStack(1);
-            InventoryManager.instance.AddItemToSlot(item);
-            
-            PlayerActionManagement.instance.CompleteAction(); // Complete the action
+        timerGather.StartTimer();
+        timerGather.Tick();
+        if (!timerGather.IsElapsed())
+            return;
 
-            timeToGrow = maxTimeToGrow;
-            isGrown = false;
-        }
+        // Next lines adds the loot to the inventory
+        GameObject item = Instantiate(ItemsManager.instance.SearchItemsList(dropTypes[0]));
+        item.GetComponent<Item>().SetType(dropTypes[0]);
+        item.GetComponent<Item>().AddToStack(1);
+        InventoryManager.instance.AddItemToSlot(item);
+
+        timerGrow.StartTimer();
+        PlayerActionManagement.instance.CompleteAction(); // Complete the action
     }
 
     void Regrow()
     {
-        if (isGrown)
+        if (!timerGrow.IsOn())
             return;
-        SetAnim();
 
-        timeToGrow -= Time.deltaTime;
-        if (timeToGrow <= 0)
-            isGrown = true;
+        if (!GetComponent<Animator>())
+            return;
+
+        timerGrow.Tick();
+
+        if (timerGrow.IsElapsedPercent(100))
+            GetComponent<Animator>().SetInteger("GrowthStage", 4);
+        else if (timerGrow.IsElapsedPercent(67))
+            GetComponent<Animator>().SetInteger("GrowthStage", 3);
+        else if (timerGrow.IsElapsedPercent(34))
+            GetComponent<Animator>().SetInteger("GrowthStage", 2);
+        else if (timerGrow.IsElapsedPercent(10))
+            GetComponent<Animator>().SetInteger("GrowthStage", 1);
+        else
+            GetComponent<Animator>().SetInteger("GrowthStage", -1);
     }
 
 
@@ -101,38 +117,12 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
         if (howToGather == 0)
         {
-            if (isGrown)
+            if (!timerGrow.IsOn())
                 return true;
             else
                 return false;
         }
         else
             return EquipmentManager.instance.CheckWhatItemIsEquipedInHand(howToGather);
-    }
-
-    void SetAnim()
-    {
-        if (!GetComponent<Animator>())
-            return;
-
-        if (timeToGrow <= .01f * maxTimeToGrow)
-            GetComponent<Animator>().SetInteger("GrowthStage", 4);
-        else if (timeToGrow <= .34f * maxTimeToGrow)
-            GetComponent<Animator>().SetInteger("GrowthStage", 3);
-        else if (timeToGrow <= .67f * maxTimeToGrow)
-            GetComponent<Animator>().SetInteger("GrowthStage", 2);
-        else if (timeToGrow <= maxTimeToGrow)
-            GetComponent<Animator>().SetInteger("GrowthStage", -1);
-
-    }
-
-    protected bool IsGathered()
-    {
-        if (PlayerActionManagement.instance.currentTarget == this.gameObject &&
-            PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.gather &&
-            PlayerActionManagement.instance.isPerformingAction)
-            return true;
-        else
-            return false;
     }
 }

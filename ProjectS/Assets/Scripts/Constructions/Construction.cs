@@ -7,12 +7,13 @@ public class Construction : MonoBehaviour
 {
     private Color color;
 
-    [SerializeField] private float maxTimeToBuild;
-    private float timeToBuild;
+    [SerializeField] private float timeToBuild;
+    private Timer timer;
+
 
     private void Start()
     {
-        maxTimeToBuild = 3;
+        timer = new Timer(timeToBuild);
 
         color = GetComponent<SpriteRenderer>().color;
         GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, .5f);
@@ -26,7 +27,7 @@ public class Construction : MonoBehaviour
 
     void Place()
     {
-        if (PlayerActionManagement.instance.currentAction != PlayerActionManagement.Action.place) // If player is not placing return
+        if (!PlayerActionManagement.instance.IsPlacing(this.gameObject)) // If player is not placing return
             return;
 
         transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -60,30 +61,30 @@ public class Construction : MonoBehaviour
 
     public void Build()
     {
-        if (!IsBuilt())
+        if (!PlayerActionManagement.instance.IsBuilding(this.gameObject))
         {
-            timeToBuild = maxTimeToBuild;
+            timer.RestartTimer();
             return;
         }
 
-        timeToBuild -= Time.deltaTime;
-        if (timeToBuild <= 0)
-        {
-            CraftingManager.instance.ActivateCraftingButtons(true);
+        timer.StartTimer();
+        timer.Tick();
+        if (!timer.IsElapsed())
+            return;
 
-            GetComponent<SpriteRenderer>().color = color;
-            GetComponent<Collider2D>().isTrigger = false;
+        CraftingManager.instance.ActivateCraftingButtons(true);
 
-            if (GetComponent<Fire>())
-                GetComponent<Fire>().enabled = true;
+        GetComponent<SpriteRenderer>().color = color;
+        GetComponent<Collider2D>().isTrigger = false;
 
-            CraftingRecipe currentRecipe = CraftingManager.instance.currentRecipe.GetComponent<CraftingRecipe>();
-            for (int i = 0; i < currentRecipe.requirements.Length; i++)
-                InventoryManager.instance.SpendResources(currentRecipe.requirements[i].type, currentRecipe.requirements[i].quantity);
+        if (GetComponent<Fireplace>())
+            GetComponent<Fireplace>().enabled = true;
 
-            PlayerActionManagement.instance.CompleteAction();
+        CraftingRecipe currentRecipe = CraftingManager.instance.currentRecipe.GetComponent<CraftingRecipe>();
+        for (int i = 0; i < currentRecipe.requirements.Length; i++)
+            InventoryManager.instance.SpendResources(currentRecipe.requirements[i].type, currentRecipe.requirements[i].quantity);
 
-        }
+        PlayerActionManagement.instance.CompleteAction();
     }
 
     bool CheckIfCanBePlaced()
@@ -102,16 +103,6 @@ public class Construction : MonoBehaviour
 
         }
         return true;
-    }
-
-    protected bool IsBuilt()
-    {
-        if (PlayerActionManagement.instance.currentTarget == this.gameObject &&
-            PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.build &&
-            PlayerActionManagement.instance.isPerformingAction)
-            return true;
-        else
-            return false;
     }
 
 }

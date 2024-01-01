@@ -14,11 +14,6 @@ public class Food : Item
     private float maxTimeToCook = 1;
     private float timeToCook;
 
-    private void Update()
-    {
-        Cook();
-    }
-
     public override void OnPointerDown(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);
@@ -36,43 +31,11 @@ public class Food : Item
         }
     }
 
-    void Cook()
-    {
-        if (!IsBeingCooked())
-        {
-            timeToCook = maxTimeToCook;
-            return;
-        }
-
-        timeToCook -= Time.deltaTime;
-        if (timeToCook<=0)
-        {
-
-            GetComponent<Item>().TakeFromStack(1);
-            
-            GameObject cookedItem = Instantiate(ItemsManager.instance.SearchItemsList(GetComponent<Item>().type + "C"));
-            cookedItem.GetComponent<Item>().SetType(GetComponent<Item>().type + "C");
-            cookedItem.GetComponent<Item>().AddToStack(1);
-            InventoryManager.instance.AddItemToSlot(cookedItem);
-            
-
-            PlayerActionManagement.instance.CompleteAction();
-        }
-    }
-
     public void Consume()
     {
         GetComponent<Item>().TakeFromStack(1);
         PlayerStats.instance.Eat(hungerAmount, hpAmount);
     }
 
-    protected bool IsBeingCooked()
-    {
-        if (PlayerActionManagement.instance.currentTarget == this.gameObject &&
-            PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.cook &&
-            PlayerActionManagement.instance.isPerformingAction)
-            return true;
-        else
-            return false;
-    }
+
 }

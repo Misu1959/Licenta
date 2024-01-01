@@ -8,6 +8,9 @@ public class ComplexResource : Resource
 
     public override void OnMouseEnter()
     {
+        if (PlayerActionManagement.instance.IsPlacing())
+            return;
+
         string popUpText = "";
         bool canBeGathered = CheckIfCanBeGathered();
 
@@ -23,25 +26,26 @@ public class ComplexResource : Resource
     public override void GatherItemOfType()
     {
         // If player isn't harvesting it or if it's not grown
-        if (!IsGathered())
+        if (!PlayerActionManagement.instance.IsGathering(this.gameObject))
         {
-            timeToGather = maxTimeToGather;
+            timerGather.RestartTimer();
             return;
         }
 
-        timeToGather -= Time.deltaTime;
-        if (timeToGather <= 0) // Gather
-        {
-            timeToGather = maxTimeToGather;
+        timerGather.StartTimer();
+        timerGather.Tick();
+        if (!timerGather.IsElapsed())
+            return;
 
-            EquipmentManager.instance.GetHandItem().UseTool();
-            TakeDmg();
+        EquipmentManager.instance.GetHandItem().UseTool();
+        
+        TakeDmg();
+        timerGather.RestartTimer();
 
-            if (!Input.GetKey(KeyCode.Space) && !Input.GetMouseButton(0)) // If player don't hold space or LMB
-                if (EquipmentManager.instance.GetHandItem()?.durability > 0) // If item doesnt have durability finish action
-                    PlayerActionManagement.instance.CompleteAction();
+        if (!Input.GetKey(KeyCode.Space) && !Input.GetMouseButton(0)) // If player don't hold space or LMB
+            if (EquipmentManager.instance.GetHandItem()?.durability > 0) // If item doesnt have durability finish action
+                PlayerActionManagement.instance.CompleteAction();
 
-        }
     }
 
     void TakeDmg()

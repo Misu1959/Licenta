@@ -1,31 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
 
 public class Fire : MonoBehaviour
 {
-    public enum FireType
-    {
-        torch       = 1,
-        fire        = 2,
-        campfire    = 3
-    };
-    public FireType fireType;
 
     private GameObject lightObject;
 
     [SerializeField] float maxFireSize;
-    [SerializeField] private float maxLifetime;
-    private float lifetime;
 
+    [SerializeField] protected float maxLifetime;
+    protected float lifetime;
+
+    protected Timer timer;
 
     void Start()
     {
         lifetime = maxLifetime;
-        
-        transform.GetChild(0).gameObject.SetActive(true);
-        
+
+        timer = new Timer(maxLifetime,lifetime);
+        timer.StartTimer();
+
         lightObject = transform.GetChild(1).gameObject;
         lightObject.SetActive(true);
 
@@ -33,47 +31,45 @@ public class Fire : MonoBehaviour
 
     void Update()
     {
-        if (lifetime < 0)
+        SetFireLight();
+    }
+
+    void SetFireLight()
+    {
+        Debug.Log("X");
+        timer.Tick();
+        if (timer.IsElapsed())
         {
-            if (fireType != FireType.campfire)
+            if(GetComponent<Fireplace>()?.isCampfire == false)
                 Destroy(this.gameObject);
-            
+
             lifetime = 0;
         }
-        else if (lifetime > 0)
+        else
         {
+            Debug.Log("y");
             SetLightSize();
             SetAnim();
         }
-
     }
 
     void SetAnim()
     {
-        if (lifetime == 0)
+        if(timer.IsElapsed())
             GetComponent<Animator>().SetInteger("FireLevel", 0);
-        else if (lifetime < .25f * maxLifetime)
+        else if (timer.IsElapsedPercent(85))
             GetComponent<Animator>().SetInteger("FireLevel", 1);
-        else if (lifetime < .50f * maxLifetime)
+        else if (timer.IsElapsedPercent(50))
             GetComponent<Animator>().SetInteger("FireLevel", 2);
-        else if (lifetime < .75f * maxLifetime)
+        else if (timer.IsElapsedPercent(15))
             GetComponent<Animator>().SetInteger("FireLevel", 3);
-        else if (lifetime < 1 * maxLifetime)
+        else
             GetComponent<Animator>().SetInteger("FireLevel", 4);
 
     }
 
-    public void AddFuel(Item item)
-    {
-
-        lifetime = Mathf.Clamp(lifetime + item.fuelValue, 0, maxLifetime);
-
-        item.TakeFromStack(1);
-    }
-
     void SetLightSize()
     {
-        lifetime -= Time.deltaTime;
 
         lightObject.transform.localScale = Vector2.Lerp(Vector2.zero, new Vector2(maxFireSize / transform.lossyScale.x, maxFireSize / transform.lossyScale.x), lifetime / maxLifetime);
         lightObject.GetComponent<Light2D>().pointLightOuterRadius = Vector2.Lerp(Vector2.zero, new Vector2(maxFireSize, maxFireSize), lifetime / maxLifetime).x;

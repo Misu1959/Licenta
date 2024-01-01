@@ -158,7 +158,6 @@ public class SaveLoadManager : MonoBehaviour
 
             PlayerPrefs.SetString("resource " + i + " type", resource.type);
 
-            PlayerPrefs.SetInt("resource " + i + " isGrown", resource.isGrown == true ? 1 : 0);
             PlayerPrefs.SetFloat("resource " + i + " timeToGrow", resource.timeToGrow);
 
             PlayerPrefs.SetFloat("resource " + i + " posX", resource.transform.position.x);
@@ -300,7 +299,6 @@ public class SaveLoadManager : MonoBehaviour
             GameObject resource = Instantiate(ItemsManager.instance.SearchResourcesList(PlayerPrefs.GetString("resource " + i + " type")));
             resource.GetComponent<Resource>().SetType(PlayerPrefs.GetString("resource " + i + " type"));
 
-            resource.GetComponent<Resource>().isGrown    = PlayerPrefs.GetInt("resource " + i + " isGrown") == 0 ? false : true;
             resource.GetComponent<Resource>().timeToGrow = PlayerPrefs.GetFloat("resource " + i + " timeToGrow");
 
             resource.transform.SetParent(resources.transform);
