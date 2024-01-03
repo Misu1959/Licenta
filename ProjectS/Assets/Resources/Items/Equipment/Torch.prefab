@@ -192,7 +192,6 @@ GameObject:
   - component: {fileID: 7566794954163294701}
   - component: {fileID: 7566794954163294702}
   - component: {fileID: 4145193902344774493}
-  - component: {fileID: 2315448104587928580}
   - component: {fileID: 4057073603672024931}
   - component: {fileID: -706516065438007141}
   m_Layer: 25
@@ -330,21 +329,6 @@ PolygonCollider2D:
       - {x: 0.26, y: -0.24}
       - {x: 0.29, y: -0.17999999}
       - {x: 0.42999998, y: -0.26}
---- !u!114 &2315448104587928580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7566794954163294703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2ce75d405ae5a6419d78e521edcf0f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiImg: {fileID: 21300000, guid: a21e55e567f9636489aa69aa0ea14f2e, type: 3}
-  maxStack: 1
-  fuelValue: 5
 --- !u!114 &4057073603672024931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,9 +341,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d4335adb9f0ded45beb1ae4f7348a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiImg: {fileID: 0}
-  maxStack: 0
-  fuelValue: 0
+  uiImg: {fileID: 21300000, guid: a21e55e567f9636489aa69aa0ea14f2e, type: 3}
+  maxStack: 1
+  fuelValue: 5
   equipmentNumber: 0
   actionNumber: 0
   maxDurability: 0
@@ -375,6 +359,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6d0a732dceb1fc44890f076a8076730, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireType: 1
   maxFireSize: 3
   maxLifetime: 30

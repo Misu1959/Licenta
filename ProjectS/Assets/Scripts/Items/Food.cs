@@ -11,8 +11,13 @@ public class Food : Item
     public float hungerAmount;
     public float hpAmount;
 
-    private float maxTimeToCook = 1;
-    private float timeToCook;
+    public float timeToCook;
+    public Timer timer { get; private set; }
+
+    public virtual void Start()
+    {
+        timer = new Timer(timeToCook);
+    }
 
     public override void OnPointerDown(PointerEventData eventData)
     {
@@ -22,8 +27,11 @@ public class Food : Item
                 PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.eat);
     }
 
-    public override void OnMouseEnter()
+    public override void OnMouseOver()
     {
+        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem)
+            return;
+
         if (IsOnTheGround())
         { 
             string popUpText = "LMB - Pick\nRMB - Eat";

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7566794954163294701}
   - component: {fileID: 7566794954163294702}
   - component: {fileID: 842255381245320908}
-  - component: {fileID: -103201562201608251}
   - component: {fileID: -28642566494988520}
   m_Layer: 25
   m_Name: Axe
@@ -157,21 +156,6 @@ PolygonCollider2D:
       - {x: -0.13499999, y: -0.72999996}
       - {x: -0.044999998, y: -0.71999997}
       - {x: 0.005, y: -0.72999996}
---- !u!114 &-103201562201608251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7566794954163294703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2ce75d405ae5a6419d78e521edcf0f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiImg: {fileID: 21300000, guid: bd44c6aa0a5445342a167e6b615c045c, type: 3}
-  maxStack: 1
-  fuelValue: 5
 --- !u!114 &-28642566494988520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,9 +168,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d4335adb9f0ded45beb1ae4f7348a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiImg: {fileID: 0}
-  maxStack: 0
-  fuelValue: 0
+  uiImg: {fileID: 21300000, guid: bd44c6aa0a5445342a167e6b615c045c, type: 3}
+  maxStack: 1
+  fuelValue: 5
   equipmentNumber: 0
   actionNumber: 1
   maxDurability: 10

@@ -175,6 +175,7 @@ MonoBehaviour:
   dropTypes:
   - Twigs
   timeToGather: 2
+  maxTimeToGrow: 20
   timeToGrow: 20
 --- !u!114 &-3487740492792821296
 MonoBehaviour:

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -13,14 +14,11 @@ public class MyMethods : MonoBehaviour
         List<RaycastResult> raycastResultsList = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerEventData, raycastResultsList);
 
-        foreach (RaycastResult objRes in raycastResultsList)
-            if (objRes.gameObject.GetComponent<CanvasRenderer>())
-                return true;
+        return raycastResultsList.Where(r => r.gameObject.layer == 5).Count() > 0;
 
-        return false;
     }
 
-    public static Fire CheckIfMouseIsOverFire()
+    public static bool CheckIfMouseIsOverItem()
     {
         PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
         pointerEventData.position = Input.mousePosition;
@@ -28,10 +26,8 @@ public class MyMethods : MonoBehaviour
         List<RaycastResult> raycastResultsList = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerEventData, raycastResultsList);
 
-        foreach (RaycastResult objRes in raycastResultsList)
-            if (objRes.gameObject.GetComponent<Fire>())
-                return objRes.gameObject.GetComponent<Fire>();
+        return raycastResultsList.Count == 0 ? false : true;
 
-        return null;
+
     }
 }

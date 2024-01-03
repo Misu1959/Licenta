@@ -106,9 +106,9 @@ public class UIManager : MonoBehaviour
         escapeScreen.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(0));
         
         CraftingManager.instance.toolTip.SetActive(false);
-        CraftingManager.instance.ActivateCraftingButtons(!escapeScreen.activeInHierarchy);
         InventoryManager.instance.SetBackToSlot();
 
+        InteractionManager.SetInteractionStatus(!escapeScreen.activeInHierarchy);
     }
 
     public void ShowDeathScreen(string causeOfDeath)
@@ -119,13 +119,11 @@ public class UIManager : MonoBehaviour
         PlayerPrefs.SetInt("prevWorld", 0);
         Time.timeScale = 0;
         CraftingManager.instance.toolTip.SetActive(false);
-        CraftingManager.instance.ActivateCraftingButtons(!escapeScreen.activeInHierarchy);
-
         
         Button deathScreenButton = deathScreen.transform.GetChild(1).GetComponent<Button>();
         deathScreenButton.onClick.AddListener(() => SceneManager.LoadScene(0));
 
-
+        InteractionManager.SetInteractionStatus(false);
     }
 
 
@@ -135,4 +133,5 @@ public class UIManager : MonoBehaviour
 
         deathText.text = "You survived " + (PlayerPrefs.GetInt("currentDay") - 1) + " full days\n and died " + causeOfDeath;
     }
+
 }

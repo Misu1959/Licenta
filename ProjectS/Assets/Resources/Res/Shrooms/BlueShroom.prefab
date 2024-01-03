@@ -182,6 +182,7 @@ MonoBehaviour:
   dropTypes:
   - BlueCap
   timeToGather: 1
+  maxTimeToGrow: 15
   timeToGrow: 15
 --- !u!114 &-7784097527495972387
 MonoBehaviour:

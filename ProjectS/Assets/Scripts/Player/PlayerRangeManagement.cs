@@ -36,8 +36,7 @@ public class PlayerRangeManagement : MonoBehaviour
                 // Check if it's researchStation
                 PlayerStats.instance.SetResearchLevel(1); // Set player research level
 
-            if (PlayerActionManagement.instance.currentTarget == other.gameObject)// Check if player reached the target 
-                PlayerActionManagement.instance.PerformAction(); //perform the action
+            
 
         }
         if (CheckForSpecificCollider(searchCollider)) //Checking if something enter collision with search collider
@@ -61,6 +60,11 @@ public class PlayerRangeManagement : MonoBehaviour
                 Color objColor = other.GetComponent<SpriteRenderer>().color;
                 other.GetComponent<SpriteRenderer>().color = new Color(objColor.r, objColor.g, objColor.b, 1);
             }
+
+        if(CheckForSpecificCollider(actionCollider))
+            if (PlayerActionManagement.instance.currentTarget == other.gameObject)// Check if player reached the target 
+                PlayerActionManagement.instance.PerformAction(); //perform the action
+
     }
 
     private void OnTriggerExit2D(Collider2D other)

@@ -6,10 +6,13 @@ public class ComplexResource : Resource
 {
     [SerializeField] private float hp;
 
-    public override void OnMouseEnter()
+    public override void OnMouseOver()
     {
-        if (PlayerActionManagement.instance.IsPlacing())
+        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem)
+        {
+            PopUpManager.instance.ShowMousePopUp();
             return;
+        }
 
         string popUpText = "";
         bool canBeGathered = CheckIfCanBeGathered();

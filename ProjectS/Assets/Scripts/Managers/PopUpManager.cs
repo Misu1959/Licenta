@@ -11,6 +11,8 @@ public class PopUpManager : MonoBehaviour
 {
     public static PopUpManager instance;
 
+
+    private int mousePopUpPriority = 0;
     [SerializeField] private GameObject mousePopUp;
     [SerializeField] private GameObject popUpPrefab;
 
@@ -55,11 +57,16 @@ public class PopUpManager : MonoBehaviour
     }
 
 
-    public void ShowMousePopUp(string popUpText = "")
+    public void ShowMousePopUp(string popUpText = "", int priority = 0)
     {
+        if (popUpText == "")
+            mousePopUpPriority = 0;
+        else
+            mousePopUpPriority = priority;
 
-        if (mousePopUp.GetComponent<TextMeshProUGUI>().text != popUpText)
-            mousePopUp.GetComponent<TextMeshProUGUI>().text = popUpText;
+        if (mousePopUpPriority >= priority)
+            if (mousePopUp.GetComponent<TextMeshProUGUI>().text != popUpText)
+                mousePopUp.GetComponent<TextMeshProUGUI>().text = popUpText;
 
 
     }
@@ -70,18 +77,6 @@ public class PopUpManager : MonoBehaviour
             return;
 
         mousePopUp.transform.position = (Vector2)Input.mousePosition + new Vector2(0,50);
-        mousePopUp.SetActive(!IsPointerOverUIElement());
     }
 
-
-    private bool IsPointerOverUIElement()
-    {
-        var eventData = new PointerEventData(EventSystem.current);
-        eventData.position = Input.mousePosition;
-        var results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventData, results);
-        
-        return results.Where(r => r.gameObject.layer == 5).Count() > 0;
-
-    }
 }

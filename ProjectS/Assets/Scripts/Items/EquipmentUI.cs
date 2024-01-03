@@ -19,8 +19,8 @@ public class EquipmentUI : Equipment
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-        if (Time.timeScale == 0) return;
-        if (PlayerActionManagement.instance.IsPlacing()) return;
+        if (!InteractionManager.canInteract)
+            return;
 
         if (!InventoryManager.instance.selectedItem)
         {
@@ -76,18 +76,19 @@ public class EquipmentUI : Equipment
 
         this.gameObject.transform.position = Input.mousePosition;
 
-        if (MyMethods.CheckIfMouseIsOverUI())
-            return;
-
-
-        PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
-
-        if (Input.GetMouseButtonDown(0))
+        if (MyMethods.CheckIfMouseIsOverUI() || MyMethods.CheckIfMouseIsOverItem())
+            PopUpManager.instance.ShowMousePopUp("RMB - Cancel");
+        else
         {
-            CreateItem().Drop((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition)); // Create the item and drop it
-            Destroy(this.gameObject);// Destroy the Ui item
+            PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
+            if (Input.GetMouseButtonDown(0))
+            {
+                CreateItem().Drop((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition)); // Create the item and drop it
+                InventoryManager.instance.selectedItem = null;
+                Destroy(this.gameObject);// Destroy the Ui item
+            }
         }
-        else if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))
         {
             PopUpManager.instance.ShowMousePopUp();
             InventoryManager.instance.SetBackToSlot();

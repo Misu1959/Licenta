@@ -24,16 +24,25 @@ public class Item : MonoBehaviour,IPointerDownHandler
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        if(!PlayerActionManagement.instance.IsPlacing())
-            if (Input.GetMouseButtonDown(0))
-                if(IsOnTheGround())
+        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem)
+            return;
+
+
+        if (Input.GetMouseButtonDown(0))
+            if(IsOnTheGround())
         PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.pick);
 
     }
 
-    public virtual void OnMouseEnter()
+    public virtual void OnMouseOver()
     {
-        if(IsOnTheGround())
+        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem)
+        {
+            PopUpManager.instance.ShowMousePopUp();
+            return;
+        }
+
+        if (IsOnTheGround())
             PopUpManager.instance.ShowMousePopUp("LMB - Pick");
     }
 
@@ -95,6 +104,8 @@ public class Item : MonoBehaviour,IPointerDownHandler
             itemUI.AddComponent<FoodUI>();
             itemUI.GetComponent<Food>().hungerAmount = GetComponent<Food>().hungerAmount;
             itemUI.GetComponent<Food>().hpAmount = GetComponent<Food>().hpAmount;
+            itemUI.GetComponent<Food>().timeToCook = GetComponent<Food>().timeToCook;
+
             return;
         }
 

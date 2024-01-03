@@ -52,6 +52,9 @@ public class PlayerActionManagement : MonoBehaviour
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) // If it's moving from keyboard don't take space action
             return;
 
+        if (!InteractionManager.canInteract)
+            return;
+
         InventoryManager.instance.SetBackToSlot();
 
         float closestDim = 1000;
@@ -80,7 +83,7 @@ public class PlayerActionManagement : MonoBehaviour
 
     public void SetTargetAndAction(GameObject _target, Action _currentAction)
     {
-        if (currentTarget == _target)
+        if (currentTarget == _target && currentTarget != null)
             return;
 
         if(currentTarget && _target)
@@ -88,6 +91,9 @@ public class PlayerActionManagement : MonoBehaviour
     
         currentTarget = _target;
         currentAction = _currentAction;
+
+        if (currentAction == Action.place)
+            InteractionManager.SetInteractionStatus(false);
     }
 
     public void PerformAction()
@@ -144,11 +150,14 @@ public class PlayerActionManagement : MonoBehaviour
 
     public void CompleteAction()
     {
+        if(currentAction == Action.build)
+            InteractionManager.SetInteractionStatus(true);
+
         SetTargetAndAction(null, Action.nothing);
         isPerformingAction = false;
     }
 
-    private void CancelAction()
+    public void CancelAction()
     {
         switch (currentAction)
         {
@@ -185,12 +194,18 @@ public class PlayerActionManagement : MonoBehaviour
                 {
                     break;
                 }
+            case Action.place:
+                {
+                    InteractionManager.SetInteractionStatus(true);
+                    break;
+                }
             case Action.build:
                 {
-                    CraftingManager.instance.ActivateCraftingButtons(true);
+                    InteractionManager.SetInteractionStatus(true);
                     Destroy(currentTarget);
                     break;
                 }
+                
 
             default:
                 break;
@@ -238,9 +253,9 @@ public class PlayerActionManagement : MonoBehaviour
             return false;
     }
 
-    public bool IsCooking(GameObject foodToCook)
+    public bool IsCooking(GameObject fireplace)
     {
-        if (currentTarget == foodToCook && currentAction == Action.cook && isPerformingAction)
+        if (currentTarget == fireplace && currentAction == Action.cook && isPerformingAction)
             return true;
         else
             return false;

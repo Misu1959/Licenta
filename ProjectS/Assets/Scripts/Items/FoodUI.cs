@@ -7,8 +7,9 @@ using TMPro;
 
 public class FoodUI : Food
 {
-    private void Start()
+    public override void Start()
     {
+        base.Start();
         DisplayStack();
     }
 
@@ -20,8 +21,8 @@ public class FoodUI : Food
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-        if (Time.timeScale == 0) return;
-        if (PlayerActionManagement.instance.IsPlacing()) return;
+        if (!InteractionManager.canInteract)
+            return;
 
         if (!InventoryManager.instance.selectedItem)
         {
@@ -86,18 +87,19 @@ public class FoodUI : Food
 
         this.gameObject.transform.position = Input.mousePosition;
 
-        if (MyMethods.CheckIfMouseIsOverUI())
-            return;
-
-
-        PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
-        if (Input.GetMouseButtonDown(0))
+        if (MyMethods.CheckIfMouseIsOverUI() || MyMethods.CheckIfMouseIsOverItem())
+            PopUpManager.instance.ShowMousePopUp("RMB - Cancel");
+        else
         {
-            CreateItem().Drop((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition)); // Create the item and drop it
-            InventoryManager.instance.selectedItem = null;
-            Destroy(this.gameObject);// Destroy the Ui item
+            PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
+            if (Input.GetMouseButtonDown(0))
+            {
+                CreateItem().Drop((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition)); // Create the item and drop it
+                InventoryManager.instance.selectedItem = null;
+                Destroy(this.gameObject);// Destroy the Ui item
+            }
         }
-        else if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))
         {
             PopUpManager.instance.ShowMousePopUp();
             InventoryManager.instance.SetBackToSlot();

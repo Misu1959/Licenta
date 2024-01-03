@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
             if (PlayerActionManagement.instance.isPerformingAction)
                 movementDir = Vector2.zero;
             else
-                movementDir = PlayerActionManagement.instance.currentTarget.transform.position - transform.position;
+                    movementDir = PlayerActionManagement.instance.currentTarget.transform.position - transform.position;
         }
         else // Move by WASD
             movementDir = new Vector2(

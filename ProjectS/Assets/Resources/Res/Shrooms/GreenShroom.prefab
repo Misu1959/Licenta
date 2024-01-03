@@ -181,6 +181,7 @@ MonoBehaviour:
   dropTypes:
   - GreenCap
   timeToGather: 1
+  maxTimeToGrow: 15
   timeToGrow: 15
 --- !u!114 &-8238094068321622365
 MonoBehaviour:

@@ -52,7 +52,8 @@ public class Construction : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            CraftingManager.instance.ActivateCraftingButtons(true);
+            PlayerActionManagement.instance.CancelAction();
+            PopUpManager.instance.ShowMousePopUp();
             Destroy(this.gameObject);
             return;
         }
@@ -71,8 +72,6 @@ public class Construction : MonoBehaviour
         timer.Tick();
         if (!timer.IsElapsed())
             return;
-
-        CraftingManager.instance.ActivateCraftingButtons(true);
 
         GetComponent<SpriteRenderer>().color = color;
         GetComponent<Collider2D>().isTrigger = false;

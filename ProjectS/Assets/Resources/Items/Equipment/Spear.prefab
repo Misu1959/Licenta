@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7566794954163294701}
   - component: {fileID: 7566794954163294702}
   - component: {fileID: 4129159667762629423}
-  - component: {fileID: -423697440634254540}
   - component: {fileID: -1429506714421017873}
   m_Layer: 25
   m_Name: Spear
@@ -171,21 +170,6 @@ PolygonCollider2D:
       - {x: -0.13499999, y: -1.39}
       - {x: 0.065, y: -1.38}
       - {x: 0.175, y: -1.37}
---- !u!114 &-423697440634254540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7566794954163294703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2ce75d405ae5a6419d78e521edcf0f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiImg: {fileID: 21300000, guid: ef0ff5e4170055c4d97730fed180dfe8, type: 3}
-  maxStack: 1
-  fuelValue: 5
 --- !u!114 &-1429506714421017873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,9 +182,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d4335adb9f0ded45beb1ae4f7348a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiImg: {fileID: 0}
-  maxStack: 0
-  fuelValue: 0
+  uiImg: {fileID: 21300000, guid: ef0ff5e4170055c4d97730fed180dfe8, type: 3}
+  maxStack: 1
+  fuelValue: 5
   equipmentNumber: 0
   actionNumber: 0
   maxDurability: 10

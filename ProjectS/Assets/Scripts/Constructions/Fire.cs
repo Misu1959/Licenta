@@ -17,7 +17,7 @@ public class Fire : MonoBehaviour
 
     protected Timer timer;
 
-    void Start()
+    public virtual void Start()
     {
         lifetime = maxLifetime;
 
@@ -29,14 +29,13 @@ public class Fire : MonoBehaviour
 
     }
 
-    void Update()
+    public virtual void Update()
     {
         SetFireLight();
     }
 
     void SetFireLight()
     {
-        Debug.Log("X");
         timer.Tick();
         if (timer.IsElapsed())
         {
@@ -47,7 +46,6 @@ public class Fire : MonoBehaviour
         }
         else
         {
-            Debug.Log("y");
             SetLightSize();
             SetAnim();
         }

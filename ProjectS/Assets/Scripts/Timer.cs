@@ -21,7 +21,6 @@ public class Timer
 
         maxTime = _maxTime;
         remainedtime = _remainedTime;
-
     }
 
 
@@ -43,7 +42,6 @@ public class Timer
 
         remainedtime = remainedtime <= 0 ? maxTime : remainedtime; // Set the time to max time if remained time is 0 is given
         isOn = true; // Turn timer on
-        
     }
 
     public void RestartTimer() // Can be caled mutiple times, it will only restart once
@@ -71,7 +69,6 @@ public class Timer
         
         StartTimer();// Start the timer if the timer is elapsed before adding time
     }
-
 
     public bool IsOn() // Return either the timer is on or of
     {

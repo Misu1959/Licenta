@@ -15,13 +15,12 @@ public class Resource : MonoBehaviour, IPointerDownHandler
     protected Timer timerGather;
 
     [SerializeField] private float maxTimeToGrow;
-    [HideInInspector] public float timeToGrow;
+    private float timeToGrow;
     private Timer timerGrow;
 
     private void Start()
     {
-//        yield return null; // Wait a frame
-
+        //        yield return null; // Wait a frame
         timerGather = new Timer(timeToGather);
         timerGrow = new Timer(maxTimeToGrow, timeToGrow);
     }
@@ -34,13 +33,23 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if(CheckIfCanBeGathered() && !PlayerActionManagement.instance.IsPlacing())
+        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem)
+            return;
+        
+        if (CheckIfCanBeGathered())
             SetToGather();
     }
 
-    public virtual void OnMouseEnter()
+    public virtual void OnMouseOver()
     {
-        if(!timerGrow.IsOn() && !PlayerActionManagement.instance.IsPlacing())
+        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem)
+        {
+            PopUpManager.instance.ShowMousePopUp();
+            return;
+        }
+
+
+        if (!timerGrow.IsOn())
             PopUpManager.instance.ShowMousePopUp("LMB - Gather");
     }
 
@@ -100,15 +109,14 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         timerGrow.Tick();
 
         if (timerGrow.IsElapsedPercent(100))
-            GetComponent<Animator>().SetInteger("GrowthStage", 4);
-        else if (timerGrow.IsElapsedPercent(67))
-            GetComponent<Animator>().SetInteger("GrowthStage", 3);
-        else if (timerGrow.IsElapsedPercent(34))
+            GetComponent<Animator>().SetInteger("GrowthStage", 3);  
+        else if (timerGrow.IsElapsedPercent(66))
             GetComponent<Animator>().SetInteger("GrowthStage", 2);
-        else if (timerGrow.IsElapsedPercent(10))
+        else if (timerGrow.IsElapsedPercent(34))
             GetComponent<Animator>().SetInteger("GrowthStage", 1);
         else
             GetComponent<Animator>().SetInteger("GrowthStage", -1);
+
     }
 
 

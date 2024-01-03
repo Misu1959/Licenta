@@ -6,27 +6,41 @@ using UnityEngine.EventSystems;
 public class Fireplace : Fire, IPointerDownHandler
 {
     public bool isCampfire;
-    void Start()
+    public override void Start()
     {
+        base.Start(); // it does fire stuff
         transform.GetChild(0).gameObject.SetActive(true);
     }
 
-    void Update()
+    public override void Update()
     {
+        base.Update(); // it does fire stuff
         Cook();
-    }
-    private void OnMouseEnter()
-    {
 
+    }
+
+    private void OnMouseOver()
+    {
+        if (InventoryManager.instance.selectedItem)
+        {
+            if (InventoryManager.instance.selectedItem.GetComponent<Food>())
+                PopUpManager.instance.ShowMousePopUp("Lmb - cook\nRMB - cancel", 1);
+            else
+                PopUpManager.instance.ShowMousePopUp("Lmb - add fuel\nRMB - cancel", 1);
+        }
 
     }
 
     private void OnMouseExit()
     {
-
+        PopUpManager.instance.ShowMousePopUp();
     }
+
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (!InteractionManager.canInteract)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             if (InventoryManager.instance.selectedItem)
@@ -53,27 +67,25 @@ public class Fireplace : Fire, IPointerDownHandler
 
     public void Cook()
     {
-        /*
+        
         if (!PlayerActionManagement.instance.IsCooking(this.gameObject))
-        {
-            timeToCook = maxTimeToCook;
             return;
-        }
 
-        timeToCook -= Time.deltaTime;
-        if (timeToCook <= 0)
-        {
-
-            GetComponent<Item>().TakeFromStack(1);
-
-            GameObject cookedItem = Instantiate(ItemsManager.instance.SearchItemsList(GetComponent<Item>().type + "C"));
-            cookedItem.GetComponent<Item>().SetType(GetComponent<Item>().type + "C");
-            cookedItem.GetComponent<Item>().AddToStack(1);
-            InventoryManager.instance.AddItemToSlot(cookedItem);
+        InventoryManager.instance.selectedItem.GetComponent<Food>().timer.StartTimer();
+        InventoryManager.instance.selectedItem.GetComponent<Food>().timer.Tick();
 
 
-            PlayerActionManagement.instance.CompleteAction();
-        }*/
+        if (!InventoryManager.instance.selectedItem.GetComponent<Food>().timer.IsElapsed())
+            return;
+
+        InventoryManager.instance.selectedItem.TakeFromStack(1);
+
+        GameObject cookedItem = Instantiate(ItemsManager.instance.SearchItemsList(InventoryManager.instance.selectedItem.type + "C"));
+        cookedItem.GetComponent<Item>().SetType(InventoryManager.instance.selectedItem.type + "C");
+        cookedItem.GetComponent<Item>().AddToStack(1);
+        InventoryManager.instance.AddItemToSlot(cookedItem);
+
+        PlayerActionManagement.instance.CompleteAction();
     }
 
 }

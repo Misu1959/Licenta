@@ -24,8 +24,11 @@ public class Equipment : Item
 
     }
 
-    public override void OnMouseEnter()
+    public override void OnMouseOver()
     {
+        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem)
+            return;
+
         if (IsOnTheGround())
         {
             string popUpText = "LMB - Pick\nRMB - Equip";

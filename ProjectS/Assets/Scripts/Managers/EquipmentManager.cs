@@ -59,7 +59,7 @@ public class EquipmentManager : MonoBehaviour
 
         if (PlayerActionManagement.instance.currentAction >= PlayerActionManagement.Action.chop &&
             PlayerActionManagement.instance.currentAction <= PlayerActionManagement.Action.mine)
-            PlayerActionManagement.instance.SetTargetAndAction(null,PlayerActionManagement.Action.nothing);
+            PlayerActionManagement.instance.CancelAction();
 
     }
 

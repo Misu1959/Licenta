@@ -285,6 +285,7 @@ MonoBehaviour:
   dropTypes:
   - Berries
   timeToGather: 2
+  maxTimeToGrow: 30
   timeToGrow: 20
 --- !u!114 &-692651509621024683
 MonoBehaviour:

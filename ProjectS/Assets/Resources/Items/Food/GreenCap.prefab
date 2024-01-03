@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4085315147169609859}
   - component: {fileID: -8046723142563478402}
   - component: {fileID: 6486185387482497211}
-  - component: {fileID: 4085315147169609887}
   - component: {fileID: 4085315147169609886}
   m_Layer: 20
   m_Name: GreenCap
@@ -149,21 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0782d6fb9711f8a4da2425512bcab81e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4085315147169609887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4085315147169609858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2ce75d405ae5a6419d78e521edcf0f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiImg: {fileID: 21300000, guid: fd3b7a0f822ef0d4a9fb2440dc782d60, type: 3}
-  maxStack: 20
-  fuelValue: 0
 --- !u!114 &4085315147169609886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,8 +160,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eab1ab89bbf20854eb6b046c88d2f925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiImg: {fileID: 0}
-  maxStack: 0
+  uiImg: {fileID: 21300000, guid: fd3b7a0f822ef0d4a9fb2440dc782d60, type: 3}
+  maxStack: 20
   fuelValue: 0
   hungerAmount: 10
   hpAmount: -5
+  timeToCook: 3

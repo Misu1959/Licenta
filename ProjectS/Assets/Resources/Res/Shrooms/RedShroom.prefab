@@ -186,6 +186,7 @@ MonoBehaviour:
   dropTypes:
   - RedCap
   timeToGather: 1
+  maxTimeToGrow: 15
   timeToGrow: 15
 --- !u!114 &5790218576213972036
 MonoBehaviour:
