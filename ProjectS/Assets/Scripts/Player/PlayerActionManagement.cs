@@ -75,20 +75,25 @@ public class PlayerActionManagement : MonoBehaviour
             }
         }
 
-        if (closestItem?.GetComponent<Item>()) // If closest item exist and is an item go and pick it
+        if (!closestItem)
+            PopUpManager.instance.ShowPopUpAction("Nothing in range!");
+        else if (closestItem.GetComponent<Item>()) // If closest item exist and is an item go and pick it
             SetTargetAndAction(closestItem, Action.pick);
         else // If closest item exist and is a resource type go and gather/chop/mine it
-            closestItem?.GetComponent<Resource>()?.SetToGather();
+            closestItem.GetComponent<Resource>()?.SetToGather();
+
     }
 
     public void SetTargetAndAction(GameObject _target, Action _currentAction)
     {
-        if (currentTarget == _target && currentTarget != null)
+        if (currentTarget == _target && currentTarget != null) // If I take the same action don't do anything
             return;
 
-        if(currentTarget && _target)
-            CancelAction();
-    
+        if (currentTarget && _target) // If I take a new action cancel the current action
+            CancelAction(true);
+        else if(_target)
+            PopUpManager.instance.ShowPopUpAction("Action taken!");
+
         currentTarget = _target;
         currentAction = _currentAction;
 
@@ -155,9 +160,11 @@ public class PlayerActionManagement : MonoBehaviour
 
         SetTargetAndAction(null, Action.nothing);
         isPerformingAction = false;
+        PopUpManager.instance.ShowPopUpAction("Action completed!");
+
     }
 
-    public void CancelAction()
+    public void CancelAction(bool newAction = false)
     {
         switch (currentAction)
         {
@@ -213,8 +220,13 @@ public class PlayerActionManagement : MonoBehaviour
 
         isPerformingAction = false;
 
-        PopUpManager.instance.ShowPopUpActionCanceled();
-        SetTargetAndAction(null, Action.nothing);
+        if (newAction)
+            PopUpManager.instance.ShowPopUpAction("New action taken!");
+        else
+        {
+            SetTargetAndAction(null, Action.nothing);
+            PopUpManager.instance.ShowPopUpAction("Action canceled!");
+        }
     }
 
     private void CancelActionByMoving()
@@ -231,17 +243,20 @@ public class PlayerActionManagement : MonoBehaviour
 
     public bool IsGathering(GameObject resToGather)
     {
-        if (currentTarget == resToGather && currentAction == Action.gather && isPerformingAction)
+        if (currentTarget == resToGather && currentAction >= Action.gather && currentAction <= Action.mine && isPerformingAction)
             return true;
         else
             return false;
     }
 
-    public bool IsPlacing(GameObject constructionToPlace = null)
+    public bool IsPlacing(GameObject constructionToPlace)
     {
         if (currentAction != Action.place)
             return false;
      
+        if (constructionToPlace.transform.parent?.gameObject == SaveLoadManager.instance.constructions)
+            return false;
+
         return true; 
     }
 

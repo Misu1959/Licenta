@@ -29,20 +29,20 @@ public class FoodUI : Food
             if (Input.GetMouseButtonDown(0))
                 if (Input.GetKey(KeyCode.LeftControl) && currentStack > 1)
                 {
-                    CreateItemUI(InventoryManager.instance.inventory, 1);
+                    CreateItemUI(InventoryManager.instance.inventory.parent, 1);
                     TakeFromStack(1);
                 }
                 else if (Input.GetKey(KeyCode.LeftShift) && currentStack > 1)
                 {
                     int amount = currentStack % 2 == 0 ? currentStack / 2 : currentStack / 2 + 1;
 
-                    CreateItemUI(InventoryManager.instance.inventory, amount);
+                    CreateItemUI(InventoryManager.instance.inventory.parent, amount);
                     TakeFromStack(amount);
                 }
                 else
                 {
                     InventoryManager.instance.selectedItem = this;
-                    transform.SetParent(InventoryManager.instance.inventory, true);
+                    transform.SetParent(InventoryManager.instance.inventory.parent, true);
                     GetComponent<Image>().raycastTarget = false;
                 }
 

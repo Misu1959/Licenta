@@ -6,9 +6,16 @@ using UnityEngine.EventSystems;
 
 public class Equipment : Item
 {
-    public int equipmentNumber; // 0-hand | 1-body | 2-head
+    public enum Type
+    {
+        hand = 0,
+        body = 1,
+        head = 2
+    };
+    public Type equipmentType;
     public int actionNumber;
-    
+
+
     [SerializeField] private float maxDurability;
     public float durability { get; private set;}
 
@@ -53,8 +60,8 @@ public class Equipment : Item
 
         if (durability <= 0)
         {
-            //EquipmentManager.instance.SetEquipment(InventoryManager.instance.FindItem(GetComponent<Item>().type).GetComponent<Equipment>());
             Destroy(this.gameObject);
+            EquipmentManager.instance.SetEquipment(InventoryManager.instance.FindItemOfType(GetComponent<Item>())?.GetComponent<Equipment>());
         }
     }
 

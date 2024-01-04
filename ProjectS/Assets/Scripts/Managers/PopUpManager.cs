@@ -47,12 +47,12 @@ public class PopUpManager : MonoBehaviour
 
     }
 
-    public void ShowPopUpActionCanceled()
+    public void ShowPopUpAction(string textInput = "")
     {
         GameObject popUp = Instantiate(popUpPrefab);
         SetPopUp(popUp);
 
-        popUp.GetComponent<TextMeshPro>().text = "Action canceled!";
+        popUp.GetComponent<TextMeshPro>().text = textInput;
 
     }
 
@@ -73,9 +73,6 @@ public class PopUpManager : MonoBehaviour
 
     private void MoveMousePopUp()
     {
-        if (mousePopUp.GetComponent<TextMeshProUGUI>().text == "")
-            return;
-
         mousePopUp.transform.position = (Vector2)Input.mousePosition + new Vector2(0,50);
     }
 

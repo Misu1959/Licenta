@@ -113,7 +113,7 @@ public class Item : MonoBehaviour,IPointerDownHandler
         {
             itemUI.AddComponent<EquipmentUI>();
 
-            itemUI.GetComponent<Equipment>().actionNumber = GetComponent<Equipment>().actionNumber;
+            itemUI.GetComponent<Equipment>().equipmentType = GetComponent<Equipment>().equipmentType;
             itemUI.GetComponent<Equipment>().SetDurability(GetComponent<Equipment>().durability);
             return;
         }

@@ -75,6 +75,8 @@ public class Construction : MonoBehaviour
 
         GetComponent<SpriteRenderer>().color = color;
         GetComponent<Collider2D>().isTrigger = false;
+        transform.SetParent(SaveLoadManager.instance.constructions.transform);
+
 
         if (GetComponent<Fireplace>())
             GetComponent<Fireplace>().enabled = true;

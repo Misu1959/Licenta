@@ -105,7 +105,7 @@ public class UIManager : MonoBehaviour
         escapeScreen.transform.GetChild(0).GetComponent<Button>().onClick.RemoveAllListeners();
         escapeScreen.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(0));
         
-        CraftingManager.instance.toolTip.SetActive(false);
+        CraftingManager.instance.toolTip.gameObject.SetActive(false);
         InventoryManager.instance.SetBackToSlot();
 
         InteractionManager.SetInteractionStatus(!escapeScreen.activeInHierarchy);
@@ -118,7 +118,7 @@ public class UIManager : MonoBehaviour
 
         PlayerPrefs.SetInt("prevWorld", 0);
         Time.timeScale = 0;
-        CraftingManager.instance.toolTip.SetActive(false);
+        CraftingManager.instance.toolTip.gameObject.SetActive(false);
         
         Button deathScreenButton = deathScreen.transform.GetChild(1).GetComponent<Button>();
         deathScreenButton.onClick.AddListener(() => SceneManager.LoadScene(0));

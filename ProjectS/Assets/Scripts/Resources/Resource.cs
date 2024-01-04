@@ -6,9 +6,16 @@ using UnityEngine.EventSystems;
 
 public class Resource : MonoBehaviour, IPointerDownHandler
 {
+    protected enum GatherType
+    {
+        gather = 0,
+        chop = 1,
+        mine = 2
+    };
+
     public string type { get; private set; }
 
-    [SerializeField] protected  int howToGather; // 0-gather | 1-chop | 2-mine
+    [SerializeField] protected GatherType howToGather;
     [SerializeField] protected  string[] dropTypes;
 
     [SerializeField] protected float timeToGather;
@@ -65,11 +72,11 @@ public class Resource : MonoBehaviour, IPointerDownHandler
     }
     public void SetToGather()
     {
-        if (howToGather == 0)
+        if (howToGather == GatherType.gather)
             PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.gather);
-        else if (howToGather == 1)
+        else if (howToGather == GatherType.chop)
             PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.chop);
-        else if (howToGather == 2)
+        else if (howToGather == GatherType.mine)
             PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.mine);
     }
 
@@ -123,14 +130,17 @@ public class Resource : MonoBehaviour, IPointerDownHandler
     public bool CheckIfCanBeGathered()
     {
 
-        if (howToGather == 0)
+        if (howToGather == GatherType.gather)
         {
             if (!timerGrow.IsOn())
                 return true;
-            else
-                return false;
+            return false;
         }
         else
-            return EquipmentManager.instance.CheckWhatItemIsEquipedInHand(howToGather);
+        {
+            if ((int)EquipmentManager.instance.GetHandItem()?.equipmentType == (int)howToGather) // If the item in hand matches the action requirement
+                return true;
+            return false;
+        }
     }
 }

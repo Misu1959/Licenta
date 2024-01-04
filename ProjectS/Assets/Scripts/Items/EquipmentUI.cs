@@ -29,7 +29,7 @@ public class EquipmentUI : Equipment
                 EquipmentManager.instance.UnequipHandItem(this.gameObject);
 
                 InventoryManager.instance.selectedItem = this;
-                transform.SetParent(InventoryManager.instance.inventory, true);
+                transform.SetParent(InventoryManager.instance.inventory.parent, true);
                 GetComponent<Image>().raycastTarget = false;
             }
             else if (Input.GetMouseButtonDown(1))

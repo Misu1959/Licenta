@@ -95,6 +95,16 @@ public class InventoryManager : MonoBehaviour
         }
 
     }
+    void AddItemToEmptySlot(Transform slot)
+    {
+        if ((!selectedItem) || slot.childCount > 0)
+            return;
+
+        selectedItem.transform.SetParent(slot);
+        selectedItem.transform.localPosition = Vector2.zero;
+        selectedItem.GetComponent<Image>().raycastTarget = true;
+        selectedItem = null;
+    }
 
     public void SwapTwoSlots(Item itemToSwap)
     {
@@ -124,17 +134,6 @@ public class InventoryManager : MonoBehaviour
         PopUpManager.instance.ShowMousePopUp();
     }
 
-    void AddItemToEmptySlot(Transform slot)
-    {
-        if ((!selectedItem) || slot.childCount > 0)
-            return;
-
-        selectedItem.transform.SetParent(slot);
-        selectedItem.transform.localPosition = Vector2.zero;
-        selectedItem.GetComponent<Image>().raycastTarget = true;
-        selectedItem = null;
-    }
-
     public int AmountOwnedOfType(string _type)
     {
         int totalAmount = 0;
@@ -147,34 +146,43 @@ public class InventoryManager : MonoBehaviour
         return totalAmount;
     }
 
-    public void SpendResources(string _type, int _amount,bool dontLookForFullStack = true)
+    public void SpendResources(string _type, int _amount,bool dontLookForFullStack = true) // First look for partialy full stacks
     {
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].childCount > 0)
                 if (slots[i].GetChild(0).GetComponent<Item>().type == _type)
                 {
-                    int aux = slots[i].GetChild(0).GetComponent<Item>().currentStack;
-
-                    if (dontLookForFullStack)
-                        if (slots[i].GetChild(0).GetComponent<Item>().CheckIfStackIsFull())
+                    if (dontLookForFullStack) // If I'm cheking only partially full stacks
+                        if (slots[i].GetChild(0).GetComponent<Item>().CheckIfStackIsFull()) // If the stack is full skip it
                             continue;
 
-                    slots[i].GetChild(0).GetComponent<Item>().TakeFromStack(_amount);
-                    _amount -= aux;
+                    int aux = _amount;
+                    _amount -= slots[i].GetChild(0).GetComponent<Item>().currentStack; // Substract the amount of resources spent form ccurent stack
+                    slots[i].GetChild(0).GetComponent<Item>().TakeFromStack(aux); // Take the resources from the slot
 
-
-                    if (_amount <= 0)
+                    if (_amount <= 0) // if enough resources have been taken return
                         return;
                 }
-            if (i == slots.Length - 1)
-                if (_amount > 0)
+            if (i == slots.Length - 1) // If I reached end of inventory
+                if (_amount > 0) // If I haven't found enough resurces
                 {
-                    dontLookForFullStack = false;
-                    i = -1;
+                    dontLookForFullStack = false; // Set to false so that I look for full stacks
+                    i = -1; // Set to -1 so that I start looking from the begining of the inventory
                 }
 
         }
+    }
+
+
+    public Item FindItemOfType(Item itemToFind)
+    {
+        foreach (Transform slot in slots) // All slots in the inventory
+            if (slot.childCount > 0)   // Check if there is an item in slot
+                if (slot.GetChild(0).GetComponent<Item>().type == itemToFind.type) // Check if the item in slot has the same type
+                    return slot.GetChild(0).GetComponent<Item>(); // return the item if the types match
+
+        return null;
     }
 
 }

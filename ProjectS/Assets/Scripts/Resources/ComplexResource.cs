@@ -17,9 +17,9 @@ public class ComplexResource : Resource
         string popUpText = "";
         bool canBeGathered = CheckIfCanBeGathered();
 
-        if (howToGather == 1 && canBeGathered)
+        if (howToGather == GatherType.chop && canBeGathered)
             popUpText = "LMB - Chop";
-        else if (howToGather == 2 && canBeGathered)
+        else if (howToGather == GatherType.mine && canBeGathered)
             popUpText = "LMB - Mine";
 
         PopUpManager.instance.ShowMousePopUp(popUpText);
@@ -28,6 +28,7 @@ public class ComplexResource : Resource
 
     public override void GatherItemOfType()
     {
+
         // If player isn't harvesting it or if it's not grown
         if (!PlayerActionManagement.instance.IsGathering(this.gameObject))
         {
@@ -39,15 +40,18 @@ public class ComplexResource : Resource
         timerGather.Tick();
         if (!timerGather.IsElapsed())
             return;
+        Debug.Log("x");
 
-        EquipmentManager.instance.GetHandItem().UseTool();
-        
+        //timerGather.StartTimer();
+
         TakeDmg();
-        timerGather.RestartTimer();
+        EquipmentManager.instance.GetHandItem()?.UseTool();
+
+        if(!EquipmentManager.instance.GetHandItem()) // If there is no equipment stop action
+            PlayerActionManagement.instance.CompleteAction();
 
         if (!Input.GetKey(KeyCode.Space) && !Input.GetMouseButton(0)) // If player don't hold space or LMB
-            if (EquipmentManager.instance.GetHandItem()?.durability > 0) // If item doesnt have durability finish action
-                PlayerActionManagement.instance.CompleteAction();
+            PlayerActionManagement.instance.CompleteAction();
 
     }
 
