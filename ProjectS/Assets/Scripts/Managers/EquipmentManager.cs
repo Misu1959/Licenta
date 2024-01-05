@@ -10,9 +10,9 @@ public class EquipmentManager : MonoBehaviour
 
     [SerializeField] private GameObject equipment;
 
-    private Transform handSlot;
-    private Transform bodySlot;
-    private Transform headSlot;
+    private InventorySlot handSlot;
+    private InventorySlot bodySlot;
+    private InventorySlot headSlot;
 
     private void Start()
     {
@@ -22,12 +22,12 @@ public class EquipmentManager : MonoBehaviour
 
     private void SetSlots()
     {
-        handSlot = equipment.transform.GetChild(0);
-        handSlot.GetComponent<Button>().onClick.AddListener(() => EquipSelectedItem(handSlot));
-        bodySlot = equipment.transform.GetChild(1);
-        bodySlot.GetComponent<Button>().onClick.AddListener(() => EquipSelectedItem(bodySlot));
-        headSlot = equipment.transform.GetChild(2);
-        headSlot.GetComponent<Button>().onClick.AddListener(() => EquipSelectedItem(headSlot));
+        handSlot = equipment.transform.GetChild(0).GetComponent<InventorySlot>();
+        handSlot.GetComponent<Button>().onClick.AddListener(() => EquipSelectedItem(handSlot.transform));
+        bodySlot = equipment.transform.GetChild(1).GetComponent<InventorySlot>();
+        bodySlot.GetComponent<Button>().onClick.AddListener(() => EquipSelectedItem(bodySlot.transform));
+        headSlot = equipment.transform.GetChild(2).GetComponent<InventorySlot>();
+        headSlot.GetComponent<Button>().onClick.AddListener(() => EquipSelectedItem(headSlot.transform));
     }
     private void EquipSelectedItem(Transform slot)
     {
@@ -45,7 +45,6 @@ public class EquipmentManager : MonoBehaviour
 
         InventoryManager.instance.selectedItem.transform.SetParent(slot);
         InventoryManager.instance.selectedItem.transform.localPosition = Vector2.zero;
-        InventoryManager.instance.selectedItem.GetComponent<Image>().raycastTarget = true;
         InventoryManager.instance.selectedItem = null;
     }
 
@@ -75,26 +74,26 @@ public class EquipmentManager : MonoBehaviour
                     if (handSlot.transform.childCount > 0)
                     {
                         UnequipHandItem(newEquipment.gameObject);
-                        InventoryManager.instance.AddItemToSlot(handSlot.transform.GetChild(0).gameObject);
+                        InventoryManager.instance.AddItemToSlot(handSlot.GetItemInSlot());
                     }
 
-                    newEquipment.transform.SetParent(handSlot);
+                    newEquipment.transform.SetParent(handSlot.transform);
                     newEquipment.transform.localPosition = Vector2.zero;
                     break;
                 }
             case Equipment.Type.body:
                 {
-                    InventoryManager.instance.AddItemToSlot(bodySlot.transform.GetChild(0).gameObject);
+                    InventoryManager.instance.AddItemToSlot(bodySlot.GetItemInSlot());
 
-                    newEquipment.transform.SetParent(bodySlot);
+                    newEquipment.transform.SetParent(bodySlot.transform);
                     newEquipment.transform.localPosition = Vector2.zero;
                     break;
                 }
             case Equipment.Type.head:
                 {
-                    InventoryManager.instance.AddItemToSlot(headSlot.transform.GetChild(0).gameObject);
+                    InventoryManager.instance.AddItemToSlot(headSlot.GetItemInSlot());
 
-                    newEquipment.transform.SetParent(headSlot);
+                    newEquipment.transform.SetParent(headSlot.transform);
                     newEquipment.transform.localPosition = Vector2.zero;
                     break;
                 }
@@ -104,22 +103,22 @@ public class EquipmentManager : MonoBehaviour
 
     public Equipment GetHandItem()
     {
-        if (handSlot.childCount > 0)
-            return handSlot.GetChild(0).GetComponent<Equipment>();
+        if (handSlot.CheckIfItHasItem())
+            return handSlot.GetItemInSlot().GetComponent<Equipment>();
         return null;
     }
 
     public Equipment GetBodyItem()
     {
-        if (bodySlot.childCount > 0)
-            return bodySlot.GetChild(0).GetComponent<Equipment>();
+        if (bodySlot.CheckIfItHasItem())
+            return bodySlot.GetItemInSlot().GetComponent<Equipment>();
         return null;
     }
 
     public Equipment GetHeadItem()
     {
-        if (headSlot.childCount > 0)
-            return headSlot.GetChild(0).GetComponent<Equipment>();
+        if (headSlot.CheckIfItHasItem())
+            return headSlot.GetItemInSlot().GetComponent<Equipment>();
         return null;
     }
 

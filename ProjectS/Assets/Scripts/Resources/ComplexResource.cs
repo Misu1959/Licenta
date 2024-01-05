@@ -8,7 +8,7 @@ public class ComplexResource : Resource
 
     public override void OnMouseOver()
     {
-        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem)
+        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem )
         {
             PopUpManager.instance.ShowMousePopUp();
             return;

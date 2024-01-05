@@ -80,9 +80,9 @@ public class Fireplace : Fire, IPointerDownHandler
 
         InventoryManager.instance.selectedItem.TakeFromStack(1);
 
-        GameObject cookedItem = Instantiate(ItemsManager.instance.SearchItemsList(InventoryManager.instance.selectedItem.type + "C"));
-        cookedItem.GetComponent<Item>().SetType(InventoryManager.instance.selectedItem.type + "C");
-        cookedItem.GetComponent<Item>().AddToStack(1);
+        Item cookedItem = Instantiate(ItemsManager.instance.SearchItemsList(InventoryManager.instance.selectedItem.type + "C")).GetComponent<Item>();
+        cookedItem.SetType(InventoryManager.instance.selectedItem.type + "C");
+        cookedItem.AddToStack(1);
         InventoryManager.instance.AddItemToSlot(cookedItem);
 
         PlayerActionManagement.instance.CompleteAction();

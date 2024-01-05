@@ -96,9 +96,9 @@ public class Resource : MonoBehaviour, IPointerDownHandler
             return;
 
         // Next lines adds the loot to the inventory
-        GameObject item = Instantiate(ItemsManager.instance.SearchItemsList(dropTypes[0]));
-        item.GetComponent<Item>().SetType(dropTypes[0]);
-        item.GetComponent<Item>().AddToStack(1);
+        Item item = Instantiate(ItemsManager.instance.SearchItemsList(dropTypes[0])).GetComponent<Item>();
+        item.SetType(dropTypes[0]);
+        item.AddToStack(1);
         InventoryManager.instance.AddItemToSlot(item);
 
         timerGrow.StartTimer();
@@ -138,8 +138,8 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         }
         else
         {
-            if ((int)EquipmentManager.instance.GetHandItem()?.equipmentType == (int)howToGather) // If the item in hand matches the action requirement
-                return true;
+            //if ((int)EquipmentManager.instance.GetHandItem()?.equipmentType == (int)howToGather) // If the item in hand matches the action requirement
+               // return true;
             return false;
         }
     }

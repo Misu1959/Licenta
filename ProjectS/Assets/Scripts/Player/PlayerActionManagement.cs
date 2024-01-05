@@ -109,7 +109,7 @@ public class PlayerActionManagement : MonoBehaviour
         {
             case Action.pick:
             {
-                InventoryManager.instance.AddItemToSlot(currentTarget);
+                InventoryManager.instance.AddItemToSlot(currentTarget.GetComponent<Item>());
                 itemsInRange.Remove(currentTarget);
                 CompleteAction();
                 break;
@@ -174,7 +174,7 @@ public class PlayerActionManagement : MonoBehaviour
                 }
             case Action.drop:
                 {
-                    InventoryManager.instance.AddItemToSlot(currentTarget);
+                    InventoryManager.instance.AddItemToSlot(currentTarget.GetComponent<Item>());
                     break;
                 }
             case Action.gather:

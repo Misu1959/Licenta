@@ -20,64 +20,6 @@ public class ItemUI : Item
 
     }
 
-    public override void OnPointerDown(PointerEventData eventData)
-    {
-        if (!InteractionManager.canInteract)
-            return;
-
-        if (!InventoryManager.instance.selectedItem)
-        {
-            if (Input.GetMouseButtonDown(0))
-                if (Input.GetKey(KeyCode.LeftControl) && currentStack > 1)
-                {
-                    CreateItemUI(InventoryManager.instance.inventory.parent, 1);
-                    TakeFromStack(1);
-                }
-                else if (Input.GetKey(KeyCode.LeftShift) && currentStack > 1)
-                {
-                    int amount = currentStack % 2 == 0 ? currentStack / 2 : currentStack / 2 + 1;
-                    
-                    CreateItemUI(InventoryManager.instance.inventory.parent, amount);
-                    TakeFromStack(amount);
-                }
-                else
-                {
-                    InventoryManager.instance.selectedItem = this;
-                    transform.SetParent(InventoryManager.instance.inventory.parent);
-                    GetComponent<Image>().raycastTarget = false;
-                }
-        }
-        else
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (InventoryManager.instance.selectedItem.type == type)
-                {
-                    if(CheckIfStackIsFull() || InventoryManager.instance.selectedItem.CheckIfStackIsFull())
-                        InventoryManager.instance.SwapTwoSlots(this);
-                    else
-                    {
-                        int dif = InventoryManager.instance.selectedItem.GetComponent<ItemUI>().currentStack + currentStack - maxStack;
-
-                        if (dif > 0)
-                        {
-                            InventoryManager.instance.selectedItem.GetComponent<ItemUI>().TakeFromStack(dif);
-                            AddToStack(dif);
-                        }
-                        else
-                        {
-                            AddToStack(InventoryManager.instance.selectedItem.currentStack);
-                            Destroy(InventoryManager.instance.selectedItem.gameObject);
-                        }
-                    }
-                }
-                else
-                    InventoryManager.instance.SwapTwoSlots(this);
-            }
-        }
-
-    }
-
     void FollowMouse()
     {
         if (InventoryManager.instance.selectedItem != this)
@@ -104,13 +46,10 @@ public class ItemUI : Item
         }
     }
 
-
-    public override Item CreateItemUI(Transform slot, int amount)
+    public override Item CreateItemUI(int amount)
     {
 
-        Item itemUI = base.CreateItemUI(slot, amount);
-        itemUI.gameObject.GetComponent<Image>().raycastTarget = false;
-
+        Item itemUI = base.CreateItemUI(amount);
         InventoryManager.instance.selectedItem = itemUI;
 
         return itemUI;

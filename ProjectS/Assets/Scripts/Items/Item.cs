@@ -77,7 +77,7 @@ public class Item : MonoBehaviour,IPointerDownHandler
             GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, 1f);
     }
 
-    public virtual Item CreateItemUI(Transform slot,int amount)
+    public virtual Item CreateItemUI(int amount)
     {
 
         GameObject itemUI = Instantiate(ItemsManager.instance.itemUI);
@@ -89,9 +89,6 @@ public class Item : MonoBehaviour,IPointerDownHandler
         itemUI.GetComponent<Item>().maxStack     = maxStack;
         itemUI.GetComponent<Item>().fuelValue    = fuelValue;
         itemUI.gameObject.GetComponent<Image>().sprite = uiImg;
-
-        itemUI.gameObject.transform.SetParent(slot);
-        itemUI.transform.localPosition = Vector2.zero;
 
         return itemUI.GetComponent<Item>();
     }
@@ -122,6 +119,11 @@ public class Item : MonoBehaviour,IPointerDownHandler
 
     }
 
+    public bool CheckMatchingType(string typeToCompare)
+    {
+        return type != typeToCompare ? false : true;
+
+    }
     public bool CheckIfStackIsFull()
     {
         if (GetComponent<Equipment>())
@@ -131,8 +133,6 @@ public class Item : MonoBehaviour,IPointerDownHandler
 
         return false;
     }
-
-
     public void TakeFromStack(int _amountToTake)
     {
         currentStack -= _amountToTake;

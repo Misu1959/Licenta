@@ -94,7 +94,6 @@ public class CraftingManager : MonoBehaviour
 
     IEnumerator CraftRecipe()
     {
-        Debug.Log("x");
         GameObject craftedItem = Instantiate(currentRecipe.GetComponent<CraftingRecipe>().prefabItem);
 
         if (currentRecipe.GetComponent<CraftingRecipe>().isLearned == false) 
@@ -114,7 +113,7 @@ public class CraftingManager : MonoBehaviour
             {
                 craftedItem.GetComponent<Item>().SetType(currentRecipe.GetComponent<CraftingRecipe>().prefabItem.name);
                 craftedItem.GetComponent<Equipment>().SetDurability(-1);
-                InventoryManager.instance.AddItemToSlot(craftedItem);
+                InventoryManager.instance.AddItemToSlot(craftedItem.GetComponent<Item>());
             }
         }
         else // If the crafted thing is a construction

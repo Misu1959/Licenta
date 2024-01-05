@@ -61,13 +61,12 @@ public class PopUpManager : MonoBehaviour
     {
         if (popUpText == "")
             mousePopUpPriority = 0;
-        else
+        else if (mousePopUpPriority <= priority)
             mousePopUpPriority = priority;
 
-        if (mousePopUpPriority >= priority)
+        if (mousePopUpPriority <= priority)
             if (mousePopUp.GetComponent<TextMeshProUGUI>().text != popUpText)
                 mousePopUp.GetComponent<TextMeshProUGUI>().text = popUpText;
-
 
     }
 
