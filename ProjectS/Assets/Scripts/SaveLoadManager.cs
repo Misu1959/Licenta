@@ -97,7 +97,7 @@ public class SaveLoadManager : MonoBehaviour
 
                 nrOfItemsInInventory++;
             }
-
+        /*
         if(InventoryManager.instance.selectedItem)
         {
             PlayerPrefs.SetInt("selectedItem", 1);
@@ -131,7 +131,7 @@ public class SaveLoadManager : MonoBehaviour
         else
             PlayerPrefs.SetInt("selectedItem", 0);
 
-        PlayerPrefs.SetInt("nrOfItemsInInventory", nrOfItemsInInventory);
+        PlayerPrefs.SetInt("nrOfItemsInInventory", nrOfItemsInInventory);*/
     }
 
     void SaveItems()
@@ -240,7 +240,7 @@ public class SaveLoadManager : MonoBehaviour
             itemUI.GetComponent<Item>().uiImg = ItemsManager.instance.SearchItemsList(itemUI.GetComponent<Item>().type).GetComponent<Item>().uiImg;
             itemUI.GetComponent<Item>().GetComponent<Image>().sprite = itemUI.GetComponent<Item>().uiImg;
         }
-
+        /*
         if (PlayerPrefs.GetInt("selectedItem") == 1)
         {
             GameObject selectedItem = Instantiate(ItemsManager.instance.itemUI);
@@ -271,10 +271,10 @@ public class SaveLoadManager : MonoBehaviour
             selectedItem.GetComponent<Item>().fuelValue = PlayerPrefs.GetInt("selectedItem fuelValue");
 
             selectedItem.GetComponent<Item>().transform.SetParent(InventoryManager.instance.inventory);
-            InventoryManager.instance.selectedItem = selectedItem.GetComponent<Item>();
+            InventoryManager.instance = selectedItem.GetComponent<Item>();
 
             selectedItem.GetComponent<Image>().color = ItemsManager.instance.SearchItemsList(selectedItem.GetComponent<Item>().type).GetComponent<SpriteRenderer>().color;
-        }
+        }*/
     }
 
 

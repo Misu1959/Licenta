@@ -8,118 +8,126 @@ public class EquipmentManager : MonoBehaviour
 {
     public static EquipmentManager instance;
 
-    [SerializeField] private GameObject equipment;
+    [SerializeField] private Transform equipmentPanel;
 
-    private InventorySlot handSlot;
-    private InventorySlot bodySlot;
-    private InventorySlot headSlot;
+    private EquipmentSlot handSlot;
+    private EquipmentSlot bodySlot;
+    private EquipmentSlot headSlot;
 
     private void Start()
     {
         instance = this;
-        SetSlots();
+        SetEquipmentSlots();
     }
 
-    private void SetSlots()
+    private void SetEquipmentSlots()
     {
-        handSlot = equipment.transform.GetChild(0).GetComponent<InventorySlot>();
-        handSlot.GetComponent<Button>().onClick.AddListener(() => EquipSelectedItem(handSlot.transform));
-        bodySlot = equipment.transform.GetChild(1).GetComponent<InventorySlot>();
-        bodySlot.GetComponent<Button>().onClick.AddListener(() => EquipSelectedItem(bodySlot.transform));
-        headSlot = equipment.transform.GetChild(2).GetComponent<InventorySlot>();
-        headSlot.GetComponent<Button>().onClick.AddListener(() => EquipSelectedItem(headSlot.transform));
-    }
-    private void EquipSelectedItem(Transform slot)
-    {
-        if (slot.childCount > 0)
-            return;
+        handSlot = equipmentPanel.GetChild(0).GetComponent<EquipmentSlot>(); // Set hand slot
+        handSlot.SetSlotType(Equipment.Type.hand); // Set hand slot type
 
-        if (!InventoryManager.instance.selectedItem)
-            return;
+        bodySlot = equipmentPanel.GetChild(1).GetComponent<EquipmentSlot>(); // Set body slot
+        bodySlot.SetSlotType(Equipment.Type.body); // Set body slot type
 
-        if (!InventoryManager.instance.selectedItem.GetComponent<Equipment>())
-            return;
-
-        //if (InventoryManager.instance.selectedItem.GetComponent<Equipment>().equipmentType != slot.GetSiblingIndex())
-          //  return;
-
-        InventoryManager.instance.selectedItem.transform.SetParent(slot);
-        InventoryManager.instance.selectedItem.transform.localPosition = Vector2.zero;
-        InventoryManager.instance.selectedItem = null;
+        headSlot = equipmentPanel.GetChild(2).GetComponent<EquipmentSlot>(); // Set head slot
+        headSlot.SetSlotType(Equipment.Type.head); // Set head slot type
     }
 
-    public void UnequipHandItem(GameObject item)
+    public void SetEquipment(Equipment newEquipment, bool keepSelected = false)
     {
-        if (handSlot.transform.childCount == 0)
-            return;
 
-        if (item != handSlot.transform.GetChild(0).gameObject)
-            return;
-
-        if (PlayerActionManagement.instance.currentAction >= PlayerActionManagement.Action.chop &&
-            PlayerActionManagement.instance.currentAction <= PlayerActionManagement.Action.mine)
-            PlayerActionManagement.instance.CancelAction();
-
-    }
-
-    public void SetEquipment(Equipment newEquipment)
-    {
-        if (!newEquipment)
-            return;
-
-        switch(newEquipment.equipmentType)
+        UnequipItem(newEquipment.equipmentType,keepSelected); //Unequip the current item of type if there is one equiped
+        switch (newEquipment.equipmentType)
         {
             case Equipment.Type.hand:
                 {
-                    if (handSlot.transform.childCount > 0)
-                    {
-                        UnequipHandItem(newEquipment.gameObject);
-                        InventoryManager.instance.AddItemToSlot(handSlot.GetItemInSlot());
-                    }
-
-                    newEquipment.transform.SetParent(handSlot.transform);
-                    newEquipment.transform.localPosition = Vector2.zero;
+                    handSlot.SetItemInSlot(newEquipment); // Equip the new hand item
                     break;
                 }
             case Equipment.Type.body:
                 {
-                    InventoryManager.instance.AddItemToSlot(bodySlot.GetItemInSlot());
-
-                    newEquipment.transform.SetParent(bodySlot.transform);
-                    newEquipment.transform.localPosition = Vector2.zero;
+                    bodySlot.SetItemInSlot(newEquipment); // Equip the new body item
                     break;
                 }
             case Equipment.Type.head:
                 {
-                    InventoryManager.instance.AddItemToSlot(headSlot.GetItemInSlot());
-
-                    newEquipment.transform.SetParent(headSlot.transform);
-                    newEquipment.transform.localPosition = Vector2.zero;
+                    headSlot.SetItemInSlot(newEquipment); // Equip the new head item
                     break;
                 }
 
         }
     }
+    public void UnequipItem(Equipment.Type equipmentType, bool keepSelected = false)
+    {
 
+        switch (equipmentType)
+        {
+            case Equipment.Type.hand:
+                {
+                    if (!handSlot.CheckIfItHasItem()) // If there is no item in hand there is nothing to unequip
+                        return;
+
+                    if(!keepSelected)
+                        InventoryManager.instance.AddItemToSlot(handSlot.GetItemInSlot()); // Add the equiped hand item to inventory
+                    else
+                        InventoryManager.instance.SetSelectedItem(handSlot.GetItemInSlot()); // Select the current hand item
+
+                    // Cancel the action when unequiping the tool
+                    if (PlayerActionManagement.instance.currentAction >= PlayerActionManagement.Action.chop &&
+                        PlayerActionManagement.instance.currentAction <= PlayerActionManagement.Action.mine)
+                        PlayerActionManagement.instance.CancelAction();
+
+                    handSlot.SetItemInSlot(null);
+                    break;
+
+                }
+                case Equipment.Type.body:
+                {
+                    if (!bodySlot.CheckIfItHasItem()) // If there is no item in hand there is nothing to unequip
+                        return;
+
+                    if (!keepSelected)
+                        InventoryManager.instance.AddItemToSlot(bodySlot.GetItemInSlot()); // Add the equiped body item to inventory
+                    else
+                        InventoryManager.instance.SetSelectedItem(bodySlot.GetItemInSlot()); // Select the current hand item
+
+                    bodySlot.SetItemInSlot(null);
+
+                    break;
+                }
+                case Equipment.Type.head:
+                {
+                    if (!headSlot.CheckIfItHasItem()) // If there is no item in hand there is nothing to unequip
+                        return;
+                    
+                    if (!keepSelected)
+                        InventoryManager.instance.AddItemToSlot(headSlot.GetItemInSlot());// Add the equiped head item to inventory
+                    else
+                        InventoryManager.instance.SetSelectedItem(bodySlot.GetItemInSlot()); // Select the current hand item
+
+                    headSlot.SetItemInSlot(null);
+                    break;
+                }
+        }
+    }
     public Equipment GetHandItem()
     {
-        if (handSlot.CheckIfItHasItem())
-            return handSlot.GetItemInSlot().GetComponent<Equipment>();
-        return null;
+        if (handSlot.CheckIfItHasItem()) // Check if there is an item in hand slot
+            return handSlot.GetItemInSlot().GetComponent<Equipment>(); // return the item in hand slot
+        return null; // Return null if there is no item in hand slot
     }
 
     public Equipment GetBodyItem()
     {
-        if (bodySlot.CheckIfItHasItem())
-            return bodySlot.GetItemInSlot().GetComponent<Equipment>();
-        return null;
+        if (bodySlot.CheckIfItHasItem()) // Check if there is an item in body slot
+            return bodySlot.GetItemInSlot().GetComponent<Equipment>(); // return the item in body slot
+        return null; // Return null if there is no item in body slot
     }
 
     public Equipment GetHeadItem()
     {
-        if (headSlot.CheckIfItHasItem())
-            return headSlot.GetItemInSlot().GetComponent<Equipment>();
-        return null;
+        if (headSlot.CheckIfItHasItem()) // Check if there is an item in head slot
+            return headSlot.GetItemInSlot().GetComponent<Equipment>(); // return the item in head slot
+        return null; // Return null if there is no item in head slot
     }
 
 }

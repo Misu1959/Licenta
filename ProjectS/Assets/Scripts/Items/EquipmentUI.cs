@@ -18,7 +18,7 @@ public class EquipmentUI : Equipment
     }
     void FollowMouse()
     {
-        if (InventoryManager.instance.selectedItem != this)
+        if (!InventoryManager.instance.CheckSelecteditem(this))
             return;
 
         this.gameObject.transform.position = Input.mousePosition;
@@ -31,7 +31,7 @@ public class EquipmentUI : Equipment
             if (Input.GetMouseButtonDown(0))
             {
                 CreateItem().Drop((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition)); // Create the item and drop it
-                InventoryManager.instance.selectedItem = null;
+                InventoryManager.instance.SetSelectedItem(null); // Remove selected item;
                 Destroy(this.gameObject);// Destroy the Ui item
             }
         }
@@ -46,8 +46,7 @@ public class EquipmentUI : Equipment
     {
 
         Item itemUI = base.CreateItemUI(amount);
-
-        InventoryManager.instance.selectedItem = itemUI;
+        InventoryManager.instance.SetSelectedItem(itemUI);
 
         return itemUI;
 

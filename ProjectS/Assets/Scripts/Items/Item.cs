@@ -119,11 +119,6 @@ public class Item : MonoBehaviour,IPointerDownHandler
 
     }
 
-    public bool CheckMatchingType(string typeToCompare)
-    {
-        return type != typeToCompare ? false : true;
-
-    }
     public bool CheckIfStackIsFull()
     {
         if (GetComponent<Equipment>())

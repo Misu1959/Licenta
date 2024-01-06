@@ -10,7 +10,7 @@ public class InventoryManager : MonoBehaviour
     public Transform inventory;
     private InventorySlot[] slots = new InventorySlot[15];
     
-    [HideInInspector] public Item selectedItem;
+    public Item selectedItem { get; private set; }
 
     void Start()
     {
@@ -40,7 +40,7 @@ public class InventoryManager : MonoBehaviour
         foreach (InventorySlot slot in slots)
         {
             if (slot.CheckIfItHasItem())   // Check if there is an item in slot
-                if (slot.GetItemInSlot().CheckMatchingType(itemToAdd.type)) // Check if the items have the same type
+                if (slot.CheckMatchingName(itemToAdd.type)) // Check if the items have the same type
                     if(!slot.GetItemInSlot().CheckIfStackIsFull())  // If the item in slot does't have a full stack return it
                         return slot;
 
@@ -73,7 +73,7 @@ public class InventoryManager : MonoBehaviour
             if (itemToAdd.currentStack < dif) // I check If I can't add both's item's stack together in one
             {
                 itemInSlot.AddToStack(itemToAdd.currentStack);
-                Destroy(itemToAdd);
+                Destroy(itemToAdd.gameObject);
             }
             else // If not I add them until the item that is in stock has a full stack
             {
@@ -93,17 +93,34 @@ public class InventoryManager : MonoBehaviour
         Item aux = _slot.GetItemInSlot();
         _slot.SetItemInSlot(selectedItem);
         
-        selectedItem = aux;
-        selectedItem.transform.SetParent(inventory);
-
+        SetSelectedItem(aux);
     }
 
-    public void SetBackToSlot()
+    public void SetBackToSlot(Item item = null)
     {
-        if (!selectedItem) // If I have't an item selected return
-            return;
+        // If itemToSetBackInInventory is null it means we want to sand back selected item
+        Item itemToSetInInventory;
+        if (item)
+            itemToSetInInventory = item;
+        else
+            itemToSetInInventory = selectedItem;
 
-        FindFreeSlot().SetItemInSlot(selectedItem); // Set the item selected to a free slot
+
+        if (!itemToSetInInventory)  // if the item is null return
+            return;
+        
+        FindFreeSlot().SetItemInSlot(selectedItem); // Set the item to a free slot
+    }
+
+    public void SetSelectedItem(Item itemToSelect)
+    {
+        selectedItem = itemToSelect;
+        selectedItem?.transform.SetParent(inventory.parent);
+    }
+
+    public bool CheckSelecteditem(Item itemToCheck)
+    {
+        return (selectedItem != itemToCheck) ? false : true;
     }
 
     public int AmountOwnedOfType(string _type)
@@ -112,7 +129,7 @@ public class InventoryManager : MonoBehaviour
 
         foreach (InventorySlot slot in slots)
             if (slot.CheckIfItHasItem())
-                if (slot.GetItemInSlot().CheckMatchingType(_type))
+                if (slot.CheckMatchingName(_type))
                     totalAmount += slot.GetItemInSlot().currentStack;
 
         return totalAmount;
@@ -151,7 +168,7 @@ public class InventoryManager : MonoBehaviour
     {
         foreach (InventorySlot slot in slots) // All slots in the inventory
             if (slot.CheckIfItHasItem())   // Check if there is an item in slot
-                if (slot.GetItemInSlot().CheckMatchingType(itemToFind.type)) // Check if the item in slot has the same type
+                if (slot.CheckMatchingName(itemToFind.type)) // Check if the item in slot has the same type
                     return slot.GetItemInSlot(); // return the item if the types match
 
         return null;

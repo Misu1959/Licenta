@@ -139,7 +139,7 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         else
         {
             //if ((int)EquipmentManager.instance.GetHandItem()?.equipmentType == (int)howToGather) // If the item in hand matches the action requirement
-               // return true;
+                //return true;
             return false;
         }
     }
