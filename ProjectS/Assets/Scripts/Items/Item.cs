@@ -18,8 +18,8 @@ public class Item : MonoBehaviour,IPointerDownHandler
 
     void Start()
     {
-        if(currentStack== 0) 
-            currentStack = 1;
+        //if(currentStack== 0) 
+            //currentStack = 1;
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)
@@ -77,7 +77,7 @@ public class Item : MonoBehaviour,IPointerDownHandler
             GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, 1f);
     }
 
-    public virtual Item CreateItemUI(int amount)
+    public virtual Item CreateItemUI(int amount = -1)
     {
 
         GameObject itemUI = Instantiate(ItemsManager.instance.itemUI);
@@ -85,7 +85,7 @@ public class Item : MonoBehaviour,IPointerDownHandler
 
         itemUI.GetComponent<Item>().uiImg = uiImg;
         itemUI.GetComponent<Item>().SetType(type);
-        itemUI.GetComponent<Item>().currentStack = amount;
+        itemUI.GetComponent<Item>().currentStack = (amount == -1) ? currentStack : amount;
         itemUI.GetComponent<Item>().maxStack     = maxStack;
         itemUI.GetComponent<Item>().fuelValue    = fuelValue;
         itemUI.gameObject.GetComponent<Image>().sprite = uiImg;
@@ -111,6 +111,7 @@ public class Item : MonoBehaviour,IPointerDownHandler
             itemUI.AddComponent<EquipmentUI>();
 
             itemUI.GetComponent<Equipment>().equipmentType = GetComponent<Equipment>().equipmentType;
+            itemUI.GetComponent<Equipment>().actionType = GetComponent<Equipment>().actionType;
             itemUI.GetComponent<Equipment>().SetDurability(GetComponent<Equipment>().durability);
             return;
         }

@@ -6,17 +6,10 @@ using UnityEngine.EventSystems;
 
 public class Resource : MonoBehaviour, IPointerDownHandler
 {
-    protected enum GatherType
-    {
-        gather = 0,
-        chop = 1,
-        mine = 2
-    };
 
     public string type { get; private set; }
 
-    [SerializeField] protected GatherType howToGather;
-    [SerializeField] protected  string[] dropTypes;
+    [SerializeField] protected string[] dropTypes;
 
     [SerializeField] protected float timeToGather;
     protected Timer timerGather;
@@ -42,7 +35,7 @@ public class Resource : MonoBehaviour, IPointerDownHandler
     {
         if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem)
             return;
-        
+
         if (CheckIfCanBeGathered())
             SetToGather();
     }
@@ -66,18 +59,13 @@ public class Resource : MonoBehaviour, IPointerDownHandler
     }
 
 
-    public void SetType(string  _type)
+    public void SetType(string _type)
     {
         type = _type;
     }
-    public void SetToGather()
+    public virtual void SetToGather()
     {
-        if (howToGather == GatherType.gather)
-            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.gather);
-        else if (howToGather == GatherType.chop)
-            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.chop);
-        else if (howToGather == GatherType.mine)
-            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.mine);
+        PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.gather);
     }
 
     public virtual void GatherItemOfType()
@@ -116,7 +104,7 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         timerGrow.Tick();
 
         if (timerGrow.IsElapsedPercent(100))
-            GetComponent<Animator>().SetInteger("GrowthStage", 3);  
+            GetComponent<Animator>().SetInteger("GrowthStage", 3);
         else if (timerGrow.IsElapsedPercent(66))
             GetComponent<Animator>().SetInteger("GrowthStage", 2);
         else if (timerGrow.IsElapsedPercent(34))
@@ -126,21 +114,10 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     }
 
-
-    public bool CheckIfCanBeGathered()
+    public virtual bool CheckIfCanBeGathered()
     {
-
-        if (howToGather == GatherType.gather)
-        {
-            if (!timerGrow.IsOn())
-                return true;
-            return false;
-        }
-        else
-        {
-            //if ((int)EquipmentManager.instance.GetHandItem()?.equipmentType == (int)howToGather) // If the item in hand matches the action requirement
-                //return true;
-            return false;
-        }
+        return !timerGrow.IsOn();
+        //if ((int)EquipmentManager.instance.GetHandItem()?.equipmentType == (int)howToGather) // If the item in hand matches the action requirement
+        //return true;
     }
 }

@@ -11,6 +11,7 @@ public class PlayerActionManagement : MonoBehaviour
         nothing = 0,
         pick = 1,
         drop = 2,
+        equip = 3,
         fight = 6,
         gather = 11,
         chop = 12,
@@ -117,6 +118,13 @@ public class PlayerActionManagement : MonoBehaviour
             case Action.drop:
             {
                 currentTarget.GetComponent<Item>().SetTransparent(false);
+                CompleteAction();
+                break;
+            }
+            case Action.equip:
+            {
+                EquipmentManager.instance.SetEquipment(currentTarget.GetComponent<Item>().CreateItemUI().GetComponent<Equipment>());
+                itemsInRange.Remove(currentTarget);
                 CompleteAction();
                 break;
             }

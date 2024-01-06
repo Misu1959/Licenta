@@ -12,8 +12,17 @@ public class Equipment : Item
         body = 1,
         head = 2
     };
+    public enum ActionType
+    {
+        chop = 1,
+        mine = 2,
+        torch = 5,
+        fight = 10
+    };
+
+
     public Type equipmentType;
-    public int actionNumber;
+    public ActionType actionType;
 
 
     [SerializeField] private float maxDurability;
@@ -25,9 +34,8 @@ public class Equipment : Item
     {
         base.OnPointerDown(eventData);
         
-        //if (IsOnTheGround())
-        //  if (GetComponent<Equipment>())
-        //      PlayerActionManagement.instance.SetTarget(this.gameObject, 33);
+        if (IsOnTheGround())
+            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.equip);
 
     }
 

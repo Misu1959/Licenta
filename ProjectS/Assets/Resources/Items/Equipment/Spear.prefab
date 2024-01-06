@@ -185,6 +185,6 @@ MonoBehaviour:
   uiImg: {fileID: 21300000, guid: ef0ff5e4170055c4d97730fed180dfe8, type: 3}
   maxStack: 1
   fuelValue: 5
-  equipmentNumber: 0
-  actionNumber: 0
+  equipmentType: 0
+  actionType: 10
   maxDurability: 10

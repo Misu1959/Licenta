@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ComplexResource : Resource
 {
+    [SerializeField] Equipment.ActionType howToGather;
     [SerializeField] private float hp;
 
     public override void OnMouseOver()
@@ -17,13 +18,21 @@ public class ComplexResource : Resource
         string popUpText = "";
         bool canBeGathered = CheckIfCanBeGathered();
 
-        if (howToGather == GatherType.chop && canBeGathered)
+        if (howToGather == Equipment.ActionType.chop && canBeGathered)
             popUpText = "LMB - Chop";
-        else if (howToGather == GatherType.mine && canBeGathered)
+        else if (howToGather == Equipment.ActionType.mine && canBeGathered)
             popUpText = "LMB - Mine";
 
         PopUpManager.instance.ShowMousePopUp(popUpText);
 
+    }
+
+    public override void SetToGather()
+    {
+        if (howToGather == Equipment.ActionType.chop)
+            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.chop);
+        else if (howToGather == Equipment.ActionType.mine)
+            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.mine);
     }
 
     public override void GatherItemOfType()
@@ -40,7 +49,6 @@ public class ComplexResource : Resource
         timerGather.Tick();
         if (!timerGather.IsElapsed())
             return;
-        Debug.Log("x");
 
         //timerGather.StartTimer();
 
@@ -66,22 +74,31 @@ public class ComplexResource : Resource
     void DestroyResource()
     {
         for (int i = 0; i < dropTypes.Length; i++)
-            DropItemOfType(dropTypes[i]);
+            DropItemOfType(dropTypes[i]); // Drop the loot
 
-        PlayerActionManagement.instance.CompleteAction();
+        PlayerActionManagement.instance.CompleteAction(); // Complete the action
+        Destroy(this.gameObject); // Destroy this object
+
         PopUpManager.instance.ShowMousePopUp();
-        Destroy(this.gameObject);
     }
 
     void DropItemOfType(string typeOfItem)
     {
         Item drop = Instantiate(ItemsManager.instance.SearchItemsList(typeOfItem)).GetComponent<Item>();
         drop.SetType(typeOfItem);
-        drop.AddToStack(1);
+        drop.AddToStack(1); 
 
+
+        // Set loot position
         drop.transform.position = new Vector2(Random.Range(transform.position.x - 1, transform.position.x + 1),
                                               Random.Range(transform.position.y - 1, transform.position.y + 1));
-        drop.transform.SetParent(SaveLoadManager.instance.items.transform);
+        drop.transform.SetParent(SaveLoadManager.instance.items.transform); // Set loot parent object
 
+    }
+
+    public override bool CheckIfCanBeGathered()
+    {
+        // If the item equiped in hand matches the action requirement return true else return false
+        return EquipmentManager.instance.GetHandItem()?.actionType != howToGather ? false : true;
     }
 }

@@ -81,7 +81,7 @@ public class SaveLoadManager : MonoBehaviour
                 {
                     PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " typeOfItem", 3);
                     PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " equipmentNumber", (int)item.GetComponent<Equipment>().equipmentType);
-                    PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " equipmentActionNumber", item.GetComponent<Equipment>().actionNumber);
+                    PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " equipmentActionNumber", (int)item.GetComponent<Equipment>().actionType);
                     PlayerPrefs.SetFloat("itemUI " + nrOfItemsInInventory + " equipmentDurability", item.GetComponent<Equipment>().durability);
                 }
 
@@ -223,7 +223,7 @@ public class SaveLoadManager : MonoBehaviour
                 itemUI.AddComponent<EquipmentUI>();
 
                 itemUI.GetComponent<Equipment>().equipmentType = (Equipment.Type)PlayerPrefs.GetInt("itemUI " + i + " equipmentNumber");
-                itemUI.GetComponent<Equipment>().actionNumber = PlayerPrefs.GetInt("itemUI " + i + " equipmentActionNumber");
+                itemUI.GetComponent<Equipment>().actionType = (Equipment.ActionType)PlayerPrefs.GetInt("itemUI " + i + " equipmentActionNumber");
                 itemUI.GetComponent<Equipment>().SetDurability(PlayerPrefs.GetFloat("itemUI " + i + " equipmentDurability"));
             }
 

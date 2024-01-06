@@ -114,8 +114,13 @@ public class InventoryManager : MonoBehaviour
 
     public void SetSelectedItem(Item itemToSelect)
     {
-        selectedItem = itemToSelect;
-        selectedItem?.transform.SetParent(inventory.parent);
+        selectedItem = itemToSelect; // Set the selected item
+        selectedItem?.transform.SetParent(inventory.parent); // Set it's parent
+
+        // If player is going to add fuel or to cook and I change the selected item or unselect it cancel the action
+        if(PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.addFuel ||
+            PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.cook)
+            PlayerActionManagement.instance.CancelAction();
     }
 
     public bool CheckSelecteditem(Item itemToCheck)
