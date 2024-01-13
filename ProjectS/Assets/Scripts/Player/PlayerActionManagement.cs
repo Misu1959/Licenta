@@ -112,12 +112,17 @@ public class PlayerActionManagement : MonoBehaviour
             {
                 InventoryManager.instance.AddItemToSlot(currentTarget.GetComponent<Item>());
                 itemsInRange.Remove(currentTarget);
+                
+                GetComponent<Animator>().SetBool("PickDrop", true);
+
                 CompleteAction();
                 break;
             }
             case Action.drop:
             {
                 currentTarget.GetComponent<Item>().SetTransparent(false);
+                GetComponent<Animator>().SetBool("PickDrop", true);
+
                 CompleteAction();
                 break;
             }
@@ -168,6 +173,7 @@ public class PlayerActionManagement : MonoBehaviour
 
         SetTargetAndAction(null, Action.nothing);
         isPerformingAction = false;
+
         PopUpManager.instance.ShowPopUpAction("Action completed!");
 
     }

@@ -24,7 +24,7 @@ public class Fire : MonoBehaviour
         timer = new Timer(maxLifetime,lifetime);
         timer.StartTimer();
 
-        lightObject = transform.GetChild(1).gameObject;
+        lightObject = transform.GetChild(0).gameObject;
         lightObject.SetActive(true);
 
     }
@@ -69,8 +69,8 @@ public class Fire : MonoBehaviour
     void SetLightSize()
     {
 
-        lightObject.transform.localScale = Vector2.Lerp(Vector2.zero, new Vector2(maxFireSize / transform.lossyScale.x, maxFireSize / transform.lossyScale.x), lifetime / maxLifetime);
-        lightObject.GetComponent<Light2D>().pointLightOuterRadius = Vector2.Lerp(Vector2.zero, new Vector2(maxFireSize, maxFireSize), lifetime / maxLifetime).x;
+        lightObject.transform.localScale = Vector2.Lerp(Vector2.zero, new Vector2(maxFireSize / transform.lossyScale.x, maxFireSize / transform.lossyScale.x), timer.RemainedTime() / maxLifetime);
+        lightObject.GetComponent<Light2D>().pointLightOuterRadius = Vector2.Lerp(Vector2.zero, new Vector2(maxFireSize, maxFireSize), timer.RemainedTime() / maxLifetime).x;
     }
 
 

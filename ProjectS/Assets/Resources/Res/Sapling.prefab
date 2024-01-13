@@ -122,9 +122,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.10372543, y: -0.7549287}
+  m_Offset: {x: 0.07, y: 0.0690697}
   serializedVersion: 2
-  m_Radius: 0.059743166
+  m_Radius: 0.0692697
 --- !u!60 &-1205395343109939089
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -141,7 +141,7 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 1.7066667, y: 1.7066667}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
@@ -150,15 +150,20 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.015280664, y: -0.8552601}
-      - {x: -0.055584997, y: -0.6266944}
-      - {x: -0.45620155, y: -0.55672157}
-      - {x: -0.5314739, y: 0.32877368}
-      - {x: 0.21194784, y: 0.92448515}
-      - {x: 0.76166123, y: 0.3410203}
-      - {x: 0.6472194, y: -0.5008686}
-      - {x: 0.21788725, y: -0.62140363}
-      - {x: 0.24341221, y: -0.8713754}
+    - - {x: -0.47384724, y: 0.2670449}
+      - {x: -0.067539, y: 0.23705207}
+      - {x: -0.02561988, y: -0.009333134}
+      - {x: 0.230245, y: 0.008742839}
+      - {x: 0.22639698, y: 0.22545162}
+      - {x: 0.6129114, y: 0.35831228}
+      - {x: 0.64, y: 0.53333336}
+      - {x: 0.6485399, y: 0.61713064}
+      - {x: 0.7227172, y: 1.203831}
+      - {x: 0.33807045, y: 1.4209914}
+      - {x: 0.2799557, y: 1.7432702}
+      - {x: 0.025808707, y: 1.6534635}
+      - {x: 0.012088537, y: 1.4365159}
+      - {x: -0.49275506, y: 1.2079861}
 --- !u!114 &7053707916684687096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,12 +176,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e2ae38218547f5469b93478dde60ee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  howToGather: 0
   dropTypes:
   - Twigs
   timeToGather: 2
   maxTimeToGrow: 20
-  timeToGrow: 20
 --- !u!114 &-3487740492792821296
 MonoBehaviour:
   m_ObjectHideFlags: 0

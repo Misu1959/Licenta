@@ -9,7 +9,6 @@ public class Fireplace : Fire, IPointerDownHandler
     public override void Start()
     {
         base.Start(); // it does fire stuff
-        transform.GetChild(0).gameObject.SetActive(true);
     }
 
     public override void Update()

@@ -70,6 +70,8 @@ public class Timer
         StartTimer();// Start the timer if the timer is elapsed before adding time
     }
 
+    public float RemainedTime() { return remainedtime; }// Returns the remained time
+
     public bool IsOn() // Return either the timer is on or of
     {
         return isOn;

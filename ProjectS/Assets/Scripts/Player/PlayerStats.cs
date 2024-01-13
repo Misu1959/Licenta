@@ -129,7 +129,7 @@ public class PlayerStats : MonoBehaviour
     public void SetResearchLevel(int newResearchLevel)
     {
         researchLevel = newResearchLevel;
-        CraftingManager.instance.SetTooltipCraftButton();
+        //CraftingManager.instance.SetTooltipCraftButton();
     }
 
     public void SetInLight(int _isIntLight)

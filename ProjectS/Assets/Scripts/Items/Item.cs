@@ -63,7 +63,7 @@ public class Item : MonoBehaviour,IPointerDownHandler
 
         SetTransparent(true);
         PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.drop);
-        CraftingManager.instance.SetTooltipCraftButton();
+        //CraftingManager.instance.RefreshRecipesList();
     }
 
 

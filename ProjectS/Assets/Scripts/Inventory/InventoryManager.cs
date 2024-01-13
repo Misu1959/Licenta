@@ -63,7 +63,7 @@ public class InventoryManager : MonoBehaviour
             slot.SetItemInSlot(itemToAdd.CreateItemUI(itemToAdd.currentStack));// Create the ItemUi and add it to the free slot
             Destroy(itemToAdd.gameObject); //Destroy the item
             
-            CraftingManager.instance.SetTooltipCraftButton();
+            //CraftingManager.instance.Set();
         }
         else if(slot.CheckIfItHasItem())// If the slot is partially full
         {
@@ -82,7 +82,7 @@ public class InventoryManager : MonoBehaviour
 
                 AddItemToSlot(itemToAdd); // I call the function again so that I look for a new slot
             }
-            CraftingManager.instance.SetTooltipCraftButton();
+            //CraftingManager.instance.SetTooltipCraftButton();
         }
         
 

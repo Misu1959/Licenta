@@ -122,17 +122,17 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 486
-        height: 424
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 468
+        height: 423
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e6a0a3445c82d974b9fa0c0218b19cfa
-      internalID: 1994799293
+      spriteID: b5862ebbe644a3e4bb579eb532ecd3f9
+      internalID: 629160685
       vertices: []
       indices: 
       edges: []
@@ -141,19 +141,19 @@ TextureImporter:
       name: Eat_1
       rect:
         serializedVersion: 2
-        x: 486
+        x: 468
         y: 0
-        width: 486
-        height: 424
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 468
+        height: 423
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 77c4cdf2f9462f340b17c59ce2a0b1a4
-      internalID: 172111626
+      spriteID: 7e0504c0d10a35a4f9d45a970d799e3c
+      internalID: 83236845
       vertices: []
       indices: 
       edges: []
@@ -162,19 +162,19 @@ TextureImporter:
       name: Eat_2
       rect:
         serializedVersion: 2
-        x: 972
+        x: 936
         y: 0
-        width: 486
-        height: 424
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 468
+        height: 423
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 463124b62af1c124f808d5510fe74581
-      internalID: 1950812045
+      spriteID: 4b9f76ef4707f884e976f41fade14cc3
+      internalID: -1960144404
       vertices: []
       indices: 
       edges: []
@@ -183,19 +183,19 @@ TextureImporter:
       name: Eat_3
       rect:
         serializedVersion: 2
-        x: 1458
+        x: 1404
         y: 0
-        width: 486
-        height: 424
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 468
+        height: 423
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 226a238bba326524d991af4c0fa8ef1d
-      internalID: 1943979312
+      spriteID: d58af38f4c54be04fa8f53f85c5a9af3
+      internalID: 832260027
       vertices: []
       indices: 
       edges: []
@@ -204,19 +204,19 @@ TextureImporter:
       name: Eat_4
       rect:
         serializedVersion: 2
-        x: 1944
+        x: 1872
         y: 0
-        width: 486
-        height: 424
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 468
+        height: 423
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b9a8ac5a4961d154d924813542ad6a38
-      internalID: -872529650
+      spriteID: 950d7678e8a580741bc57606c1b2e7ee
+      internalID: 1305183290
       vertices: []
       indices: 
       edges: []
@@ -225,19 +225,19 @@ TextureImporter:
       name: Eat_5
       rect:
         serializedVersion: 2
-        x: 2430
+        x: 2340
         y: 0
-        width: 486
-        height: 424
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 468
+        height: 423
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6826f8f3122124d40b3a738a96520662
-      internalID: 884802078
+      spriteID: 68feedcef857fae4f8ecd98f58335ee4
+      internalID: 1937707231
       vertices: []
       indices: 
       edges: []
@@ -246,19 +246,19 @@ TextureImporter:
       name: Eat_6
       rect:
         serializedVersion: 2
-        x: 2916
+        x: 2808
         y: 0
-        width: 486
-        height: 424
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 468
+        height: 423
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ef2758e62ed0fc94da0514cdc577ce81
-      internalID: 284339737
+      spriteID: 7a8b8e9672bb1ec488fd45dda959c318
+      internalID: -1396579634
       vertices: []
       indices: 
       edges: []
@@ -267,19 +267,19 @@ TextureImporter:
       name: Eat_7
       rect:
         serializedVersion: 2
-        x: 3402
+        x: 3276
         y: 0
-        width: 486
-        height: 424
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 468
+        height: 423
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: db52446c43d65e048826670fa45ef731
-      internalID: -1135958137
+      spriteID: 5ca8b29b1f633554a929a191315a4a42
+      internalID: 264939569
       vertices: []
       indices: 
       edges: []
@@ -288,19 +288,19 @@ TextureImporter:
       name: Eat_8
       rect:
         serializedVersion: 2
-        x: 3888
+        x: 3744
         y: 0
-        width: 486
-        height: 424
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 468
+        height: 423
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2a5bf3facadec0949883e5c2528ffbe0
-      internalID: 791032974
+      spriteID: 5daa29bdf5e71b4428b21b674a1adaaa
+      internalID: 2058827008
       vertices: []
       indices: 
       edges: []
@@ -309,19 +309,19 @@ TextureImporter:
       name: Eat_9
       rect:
         serializedVersion: 2
-        x: 4374
+        x: 4212
         y: 0
-        width: 486
-        height: 424
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 468
+        height: 423
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2f9127d9b0899c243ae13c5dae187a5c
-      internalID: -401630852
+      spriteID: df80287e4a166d14da20a9596cc88921
+      internalID: -1334134366
       vertices: []
       indices: 
       edges: []
@@ -330,40 +330,19 @@ TextureImporter:
       name: Eat_10
       rect:
         serializedVersion: 2
-        x: 4860
+        x: 4680
         y: 0
-        width: 486
-        height: 424
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 468
+        height: 423
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3d9f17a0beb1649489589003ee17d49f
-      internalID: -157365814
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Eat_11
-      rect:
-        serializedVersion: 2
-        x: 5346
-        y: 0
-        width: 486
-        height: 424
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 81e21ef5541dcb24b80b519a4f5a7dee
-      internalID: 1723798494
+      spriteID: e5957cd1567d69e4e9584fda3ae6150e
+      internalID: 1687095462
       vertices: []
       indices: 
       edges: []
@@ -379,18 +358,17 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Eat_6: 284339737
-      Eat_3: 1943979312
-      Eat_1: 172111626
-      Eat_11: 1723798494
-      Eat_7: -1135958137
-      Eat_8: 791032974
-      Eat_9: -401630852
-      Eat_2: 1950812045
-      Eat_0: 1994799293
-      Eat_5: 884802078
-      Eat_4: -872529650
-      Eat_10: -157365814
+      Eat_6: -1396579634
+      Eat_3: 832260027
+      Eat_1: 83236845
+      Eat_7: 264939569
+      Eat_8: 2058827008
+      Eat_9: -1334134366
+      Eat_2: -1960144404
+      Eat_0: 629160685
+      Eat_5: 1937707231
+      Eat_4: 1305183290
+      Eat_10: 1687095462
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
