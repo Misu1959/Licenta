@@ -151,3 +151,4 @@ MonoBehaviour:
   hungerAmount: 10
   hpAmount: 10
   timeToCook: 3
+  quickEat: 1

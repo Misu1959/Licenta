@@ -62,4 +62,9 @@ public class CraftingRecipe : MonoBehaviour
         CraftingManager.instance.SetRecipesList(); // Close crafting manager
     }
 
+
+
+
+
+
 }

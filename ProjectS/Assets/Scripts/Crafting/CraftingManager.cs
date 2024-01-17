@@ -13,7 +13,10 @@ public class CraftingManager : MonoBehaviour
     public CraftingRecipe currentRecipe { get; private set; }
     private CraftingTab currentTab;
 
+
     [SerializeField] private GameObject requirementPrefab;
+    [SerializeField] private GameObject prefabRecipe;
+
 
     private RectTransform recipesListPanel;
     private RectTransform toolTip;
@@ -58,10 +61,12 @@ public class CraftingManager : MonoBehaviour
         
         if (activeStatus)
         {
+            currentTab.CleanRecipesList(recipesListPanel);
+            currentTab.AddRecipesToList(recipesListPanel);
+
             SetRecipesListPosition();
 
             toolTip.gameObject.SetActive(false);
-            //currentTab.SetListPanel(recipesListPanel);
         }
     }
 
@@ -71,6 +76,10 @@ public class CraftingManager : MonoBehaviour
         recipesListPanel.position = new Vector2(recipesListPanel.position.x,
                                     tab.position.y + (recipesListPanel.rect.height - tab.rect.height) / 2);
     }
+
+
+    /*
+
 
     public void SetToolTip(CraftingRecipe _recipe)
     {
@@ -143,7 +152,7 @@ public class CraftingManager : MonoBehaviour
 
     }
 
-    private void DisplayRequirements()
+    private void DisplayToolTipRequirements()
     {
         for (int i = 0; i < currentRecipe.requirements.Length; i++)
         {
@@ -157,7 +166,7 @@ public class CraftingManager : MonoBehaviour
 
 
 
-
+    */
 
     public void ActivateCraftingManager(bool mode)
     {

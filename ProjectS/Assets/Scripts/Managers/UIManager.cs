@@ -102,8 +102,8 @@ public class UIManager : MonoBehaviour
         escapeScreen.SetActive(!escapeScreen.activeInHierarchy);
 
         Time.timeScale = escapeScreen.activeInHierarchy ? 0.0f : 1.0f;
-        escapeScreen.transform.GetChild(0).GetComponent<Button>().onClick.RemoveAllListeners();
-        escapeScreen.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(0));
+        escapeScreen.transform.GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
+        escapeScreen.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(0));
         
         //CraftingManager.instance.toolTip.gameObject.SetActive(false);
         InventoryManager.instance.SetBackToSlot();
@@ -120,7 +120,7 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 0;
         //CraftingManager.instance.toolTip.gameObject.SetActive(false);
         
-        Button deathScreenButton = deathScreen.transform.GetChild(1).GetComponent<Button>();
+        Button deathScreenButton = deathScreen.transform.GetChild(2).GetComponent<Button>();
         deathScreenButton.onClick.AddListener(() => SceneManager.LoadScene(0));
 
         InteractionManager.SetInteractionStatus(false);
@@ -129,7 +129,7 @@ public class UIManager : MonoBehaviour
 
     private void ShowDeathText(string causeOfDeath)
     {
-        TextMeshProUGUI deathText = deathScreen.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI deathText = deathScreen.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
 
         deathText.text = "You survived " + (PlayerPrefs.GetInt("currentDay") - 1) + " full days\n and died " + causeOfDeath;
     }

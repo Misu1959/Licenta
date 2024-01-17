@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7a502d04d779aa5458aa5547680a078f
+guid: dbc4f800dc4eb354abbec7cdfcbd25cf
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 2
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -122,8 +122,8 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 263
-        height: 460
+        width: 619
+        height: 530
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,8 +131,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b412556179fb3e2439d57d2a2a68d872
-      internalID: 509844557
+      spriteID: 9554e7eba0ed14846ac7ea31bac53d25
+      internalID: -2022917238
       vertices: []
       indices: 
       edges: []
@@ -141,10 +141,10 @@ TextureImporter:
       name: Walk_Up_1
       rect:
         serializedVersion: 2
-        x: 263
+        x: 619
         y: 0
-        width: 263
-        height: 460
+        width: 619
+        height: 530
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,8 +152,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c83fed5673ef0c1479e0a1bf6a4dcefb
-      internalID: -708919170
+      spriteID: 84673aa36dfdd954b88561b4d4452189
+      internalID: 621008068
       vertices: []
       indices: 
       edges: []
@@ -162,10 +162,10 @@ TextureImporter:
       name: Walk_Up_2
       rect:
         serializedVersion: 2
-        x: 526
+        x: 1238
         y: 0
-        width: 263
-        height: 460
+        width: 619
+        height: 530
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,8 +173,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 52ca02d848b71de4aa6fffdd7512f031
-      internalID: -801317928
+      spriteID: f5bd839a3c4008d488ede384f0b0f96d
+      internalID: -1742717193
       vertices: []
       indices: 
       edges: []
@@ -183,10 +183,10 @@ TextureImporter:
       name: Walk_Up_3
       rect:
         serializedVersion: 2
-        x: 789
+        x: 1857
         y: 0
-        width: 263
-        height: 460
+        width: 619
+        height: 530
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -194,8 +194,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8010a7be935e82b438a1c199759b9049
-      internalID: -1939350319
+      spriteID: 79b265fdffd13c34da8ff0710240051e
+      internalID: -142683403
       vertices: []
       indices: 
       edges: []
@@ -204,10 +204,10 @@ TextureImporter:
       name: Walk_Up_4
       rect:
         serializedVersion: 2
-        x: 1052
+        x: 2476
         y: 0
-        width: 263
-        height: 460
+        width: 619
+        height: 530
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -215,8 +215,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 18f6ea80f04ef0e4197f347716a32bef
-      internalID: -1282904338
+      spriteID: d6708ec64266df54da99e399ff8df632
+      internalID: -1705881109
       vertices: []
       indices: 
       edges: []
@@ -225,10 +225,10 @@ TextureImporter:
       name: Walk_Up_5
       rect:
         serializedVersion: 2
-        x: 1315
+        x: 3095
         y: 0
-        width: 263
-        height: 460
+        width: 619
+        height: 530
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -236,8 +236,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cb9befd4e279402489680c6ba7ef7e63
-      internalID: -1630692032
+      spriteID: a535daa5752560048927c970b6f37036
+      internalID: -812432722
       vertices: []
       indices: 
       edges: []
@@ -246,10 +246,10 @@ TextureImporter:
       name: Walk_Up_6
       rect:
         serializedVersion: 2
-        x: 1578
+        x: 3714
         y: 0
-        width: 263
-        height: 460
+        width: 619
+        height: 530
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -257,8 +257,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eba5d0f827925ae42a27575533b3f98f
-      internalID: -1128418787
+      spriteID: 240c46aba812d9c418a413ca5cf15d0f
+      internalID: -506193256
       vertices: []
       indices: 
       edges: []
@@ -267,10 +267,10 @@ TextureImporter:
       name: Walk_Up_7
       rect:
         serializedVersion: 2
-        x: 1841
+        x: 4333
         y: 0
-        width: 263
-        height: 460
+        width: 619
+        height: 530
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -278,8 +278,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bf5861ca5738e7f4c8606fb97c6bae32
-      internalID: 1540579121
+      spriteID: 8b34c4b1454bd91419192c4c77e8c136
+      internalID: -391150242
       vertices: []
       indices: 
       edges: []
@@ -288,10 +288,10 @@ TextureImporter:
       name: Walk_Up_8
       rect:
         serializedVersion: 2
-        x: 2104
+        x: 4952
         y: 0
-        width: 263
-        height: 460
+        width: 619
+        height: 530
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -299,8 +299,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7eae029def0c88c4aa4c1a6e62d8ad64
-      internalID: -315525495
+      spriteID: 3ffee36696369a54ab4072046c358d07
+      internalID: -376222038
       vertices: []
       indices: 
       edges: []
@@ -309,10 +309,10 @@ TextureImporter:
       name: Walk_Up_9
       rect:
         serializedVersion: 2
-        x: 2367
+        x: 5571
         y: 0
-        width: 263
-        height: 460
+        width: 619
+        height: 530
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -320,8 +320,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a7bd19ed339711549ad746583a9635f6
-      internalID: 924459895
+      spriteID: 04d56b26cb418984992695d632654692
+      internalID: -798602766
       vertices: []
       indices: 
       edges: []
@@ -330,10 +330,10 @@ TextureImporter:
       name: Walk_Up_10
       rect:
         serializedVersion: 2
-        x: 2630
+        x: 6190
         y: 0
-        width: 263
-        height: 460
+        width: 619
+        height: 530
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -341,8 +341,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5ad9b19db8666c44d8f166ecd47dcb18
-      internalID: 1333621998
+      spriteID: 2e8f2c0fcf4884145ad72a3a7e7a7450
+      internalID: 1143184904
       vertices: []
       indices: 
       edges: []
@@ -358,17 +358,17 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Walk_Up_8: -315525495
-      Walk_Up_6: -1128418787
-      Walk_Up_5: -1630692032
-      Walk_Up_4: -1282904338
-      Walk_Up_1: -708919170
-      Walk_Up_10: 1333621998
-      Walk_Up_2: -801317928
-      Walk_Up_3: -1939350319
-      Walk_Up_7: 1540579121
-      Walk_Up_9: 924459895
-      Walk_Up_0: 509844557
+      Walk_Up_8: -376222038
+      Walk_Up_6: -506193256
+      Walk_Up_5: -812432722
+      Walk_Up_4: -1705881109
+      Walk_Up_1: 621008068
+      Walk_Up_10: 1143184904
+      Walk_Up_2: -1742717193
+      Walk_Up_3: -142683403
+      Walk_Up_7: -391150242
+      Walk_Up_9: -798602766
+      Walk_Up_0: -2022917238
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -35,18 +35,21 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
+
         if (PlayerActionManagement.instance.currentTarget) // If player has a target
         {
             if (PlayerActionManagement.instance.isPerformingAction)
                 movementDir = Vector2.zero;
-            else
-                    movementDir = PlayerActionManagement.instance.currentTarget.transform.position - transform.position;
+            else if (CheckIfCanMove())
+                movementDir = PlayerActionManagement.instance.currentTarget.transform.position - transform.position;
         }
-        else // Move by WASD
+        else if (CheckIfCanMove())// Move by WASD        
+        {
             movementDir = new Vector2(
                                      Input.GetAxisRaw("Horizontal"),
                                      Input.GetAxisRaw("Vertical")
                                      );
+        }
     }
 
     private void SetAnim()
@@ -104,6 +107,16 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+    }
+
+    public bool CheckIfCanMove()
+    {
+        if (GetComponent<Animator>().GetBool("PickDrop"))
+            return false;
+        if (GetComponent<Animator>().GetInteger("IsEating") > 0)
+            return false;
+
+        return true;
     }
 
 }

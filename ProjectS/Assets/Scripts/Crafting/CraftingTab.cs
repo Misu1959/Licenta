@@ -1,39 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CraftingTab : MonoBehaviour
 {
-    [SerializeField] private GameObject prefabRecipe;
-
     [SerializeField] private List<CraftingRecipe> recipesList;
 
 
-
-    public void SetListPanel(RectTransform listPanel)
+    public void AddRecipesToList(Transform recipesListPanel)
     {
-        foreach(Transform obj in listPanel.transform)
-            Destroy(obj.gameObject); // Destroy old recipes
+        Transform recipeListContents = recipesListPanel.Find("RecipesList");
 
-        foreach (CraftingRecipe recipe in recipesList)
-            AddFunctionalityToRecipe(listPanel, recipe); // Adds new recipes
+        for (int i = 0; i < recipesList.Count; i++)
+        {
+            //GameObject go = Instantiate(prefabRecipe);
+            //go.transform.SetParent(recipeListContents);
+        }
     }
 
-    public void RefreshRecipesList()
+    public void CleanRecipesList(Transform recipesListPanel)
     {
-        foreach (CraftingRecipe recipe in recipesList)
-            recipe.CheckIfCanBeCrafted();
+        Transform recipeListContents = recipesListPanel.Find("RecipesList");
+
+        foreach (Transform child in recipeListContents)
+            Destroy(child.gameObject);
     }
 
-    private void AddFunctionalityToRecipe(RectTransform listPanel,CraftingRecipe _recipe)
+    private void AddFunctionalityToCraftingRecipe()
     {
-        GameObject r = Instantiate(prefabRecipe);
-        r.transform.parent = listPanel.transform;
-        //        r.AddComponent<CraftingRecipe>()
-
-        r.GetComponent<Button>().onClick.AddListener(() => CraftingManager.instance.SetToolTip(r.GetComponent<CraftingRecipe>()));
 
     }
 }

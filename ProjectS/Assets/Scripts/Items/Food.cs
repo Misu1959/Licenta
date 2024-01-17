@@ -12,6 +12,8 @@ public class Food : Item
     public float hpAmount;
 
     public float timeToCook;
+    public bool quickEat;
+
     public Timer timer { get; private set; }
 
     public virtual void Start()
