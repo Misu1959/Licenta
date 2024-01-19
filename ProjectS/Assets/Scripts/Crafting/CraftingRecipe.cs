@@ -1,57 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CraftingRecipe : MonoBehaviour
 {
-    public  GameObject prefabItem;
-    public  bool       isLearned;
+    private Recipe recipe;
 
-    [System.Serializable]
-    public struct Requiremets
-    {
-        public string type;
-        public int quantity;
-    };
-    public Requiremets[] requirements;
+    public Recipe GetRecipe() { return recipe; }
 
-    public bool CheckIfCanBeCrafted()
-    {
-        // If player it's not near a station and recipe isn't learned
-        if(PlayerStats.instance.researchLevel==0)
-            if (!isLearned)
-                return false;
-
-        return CheckIfHaveRosources();
-    }
-
-    public bool CheckIfHaveRosources()
-    {
-        for (int i = 0; i < requirements.Length; i++)
-            if (InventoryManager.instance.AmountOwnedOfType(requirements[i].type) < requirements[i].quantity)
-                return false;
-
-        return true;
+    public void SetRecipe(Recipe _recipe) 
+    { 
+        recipe = _recipe;
+        transform.GetChild(0).GetComponent<Image>().sprite = recipe.recipeUI;
     }
 
     public IEnumerator CraftRecipe()
     {
-        GameObject craftedItem = Instantiate(prefabItem);
+        GameObject craftedItem = Instantiate(recipe.prefabItem);
 
-        if (isLearned == false)
-            isLearned = true;
+        if (recipe.isLearned == false)
+            recipe.isLearned = true;
 
         InventoryManager.instance.SetBackToSlot();
 
         if (!craftedItem.GetComponent<Construction>()) // If the crafted thing is not a construction
         {
-            foreach(Requiremets req in requirements)
+            foreach (Recipe.Requiremets req in recipe.requirements)
                 InventoryManager.instance.SpendResources(req.type, req.quantity);
 
             yield return null;
             if (craftedItem.GetComponent<Equipment>())
             {
-                craftedItem.GetComponent<Item>().SetType(prefabItem.name);
+                craftedItem.GetComponent<Item>().SetType(recipe.prefabItem.name);
                 craftedItem.GetComponent<Equipment>().SetDurability(-1);
                 InventoryManager.instance.AddItemToSlot(craftedItem.GetComponent<Item>());
             }
@@ -60,6 +41,25 @@ public class CraftingRecipe : MonoBehaviour
             PlayerActionManagement.instance.SetTargetAndAction(null, PlayerActionManagement.Action.place); // Set player action to placement mode
 
         CraftingManager.instance.SetRecipesList(); // Close crafting manager
+    }
+
+    public bool CheckIfCanBeCrafted()
+    {
+        // If player it's not near a station and recipe isn't learned
+        if (PlayerStats.instance.researchLevel == 0)
+            if (!recipe.isLearned)
+                return false;
+
+        return CheckIfHaveRosources();
+    }
+
+    private bool CheckIfHaveRosources()
+    {
+        foreach(Recipe.Requiremets req in recipe.requirements)
+            if (InventoryManager.instance.AmountOwnedOfType(req.type) < req.quantity)
+                return false;
+
+        return true;
     }
 
 

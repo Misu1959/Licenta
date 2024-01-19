@@ -81,9 +81,8 @@ public class Construction : MonoBehaviour
         if (GetComponent<Fireplace>())
             GetComponent<Fireplace>().enabled = true;
 
-        CraftingRecipe currentRecipe = CraftingManager.instance.currentRecipe;
-        for (int i = 0; i < currentRecipe.requirements.Length; i++)
-            InventoryManager.instance.SpendResources(currentRecipe.requirements[i].type, currentRecipe.requirements[i].quantity);
+        foreach(Recipe.Requiremets req in CraftingManager.instance.currentRecipe.requirements)
+            InventoryManager.instance.SpendResources(req.type, req.quantity);
 
         PlayerActionManagement.instance.CompleteAction();
     }

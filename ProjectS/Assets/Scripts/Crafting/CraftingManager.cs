@@ -10,12 +10,12 @@ public class CraftingManager : MonoBehaviour
 {
     public static CraftingManager instance;
 
-    public CraftingRecipe currentRecipe { get; private set; }
+    public Recipe currentRecipe { get; private set; }
     private CraftingTab currentTab;
 
 
     [SerializeField] private GameObject requirementPrefab;
-    [SerializeField] private GameObject prefabRecipe;
+    [SerializeField] public GameObject prefabRecipe;
 
 
     private RectTransform recipesListPanel;
@@ -77,33 +77,40 @@ public class CraftingManager : MonoBehaviour
                                     tab.position.y + (recipesListPanel.rect.height - tab.rect.height) / 2);
     }
 
-
-    /*
-
-
-    public void SetToolTip(CraftingRecipe _recipe)
+    public void SetToolTip(CraftingRecipe craftingRecipeButton)
     {
         bool activeStatus;
-        if (currentRecipe != _recipe)
+        if (currentRecipe != craftingRecipeButton.GetRecipe())
             activeStatus = true;
         else
             activeStatus = !toolTip.gameObject.activeInHierarchy;
 
-        currentRecipe = _recipe;
-
+        currentRecipe = craftingRecipeButton.GetRecipe();
         toolTip.gameObject.SetActive(activeStatus);
         if (activeStatus)
         {
-            SetToolTipPosition(_recipe.GetComponent<RectTransform>());
+            SetToolTipPosition(craftingRecipeButton);
+            SetTooltipCraftButton(craftingRecipeButton);
+
             SetTooltipRequirements();
-            SetTooltipCraftButton();
-            DisplayRequirements();
+            DisplayToolTipRequirements();
         }
 
     }
 
-    private void SetToolTipPosition(RectTransform _recipe)
+    private void SetToolTipPosition(CraftingRecipe craftingRecipeButton)
     {
+        toolTip.transform.position = new Vector2(craftingRecipeButton.GetComponent<RectTransform>().position.x,
+                                                craftingRecipeButton.GetComponent<RectTransform>().position.y - 50);
+    }
+
+    private void SetTooltipCraftButton(CraftingRecipe _craftingRecipeButton)
+    {
+        Button craftButton = toolTip.GetChild(1).GetComponent<Button>();
+        craftButton.interactable = _craftingRecipeButton.CheckIfCanBeCrafted();
+
+        craftButton.onClick.RemoveAllListeners();
+        craftButton.onClick.AddListener(() => StartCoroutine(_craftingRecipeButton.CraftRecipe()));
 
     }
 
@@ -114,9 +121,9 @@ public class CraftingManager : MonoBehaviour
 
         int nrOfReq = currentRecipe.requirements.Length - 1;
         if (nrOfReq > 0)
-            toolTip.parent.GetComponent<RectTransform>().sizeDelta = new Vector2(175 + 55 * nrOfReq, toolTip.GetComponent<RectTransform>().sizeDelta.y);
+            toolTip.sizeDelta = new Vector2(175 + 55 * nrOfReq, toolTip.sizeDelta.y);
         else
-            toolTip.parent.GetComponent<RectTransform>().sizeDelta = new Vector2(175, toolTip.GetComponent<RectTransform>().sizeDelta.y);
+            toolTip.sizeDelta = new Vector2(175, toolTip.sizeDelta.y);
 
         int reqInToolTip = toolTip.GetChild(2).childCount;
 
@@ -142,31 +149,20 @@ public class CraftingManager : MonoBehaviour
 
     }
 
-    private void SetTooltipCraftButton()
-    {
-        Button craftButton = toolTip.GetChild(1).GetComponent<Button>();
-        craftButton.interactable = currentRecipe.CheckIfCanBeCrafted();
 
-        craftButton.onClick.RemoveAllListeners();
-        craftButton.onClick.AddListener(() => StartCoroutine(currentRecipe.CraftRecipe()));
-
-    }
 
     private void DisplayToolTipRequirements()
     {
-        for (int i = 0; i < currentRecipe.requirements.Length; i++)
+        int i = 0;
+        foreach(Recipe.Requiremets req in currentRecipe.requirements)
         {
-            Transform req = toolTip.transform.GetChild(2).GetChild(i);
-            req.GetChild(0).GetComponent<TextMeshProUGUI>().text = InventoryManager.instance.AmountOwnedOfType(currentRecipe.requirements[i].type) + " / " + currentRecipe.requirements[i].quantity.ToString();
+            Transform reqUI = toolTip.transform.GetChild(2).GetChild(i++);
+            reqUI.GetChild(0).GetComponent<TextMeshProUGUI>().text = InventoryManager.instance.AmountOwnedOfType(req.type) + " / " + req.quantity.ToString();
 
-            req.GetComponent<Image>().sprite = ItemsManager.instance.SearchItemsList(currentRecipe.requirements[i].type).GetComponent<Item>().uiImg;
+            reqUI.GetComponent<Image>().sprite = ItemsManager.instance.SearchItemsList(req.type).GetComponent<Item>().uiImg;
         }
 
     }
-
-
-
-    */
 
     public void ActivateCraftingManager(bool mode)
     {
@@ -174,7 +170,7 @@ public class CraftingManager : MonoBehaviour
             SetRecipesList(); // turn of the list
 
         for (int i = 1; i < transform.childCount; i++)
-            transform.GetChild(i).GetChild(0).GetComponent<Button>().interactable = mode;
+            transform.GetChild(i).GetComponent<Button>().interactable = mode;
     }
 
 }

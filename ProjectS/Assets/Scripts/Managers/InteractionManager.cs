@@ -16,6 +16,6 @@ public class InteractionManager : MonoBehaviour
     {
         canInteract = status;
 
-        //CraftingManager.instance.ActivateCraftingButtons(status);
+        CraftingManager.instance.ActivateCraftingManager(status);
     }
 }
