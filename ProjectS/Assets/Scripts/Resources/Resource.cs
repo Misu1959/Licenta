@@ -6,10 +6,21 @@ using UnityEngine.EventSystems;
 
 public class Resource : MonoBehaviour, IPointerDownHandler
 {
+    public enum Name
+    {
+        berryBush,
+        grassBush,
+        sappling,
+        rock,
+        tree,
+        redShroom,
+        greenShroom,
+        blueShroom
+    };
 
-    public string type { get; private set; }
+    public new Name name;
 
-    [SerializeField] protected string[] dropTypes;
+    [SerializeField] protected Item.Name[] drops;
 
     [SerializeField] protected float timeToGather;
     protected Timer timerGather;
@@ -58,11 +69,6 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         PopUpManager.instance.ShowMousePopUp();
     }
 
-
-    public void SetType(string _type)
-    {
-        type = _type;
-    }
     public virtual void SetToGather()
     {
         PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.gather);
@@ -84,8 +90,8 @@ public class Resource : MonoBehaviour, IPointerDownHandler
             return;
 
         // Next lines adds the loot to the inventory
-        Item item = Instantiate(ItemsManager.instance.SearchItemsList(dropTypes[0])).GetComponent<Item>();
-        item.SetType(dropTypes[0]);
+        Item item = Instantiate(ItemsManager.instance.SearchItemsList(drops[0])).GetComponent<Item>();
+        item.name = drops[0];
         item.AddToStack(1);
         InventoryManager.instance.AddItemToSlot(item);
 

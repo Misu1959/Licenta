@@ -27,12 +27,12 @@ public class CraftingRecipe : MonoBehaviour
         if (!craftedItem.GetComponent<Construction>()) // If the crafted thing is not a construction
         {
             foreach (Recipe.Requiremets req in recipe.requirements)
-                InventoryManager.instance.SpendResources(req.type, req.quantity);
+                InventoryManager.instance.SpendResources(req.name, req.quantity);
 
             yield return null;
             if (craftedItem.GetComponent<Equipment>())
             {
-                craftedItem.GetComponent<Item>().SetType(recipe.prefabItem.name);
+                //craftedItem.GetComponent<Item>().SetName(recipe.prefabItem.name);
                 craftedItem.GetComponent<Equipment>().SetDurability(-1);
                 InventoryManager.instance.AddItemToSlot(craftedItem.GetComponent<Item>());
             }
@@ -56,7 +56,7 @@ public class CraftingRecipe : MonoBehaviour
     private bool CheckIfHaveRosources()
     {
         foreach(Recipe.Requiremets req in recipe.requirements)
-            if (InventoryManager.instance.AmountOwnedOfType(req.type) < req.quantity)
+            if (InventoryManager.instance.AmountOwnedOfType(req.name) < req.quantity)
                 return false;
 
         return true;

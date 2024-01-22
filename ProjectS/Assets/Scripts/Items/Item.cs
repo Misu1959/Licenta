@@ -7,20 +7,42 @@ using static UnityEditor.Progress;
 
 public class Item : MonoBehaviour,IPointerDownHandler
 {
+    public enum Name
+    {
+        twigs,
+        log,
+        flint,
+        stone,
+        grass,
+        charcoal,
+        pinecone,
+
+        berries,
+        berriesC,
+        redCap,
+        redCapC,
+        greenCap,
+        greenCapC,
+        blueCap,
+        blueCapC,
+        meat,
+        meatC,
+
+        axe,
+        pickaxe,
+        spear,
+        torch
+    };
+
+
     public Sprite uiImg;
 
-    public string   type { get; private set; }
-    
+    public new Name name;
+
     public int      maxStack;
     public int      currentStack { get; private set;}
     
     public int      fuelValue;
-
-    void Start()
-    {
-        //if(currentStack== 0) 
-            //currentStack = 1;
-    }
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
@@ -51,11 +73,6 @@ public class Item : MonoBehaviour,IPointerDownHandler
         PopUpManager.instance.ShowMousePopUp();
     }
 
-    public void SetType(string _type)
-    {
-        type = _type;
-    }
-
     public void Drop(Vector2 dropPosition)
     {
         transform.localPosition = dropPosition;
@@ -63,7 +80,6 @@ public class Item : MonoBehaviour,IPointerDownHandler
 
         SetTransparent(true);
         PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.drop);
-        //CraftingManager.instance.RefreshRecipesList();
     }
 
 
@@ -84,7 +100,8 @@ public class Item : MonoBehaviour,IPointerDownHandler
         AddFunctionalityToItem(itemUI);
 
         itemUI.GetComponent<Item>().uiImg = uiImg;
-        itemUI.GetComponent<Item>().SetType(type);
+        itemUI.GetComponent<Item>().name = this.name;
+
         itemUI.GetComponent<Item>().currentStack = (amount == -1) ? currentStack : amount;
         itemUI.GetComponent<Item>().maxStack     = maxStack;
         itemUI.GetComponent<Item>().fuelValue    = fuelValue;

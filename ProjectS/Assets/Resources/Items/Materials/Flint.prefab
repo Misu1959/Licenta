@@ -145,5 +145,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiImg: {fileID: 21300000, guid: a53e1ed213ed114408fd21238ddc4c9a, type: 3}
+  name: 2
   maxStack: 20
   fuelValue: 0

@@ -73,8 +73,8 @@ public class ComplexResource : Resource
 
     void DestroyResource()
     {
-        for (int i = 0; i < dropTypes.Length; i++)
-            DropItemOfType(dropTypes[i]); // Drop the loot
+        foreach(Item.Name loot in drops)
+            DropItemOfName(loot); // Drop the loot
 
         PlayerActionManagement.instance.CompleteAction(); // Complete the action
         Destroy(this.gameObject); // Destroy this object
@@ -82,10 +82,10 @@ public class ComplexResource : Resource
         PopUpManager.instance.ShowMousePopUp();
     }
 
-    void DropItemOfType(string typeOfItem)
+    void DropItemOfName(Item.Name nameOfItem)
     {
-        Item drop = Instantiate(ItemsManager.instance.SearchItemsList(typeOfItem)).GetComponent<Item>();
-        drop.SetType(typeOfItem);
+        Item drop = Instantiate(ItemsManager.instance.SearchItemsList(nameOfItem)).GetComponent<Item>();
+        drop.name = nameOfItem;
         drop.AddToStack(1); 
 
 

@@ -61,7 +61,7 @@ public class InventorySlot : MonoBehaviour,IPointerDownHandler,IPointerEnterHand
             }
             else // If I have an item selected
             {
-                if (!CheckMatchingName(InventoryManager.instance.selectedItem.type)) // if the items are different
+                if (!CheckMatchingName(InventoryManager.instance.selectedItem.name)) // if the items are different
                 { 
                     PopUpManager.instance.ShowMousePopUp("LMB  - swap\nRMB - cancel", 10);
                 }
@@ -134,7 +134,7 @@ public class InventorySlot : MonoBehaviour,IPointerDownHandler,IPointerEnterHand
         {
             if (Input.GetMouseButtonDown(0))// If I press LMB
             {
-                if (CheckMatchingName(InventoryManager.instance.selectedItem.type))
+                if (CheckMatchingName(InventoryManager.instance.selectedItem.name))
                 {
                     if (itemInSlot.CheckIfStackIsFull() || InventoryManager.instance.selectedItem.CheckIfStackIsFull())
                         InventoryManager.instance.SwapTwoSlots(this);
@@ -169,10 +169,10 @@ public class InventorySlot : MonoBehaviour,IPointerDownHandler,IPointerEnterHand
         return itemInSlot == null ? false : true;
     }
 
-    public bool CheckMatchingName(string nameToCompare)
+    public bool CheckMatchingName(Item.Name nameToCompare)
     {
         // return wether the name of the item matches the name of the item in slot
-        return itemInSlot.type != nameToCompare ? false : true;
+        return itemInSlot.name != nameToCompare ? false : true;
 
     }
 }

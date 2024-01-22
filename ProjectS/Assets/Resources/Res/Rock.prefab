@@ -152,8 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 749dabed3bbb7ad4d91b5196b723d3db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropTypes:
-  - Stone
+  name: 3
+  drops: 03000000
   timeToGather: 1
   maxTimeToGrow: 0
   howToGather: 2

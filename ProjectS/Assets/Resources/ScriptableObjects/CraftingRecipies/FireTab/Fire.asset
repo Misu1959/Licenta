@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2924ae2340d26f439081899886b8862, type: 3}
+  m_Name: Fire
+  m_EditorClassIdentifier: 
+  recipeUI: {fileID: 21300000, guid: ac36263f29341c34395a913936d9e070, type: 3}
+  prefabItem: {fileID: 6727790776693729420, guid: 7b9b18098ac7dae468d350d25ea71ede, type: 3}
+  isLearned: 1
+  requirements:
+  - name: 0
+    quantity: 2
+  - name: 4
+    quantity: 3

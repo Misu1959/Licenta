@@ -88,7 +88,7 @@ public class SaveLoadManager : MonoBehaviour
 
 
                 PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " parentSlot", i);
-                PlayerPrefs.SetString("itemUI " + nrOfItemsInInventory + " type", item.type);
+                PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " name", (int)item.name);
 
                 PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " currentStack", item.currentStack);
                 PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " maxStack", item.maxStack);
@@ -121,7 +121,7 @@ public class SaveLoadManager : MonoBehaviour
             }
 
 
-            PlayerPrefs.SetString("selectedItem type", InventoryManager.instance.selectedItem.type);
+            PlayerPrefs.SetString("selectedItem type", InventoryManager.instance.selectedItem.name);
 
             PlayerPrefs.SetInt("selectedItem maxStack", InventoryManager.instance.selectedItem.maxStack);
             PlayerPrefs.SetInt("selectedItem currentStack", InventoryManager.instance.selectedItem.currentStack);
@@ -141,7 +141,7 @@ public class SaveLoadManager : MonoBehaviour
         {
             Item item= items.transform.GetChild(i).GetComponent<Item>();
 
-            PlayerPrefs.SetString("item " + i + " type", item.type);
+            PlayerPrefs.SetInt("item " + i + " name", (int)item.name);
             PlayerPrefs.SetInt("item " + i + " currentStack", item.currentStack);
 
             PlayerPrefs.SetFloat("item " + i + " posX", item.transform.position.x);
@@ -156,7 +156,7 @@ public class SaveLoadManager : MonoBehaviour
         {
             Resource resource = resources.transform.GetChild(i).GetComponent<Resource>();
 
-            PlayerPrefs.SetString("resource " + i + " type", resource.type);
+            PlayerPrefs.SetInt("resource " + i + " name", (int)resource.name);
 
             //PlayerPrefs.SetFloat("resource " + i + " timeToGrow", resource.timeToGrow);
 
@@ -228,7 +228,7 @@ public class SaveLoadManager : MonoBehaviour
             }
 
 
-            itemUI.GetComponent<Item>().SetType(PlayerPrefs.GetString("itemUI " + i + " type"));
+            itemUI.GetComponent<Item>().name = (Item.Name)PlayerPrefs.GetInt("itemUI " + i + " name");
             itemUI.GetComponent<Item>().AddToStack(PlayerPrefs.GetInt("itemUI " + i + " currentStack"));
 
             itemUI.GetComponent<Item>().maxStack = PlayerPrefs.GetInt("itemUI " + i + " maxStack");
@@ -237,7 +237,7 @@ public class SaveLoadManager : MonoBehaviour
             itemUI.GetComponent<Item>().transform.SetParent(InventoryManager.instance.inventory.GetChild(PlayerPrefs.GetInt("itemUI " + i + " parentSlot")));
             itemUI.GetComponent<Item>().transform.localPosition = Vector2.zero;
 
-            itemUI.GetComponent<Item>().uiImg = ItemsManager.instance.SearchItemsList(itemUI.GetComponent<Item>().type).GetComponent<Item>().uiImg;
+            itemUI.GetComponent<Item>().uiImg = ItemsManager.instance.SearchItemsList(itemUI.GetComponent<Item>().name).GetComponent<Item>().uiImg;
             itemUI.GetComponent<Item>().GetComponent<Image>().sprite = itemUI.GetComponent<Item>().uiImg;
         }
         /*
@@ -264,7 +264,7 @@ public class SaveLoadManager : MonoBehaviour
                 selectedItem.GetComponent<Equipment>().SetDurability(PlayerPrefs.GetFloat("selectedItem equipmentDurability"));
             }
 
-            selectedItem.GetComponent<Item>().SetType(PlayerPrefs.GetString("selectedItem type"));
+            selectedItem.GetComponent<Item>().SetName(PlayerPrefs.GetString("selectedItem type"));
             selectedItem.GetComponent<Item>().AddToStack(PlayerPrefs.GetInt("selectedItem currentStack"));
 
             selectedItem.GetComponent<Item>().maxStack = PlayerPrefs.GetInt("selectedItem maxStack");
@@ -273,7 +273,7 @@ public class SaveLoadManager : MonoBehaviour
             selectedItem.GetComponent<Item>().transform.SetParent(InventoryManager.instance.inventory);
             InventoryManager.instance = selectedItem.GetComponent<Item>();
 
-            selectedItem.GetComponent<Image>().color = ItemsManager.instance.SearchItemsList(selectedItem.GetComponent<Item>().type).GetComponent<SpriteRenderer>().color;
+            selectedItem.GetComponent<Image>().color = ItemsManager.instance.SearchItemsList(selectedItem.GetComponent<Item>().name).GetComponent<SpriteRenderer>().color;
         }*/
     }
 
@@ -282,9 +282,9 @@ public class SaveLoadManager : MonoBehaviour
     {
         for (int i = 0; i < PlayerPrefs.GetInt("nrOfItems"); i++)
         {
-            Item item = Instantiate(ItemsManager.instance.SearchItemsList(PlayerPrefs.GetString("item " + i + " type"))).GetComponent<Item>();
+            Item item = Instantiate(ItemsManager.instance.SearchItemsList((Item.Name)PlayerPrefs.GetInt("item " + i + " name"))).GetComponent<Item>();
 
-            item.SetType(PlayerPrefs.GetString("item " + i + " type"));
+            item.name = (Item.Name)PlayerPrefs.GetInt("item " + i + " name");
             item.AddToStack(PlayerPrefs.GetInt("item " + i + " currentStack"));
 
             item.transform.SetParent(items.transform);
@@ -296,8 +296,8 @@ public class SaveLoadManager : MonoBehaviour
     {
         for (int i = 0; i < PlayerPrefs.GetInt("nrOfResources"); i++)
         {
-            GameObject resource = Instantiate(ItemsManager.instance.SearchResourcesList(PlayerPrefs.GetString("resource " + i + " type")));
-            resource.GetComponent<Resource>().SetType(PlayerPrefs.GetString("resource " + i + " type"));
+            GameObject resource = Instantiate(ItemsManager.instance.SearchResourcesList((Resource.Name)PlayerPrefs.GetInt("resource " + i + " name")).gameObject);
+            resource.GetComponent<Resource>().name = (Resource.Name)PlayerPrefs.GetInt("resource " + i + " name");
 
             //resource.GetComponent<Resource>().timeToGrow = PlayerPrefs.GetFloat("resource " + i + " timeToGrow");
 

@@ -53,6 +53,9 @@ public class Fire : MonoBehaviour
 
     void SetAnim()
     {
+        if (!GetComponent<Animator>())
+            return;
+
         if(timer.IsElapsed())
             GetComponent<Animator>().SetInteger("FireLevel", 0);
         else if (timer.IsElapsedPercent(85))

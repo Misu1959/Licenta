@@ -82,7 +82,7 @@ public class Construction : MonoBehaviour
             GetComponent<Fireplace>().enabled = true;
 
         foreach(Recipe.Requiremets req in CraftingManager.instance.currentRecipe.requirements)
-            InventoryManager.instance.SpendResources(req.type, req.quantity);
+            InventoryManager.instance.SpendResources(req.name, req.quantity);
 
         PlayerActionManagement.instance.CompleteAction();
     }

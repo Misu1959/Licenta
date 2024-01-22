@@ -157,9 +157,9 @@ public class CraftingManager : MonoBehaviour
         foreach(Recipe.Requiremets req in currentRecipe.requirements)
         {
             Transform reqUI = toolTip.transform.GetChild(2).GetChild(i++);
-            reqUI.GetChild(0).GetComponent<TextMeshProUGUI>().text = InventoryManager.instance.AmountOwnedOfType(req.type) + " / " + req.quantity.ToString();
+            reqUI.GetChild(0).GetComponent<TextMeshProUGUI>().text = InventoryManager.instance.AmountOwnedOfType(req.name) + " / " + req.quantity.ToString();
 
-            reqUI.GetComponent<Image>().sprite = ItemsManager.instance.SearchItemsList(req.type).GetComponent<Item>().uiImg;
+            reqUI.GetComponent<Image>().sprite = ItemsManager.instance.SearchItemsList(req.name).GetComponent<Item>().uiImg;
         }
 
     }

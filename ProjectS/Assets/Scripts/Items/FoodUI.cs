@@ -56,9 +56,9 @@ public class FoodUI : Food
     }
     Item CreateItem()
     {
-        Item item = Instantiate(ItemsManager.instance.SearchItemsList(type)).GetComponent<Item>();
+        Item item = Instantiate(ItemsManager.instance.SearchItemsList(name)).GetComponent<Item>();
 
-        item.SetType(type);
+        item.name = this.name;
         item.AddToStack(currentStack);
 
         item.gameObject.transform.localPosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -66,9 +66,6 @@ public class FoodUI : Food
 
         item.SetTransparent(true);
         PlayerActionManagement.instance.SetTargetAndAction(item.gameObject, PlayerActionManagement.Action.drop);
-
-        if (GetComponent<Equipment>())
-            item.GetComponent<Equipment>().SetDurability(GetComponent<Equipment>().durability);
 
         return item;
     }

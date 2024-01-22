@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class RenderDistance : MonoBehaviour
 {
+    private SpriteRenderer sr;
+    private Timer renderTimer;
     private bool setOnce = false;
-    private float maxRenderTimer = .1f;
-    private float renderTimer;
 
     private void Start()
     {
+        sr = GetComponent<SpriteRenderer>();
+        renderTimer = new Timer(.1f);
         SetOnce();
     }
 
@@ -31,15 +33,15 @@ public class RenderDistance : MonoBehaviour
 
     void SetRenderOrder()
     {
-        if (renderTimer <= 0)
-        {
-            GetComponent<Renderer>().sortingOrder = (int)(10000 - 10 * (transform.position.y - GetComponent<SpriteRenderer>().bounds.size.y / 2));
-            renderTimer = maxRenderTimer;
-        }
-        else
-            renderTimer -= Time.deltaTime;
+        renderTimer.StartTimer();
+        renderTimer.Tick();
 
-        if (setOnce)
-            Destroy(this);
+        if (renderTimer.IsElapsed())
+        {
+            sr.sortingOrder = (int)(10000 - 100 * (transform.position.y - sr.sprite.bounds.center.normalized.y));
+
+            if (setOnce)
+                Destroy(this);
+        }
     }
 }

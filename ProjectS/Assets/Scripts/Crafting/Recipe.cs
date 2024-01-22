@@ -13,7 +13,7 @@ public class Recipe : ScriptableObject
     [System.Serializable]
     public struct Requiremets
     {
-        public string type;
+        public Item.Name name;
         public int quantity;
     };
     public Requiremets[] requirements;

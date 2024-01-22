@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6108510407911126653}
   - component: {fileID: 6108510407911126652}
-  - component: {fileID: 7549132842275420200}
   - component: {fileID: 8719084663914454372}
+  - component: {fileID: 7549132842275420200}
   - component: {fileID: 6108510407911126654}
   m_Layer: 19
   m_Name: Charcoal
@@ -87,18 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7549132842275420200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6108510407911126625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0782d6fb9711f8a4da2425512bcab81e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!60 &8719084663914454372
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -135,6 +123,18 @@ PolygonCollider2D:
       - {x: 0.13867188, y: 0.37890625}
       - {x: 0.064453125, y: 0.46484375}
       - {x: -0.10220705, y: 0.5160722}
+--- !u!114 &7549132842275420200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6108510407911126625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0782d6fb9711f8a4da2425512bcab81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6108510407911126654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,5 +148,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiImg: {fileID: 0}
+  name: 5
   maxStack: 20
   fuelValue: 20

@@ -9,34 +9,34 @@ public class ResourceSpawnerManager : MonoBehaviour
 
     IEnumerator Start()
     {
-        yield return null;
+        yield return null; // Wait for a frame
      
         if (PlayerPrefs.GetInt("prevWorld") <= 1)
         {
-            SpawnItems("Flint");
+            SpawnItems(Item.Name.flint);
 
-            SpawnResources("Tree");
-            SpawnResources("Sapling");
-            SpawnResources("Rock");
-            SpawnResources("GrassBush");
+            SpawnResources(Resource.Name.sappling);
+            SpawnResources(Resource.Name.tree);
+            SpawnResources(Resource.Name.rock);
+            SpawnResources(Resource.Name.grassBush);
 
-            SpawnResources("BerryBush");
+            SpawnResources(Resource.Name.berryBush);
 
-            SpawnResources("RedShroom");
-            SpawnResources("BlueShroom");
-            SpawnResources("GreenShroom");
+            SpawnResources(Resource.Name.redShroom);
+            SpawnResources(Resource.Name.greenShroom);
+            SpawnResources(Resource.Name.blueShroom);
 
         }
     }
 
-    void SpawnItems(string type)
+    void SpawnItems(Item.Name _name)
     {
         int nr = rnd.Next(maxItemsForType / 2, maxItemsForType);
 
         for (int i = 0; i < nr; i++)
         {
-            Item item = Instantiate(ItemsManager.instance.SearchItemsList(type)).GetComponent<Item>();
-            item.SetType(type);
+            Item item = Instantiate(ItemsManager.instance.SearchItemsList(_name)).GetComponent<Item>();
+            item.name = _name;
             item.AddToStack(1);
 
             item.transform.SetParent(SaveLoadManager.instance.items.transform);
@@ -45,17 +45,17 @@ public class ResourceSpawnerManager : MonoBehaviour
         }
     }
 
-    void SpawnResources(string type)
+    void SpawnResources(Resource.Name _name)
     {
         int nr = rnd.Next(maxItemsForType / 2, maxItemsForType);
 
         for (int i = 0; i < nr; i++)
         {
-            Resource resource = Instantiate(ItemsManager.instance.SearchResourcesList(type)).GetComponent<Resource>();
+            Resource resource = Instantiate(ItemsManager.instance.SearchResourcesList(_name)).GetComponent<Resource>();
 
             resource.transform.SetParent(SaveLoadManager.instance.resources.transform);
             resource.transform.position = new Vector2(Random.Range(-25, 25), Random.Range(-25, 25));
-            resource.SetType(type);
+            resource.name = _name;
         }
     }
 }

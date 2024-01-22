@@ -8,8 +8,8 @@ public class ItemsManager : MonoBehaviour
 
     public GameObject itemUI;
     
-    [HideInInspector] public GameObject[] items;
-    [HideInInspector] public GameObject[] resources;
+    [HideInInspector] public Item[] items;
+    [HideInInspector] public Resource[] resources;
 
     
     
@@ -21,22 +21,22 @@ public class ItemsManager : MonoBehaviour
 
     void SetPrefabs()
     {
-        items     = Resources.LoadAll<GameObject>("Items");
-        resources = Resources.LoadAll<GameObject>("Res");
+        items     = Resources.LoadAll<Item>("Items");
+        resources = Resources.LoadAll<Resource>("Res");
     }
 
-    public GameObject SearchItemsList(string typeOfItemToFind)
+    public Item SearchItemsList(Item.Name nameOfItemToFind)
     {
-        foreach (GameObject item in items) 
-            if (typeOfItemToFind == item.name)
-                return item.gameObject;
+        foreach (Item item in items) 
+            if (nameOfItemToFind == item.name)
+                return item;
 
         return null;
     }
-    public GameObject SearchResourcesList(string typeOfItemToFind)
+    public Resource SearchResourcesList(Resource.Name nameOfItemToFind)
     {
-        foreach (GameObject resource in resources)
-            if (typeOfItemToFind == resource.name)
+        foreach (Resource resource in resources)
+            if (nameOfItemToFind == resource.name)
                 return resource;
 
         return null;

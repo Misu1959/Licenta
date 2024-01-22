@@ -173,8 +173,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e2ae38218547f5469b93478dde60ee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropTypes:
-  - Grass
+  name: 1
+  drops: 04000000
   timeToGather: 2
   maxTimeToGrow: 20
 --- !u!114 &4714488506158301653

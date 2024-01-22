@@ -40,7 +40,7 @@ public class InventoryManager : MonoBehaviour
         foreach (InventorySlot slot in slots)
         {
             if (slot.CheckIfItHasItem())   // Check if there is an item in slot
-                if (slot.CheckMatchingName(itemToAdd.type)) // Check if the items have the same type
+                if (slot.CheckMatchingName(itemToAdd.name)) // Check if the items have the same type
                     if(!slot.GetItemInSlot().CheckIfStackIsFull())  // If the item in slot does't have a full stack return it
                         return slot;
 
@@ -128,24 +128,24 @@ public class InventoryManager : MonoBehaviour
         return (selectedItem != itemToCheck) ? false : true;
     }
 
-    public int AmountOwnedOfType(string _type)
+    public int AmountOwnedOfType(Item.Name _name)
     {
         int totalAmount = 0;
 
         foreach (InventorySlot slot in slots)
             if (slot.CheckIfItHasItem())
-                if (slot.CheckMatchingName(_type))
+                if (slot.CheckMatchingName(_name))
                     totalAmount += slot.GetItemInSlot().currentStack;
 
         return totalAmount;
     }
 
-    public void SpendResources(string _type, int _amount,bool dontLookForFullStack = true) // First look for partialy full stacks
+    public void SpendResources(Item.Name _name, int _amount,bool dontLookForFullStack = true) // First look for partialy full stacks
     {
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].CheckIfItHasItem())
-                if (slots[i].GetItemInSlot().type == _type)
+                if (slots[i].CheckMatchingName(_name))
                 {
                     if (dontLookForFullStack) // If I'm cheking only partially full stacks
                         if (slots[i].GetItemInSlot().CheckIfStackIsFull()) // If the stack is full skip it
@@ -173,7 +173,7 @@ public class InventoryManager : MonoBehaviour
     {
         foreach (InventorySlot slot in slots) // All slots in the inventory
             if (slot.CheckIfItHasItem())   // Check if there is an item in slot
-                if (slot.CheckMatchingName(itemToFind.type)) // Check if the item in slot has the same type
+                if (slot.CheckMatchingName(itemToFind.name)) // Check if the item in slot has the same type
                     return slot.GetItemInSlot(); // return the item if the types match
 
         return null;

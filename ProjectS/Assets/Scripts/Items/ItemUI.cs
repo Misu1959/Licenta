@@ -58,9 +58,9 @@ public class ItemUI : Item
 
     Item CreateItem()
     {
-        Item item = Instantiate(ItemsManager.instance.SearchItemsList(type)).GetComponent<Item>();
+        Item item = Instantiate(ItemsManager.instance.SearchItemsList(name)).GetComponent<Item>();
 
-        item.SetType(type);
+        item.name = this.name;
         item.AddToStack(currentStack);
 
         return item;

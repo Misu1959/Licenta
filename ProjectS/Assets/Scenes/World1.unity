@@ -2204,8 +2204,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipesList:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: d3cea78fcf86dbb45924e51d320aa020, type: 2}
+  - {fileID: 11400000, guid: 8bacfdf990e81d2489e2536cd6a457ad, type: 2}
 --- !u!1 &469246811
 GameObject:
   m_ObjectHideFlags: 0
@@ -4164,9 +4164,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipesList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: aab76aac712cc804f992ad84bcfbbc30, type: 2}
+  - {fileID: 11400000, guid: c8abb7eebe9eeda45bb04917de417204, type: 2}
+  - {fileID: 11400000, guid: 09d62d52408e0124d988988b3eaf1d73, type: 2}
 --- !u!1 &1135812815
 GameObject:
   m_ObjectHideFlags: 0
@@ -4667,9 +4667,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipesList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: bd27cb36156b50441953ab2257ebabbb, type: 2}
 --- !u!1 &1240355833
 GameObject:
   m_ObjectHideFlags: 0
@@ -7443,10 +7441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3224030a96352824987d5da8480e67ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recipesList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  recipesList: []
 --- !u!1 &1996230442
 GameObject:
   m_ObjectHideFlags: 0
