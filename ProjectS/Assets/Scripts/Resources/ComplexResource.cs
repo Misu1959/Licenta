@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class ComplexResource : Resource
 {
-    [SerializeField] Equipment.ActionType howToGather;
+    [SerializeField] EquipmentData.ActionType howToGather;
     [SerializeField] private float hp;
 
     public override void OnMouseOver()
     {
-        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem )
+        if (!InteractionManager.CanPlayerInteractWithWorld(false))
         {
             PopUpManager.instance.ShowMousePopUp();
             return;
@@ -18,9 +18,9 @@ public class ComplexResource : Resource
         string popUpText = "";
         bool canBeGathered = CheckIfCanBeGathered();
 
-        if (howToGather == Equipment.ActionType.chop && canBeGathered)
+        if (howToGather == EquipmentData.ActionType.chop && canBeGathered)
             popUpText = "LMB - Chop";
-        else if (howToGather == Equipment.ActionType.mine && canBeGathered)
+        else if (howToGather == EquipmentData.ActionType.mine && canBeGathered)
             popUpText = "LMB - Mine";
 
         PopUpManager.instance.ShowMousePopUp(popUpText);
@@ -29,9 +29,9 @@ public class ComplexResource : Resource
 
     public override void SetToGather()
     {
-        if (howToGather == Equipment.ActionType.chop)
+        if (howToGather == EquipmentData.ActionType.chop)
             PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.chop);
-        else if (howToGather == Equipment.ActionType.mine)
+        else if (howToGather == EquipmentData.ActionType.mine)
             PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.mine);
     }
 
@@ -50,10 +50,8 @@ public class ComplexResource : Resource
         if (!timerGather.IsElapsed())
             return;
 
-        //timerGather.StartTimer();
-
         TakeDmg();
-        EquipmentManager.instance.GetHandItem()?.UseTool();
+        EquipmentManager.instance.GetHandItem()?.GetComponent<EquipmentUI>().UseTool();
 
         if(!EquipmentManager.instance.GetHandItem()) // If there is no equipment stop action
             PlayerActionManagement.instance.CompleteAction();
@@ -73,7 +71,7 @@ public class ComplexResource : Resource
 
     void DestroyResource()
     {
-        foreach(Item.Name loot in drops)
+        foreach(ItemData.Name loot in drops)
             DropItemOfName(loot); // Drop the loot
 
         PlayerActionManagement.instance.CompleteAction(); // Complete the action
@@ -82,12 +80,9 @@ public class ComplexResource : Resource
         PopUpManager.instance.ShowMousePopUp();
     }
 
-    void DropItemOfName(Item.Name nameOfItem)
+    void DropItemOfName(ItemData.Name nameOfItem)
     {
-        Item drop = Instantiate(ItemsManager.instance.SearchItemsList(nameOfItem)).GetComponent<Item>();
-        drop.name = nameOfItem;
-        drop.AddToStack(1); 
-
+        Item drop = ItemsManager.instance.CreateItem(nameOfItem);
 
         // Set loot position
         drop.transform.position = new Vector2(Random.Range(transform.position.x - 1, transform.position.x + 1),
@@ -99,6 +94,6 @@ public class ComplexResource : Resource
     public override bool CheckIfCanBeGathered()
     {
         // If the item equiped in hand matches the action requirement return true else return false
-        return EquipmentManager.instance.GetHandItem()?.actionType != howToGather ? false : true;
+        return EquipmentManager.instance.GetHandItem()?.GetEquipmentData().actionType != howToGather ? false : true;
     }
 }

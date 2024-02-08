@@ -281,13 +281,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d4335adb9f0ded45beb1ae4f7348a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiImg: {fileID: 21300000, guid: a21e55e567f9636489aa69aa0ea14f2e, type: 3}
-  name: 20
-  maxStack: 1
-  fuelValue: 5
-  equipmentType: 0
-  actionType: 5
-  maxDurability: 0
+  data:
+    uiImg: {fileID: 21300000, guid: a21e55e567f9636489aa69aa0ea14f2e, type: 3}
+    name: 28
+    maxStack: 1
+    currentStack: 0
+    fuelValue: 0
+    equipmentType: 0
+    actionType: 2
+    maxDurability: 100
+    durability: 0
 --- !u!114 &-706516065438007141
 MonoBehaviour:
   m_ObjectHideFlags: 0

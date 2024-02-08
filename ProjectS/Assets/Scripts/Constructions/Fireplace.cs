@@ -20,45 +20,36 @@ public class Fireplace : Fire, IPointerDownHandler
 
     private void OnMouseOver()
     {
-        if (InventoryManager.instance.selectedItem)
-        {
-            if (InventoryManager.instance.selectedItem.GetComponent<Food>())
-                PopUpManager.instance.ShowMousePopUp("Lmb - cook\nRMB - cancel", 1);
-            else
-                PopUpManager.instance.ShowMousePopUp("Lmb - add fuel\nRMB - cancel", 1);
-        }
+        if (!InteractionManager.CanPlayerInteractWithWorld(true)) return;
+
+        if (InventoryManager.instance.selectedItemSlot.GetItemInSlot()?.GetComponent<Food>())
+            PopUpManager.instance.ShowMousePopUp("Lmb - cook\nRMB - cancel", PopUpManager.PopUpPriorityLevel.low);
+        else
+            PopUpManager.instance.ShowMousePopUp("Lmb - add fuel\nRMB - cancel", PopUpManager.PopUpPriorityLevel.low);
 
     }
-
-    private void OnMouseExit()
-    {
-        PopUpManager.instance.ShowMousePopUp();
-    }
+    public void OnMouseExit() { PopUpManager.instance.ShowMousePopUp(); }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!InteractionManager.canInteract)
-            return;
+        if (!InteractionManager.CanPlayerInteractWithWorld(true)) return;
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (InventoryManager.instance.selectedItem)
-            {
-                if (InventoryManager.instance.selectedItem.GetComponent<Food>())
-                    PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.cook);
-                else
-                    PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.addFuel);
-            }
+            if (InventoryManager.instance.selectedItemSlot.GetItemInSlot()?.GetComponent<Food>())
+                PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.cook);
+            else
+                PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.addFuel);
         }
 
     }
 
     public void AddFuel()
     {
-        if (InventoryManager.instance.selectedItem.fuelValue != 0)
+        if (InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetItemData().fuelValue != 0)
         {
-            timer.AddTime(InventoryManager.instance.selectedItem.fuelValue);
-            InventoryManager.instance.selectedItem.TakeFromStack(1);
+            timer.AddTime(InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetItemData().fuelValue);
+            InventoryManager.instance.selectedItemSlot.GetItemInSlot().TakeFromStack(1);
         }
 
 
@@ -67,22 +58,18 @@ public class Fireplace : Fire, IPointerDownHandler
     public void Cook()
     {
         
-        if (!PlayerActionManagement.instance.IsCooking(this.gameObject))
-            return;
+        if (!PlayerActionManagement.instance.IsCooking(this.gameObject)) return;
 
-        InventoryManager.instance.selectedItem.GetComponent<Food>().timer.StartTimer();
-        InventoryManager.instance.selectedItem.GetComponent<Food>().timer.Tick();
+        InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetFoodData().timer.StartTimer();
+        InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetFoodData().timer.Tick();
 
 
-        if (!InventoryManager.instance.selectedItem.GetComponent<Food>().timer.IsElapsed())
-            return;
+        if (!InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetFoodData().timer.IsElapsed()) return;
 
-        InventoryManager.instance.selectedItem.TakeFromStack(1);
+        InventoryManager.instance.selectedItemSlot.GetItemInSlot().TakeFromStack(1);
 
-        Item cookedItem = Instantiate(ItemsManager.instance.SearchItemsList(InventoryManager.instance.selectedItem.name + 1)).GetComponent<Item>();
-        cookedItem.name = InventoryManager.instance.selectedItem.name + 1;
-        cookedItem.AddToStack(1);
-        InventoryManager.instance.AddItemToSlot(cookedItem);
+        Item_Base cookedItem = ItemsManager.instance.CreateItem(InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetItemData().name + 1);
+        InventoryManager.instance.AddItemToInventory(cookedItem);
 
         PlayerActionManagement.instance.CompleteAction();
     }

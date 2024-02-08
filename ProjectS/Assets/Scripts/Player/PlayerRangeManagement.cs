@@ -41,7 +41,7 @@ public class PlayerRangeManagement : MonoBehaviour
         }
         if (CheckForSpecificCollider(searchCollider)) //Checking if something enter collision with search collider
         {
-            if (other.GetComponent<Item>() || other.GetComponent<Resource>()) // Check if other object is item or resource 
+            if (other.GetComponent<Item_Base>() || other.GetComponent<Resource>()) // Check if other object is item or resource 
                 PlayerActionManagement.instance.itemsInRange.Add(other.gameObject); //add it to the list
 
         }
@@ -96,7 +96,7 @@ public class PlayerRangeManagement : MonoBehaviour
 
         if (CheckForSpecificCollider(searchCollider)) //Checking if something exit collision with search collider
         {
-            if (other.GetComponent<Item>() || other.GetComponent<Resource>()) // Check if other object is an item or a res
+            if (other.GetComponent<Item_Base>() || other.GetComponent<Resource>()) // Check if other object is an item or a res
                 PlayerActionManagement.instance.itemsInRange.Remove(other.gameObject); // Eliminate it from the list
             // Since we know that it entered in collision with search collider we don't need to check if it's in the list
         }

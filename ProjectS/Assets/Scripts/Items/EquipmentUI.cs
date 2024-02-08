@@ -4,75 +4,48 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
-public class EquipmentUI : Equipment
+public class EquipmentUI : ItemUI
 {
-    private void Start()
-    {
-        DisplayStack();
-    }
+    [SerializeField]
+    private EquipmentData data;
+    public override ItemData GetItemData() { return data; }
 
-    void Update()
-    {
-        FollowMouse();
-    }
-    void FollowMouse()
-    {
-        if (!InventoryManager.instance.CheckSelecteditem(this))
-            return;
+    public override void SetItemData(ItemData newData) { data = new EquipmentData((EquipmentData)newData); }
 
-        this.gameObject.transform.position = Input.mousePosition;
+    public override void OnRightMouseButtonPressed() {   Equip();    }
 
-        if (MyMethods.CheckIfMouseIsOverUI() || MyMethods.CheckIfMouseIsOverItem())
-            PopUpManager.instance.ShowMousePopUp("RMB - Cancel");
+    private void Equip() { EquipmentManager.instance.SetEquipment(this, true, false);   }
+
+    public override void DisplayItem()
+    {
+        GetComponent<Image>().sprite = GetItemData().uiImg;
+
+        if (InventoryManager.instance.selectedItemSlot.transform == transform.parent)
+        {
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(false);
+        }
         else
         {
-            PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
-            if (Input.GetMouseButtonDown(0))
-            {
-                CreateItem().Drop((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition)); // Create the item and drop it
-                InventoryManager.instance.SetSelectedItem(null); // Remove selected item;
-                Destroy(this.gameObject);// Destroy the Ui item
-            }
+            transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(1).gameObject.SetActive(true);
+
+            transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetItemData().name.ToString();
+            transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = GetEquipmentData().durability.ToString();
         }
-        if (Input.GetMouseButtonDown(1))
+    }
+
+    public void UseTool()
+    {
+        data.durability--;
+        if (data.durability <= 0)
         {
-            PopUpManager.instance.ShowMousePopUp();
-            InventoryManager.instance.SetBackToSlot();
+            InventoryManager.instance.RemoveItemFromSlot(this);
+            EquipmentManager.instance.ReplenishItem(data.name);
+            Destroy(this.gameObject);
         }
+        DisplayItem();
     }
-
-    public override Item CreateItemUI(int amount)
-    {
-
-        Item itemUI = base.CreateItemUI(amount);
-        InventoryManager.instance.SetSelectedItem(itemUI);
-
-        return itemUI;
-
-    }
-    Item CreateItem()
-    {
-        Item item = Instantiate(ItemsManager.instance.SearchItemsList(name)).GetComponent<Item>();
-
-        item.name = this.name;
-        item.AddToStack(currentStack);
-
-        item.gameObject.transform.localPosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        item.transform.SetParent(SaveLoadManager.instance.items.transform);
-
-        item.SetTransparent(true);
-        PlayerActionManagement.instance.SetTargetAndAction(item.gameObject, PlayerActionManagement.Action.drop);
-
-        item.GetComponent<Equipment>().SetDurability(GetComponent<Equipment>().durability);
-
-        return item;
-    }
-
-    public void DisplayStack()
-    {
-        transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = durability.ToString();
-
-    }
-
 }

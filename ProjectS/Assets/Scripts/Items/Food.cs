@@ -8,31 +8,21 @@ using UnityEngine.EventSystems;
 
 public class Food : Item
 {
-    public float hungerAmount;
-    public float hpAmount;
+    [SerializeField]
+    private FoodData data;
+    public override ItemData GetItemData() { return data; }
 
-    public float timeToCook;
-    public bool quickEat;
+    public override void SetItemData(ItemData newData) { data = new FoodData((FoodData)newData); }
 
-    public Timer timer { get; private set; }
-
-    public virtual void Start()
+    public override void OnRightMouseButtonPressed() 
     {
-        timer = new Timer(timeToCook);
-    }
-
-    public override void OnPointerDown(PointerEventData eventData)
-    {
-        base.OnPointerDown(eventData);
-        if (Input.GetMouseButtonDown(1))
-            if (IsOnTheGround())
-                PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.eat);
+        PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.eat); 
     }
 
     public override void OnMouseOver()
     {
-        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem)
-            return;
+            
+        if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
 
         if (IsOnTheGround())
         { 
@@ -40,12 +30,4 @@ public class Food : Item
             PopUpManager.instance.ShowMousePopUp(popUpText);
         }
     }
-
-    public void Consume()
-    {
-        GetComponent<Item>().TakeFromStack(1);
-        PlayerStats.instance.Eat(hungerAmount, hpAmount);
-    }
-
-
 }

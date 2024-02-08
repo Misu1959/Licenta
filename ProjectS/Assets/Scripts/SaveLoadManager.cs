@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 
 public class SaveLoadManager : MonoBehaviour
 {
+    
     public static SaveLoadManager instance;
 
     public GameObject items;
@@ -20,13 +21,13 @@ public class SaveLoadManager : MonoBehaviour
         if (PlayerPrefs.GetInt("prevWorld") == 0)
         {
             PlayerPrefs.SetInt("prevWorld", 1);
-            Invoke("SaveWorld", 1); // Should save when everything in the world is initialized
+           // Invoke("SaveWorld", 1); // Should save when everything in the world is initialized
         }
-        else
-            StartCoroutine(LoadWorld());
+        //else
+            //StartCoroutine(LoadWorld());
     
     }
-
+    /*
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.J))
@@ -130,8 +131,8 @@ public class SaveLoadManager : MonoBehaviour
         }
         else
             PlayerPrefs.SetInt("selectedItem", 0);
-
-        PlayerPrefs.SetInt("nrOfItemsInInventory", nrOfItemsInInventory);*/
+        
+        PlayerPrefs.SetInt("nrOfItemsInInventory", nrOfItemsInInventory);
     }
 
     void SaveItems()
@@ -271,10 +272,10 @@ public class SaveLoadManager : MonoBehaviour
             selectedItem.GetComponent<Item>().fuelValue = PlayerPrefs.GetInt("selectedItem fuelValue");
 
             selectedItem.GetComponent<Item>().transform.SetParent(InventoryManager.instance.inventory);
-            InventoryManager.instance = selectedItem.GetComponent<Item>();
+            InventoryManager.instance.se = selectedItem.GetComponent<Item>();
 
             selectedItem.GetComponent<Image>().color = ItemsManager.instance.SearchItemsList(selectedItem.GetComponent<Item>().name).GetComponent<SpriteRenderer>().color;
-        }*/
+        }
     }
 
 
@@ -316,6 +317,6 @@ public class SaveLoadManager : MonoBehaviour
     {
         
     }
-
     #endregion
+*/
 }

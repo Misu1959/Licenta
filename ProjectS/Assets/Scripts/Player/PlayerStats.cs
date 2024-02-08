@@ -108,10 +108,12 @@ public class PlayerStats : MonoBehaviour
         UIManager.instance.ShowHp(maxHp, hp);
     }
 
-    public void Eat(float hungerAmount, float healAmount)
+    public void Eat(Item_Base food)
     {
-        hunger = Mathf.Clamp(hunger + hungerAmount, 0, maxHunger);
-        hp = Mathf.Clamp(hp + healAmount, 0, maxHp);
+        hunger = Mathf.Clamp(hunger + food.GetFoodData().hungerAmount, 0, maxHunger);
+        hp = Mathf.Clamp(hp + food.GetFoodData().hpAmount, 0, maxHp);
+
+        food.TakeFromStack(1);
 
         if (hp <= 0)
             Die("by eating bad food!");

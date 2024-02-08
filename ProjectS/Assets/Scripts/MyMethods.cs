@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MyMethods : MonoBehaviour
+public class MyMethods
 {
     public static bool CheckIfMouseIsOverUI()
     {
@@ -30,4 +31,5 @@ public class MyMethods : MonoBehaviour
 
 
     }
+
 }

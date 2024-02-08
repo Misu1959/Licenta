@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: 0
-  drops: 07000000
+  drops: 0e000000
   timeToGather: 3
   maxTimeToGrow: 30
 --- !u!114 &-692651509621024683

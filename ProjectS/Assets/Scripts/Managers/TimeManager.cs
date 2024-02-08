@@ -47,7 +47,7 @@ public class TimeManager : MonoBehaviour
             currentTime -= dayLength;
             
             StartCoroutine(SetDayTime(true));
-            SaveLoadManager.instance.SaveWorld();
+            //SaveLoadManager.instance.SaveWorld();
 
             UIManager.instance.ShowDayCount(currentDay);
             PlayerPrefs.SetInt("currentDay", currentDay); // Save day

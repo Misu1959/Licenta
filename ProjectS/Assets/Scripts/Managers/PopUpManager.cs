@@ -9,10 +9,17 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PopUpManager : MonoBehaviour
 {
+    public enum PopUpPriorityLevel
+    {
+        low,
+        medium,
+        high,
+        maximum
+    }
+
     public static PopUpManager instance;
-
-
-    private int mousePopUpPriority = 0;
+    
+    private PopUpPriorityLevel popUpPriorityLevel;
     [SerializeField] private GameObject mousePopUp;
     [SerializeField] private GameObject popUpPrefab;
 
@@ -57,14 +64,14 @@ public class PopUpManager : MonoBehaviour
     }
 
 
-    public void ShowMousePopUp(string popUpText = "", int priority = 0)
+    public void ShowMousePopUp(string popUpText = "", PopUpPriorityLevel priority = PopUpPriorityLevel.low)
     {
         if (popUpText == "")
-            mousePopUpPriority = 0;
-        else if (mousePopUpPriority <= priority)
-            mousePopUpPriority = priority;
+            popUpPriorityLevel = PopUpPriorityLevel.low;
+        else if (popUpPriorityLevel <= priority)
+            popUpPriorityLevel = priority;
 
-        if (mousePopUpPriority <= priority)
+        if (popUpPriorityLevel <= priority)
             if (mousePopUp.GetComponent<TextMeshProUGUI>().text != popUpText)
                 mousePopUp.GetComponent<TextMeshProUGUI>().text = popUpText;
 

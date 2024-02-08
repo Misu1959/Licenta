@@ -1,87 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using UnityEngine;
-using static UnityEditor.Progress;
+using UnityEngine.EventSystems;
 
-public class Item : MonoBehaviour,IPointerDownHandler
+public abstract class Item : Item_Base, IPointerDownHandler
 {
-    public enum Name
+    public abstract void OnMouseOver();
+    public void OnMouseExit() { PopUpManager.instance.ShowMousePopUp(); }
+
+    public void OnPointerDown(PointerEventData eventData)
     {
-        twigs,
-        log,
-        flint,
-        stone,
-        grass,
-        charcoal,
-        pinecone,
-
-        berries,
-        berriesC,
-        redCap,
-        redCapC,
-        greenCap,
-        greenCapC,
-        blueCap,
-        blueCapC,
-        meat,
-        meatC,
-
-        axe,
-        pickaxe,
-        spear,
-        torch
-    };
-
-
-    public Sprite uiImg;
-
-    public new Name name;
-
-    public int      maxStack;
-    public int      currentStack { get; private set;}
-    
-    public int      fuelValue;
-
-    public virtual void OnPointerDown(PointerEventData eventData)
-    {
-        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem)
-            return;
-
+        if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
+        if (!IsOnTheGround()) return;
 
         if (Input.GetMouseButtonDown(0))
-            if(IsOnTheGround())
-        PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.pick);
-
+            OnLeftMouseButtonPressed();
+        if (Input.GetMouseButtonDown(1))
+            OnRightMouseButtonPressed();
     }
+    public virtual void OnLeftMouseButtonPressed(int amount = -1) { Pick(); }
 
-    public virtual void OnMouseOver()
+    private void Pick() {   PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.pick);    }
+
+    protected bool IsOnTheGround()
     {
-        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem)
-        {
-            PopUpManager.instance.ShowMousePopUp();
-            return;
-        }
-
-        if (IsOnTheGround())
-            PopUpManager.instance.ShowMousePopUp("LMB - Pick");
+        // If player is not droping it now return true
+        if (PlayerActionManagement.instance.currentTarget == this.gameObject &&
+        PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.drop)
+            return false;
+        else
+            return true;
     }
-
-    private void OnMouseExit()
-    {
-        PopUpManager.instance.ShowMousePopUp();
-    }
-
-    public void Drop(Vector2 dropPosition)
-    {
-        transform.localPosition = dropPosition;
-        transform.SetParent(SaveLoadManager.instance.items.transform);
-
-        SetTransparent(true);
-        PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.drop);
-    }
-
 
     public void SetTransparent(bool setTransparent)
     {
@@ -92,91 +41,4 @@ public class Item : MonoBehaviour,IPointerDownHandler
         else
             GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, 1f);
     }
-
-    public virtual Item CreateItemUI(int amount = -1)
-    {
-
-        GameObject itemUI = Instantiate(ItemsManager.instance.itemUI);
-        AddFunctionalityToItem(itemUI);
-
-        itemUI.GetComponent<Item>().uiImg = uiImg;
-        itemUI.GetComponent<Item>().name = this.name;
-
-        itemUI.GetComponent<Item>().currentStack = (amount == -1) ? currentStack : amount;
-        itemUI.GetComponent<Item>().maxStack     = maxStack;
-        itemUI.GetComponent<Item>().fuelValue    = fuelValue;
-        itemUI.gameObject.GetComponent<Image>().sprite = uiImg;
-
-        return itemUI.GetComponent<Item>();
-    }
-
-    void AddFunctionalityToItem(GameObject itemUI)
-    {
-
-        if (GetComponent<Food>())
-        {
-            itemUI.AddComponent<FoodUI>();
-            itemUI.GetComponent<Food>().hungerAmount = GetComponent<Food>().hungerAmount;
-            itemUI.GetComponent<Food>().hpAmount = GetComponent<Food>().hpAmount;
-            itemUI.GetComponent<Food>().timeToCook = GetComponent<Food>().timeToCook;
-
-            return;
-        }
-
-        if(GetComponent<Equipment>())
-        {
-            itemUI.AddComponent<EquipmentUI>();
-
-            itemUI.GetComponent<Equipment>().equipmentType = GetComponent<Equipment>().equipmentType;
-            itemUI.GetComponent<Equipment>().actionType = GetComponent<Equipment>().actionType;
-            itemUI.GetComponent<Equipment>().SetDurability(GetComponent<Equipment>().durability);
-            return;
-        }
-
-        itemUI.AddComponent<ItemUI>();
-
-    }
-
-    public bool CheckIfStackIsFull()
-    {
-        if (GetComponent<Equipment>())
-            return true;
-        if (currentStack == maxStack)
-            return true;
-
-        return false;
-    }
-    public void TakeFromStack(int _amountToTake)
-    {
-        currentStack -= _amountToTake;
-
-        if (currentStack <= 0)
-        {
-            PopUpManager.instance.ShowMousePopUp();
-            Destroy(this.gameObject);
-        }
-
-        GetComponent<ItemUI>()?.DisplayStack();
-        GetComponent<FoodUI>()?.DisplayStack();
-        GetComponent<EquipmentUI>()?.DisplayStack();
-    }
-
-    public void AddToStack(int _amountToTake)
-    {
-        currentStack += _amountToTake;
-
-        GetComponent<ItemUI>()?.DisplayStack();
-        GetComponent<FoodUI>()?.DisplayStack();
-        GetComponent<EquipmentUI>()?.DisplayStack();
-    }
-
-    protected bool IsOnTheGround()
-    {
-        if (PlayerActionManagement.instance.currentTarget == this.gameObject &&
-        PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.drop)
-            return false;
-        else
-            return true;
-    }
-
 }

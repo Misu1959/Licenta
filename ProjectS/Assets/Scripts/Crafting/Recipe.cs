@@ -6,16 +6,19 @@ using UnityEngine;
 
 public class Recipe : ScriptableObject
 {
+    [System.Serializable]
+    public struct Requiremets
+    {
+        public ItemData.Name name;
+        public int quantity;
+    };
+
+
     public Sprite recipeUI;
     public GameObject prefabItem;
     public bool isLearned;
 
-    [System.Serializable]
-    public struct Requiremets
-    {
-        public Item.Name name;
-        public int quantity;
-    };
+
     public Requiremets[] requirements;
 
 

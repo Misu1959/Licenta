@@ -153,10 +153,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: 3
-  drops: 03000000
+  drops: 04000000
   timeToGather: 1
   maxTimeToGrow: 0
-  howToGather: 2
+  howToGather: 1
   hp: 10
 --- !u!114 &2747726935164066378
 MonoBehaviour:

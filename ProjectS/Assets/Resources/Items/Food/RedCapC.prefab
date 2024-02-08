@@ -143,11 +143,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eab1ab89bbf20854eb6b046c88d2f925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiImg: {fileID: 21300000, guid: e0278fc7272d2ab4494793477b830a6a, type: 3}
-  name: 10
-  maxStack: 20
-  fuelValue: 0
-  hungerAmount: 10
-  hpAmount: -20
-  timeToCook: 0
-  quickEat: 1
+  data:
+    uiImg: {fileID: 21300000, guid: e0278fc7272d2ab4494793477b830a6a, type: 3}
+    name: 17
+    maxStack: 20
+    currentStack: 0
+    fuelValue: 0
+    hungerAmount: 5
+    hpAmount: 0
+    timeToCook: 1
+    quickEat: 1

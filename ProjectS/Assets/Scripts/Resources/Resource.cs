@@ -20,7 +20,7 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     public new Name name;
 
-    [SerializeField] protected Item.Name[] drops;
+    [SerializeField] protected ItemData.Name[] drops;
 
     [SerializeField] protected float timeToGather;
     protected Timer timerGather;
@@ -44,8 +44,7 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem)
-            return;
+        if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
 
         if (CheckIfCanBeGathered())
             SetToGather();
@@ -53,7 +52,7 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     public virtual void OnMouseOver()
     {
-        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem)
+        if (!InteractionManager.CanPlayerInteractWithWorld(false))
         {
             PopUpManager.instance.ShowMousePopUp();
             return;
@@ -64,15 +63,9 @@ public class Resource : MonoBehaviour, IPointerDownHandler
             PopUpManager.instance.ShowMousePopUp("LMB - Gather");
     }
 
-    private void OnMouseExit()
-    {
-        PopUpManager.instance.ShowMousePopUp();
-    }
+    private void OnMouseExit()  {   PopUpManager.instance.ShowMousePopUp(); }
 
-    public virtual void SetToGather()
-    {
-        PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.gather);
-    }
+    public virtual void SetToGather()   {   PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.gather);  }
 
     public virtual void GatherItemOfType()
     {
@@ -90,11 +83,11 @@ public class Resource : MonoBehaviour, IPointerDownHandler
             return;
 
         // Next lines adds the loot to the inventory
-        Item item = Instantiate(ItemsManager.instance.SearchItemsList(drops[0])).GetComponent<Item>();
-        item.name = drops[0];
-        item.AddToStack(1);
-        InventoryManager.instance.AddItemToSlot(item);
+        Item item = ItemsManager.instance.CreateItem(drops[0]);
 
+        InventoryManager.instance.AddItemToInventory(item);
+        Destroy(item.gameObject);
+        
         timerGrow.StartTimer();
         PlayerActionManagement.instance.CompleteAction(); // Complete the action
     }

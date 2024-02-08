@@ -147,7 +147,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2ce75d405ae5a6419d78e521edcf0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiImg: {fileID: 0}
-  name: 5
-  maxStack: 20
-  fuelValue: 20
+  data:
+    uiImg: {fileID: 0}
+    name: 6
+    maxStack: 20
+    currentStack: 0
+    fuelValue: 10

@@ -27,7 +27,7 @@ public class RenderDistance : MonoBehaviour
             setOnce = true;
         if (GetComponent<Resource>())
             setOnce = true;
-        if (GetComponent<Item>())
+        if (GetComponent<Material>())
             setOnce = true;
     }
 

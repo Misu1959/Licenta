@@ -27,8 +27,7 @@ public class Construction : MonoBehaviour
 
     void Place()
     {
-        if (!PlayerActionManagement.instance.IsPlacing(this.gameObject)) // If player is not placing return
-            return;
+        if (!PlayerActionManagement.instance.IsPlacing(this.gameObject)) return; // If player is not placing return
 
         transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
         PopUpManager.instance.ShowMousePopUp("RMB - cancel");
@@ -47,7 +46,7 @@ public class Construction : MonoBehaviour
             }
         }
         else
-            GetComponent<SpriteRenderer>().color = new Color(1f, 0, 0, .5f);
+            GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 128);
 
 
         if (Input.GetMouseButtonDown(1))
@@ -70,8 +69,8 @@ public class Construction : MonoBehaviour
 
         timer.StartTimer();
         timer.Tick();
-        if (!timer.IsElapsed())
-            return;
+        if (!timer.IsElapsed()) return;
+
 
         GetComponent<SpriteRenderer>().color = color;
         GetComponent<Collider2D>().isTrigger = false;
@@ -81,7 +80,7 @@ public class Construction : MonoBehaviour
         if (GetComponent<Fireplace>())
             GetComponent<Fireplace>().enabled = true;
 
-        foreach(Recipe.Requiremets req in CraftingManager.instance.currentRecipe.requirements)
+        foreach(Recipe.Requiremets req in CraftingManager.instance.GetCurrentCraftingRecipe().GetRecipe().requirements)
             InventoryManager.instance.SpendResources(req.name, req.quantity);
 
         PlayerActionManagement.instance.CompleteAction();
@@ -96,7 +95,7 @@ public class Construction : MonoBehaviour
 
         for (int i = 0; i < results.Count; i++)
         {
-            if (results[i].gameObject.layer == 2)
+            if (results[i].gameObject.layer == 2 || results[i].gameObject == this.gameObject)
                 continue;
             else
                 return false;

@@ -13,7 +13,8 @@ public class ResourceSpawnerManager : MonoBehaviour
      
         if (PlayerPrefs.GetInt("prevWorld") <= 1)
         {
-            SpawnItems(Item.Name.flint);
+            SpawnItems(ItemData.Name.flint);
+            SpawnItems(ItemData.Name.seeds);
 
             SpawnResources(Resource.Name.sappling);
             SpawnResources(Resource.Name.tree);
@@ -29,15 +30,13 @@ public class ResourceSpawnerManager : MonoBehaviour
         }
     }
 
-    void SpawnItems(Item.Name _name)
+    void SpawnItems(ItemData.Name _name)
     {
         int nr = rnd.Next(maxItemsForType / 2, maxItemsForType);
 
         for (int i = 0; i < nr; i++)
         {
-            Item item = Instantiate(ItemsManager.instance.SearchItemsList(_name)).GetComponent<Item>();
-            item.name = _name;
-            item.AddToStack(1);
+            Item item = ItemsManager.instance.CreateItem(_name);
 
             item.transform.SetParent(SaveLoadManager.instance.items.transform);
             item.transform.position = new Vector2(Random.Range(-25, 25), Random.Range(-25, 25));

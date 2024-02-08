@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2924ae2340d26f439081899886b8862, type: 3}
   m_Name: GrassArmor
   m_EditorClassIdentifier: 
-  recipeUI: {fileID: 21300000, guid: a6e99a1d6f3645849ab81de9df2f506e, type: 3}
-  prefabItem: {fileID: 2505370312106559334, guid: be1d8e47fb6ce274291c4a042bab6ce1, type: 3}
+  recipeUI: {fileID: 21300000, guid: 000f249ef95c83641b3ae150d162cc6b, type: 3}
+  prefabItem: {fileID: 7566794954163294703, guid: 1a92e7445f0861f41ae301456368e936, type: 3}
   isLearned: 1
   requirements:
-  - name: 1
+  - name: 5
     quantity: 3
+  - name: 10
+    quantity: 1

@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine.Rendering.Universal;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+using System;
 
 public class PlayerActionManagement : MonoBehaviour
 {
@@ -16,6 +16,7 @@ public class PlayerActionManagement : MonoBehaviour
         gather = 11,
         chop = 12,
         mine = 13,
+        search = 20,
         craft = 21,
         place = 22,
         build = 23,
@@ -24,76 +25,69 @@ public class PlayerActionManagement : MonoBehaviour
         cook = 32,
         eat = 33
     };
-    public Action currentAction { get; private set; }
-
 
     public static PlayerActionManagement instance;
-    
+
     [HideInInspector] public List<GameObject> itemsInRange = new List<GameObject>();
-    [HideInInspector] public GameObject currentTarget;
+    public GameObject currentTarget { get; private set; }
+    public Action currentAction { get; private set; }
 
     public bool isPerformingAction { get; private set; }
 
-    void Start()
-    {
-        instance = this;
-    }
+    void Start() {   instance = this;    }
 
     void Update()
     {
         SearchForItemInRange();
-
         CancelActionByMoving();
     }
     void SearchForItemInRange()
     {
-        if (!Input.GetKeyDown(KeyCode.Space)) // If Space is not pressed return otherwise search for items in range
-            return;
+        if (!Input.GetKeyDown(KeyCode.Space)) return;// If Space is not pressed return otherwise search for items in range
+        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) return;// If it's moving from keyboard don't take space action
+        if (!InteractionManager.CanPlayerInteractWithUI()) return;
 
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) // If it's moving from keyboard don't take space action
-            return;
-
-        if (!InteractionManager.canInteract)
-            return;
 
         InventoryManager.instance.SetBackToSlot();
 
-        float closestDim = 1000;
-        GameObject closestItem = null;
+        float closestDistance = 1000;
+        GameObject closestObjectToInteractWith = null;
 
-        foreach (GameObject item in itemsInRange)
+        foreach (GameObject objectToInteractWith in itemsInRange)
         {
-            if (item.GetComponent<Resource>())
-                if (!item.GetComponent<Resource>().CheckIfCanBeGathered()) // If it can't be gathered skip it
+            if (objectToInteractWith.GetComponent<Resource>())
+                if (!objectToInteractWith.GetComponent<Resource>().CheckIfCanBeGathered()) // If it can't be gathered skip it
                     continue;
 
             // Check if it's the closest one
-            float dist = Vector2.Distance(transform.position, item.transform.position);
-            if (dist < closestDim)
+            float dist = Vector2.Distance(transform.position, objectToInteractWith.transform.position);
+            if (dist < closestDistance)
             {
-                closestDim = dist;
-                closestItem = item;
+                closestDistance = dist;
+                closestObjectToInteractWith = objectToInteractWith;
             }
         }
 
-        if (!closestItem)
+        if (!closestObjectToInteractWith)
             PopUpManager.instance.ShowPopUpAction("Nothing in range!");
-        else if (closestItem.GetComponent<Item>()) // If closest item exist and is an item go and pick it
-            SetTargetAndAction(closestItem, Action.pick);
+        else if (closestObjectToInteractWith.GetComponent<Item>()) // If closest item exist and is an item go and pick it
+            SetTargetAndAction(closestObjectToInteractWith, Action.pick);
         else // If closest item exist and is a resource type go and gather/chop/mine it
-            closestItem.GetComponent<Resource>()?.SetToGather();
+            closestObjectToInteractWith.GetComponent<Resource>()?.SetToGather();
 
     }
 
     public void SetTargetAndAction(GameObject _target, Action _currentAction)
     {
-        if (currentTarget == _target && currentTarget != null) // If I take the same action don't do anything
-            return;
+        if (currentTarget == _target && currentTarget != null) return;// If I take the same action don't do anything
+        if (!PlayerController.instance.canMove) return; // If I can't move
 
         if (currentTarget && _target) // If I take a new action cancel the current action
             CancelAction(true);
         else if(_target)
             PopUpManager.instance.ShowPopUpAction("Action taken!");
+
+
 
         currentTarget = _target;
         currentAction = _currentAction;
@@ -104,51 +98,75 @@ public class PlayerActionManagement : MonoBehaviour
 
     public void PerformAction()
     {
-        if (isPerformingAction)
-            return;
-
-        isPerformingAction = true;
-        GetComponent<Animator>().SetBool("IsPerformingAction", true);
+        if (isPerformingAction) return;
 
         switch (currentAction)
         {
             case Action.pick:
-            {  
-                GetComponent<Animator>().SetBool("PickDrop", true);
-
-                Invoke("CompleteAction", .5f);
-                break;
-            }
-            case Action.drop:
-            {
-                GetComponent<Animator>().SetBool("PickDrop", true);
+                {
+                    PlayerController.instance.SetCanMove(false);
+                    GetComponent<Animator>().SetTrigger("PickDrop");
                 
-                Invoke("CompleteAction", .5f);
-                break;
-            }
+                    Invoke(nameof(CompleteAction), .5f);
+                    break;
+                }
+            case Action.drop:
+                {
+                    PlayerController.instance.SetCanMove(false);
+                    GetComponent<Animator>().SetTrigger("PickDrop");
+
+                    Invoke(nameof(CompleteAction), .5f);
+                    break;
+                }
+            case Action.search:
+                {
+                    PlayerController.instance.SetCanMove(false);
+                    GetComponent<Animator>().SetTrigger("PickDrop");
+                    currentTarget.GetComponent<Animator>().SetInteger("OpenClose", 1);
+
+                    if (!InventoryManager.instance.chest.gameObject.activeInHierarchy)
+                    {
+                        InventoryManager.instance.DisplayChest(currentTarget.GetComponent<Storage>());
+                        Invoke(nameof(CompleteAction), .5f);
+                    }
+                    break;
+                }
             case Action.equip:
-            {
-                GetComponent<Animator>().SetBool("PickDrop", true);
+                {
+                    PlayerController.instance.SetCanMove(false);
+                    GetComponent<Animator>().SetTrigger("PickDrop");
 
-                Invoke("CompleteAction", .5f);
-                break;
-            }
+                    Invoke(nameof(CompleteAction), .5f);
+                    break;
+                }
             case Action.addFuel:
-            {
-                GetComponent<Animator>().SetBool("PickDrop", true);
+                {
+                    PlayerController.instance.SetCanMove(false);
+                    GetComponent<Animator>().SetTrigger("PickDrop");
 
-                Invoke("CompleteAction", .5f);
-                break;
-            }
+                    Invoke(nameof(CompleteAction), .5f);
+                    break;
+                }
             case Action.eat:
-            {
-                int quickEat = currentTarget.GetComponent<Food>().quickEat == true ? 1 : 2;
-                GetComponent<Animator>().SetInteger("IsEating", quickEat);
-
-                Invoke("CompleteAction", quickEat / 2);
-                break;
-            }
+                {
+                    PlayerController.instance.SetCanMove(false);
+                    if (currentTarget.GetComponent<Item_Base>().GetFoodData().quickEat == true)
+                    {
+                        GetComponent<Animator>().SetTrigger("IsQuickEating");
+                        Invoke(nameof(CompleteAction), .5f);
+                    }
+                    else
+                    { 
+                        GetComponent<Animator>().SetTrigger("IsEating");
+                        Invoke(nameof(CompleteAction), 1);
+                    }
+                    break;
+                }
         }
+        
+        isPerformingAction = true;
+        GetComponent<Animator>().SetBool("IsPerformingAction", true);
+
     }
 
     public void CompleteAction()
@@ -157,22 +175,29 @@ public class PlayerActionManagement : MonoBehaviour
         {
             case Action.pick:
                 {
-                    InventoryManager.instance.AddItemToSlot(currentTarget.GetComponent<Item>());
-                    itemsInRange.Remove(currentTarget);
+                    PlayerController.instance.SetCanMove(true);
+                    InventoryManager.instance.AddItemToInventory(currentTarget.GetComponent<Item_Base>());
                     break;
                 }
             case Action.drop:
                 {
+                    PlayerController.instance.SetCanMove(true);
                     currentTarget.GetComponent<Item>().SetTransparent(false);
-
                     break;
                 }
             case Action.equip:
                 {
-                    EquipmentManager.instance.SetEquipment(currentTarget.GetComponent<Item>().CreateItemUI().GetComponent<Equipment>());
-                    itemsInRange.Remove(currentTarget);
+                    PlayerController.instance.SetCanMove(true);
+                    EquipmentManager.instance.SetEquipment(currentTarget.GetComponent<Item_Base>(), true, false);
 
                     break;
+                }
+            case Action.search:
+                {
+                    PlayerController.instance.SetCanMove(true);
+                    GetComponent<Animator>().SetBool("IsPerformingAction", false);
+
+                    return; ;
                 }
             case Action.build:
                 {
@@ -181,24 +206,22 @@ public class PlayerActionManagement : MonoBehaviour
                 }
             case Action.addFuel:
                 {
+                    PlayerController.instance.SetCanMove(true);
                     currentTarget.GetComponent<Fireplace>().AddFuel();
                     break;
                 }
             case Action.eat:
                 {
-                    currentTarget.GetComponent<Food>().Consume();
+                    PlayerController.instance.SetCanMove(true);
+                    PlayerStats.instance.Eat(currentTarget.GetComponent<Item_Base>());
                     break;
                 }
         }
-
-        SetTargetAndAction(null, Action.nothing);
+        
         isPerformingAction = false;
-
         GetComponent<Animator>().SetBool("IsPerformingAction", false);
-        GetComponent<Animator>().SetBool("PickDrop", false);
-        GetComponent<Animator>().SetInteger("IsEating", 0);
-
-
+        
+        SetTargetAndAction(null, Action.nothing);
         PopUpManager.instance.ShowPopUpAction("Action completed!");
 
     }
@@ -209,7 +232,14 @@ public class PlayerActionManagement : MonoBehaviour
         {
             case Action.drop:
                 {
-                    InventoryManager.instance.AddItemToSlot(currentTarget.GetComponent<Item>());
+                    InventoryManager.instance.AddItemToInventory(currentTarget.GetComponent<Item_Base>());
+                    Destroy(currentTarget);
+                    break;
+                }
+            case Action.search:
+                {
+                    currentTarget.GetComponent<Animator>().SetInteger("OpenClose", -1);
+                    InventoryManager.instance.DisplayChest();
                     break;
                 }
             case Action.place:
@@ -228,12 +258,18 @@ public class PlayerActionManagement : MonoBehaviour
         isPerformingAction = false;
         GetComponent<Animator>().SetBool("IsPerformingAction", false);
 
-        if (newAction)
-            PopUpManager.instance.ShowPopUpAction("New action taken!");
-        else
+        if (!newAction)
         {
             SetTargetAndAction(null, Action.nothing);
-            PopUpManager.instance.ShowPopUpAction("Action canceled!");
+            if (currentAction != Action.search)
+                PopUpManager.instance.ShowPopUpAction("Action canceled!");
+        }
+        else
+        {
+            if (currentAction == Action.search)
+                PopUpManager.instance.ShowPopUpAction("Action taken!");
+            else
+                PopUpManager.instance.ShowPopUpAction("New action taken!");
         }
     }
 
@@ -245,7 +281,7 @@ public class PlayerActionManagement : MonoBehaviour
 
         // If player is moving on X or Y axis from keyboard cancel the action
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-            if(PlayerController.instance.CheckIfCanMove())
+            if(PlayerController.instance.canMove)
                 CancelAction();
     }
 
@@ -283,6 +319,5 @@ public class PlayerActionManagement : MonoBehaviour
         else
             return false;
     }
-
 
 }

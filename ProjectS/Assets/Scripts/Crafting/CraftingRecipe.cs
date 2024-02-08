@@ -9,62 +9,55 @@ public class CraftingRecipe : MonoBehaviour
 
     public Recipe GetRecipe() { return recipe; }
 
-    public void SetRecipe(Recipe _recipe) 
-    { 
-        recipe = _recipe;
-        transform.GetChild(0).GetComponent<Image>().sprite = recipe.recipeUI;
-    }
+    public void SetRecipe(Recipe _recipe) { recipe = _recipe;   }
 
-    public IEnumerator CraftRecipe()
-    {
-        GameObject craftedItem = Instantiate(recipe.prefabItem);
-
-        if (recipe.isLearned == false)
-            recipe.isLearned = true;
-
-        InventoryManager.instance.SetBackToSlot();
-
-        if (!craftedItem.GetComponent<Construction>()) // If the crafted thing is not a construction
-        {
-            foreach (Recipe.Requiremets req in recipe.requirements)
-                InventoryManager.instance.SpendResources(req.name, req.quantity);
-
-            yield return null;
-            if (craftedItem.GetComponent<Equipment>())
-            {
-                //craftedItem.GetComponent<Item>().SetName(recipe.prefabItem.name);
-                craftedItem.GetComponent<Equipment>().SetDurability(-1);
-                InventoryManager.instance.AddItemToSlot(craftedItem.GetComponent<Item>());
-            }
-        }
-        else // If the crafted thing is a construction
-            PlayerActionManagement.instance.SetTargetAndAction(null, PlayerActionManagement.Action.place); // Set player action to placement mode
-
-        CraftingManager.instance.SetRecipesList(); // Close crafting manager
-    }
-
+    public bool CheckIfLearned() { return recipe.isLearned; }
+    
     public bool CheckIfCanBeCrafted()
     {
-        // If player it's not near a station and recipe isn't learned
-        if (PlayerStats.instance.researchLevel == 0)
-            if (!recipe.isLearned)
-                return false;
+        //if (PlayerStats.instance.researchLevel == 0)
+        if (CheckIfLearned())
+            return CheckIfHaveRosources();
 
-        return CheckIfHaveRosources();
+        return false;
+
     }
 
     private bool CheckIfHaveRosources()
     {
         foreach(Recipe.Requiremets req in recipe.requirements)
-            if (InventoryManager.instance.AmountOwnedOfType(req.name) < req.quantity)
+            if (InventoryManager.instance.AmountOwned(req.name) < req.quantity)
                 return false;
 
         return true;
     }
 
+    public IEnumerator CraftRecipe()
+    {
 
+        if (!CheckIfLearned())
+            recipe.isLearned = true;
 
+        InventoryManager.instance.SetBackToSlot();
 
+        if (!recipe.prefabItem.GetComponent<Construction>()) // If the crafted thing is not a construction
+        {
 
+            foreach (Recipe.Requiremets req in recipe.requirements)
+                InventoryManager.instance.SpendResources(req.name, req.quantity);
+
+            yield return null;
+
+            ItemUI craftedItemUI = ItemsManager.instance.CreateItemUI(recipe.prefabItem.GetComponent<Item>());
+            InventoryManager.instance.AddItemToInventory(craftedItemUI);
+        }
+        else // If the crafted thing is a construction
+        {
+            Instantiate(recipe.prefabItem);
+            PlayerActionManagement.instance.SetTargetAndAction(null, PlayerActionManagement.Action.place); // Set player action to placement mode
+        }
+
+        CraftingManager.instance.SetRecipesList(); // Close crafting manager
+    }
 
 }

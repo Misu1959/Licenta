@@ -3,74 +3,36 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Equipment : Item
 {
-    public enum Type
+    [SerializeField]
+    private EquipmentData data;
+    public override ItemData GetItemData() { return data; }
+
+    public override void SetItemData(ItemData newData) { data = new EquipmentData((EquipmentData)newData); }
+
+    public override void OnLeftMouseButtonPressed(int amount = -1)
     {
-        hand = 0,
-        body = 1,
-        head = 2
-    };
-    public enum ActionType
+        PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.pick);
+    }
+    public override void OnRightMouseButtonPressed()
     {
-        chop = 1,
-        mine = 2,
-        torch = 5,
-        fight = 10
-    };
-
-
-    public Type equipmentType;
-    public ActionType actionType;
-
-
-    [SerializeField] private float maxDurability;
-    public float durability { get; private set;}
-
-
-
-    public override void OnPointerDown(PointerEventData eventData)
-    {
-        base.OnPointerDown(eventData);
-        
-        if (IsOnTheGround())
-            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.equip);
-
+        PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.equip);
     }
 
     public override void OnMouseOver()
     {
-        if (!InteractionManager.canInteract || InventoryManager.instance.selectedItem)
-            return;
-
-        if (IsOnTheGround())
-        {
-            string popUpText = "LMB - Pick\nRMB - Equip";
-            PopUpManager.instance.ShowMousePopUp(popUpText);
-        }
-    }
-
-    public void SetDurability(float _durability)
-    {
-        if (_durability == -1)
-            durability = maxDurability;
+        if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
+        if (!IsOnTheGround()) return;
+        
+        if(EquipmentManager.instance.BackpackStorage() && GetComponent<Storage>())
+            PopUpManager.instance.ShowMousePopUp("LMB|RMB\nChange backpack");
+        else if(GetComponent<Storage>())
+            PopUpManager.instance.ShowMousePopUp("LMB|RMB\nEquip backpack");
         else
-            durability = _durability;
-
-        GetComponent<EquipmentUI>()?.DisplayStack();
-    }
-
-    public void UseTool()
-    {
-        durability--;
-        GetComponent<EquipmentUI>()?.DisplayStack();
-
-        if (durability <= 0)
-        {
-            Destroy(this.gameObject);
-            EquipmentManager.instance.SetEquipment(InventoryManager.instance.FindItemOfType(GetComponent<Item>())?.GetComponent<Equipment>());
-        }
+            PopUpManager.instance.ShowMousePopUp("LMB - Pick\nRMB - Equip");
     }
 
 }

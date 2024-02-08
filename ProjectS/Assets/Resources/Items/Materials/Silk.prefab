@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7566794954163294703
+--- !u!1 &1604933138630744405
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,24 +8,25 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7566794954163294701}
-  - component: {fileID: 7566794954163294702}
-  - component: {fileID: 4129159667762629423}
-  - component: {fileID: -1429506714421017873}
-  m_Layer: 25
-  m_Name: Spear
+  - component: {fileID: 1604933138630744425}
+  - component: {fileID: 1604933138630744406}
+  - component: {fileID: 1604933138630744407}
+  - component: {fileID: -938786860742015665}
+  - component: {fileID: 1604933138630744404}
+  m_Layer: 19
+  m_Name: Silk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7566794954163294701
+--- !u!4 &1604933138630744425
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7566794954163294703}
+  m_GameObject: {fileID: 1604933138630744405}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -34,13 +35,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &7566794954163294702
+--- !u!212 &1604933138630744406
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7566794954163294703}
+  m_GameObject: {fileID: 1604933138630744405}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -74,25 +75,25 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b811a60cb6f9ec64587f5bc87207b3b1, type: 3}
+  m_SortingOrder: 9
+  m_Sprite: {fileID: 21300000, guid: 5817aaedebe17f741a8e4d162330d1b4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.8828125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &4129159667762629423
+--- !u!60 &1604933138630744407
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7566794954163294703}
+  m_GameObject: {fileID: 1604933138630744405}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -103,39 +104,51 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 0.86328125, y: 0.390625}
+    newSize: {x: 1, y: 0.8828125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.06435156, y: 1.0131112}
-      - {x: 0.023248225, y: 0.59214264}
-      - {x: 0.03554097, y: 0.3814755}
-      - {x: 0.10511181, y: 0.23811078}
-      - {x: 0.08549234, y: 0.024830952}
-      - {x: -0.08068299, y: -0.00441432}
-      - {x: -0.15765783, y: 0.18522197}
-      - {x: -0.082857564, y: 0.5910697}
-      - {x: -0.17818624, y: 0.9495548}
---- !u!114 &-1429506714421017873
+    - - {x: -0.28140986, y: 0.15254624}
+      - {x: -0.2967065, y: 0.007846549}
+      - {x: -0.04795817, y: 0.07880132}
+      - {x: 0.18875127, y: 0.008200139}
+      - {x: 0.2109117, y: 0.14775237}
+      - {x: 0.43196926, y: 0.16991186}
+      - {x: 0.28304785, y: 0.3036068}
+      - {x: -0.0011680573, y: 0.40180916}
+      - {x: -0.26776624, y: 0.321089}
+      - {x: -0.4013313, y: 0.19883963}
+--- !u!114 &-938786860742015665
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7566794954163294703}
+  m_GameObject: {fileID: 1604933138630744405}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d4335adb9f0ded45beb1ae4f7348a76, type: 3}
+  m_Script: {fileID: 11500000, guid: 0782d6fb9711f8a4da2425512bcab81e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiImg: {fileID: 21300000, guid: ef0ff5e4170055c4d97730fed180dfe8, type: 3}
-  name: 19
-  maxStack: 1
-  fuelValue: 5
-  equipmentType: 0
-  actionType: 10
-  maxDurability: 10
+--- !u!114 &1604933138630744404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604933138630744405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2ce75d405ae5a6419d78e521edcf0f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    uiImg: {fileID: 21300000, guid: 3e0e87c40957ace49b1e1bf33d4fb3ca, type: 3}
+    name: 11
+    maxStack: 20
+    currentStack: 0
+    fuelValue: 1

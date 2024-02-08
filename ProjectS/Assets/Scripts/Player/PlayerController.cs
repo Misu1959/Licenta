@@ -12,26 +12,27 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 movementDir;
 
+    public bool canMove { get; private set; }
+    public void SetCanMove(bool state) { canMove = state; }
+    
     void Start()
     {
-
-        instance= this;
+        instance = this;
 
         cam  = Camera.main;
         anim = GetComponent<Animator>();
         rb   = GetComponent<Rigidbody2D>();
+
+        SetCanMove(true);
     }
 
     void Update()
     {
         Move();
-        SetAnim();
+        SetMoveAnim();
     }
 
-    private void FixedUpdate()
-    {
-        rb.velocity = movementDir.normalized * PlayerStats.instance.speed;
-    }
+    private void FixedUpdate()  {   rb.velocity = movementDir.normalized * PlayerStats.instance.speed;  }
 
     private void Move()
     {
@@ -40,10 +41,10 @@ public class PlayerController : MonoBehaviour
         {
             if (PlayerActionManagement.instance.isPerformingAction)
                 movementDir = Vector2.zero;
-            else if (CheckIfCanMove())
+            else if (canMove)
                 movementDir = PlayerActionManagement.instance.currentTarget.transform.position - transform.position;
         }
-        else if (CheckIfCanMove())// Move by WASD        
+        else if (canMove)// Move by WASD        
         {
             movementDir = new Vector2(
                                      Input.GetAxisRaw("Horizontal"),
@@ -52,7 +53,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void SetAnim()
+    private void SetMoveAnim()
     {
         /*
         For player animation movement
@@ -107,16 +108,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-    }
-
-    public bool CheckIfCanMove()
-    {
-        if (GetComponent<Animator>().GetBool("PickDrop"))
-            return false;
-        if (GetComponent<Animator>().GetInteger("IsEating") > 0)
-            return false;
-
-        return true;
     }
 
 }

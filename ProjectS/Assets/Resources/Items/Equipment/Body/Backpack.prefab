@@ -10,10 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7566794954163294701}
   - component: {fileID: 7566794954163294702}
-  - component: {fileID: 6664948862855055692}
-  - component: {fileID: -2376848000442445953}
+  - component: {fileID: 842255381245320908}
+  - component: {fileID: -28642566494988520}
+  - component: {fileID: -4485857812694653194}
   m_Layer: 25
-  m_Name: Pickaxe
+  m_Name: Backpack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9cdcdabd9b1241b4e83db91a8c453406, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a0bd6a49cd4e3d548a107c4d3a12b664, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -86,7 +87,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &6664948862855055692
+--- !u!60 &842255381245320908
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,7 +104,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 0.609375, y: 0.546875}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -111,18 +112,15 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.22037233, y: 0.4339541}
-      - {x: -0.21115851, y: 0.78318}
-      - {x: -0.2795877, y: 0.6976145}
-      - {x: 0.10595694, y: 0.32796806}
-      - {x: -0.04611361, y: 0.16048756}
-      - {x: 0.06512734, y: 0.15090793}
-      - {x: 0.23891364, y: 0.23761603}
-      - {x: 0.3129785, y: 0.33402243}
-      - {x: 0.4375, y: 0.59765625}
-      - {x: 0.4375, y: 0.61328125}
-      - {x: 0.3478713, y: 0.6581741}
---- !u!114 &-2376848000442445953
+    - - {x: 0.17718685, y: 0.54734755}
+      - {x: -0.056526184, y: 0.5310861}
+      - {x: -0.2759684, y: 0.18064804}
+      - {x: -0.2402725, y: 0.019093156}
+      - {x: 0.25394714, y: 0.051765457}
+      - {x: 0.31283525, y: 0.17840733}
+      - {x: 0.28125, y: 0.2578125}
+      - {x: 0.20677117, y: 0.4210563}
+--- !u!114 &-28642566494988520
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -134,10 +132,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d4335adb9f0ded45beb1ae4f7348a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiImg: {fileID: 21300000, guid: 83b551f948fe88049b560f9fcb931d53, type: 3}
-  name: 18
-  maxStack: 1
-  fuelValue: 5
-  equipmentType: 0
-  actionType: 2
-  maxDurability: 10
+  data:
+    uiImg: {fileID: 21300000, guid: 45dac911de8d140488633eb9e2e6e4f8, type: 3}
+    name: 29
+    maxStack: 1
+    currentStack: 0
+    fuelValue: 0
+    equipmentType: 1
+    actionType: 4
+    maxDurability: 100
+    durability: 0
+--- !u!114 &-4485857812694653194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7566794954163294703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e399b441b9b5574479a50eb3cb19a5c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storageData:
+    size: 8
+    items:
+    - uiImg: {fileID: 0}
+      name: 0
+      maxStack: 0
+      currentStack: 0
+      fuelValue: 0
+    - uiImg: {fileID: 0}
+      name: 0
+      maxStack: 0
+      currentStack: 0
+      fuelValue: 0
+    - uiImg: {fileID: 0}
+      name: 0
+      maxStack: 0
+      currentStack: 0
+      fuelValue: 0
+    - uiImg: {fileID: 0}
+      name: 0
+      maxStack: 0
+      currentStack: 0
+      fuelValue: 0
+    - uiImg: {fileID: 0}
+      name: 0
+      maxStack: 0
+      currentStack: 0
+      fuelValue: 0
+    - uiImg: {fileID: 0}
+      name: 0
+      maxStack: 0
+      currentStack: 0
+      fuelValue: 0
+    - uiImg: {fileID: 0}
+      name: 0
+      maxStack: 0
+      currentStack: 0
+      fuelValue: 0
+    - uiImg: {fileID: 0}
+      name: 0
+      maxStack: 0
+      currentStack: 0
+      fuelValue: 0
