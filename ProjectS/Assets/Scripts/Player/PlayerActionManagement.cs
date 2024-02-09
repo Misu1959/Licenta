@@ -44,9 +44,8 @@ public class PlayerActionManagement : MonoBehaviour
     void SearchForItemInRange()
     {
         if (!Input.GetKeyDown(KeyCode.Space)) return;// If Space is not pressed return otherwise search for items in range
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) return;// If it's moving from keyboard don't take space action
         if (!InteractionManager.CanPlayerInteractWithUI()) return;
-
+        if (PlayerController.instance.keyboardMovement != Vector2.zero) return;// If it's moving from keyboard don't take space action
 
         InventoryManager.instance.SetBackToSlot();
 
@@ -275,14 +274,13 @@ public class PlayerActionManagement : MonoBehaviour
 
     private void CancelActionByMoving()
     {
-        if (!currentTarget) // If player has no target there is nothing to cancel
-            return;
-
+        // If player has no target there is nothing to cancel
+        if (!currentTarget) return;
 
         // If player is moving on X or Y axis from keyboard cancel the action
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-            if(PlayerController.instance.canMove)
-                CancelAction();
+        if (PlayerController.instance.keyboardMovement == Vector2.zero) return;
+
+        CancelAction();
     }
 
     public bool IsGathering(GameObject resToGather)

@@ -43,17 +43,13 @@ public class InventoryManager : MonoBehaviour
     private bool CheckSlot(InventorySlot slot, ItemData.Name itemName, bool fullStack)
     {
         if (itemName == ItemData.Name.empty) return !slot.CheckIfItHasItem();
-
+        if (!slot.CheckIfItHasItem()) return false;
+        if (!slot.CheckMatchingName(itemName)) return false;
+        
         if (!fullStack)
-        {
-            if (!slot.CheckIfItHasItem()) return false;
-            return slot.CheckMatchingName(itemName) & !slot.GetItemInSlot().CheckIfStackIsFull();
-        }
+            return !slot.GetItemInSlot().CheckIfStackIsFull();
         else
-        {
-            if (!slot.CheckIfItHasItem()) return false;
-            return slot.CheckMatchingName(itemName) & slot.GetItemInSlot().CheckIfStackIsFull();
-        }
+            return slot.GetItemInSlot().CheckIfStackIsFull();
     }
 
     private InventorySlot[] CheckInventory(InventorySlot[] inventoryToCheck, ItemData.Name itemName = ItemData.Name.empty, bool fullStack = false)
@@ -84,20 +80,20 @@ public class InventoryManager : MonoBehaviour
 
         return null;
     }
-    public InventorySlot FindSlot(ItemData.Name nameOfItemToAdd)
+    public InventorySlot FindSlot(ItemData.Name itemName)
     {
-        InventorySlot slotToReturn = FirstSlotInInventory(CheckInventory(chestSlots,nameOfItemToAdd));
+        InventorySlot slotToReturn = FirstSlotInInventory(CheckInventory(inventorySlots, itemName));
         if (slotToReturn) return slotToReturn;
 
         if (backpack.gameObject.activeInHierarchy)
         {
-            slotToReturn = FirstSlotInInventory(CheckInventory(chestSlots, nameOfItemToAdd));
+            slotToReturn = FirstSlotInInventory(CheckInventory(backpackSlots, itemName));
             if (slotToReturn) return slotToReturn;
         }
 
         if (chest.gameObject.activeInHierarchy)
         {
-            slotToReturn = FirstSlotInInventory(CheckInventory(chestSlots, nameOfItemToAdd));
+            slotToReturn = FirstSlotInInventory(CheckInventory(chestSlots, itemName));
             if (slotToReturn) return slotToReturn;
         }
         return FindFreeSlot();

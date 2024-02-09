@@ -7,14 +7,25 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
 
-    Camera cam;
+    private Camera cam;
     private Animator anim;
     private Rigidbody2D rb;
-    private Vector2 movementDir;
-
-    public bool canMove { get; private set; }
-    public void SetCanMove(bool state) { canMove = state; }
     
+    private Vector2 movementDir;
+    public  Vector2 keyboardMovement { get; private set; }
+    public bool canMove { get; private set; }
+
+
+    public void SetCanMove(bool state) { canMove = state; }
+    public void SetKeyboardMovement()  
+    { 
+        if(!canMove)
+            keyboardMovement = Vector2.zero;
+        else
+            keyboardMovement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+    }
+
+
     void Start()
     {
         instance = this;
@@ -36,6 +47,7 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
+        SetKeyboardMovement();
 
         if (PlayerActionManagement.instance.currentTarget) // If player has a target
         {
@@ -44,13 +56,8 @@ public class PlayerController : MonoBehaviour
             else if (canMove)
                 movementDir = PlayerActionManagement.instance.currentTarget.transform.position - transform.position;
         }
-        else if (canMove)// Move by WASD        
-        {
-            movementDir = new Vector2(
-                                     Input.GetAxisRaw("Horizontal"),
-                                     Input.GetAxisRaw("Vertical")
-                                     );
-        }
+        else
+            movementDir = keyboardMovement;
     }
 
     private void SetMoveAnim()
@@ -61,7 +68,6 @@ public class PlayerController : MonoBehaviour
             1 - idle 
             2 - moving
          */
-
 
         cam.transform.position = transform.position - new Vector3(0, 0, 10); // Set camera on player
 
@@ -109,5 +115,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
 
 }

@@ -122,21 +122,10 @@ public class PlayerStats : MonoBehaviour
         UIManager.instance.ShowHp(maxHp, hp);
     }
 
-    void Die(string causeOfDeath)
-    {
-        UIManager.instance.ShowDeathScreen(causeOfDeath);
+    void Die(string causeOfDeath)   {   UIManager.instance.ShowDeathScreen(causeOfDeath);   }
 
-    }
+    public void SetResearchLevel(int newResearchLevel)  {   researchLevel = newResearchLevel;   }
 
-    public void SetResearchLevel(int newResearchLevel)
-    {
-        researchLevel = newResearchLevel;
-        //CraftingManager.instance.SetTooltipCraftButton();
-    }
-
-    public void SetInLight(int _isIntLight)
-    {
-        isInLight += _isIntLight;
-    }
+    public void SetInLight(int _isIntLight) {   isInLight += _isIntLight;   }
 
 }
