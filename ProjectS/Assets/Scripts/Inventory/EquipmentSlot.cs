@@ -73,14 +73,14 @@ public class EquipmentSlot : InventorySlot
         }
         else // If I have an item in slot 
         {
-            if (!InventoryManager.instance.selectedItemSlot.CheckIfItHasItem()) // If don't have an item selected
+            if (!InventoryManager.instance.selectedItemSlot.CheckIfItHasItem()) // If I don't have an item selected
             {
                 if (Input.GetMouseButtonDown(0)) // If I press LMB
                     EquipmentManager.instance.UnequipItem(slotType, true); //Unequip item and keep it selected
                 else if (Input.GetMouseButtonDown(1)) // If I press RMB
                     EquipmentManager.instance.UnequipItem(slotType, false); // unequip the item and set it in inventory
             }
-            else // If don't have an item selected
+            else // If have an item selected
             {
                 if (Input.GetMouseButtonDown(0))// If I press LMB
                 {

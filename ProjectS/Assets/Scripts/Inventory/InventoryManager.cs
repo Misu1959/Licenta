@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditorInternal.Profiling.Memory.Experimental;
+using System;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -15,75 +12,95 @@ public class InventoryManager : MonoBehaviour
     private InventorySlot[] inventorySlots = new InventorySlot[15];
     private InventorySlot[] backpackSlots = new InventorySlot[12];
     private InventorySlot[] chestSlots = new InventorySlot[9];
-    
     public InventorySlot selectedItemSlot { get; private set; }
 
     void Start()
     {
         instance = this;
-    
         SetSlots();
     }
 
-    private void Update() {   MoveSelectedItem(); }
+    private void Update() { MoveSelectedItem(); }
 
     private void SetSlots()
     {
         selectedItemSlot = inventory.GetChild(0).GetComponent<InventorySlot>();
         selectedItemSlot.transform.SetParent(inventory.parent);
 
+        inventorySlots = new InventorySlot[inventory.childCount];
         for (int i = 0; i < inventorySlots.Length; i++)
             inventorySlots[i] = inventory.GetChild(i).GetComponent<InventorySlot>();
 
+        backpackSlots = new InventorySlot[backpack.childCount];
         for (int i = 0; i < backpackSlots.Length; i++)
             backpackSlots[i] = backpack.GetChild(i).GetComponent<InventorySlot>();
 
+        chestSlots = new InventorySlot[chest.childCount];
         for (int i = 0; i < chestSlots.Length; i++)
             chestSlots[i] = chest.GetChild(i).GetComponent<InventorySlot>();
     }
 
+    private bool CheckSlot(InventorySlot slot, ItemData.Name itemName, bool fullStack)
+    {
+        if (itemName == ItemData.Name.empty) return !slot.CheckIfItHasItem();
+
+        if (!fullStack)
+        {
+            if (!slot.CheckIfItHasItem()) return false;
+            return slot.CheckMatchingName(itemName) & !slot.GetItemInSlot().CheckIfStackIsFull();
+        }
+        else
+        {
+            if (!slot.CheckIfItHasItem()) return false;
+            return slot.CheckMatchingName(itemName) & slot.GetItemInSlot().CheckIfStackIsFull();
+        }
+    }
+
+    private InventorySlot[] CheckInventory(InventorySlot[] inventoryToCheck, ItemData.Name itemName = ItemData.Name.empty, bool fullStack = false)
+    {
+        if (inventoryToCheck.Where(slot => CheckSlot(slot, itemName, fullStack)).ToArray().Length == 0) return null;
+
+        return inventoryToCheck.Where(slot => CheckSlot(slot, itemName, fullStack)).ToArray();
+    }
+
+    private InventorySlot FirstSlotInInventory(InventorySlot[] inventoryToCheck) {   return (inventoryToCheck == null) ? null : inventoryToCheck[0];  }
+
     private InventorySlot FindFreeSlot()
     {
-        foreach (InventorySlot slot in inventorySlots)
-            if (!slot.CheckIfItHasItem()) // If the slot is empty
-                return slot; // Return an empty slot
+        InventorySlot slotToReturn = FirstSlotInInventory(CheckInventory(inventorySlots));
+        if (slotToReturn)   return slotToReturn;
 
-        if (backpack.gameObject.activeInHierarchy) // If player has backpack check it
-            foreach (InventorySlot slot in backpackSlots)
-                if (!slot.CheckIfItHasItem()) // If the slot is empty
-                    return slot; // Return an empty slot
+        if (backpack.gameObject.activeInHierarchy)
+        {
+            slotToReturn = FirstSlotInInventory(CheckInventory(backpackSlots));
+            if (slotToReturn) return slotToReturn;
+        }
 
-        if (chest.gameObject.activeInHierarchy) // If player is searching chest check it
-            foreach (InventorySlot slot in chestSlots)
-                if (!slot.CheckIfItHasItem()) // If the slot is empty
-                    return slot; // Return an empty slot
+        if (chest.gameObject.activeInHierarchy)
+        {
+            slotToReturn = FirstSlotInInventory(CheckInventory(chestSlots));
+            if (slotToReturn) return slotToReturn;
+        }
 
         return null;
     }
     public InventorySlot FindSlot(ItemData.Name nameOfItemToAdd)
     {
-        foreach (InventorySlot slot in inventorySlots)
-            if (slot.CheckIfItHasItem())   // Check if there is an item in slot
-                if (slot.CheckMatchingName(nameOfItemToAdd)) // Check if the items have the same type
-                    if(!slot.GetItemInSlot().CheckIfStackIsFull())  // If the item in slot does't have a full stack return it
-                        return slot;
+        InventorySlot slotToReturn = FirstSlotInInventory(CheckInventory(chestSlots,nameOfItemToAdd));
+        if (slotToReturn) return slotToReturn;
 
+        if (backpack.gameObject.activeInHierarchy)
+        {
+            slotToReturn = FirstSlotInInventory(CheckInventory(chestSlots, nameOfItemToAdd));
+            if (slotToReturn) return slotToReturn;
+        }
 
-        if (backpack.gameObject.activeInHierarchy) // If player has backpack check it
-            foreach (InventorySlot slot in backpackSlots)
-                if (slot.CheckIfItHasItem())   // Check if there is an item in slot
-                    if (slot.CheckMatchingName(nameOfItemToAdd)) // Check if the items have the same type
-                        if (!slot.GetItemInSlot().CheckIfStackIsFull())  // If the item in slot does't have a full stack return it
-                            return slot;
-
-        if (chest.gameObject.activeInHierarchy) // If player is searching chest check it
-            foreach (InventorySlot slot in chestSlots)
-                if (slot.CheckIfItHasItem())   // Check if there is an item in slot
-                    if (slot.CheckMatchingName(nameOfItemToAdd)) // Check if the items have the same type
-                        if (!slot.GetItemInSlot().CheckIfStackIsFull())  // If the item in slot does't have a full stack return it
-                            return slot;
-
-        return FindFreeSlot(); // If we haven't found a slot that is partialy full return an empty slot if this exist
+        if (chest.gameObject.activeInHierarchy)
+        {
+            slotToReturn = FirstSlotInInventory(CheckInventory(chestSlots, nameOfItemToAdd));
+            if (slotToReturn) return slotToReturn;
+        }
+        return FindFreeSlot();
     }
 
     public void AddItemToInventory(Item_Base itemToAdd)
@@ -153,7 +170,7 @@ public class InventoryManager : MonoBehaviour
             PlayerActionManagement.instance.currentTarget?.GetComponent<Storage>()?.AddData(itemToAdd.GetItemData(), slot.transform.GetSiblingIndex());
         
         itemToAdd.DisplayItem();
-        StartCoroutine(CraftingManager.instance.RefreshCraftingManager());
+        StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
 
     }
 
@@ -168,12 +185,14 @@ public class InventoryManager : MonoBehaviour
         slot.SetItemInSlot(null);
     }
 
-    public void RemoveItemFromSlot(ItemUI itemToBeRemove)
+    public void RemoveItemFromSlot(ItemUI itemToBeRemoved)
     {
-        if (itemToBeRemove?.transform.parent?.GetComponent<InventorySlot>())
+        if (itemToBeRemoved?.transform.parent?.GetComponent<InventorySlot>())
         {
-            InventorySlot slotToRemoveFrom = itemToBeRemove.transform.parent.GetComponent<InventorySlot>();
-            RemoveItemFromSlot(slotToRemoveFrom);
+            InventorySlot slotToRemoveFrom = itemToBeRemoved.transform.parent.GetComponent<InventorySlot>();
+
+            if (slotToRemoveFrom.GetItemInSlot() == itemToBeRemoved)
+                RemoveItemFromSlot(slotToRemoveFrom);
         }
     }
 
@@ -182,8 +201,6 @@ public class InventoryManager : MonoBehaviour
     {
         ItemUI aux1     = slot.GetItemInSlot();
         ItemUI aux2     = selectedItemSlot.GetItemInSlot();
-
-        aux1.transform.SetParent(aux1.transform.parent.parent);
 
         AddItemToSlot(slot, aux2);
         SetSelectedItem(aux1);
@@ -250,108 +267,96 @@ public class InventoryManager : MonoBehaviour
 
     }
 
-    public ItemUI FindSpecificItem(ItemData.Name nameOfItemType)
+    public ItemUI FindSpecificItem(ItemData.Name itemName)
     {
-        foreach (InventorySlot slot in inventorySlots)
-            if (slot.CheckIfItHasItem())
-                if (slot.CheckMatchingName(nameOfItemType))
-                    return slot.GetItemInSlot();
+        ItemUI itemUI = FirstSlotInInventory(CheckInventory(inventorySlots, itemName, true))?.GetItemInSlot();
+        if (itemUI) return itemUI;
 
         if (backpack.gameObject.activeInHierarchy) // If player has backpack check it
-            foreach (InventorySlot slot in backpackSlots)
-                if (slot.CheckIfItHasItem())
-                    if (slot.CheckMatchingName(nameOfItemType))
-                        return slot.GetItemInSlot();
-
+        {
+            itemUI = FirstSlotInInventory(CheckInventory(backpackSlots, itemName, true))?.GetItemInSlot();
+            if (itemUI) return itemUI;
+        }
+        
         if (chest.gameObject.activeInHierarchy) // If player is searching chest check it
-            foreach (InventorySlot slot in chestSlots)
-                if (slot.CheckIfItHasItem())
-                    if (slot.CheckMatchingName(nameOfItemType))
-                        return slot.GetItemInSlot();
-
+        {
+            itemUI = FirstSlotInInventory(CheckInventory(chestSlots, itemName, true))?.GetItemInSlot();
+            if (itemUI) return itemUI;
+        }
         return null;
     }
 
-    public int AmountOwned(ItemData.Name nameOfItemType)
+
+    public int AmountOwned(ItemData.Name itemName)
     {
         int totalAmount = 0;
 
-        foreach (InventorySlot slot in inventorySlots)
-            if (slot.CheckIfItHasItem())
-                if (slot.CheckMatchingName(nameOfItemType))
-                    totalAmount += slot.GetItemInSlot().GetItemData().currentStack;
+        totalAmount += AddAmountToInventory(CheckInventory(inventorySlots, itemName, false));
+        totalAmount += AddAmountToInventory(CheckInventory(inventorySlots, itemName, true));
 
-        if (backpack.gameObject.activeInHierarchy) // If player has backpack check it
-            foreach (InventorySlot slot in backpackSlots)
-                if (slot.CheckIfItHasItem())
-                    if (slot.CheckMatchingName(nameOfItemType))
-                        totalAmount += slot.GetItemInSlot().GetItemData().currentStack;
+        if (backpack.gameObject.activeInHierarchy)
+        {
+            totalAmount += AddAmountToInventory(CheckInventory(backpackSlots, itemName, false));
+            totalAmount += AddAmountToInventory(CheckInventory(backpackSlots, itemName, true));
 
-        if (chest.gameObject.activeInHierarchy) // If player is searching chest check it
-            foreach (InventorySlot slot in chestSlots)
-                if (slot.CheckIfItHasItem())
-                    if (slot.CheckMatchingName(nameOfItemType))
-                        totalAmount += slot.GetItemInSlot().GetItemData().currentStack;
+        }
+
+        if (chest.gameObject.activeInHierarchy)
+        {
+            totalAmount += AddAmountToInventory(CheckInventory(chestSlots, itemName, false));
+            totalAmount += AddAmountToInventory(CheckInventory(chestSlots, itemName, true));
+        }
 
         return totalAmount;
     }
 
-    public void SpendResources(ItemData.Name _name, int _amount, bool dontLookForFullStack = true) 
+    private int AddAmountToInventory(InventorySlot[] inventory)
     {
-        // First look for partialy full stacks
-        foreach (InventorySlot slot in inventorySlots)
-            if (slot.CheckIfItHasItem())
-                if (slot.CheckMatchingName(_name))
-                {
-                    if (dontLookForFullStack) // If I'm cheking only partially full stacks
-                        if (slot.GetItemInSlot().CheckIfStackIsFull()) // If the stack is full skip it
-                            continue;
+        if (inventory == null) return 0;
 
-                    int aux = _amount;
-                    _amount -= slot.GetItemInSlot().GetItemData().currentStack; // Substract the amount of resources spent form ccurent stack
-                    slot.GetItemInSlot().TakeFromStack(aux); // Take the resources from the slot
+        int amount = 0;
+        foreach (InventorySlot slot in inventory)
+            amount += slot.GetItemInSlot().GetItemData().currentStack;
 
-                    if (_amount <= 0) // if enough resources have been taken return
-                        return;
-                }
+        return amount;
+    }
+
+    public void SpendResources(ItemData.Name itemName, int itemAmount) 
+    {
+
+        if (TakeAmountFromInventory(CheckInventory(inventorySlots, itemName, false), itemAmount)) return;
 
         if (backpack.gameObject.activeInHierarchy) // If player has backpack check it
-            foreach (InventorySlot slot in backpackSlots)
-                if (slot.CheckIfItHasItem())
-                    if (slot.CheckMatchingName(_name))
-                    {
-                        if (dontLookForFullStack) // If I'm cheking only partially full stacks
-                            if (slot.GetItemInSlot().CheckIfStackIsFull()) // If the stack is full skip it
-                                continue;
+            if (TakeAmountFromInventory(CheckInventory(backpackSlots, itemName, false), itemAmount)) return;
 
-                        int aux = _amount;
-                        _amount -= slot.GetItemInSlot().GetItemData().currentStack; // Substract the amount of resources spent form ccurent stack
-                        slot.GetItemInSlot().TakeFromStack(aux); // Take the resources from the slot
+        if (chest.gameObject.activeInHierarchy) // If player is checking chest check it
+            if (TakeAmountFromInventory(CheckInventory(chestSlots, itemName, false), itemAmount)) return;
 
-                        if (_amount <= 0) // if enough resources have been taken return
-                            return;
-                    }
+        if (TakeAmountFromInventory(CheckInventory(inventorySlots, itemName, true), itemAmount)) return;
 
-        if (chest.gameObject.activeInHierarchy) // If player has backpack check it
-            foreach (InventorySlot slot in chestSlots)
-                if (slot.CheckIfItHasItem())
-                    if (slot.CheckMatchingName(_name))
-                    {
-                        if (dontLookForFullStack) // If I'm cheking only partially full stacks
-                            if (slot.GetItemInSlot().CheckIfStackIsFull()) // If the stack is full skip it
-                                continue;
+        if (backpack.gameObject.activeInHierarchy) // If player has backpack check it
+            if (TakeAmountFromInventory(CheckInventory(backpackSlots, itemName, true), itemAmount)) return;
 
-                        int aux = _amount;
-                        _amount -= slot.GetItemInSlot().GetItemData().currentStack; // Substract the amount of resources spent form ccurent stack
-                        slot.GetItemInSlot().TakeFromStack(aux); // Take the resources from the slot
+        if (chest.gameObject.activeInHierarchy) // If player is checking chest check it
+            if (TakeAmountFromInventory(CheckInventory(chestSlots, itemName, true), itemAmount)) return;
 
-                        if (_amount <= 0) // if enough resources have been taken return
-                            return;
-                    }
-
-        if (dontLookForFullStack)
-            SpendResources(_name, _amount, false);
     }
+
+    private bool TakeAmountFromInventory(InventorySlot[] inventory, int itemAmount)
+    {
+        if(inventory == null)   return false;
+
+        foreach (InventorySlot slot in inventory)
+        {
+            int aux = itemAmount;
+            itemAmount -= slot.GetItemInSlot().GetItemData().currentStack;
+            slot.GetItemInSlot().TakeFromStack(aux);
+            if (itemAmount <= 0) return true;
+        }
+        return false;
+    }
+
+
     
     public void DisplayBackpack(Storage backpackStorage = null)
     {
@@ -363,7 +368,7 @@ public class InventoryManager : MonoBehaviour
                 if (backpackSlots[i].CheckIfItHasItem())
                     Destroy(backpackSlots[i].GetItemInSlot().gameObject);
 
-            StartCoroutine(CraftingManager.instance.RefreshCraftingManager());
+            StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
             PopUpManager.instance.ShowMousePopUp();
         }
         else
@@ -406,7 +411,7 @@ public class InventoryManager : MonoBehaviour
                 if (chestSlots[i].CheckIfItHasItem())
                     Destroy(chestSlots[i].GetItemInSlot().gameObject);
 
-            StartCoroutine(CraftingManager.instance.RefreshCraftingManager());
+            StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
         }
         else
         {

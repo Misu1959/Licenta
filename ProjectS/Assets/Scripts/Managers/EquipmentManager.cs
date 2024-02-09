@@ -133,9 +133,6 @@ public class EquipmentManager : MonoBehaviour
         }
         else
             InventoryManager.instance.SetSelectedItem(slotToSet.GetItemInSlot());
-
-        InventoryManager.instance.RemoveItemFromSlot(slotToSet);
-
     }
 
 

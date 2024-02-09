@@ -49,7 +49,7 @@ public class CraftingManager : MonoBehaviour
             transform.GetChild(i).GetComponent<Button>().interactable = mode;
     }
 
-    public IEnumerator RefreshCraftingManager()
+    public IEnumerator RefreshCraftingMenu()
     {
         yield return null; // Wait a frame
         if(currentCraftingTab)

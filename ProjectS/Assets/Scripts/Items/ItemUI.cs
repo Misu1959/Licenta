@@ -7,7 +7,7 @@ public abstract class ItemUI: Item_Base
     {
         base.AddToStack(_amountToAdd);
         DisplayItem();
-        StartCoroutine(CraftingManager.instance.RefreshCraftingManager());
+        StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
     }
 
     public override void TakeFromStack(int _amountToTake)
@@ -18,7 +18,7 @@ public abstract class ItemUI: Item_Base
             InventoryManager.instance.RemoveItemFromSlot(this);
 
         DisplayItem();
-        StartCoroutine(CraftingManager.instance.RefreshCraftingManager());
+        StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
 
     }
 
