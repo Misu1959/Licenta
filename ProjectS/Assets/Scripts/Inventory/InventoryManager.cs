@@ -6,12 +6,12 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
 
-    public Transform inventory;
-    public Transform backpack;
-    public Transform chest;
-    private InventorySlot[] inventorySlots = new InventorySlot[15];
-    private InventorySlot[] backpackSlots = new InventorySlot[12];
-    private InventorySlot[] chestSlots = new InventorySlot[9];
+    public Transform inventoryPanel;
+    public Transform backpackPanel;
+    public Transform chestPanel;
+    private InventorySlot[] inventorySlots;
+    private InventorySlot[] backpackSlots;
+    private InventorySlot[] chestSlots;
     public InventorySlot selectedItemSlot { get; private set; }
 
     void Start()
@@ -24,20 +24,20 @@ public class InventoryManager : MonoBehaviour
 
     private void SetSlots()
     {
-        selectedItemSlot = inventory.GetChild(0).GetComponent<InventorySlot>();
-        selectedItemSlot.transform.SetParent(inventory.parent);
+        selectedItemSlot = inventoryPanel.GetChild(0).GetComponent<InventorySlot>();
+        selectedItemSlot.transform.SetParent(inventoryPanel.parent);
 
-        inventorySlots = new InventorySlot[inventory.childCount];
+        inventorySlots = new InventorySlot[inventoryPanel.childCount];
         for (int i = 0; i < inventorySlots.Length; i++)
-            inventorySlots[i] = inventory.GetChild(i).GetComponent<InventorySlot>();
+            inventorySlots[i] = inventoryPanel.GetChild(i).GetComponent<InventorySlot>();
 
-        backpackSlots = new InventorySlot[backpack.childCount];
+        backpackSlots = new InventorySlot[backpackPanel.childCount];
         for (int i = 0; i < backpackSlots.Length; i++)
-            backpackSlots[i] = backpack.GetChild(i).GetComponent<InventorySlot>();
+            backpackSlots[i] = backpackPanel.GetChild(i).GetComponent<InventorySlot>();
 
-        chestSlots = new InventorySlot[chest.childCount];
+        chestSlots = new InventorySlot[chestPanel.childCount];
         for (int i = 0; i < chestSlots.Length; i++)
-            chestSlots[i] = chest.GetChild(i).GetComponent<InventorySlot>();
+            chestSlots[i] = chestPanel.GetChild(i).GetComponent<InventorySlot>();
     }
 
     private bool CheckSlot(InventorySlot slot, ItemData.Name itemName, bool fullStack)
@@ -52,51 +52,58 @@ public class InventoryManager : MonoBehaviour
             return slot.GetItemInSlot().CheckIfStackIsFull();
     }
 
-    private InventorySlot[] CheckInventory(InventorySlot[] inventoryToCheck, ItemData.Name itemName = ItemData.Name.empty, bool fullStack = false)
+    private InventorySlot[] GetInventory(InventorySlot[] inventoryToCheck, ItemData.Name itemName, bool fullStack)
     {
         if (inventoryToCheck.Where(slot => CheckSlot(slot, itemName, fullStack)).ToArray().Length == 0) return null;
 
         return inventoryToCheck.Where(slot => CheckSlot(slot, itemName, fullStack)).ToArray();
     }
 
-    private InventorySlot FirstSlotInInventory(InventorySlot[] inventoryToCheck) {   return (inventoryToCheck == null) ? null : inventoryToCheck[0];  }
-
-    private InventorySlot FindFreeSlot()
+    private InventorySlot FirstSlotInInventory(InventorySlot[] inventory, ItemData.Name itemName, bool fullStack) 
     {
-        InventorySlot slotToReturn = FirstSlotInInventory(CheckInventory(inventorySlots));
-        if (slotToReturn)   return slotToReturn;
+        InventorySlot[] listOfSlots = GetInventory(inventory, itemName, fullStack);
+        return (listOfSlots == null) ? null : listOfSlots[0];  
+    }
 
-        if (backpack.gameObject.activeInHierarchy)
+    private InventorySlot FirstEmptySlotInInventory(InventorySlot[] inventory)
+    {
+        InventorySlot[] listOfSlots = GetInventory(inventory, ItemData.Name.empty, false);
+        return (listOfSlots == null) ? null : listOfSlots[0];
+    }
+
+    public InventorySlot FindSlot(ItemData.Name itemName)
+    {
+        InventorySlot slotToReturn = FirstSlotInInventory(inventorySlots, itemName, false);
+        if (slotToReturn) return slotToReturn;
+
+        if (backpackPanel.gameObject.activeInHierarchy)
         {
-            slotToReturn = FirstSlotInInventory(CheckInventory(backpackSlots));
+            slotToReturn = FirstSlotInInventory(inventorySlots, itemName, false);
             if (slotToReturn) return slotToReturn;
         }
 
-        if (chest.gameObject.activeInHierarchy)
+        if (chestPanel.gameObject.activeInHierarchy)
         {
-            slotToReturn = FirstSlotInInventory(CheckInventory(chestSlots));
+            slotToReturn = FirstSlotInInventory(inventorySlots, itemName, false);
+            if (slotToReturn) return slotToReturn;
+        }
+
+        slotToReturn = FirstEmptySlotInInventory(inventorySlots);
+        if (slotToReturn) return slotToReturn;
+
+        if (backpackPanel.gameObject.activeInHierarchy)
+        {
+            slotToReturn = FirstEmptySlotInInventory(backpackSlots);
+            if (slotToReturn) return slotToReturn;
+        }
+
+        if (chestPanel.gameObject.activeInHierarchy)
+        {
+            slotToReturn = FirstEmptySlotInInventory(chestSlots);
             if (slotToReturn) return slotToReturn;
         }
 
         return null;
-    }
-    public InventorySlot FindSlot(ItemData.Name itemName)
-    {
-        InventorySlot slotToReturn = FirstSlotInInventory(CheckInventory(inventorySlots, itemName));
-        if (slotToReturn) return slotToReturn;
-
-        if (backpack.gameObject.activeInHierarchy)
-        {
-            slotToReturn = FirstSlotInInventory(CheckInventory(backpackSlots, itemName));
-            if (slotToReturn) return slotToReturn;
-        }
-
-        if (chest.gameObject.activeInHierarchy)
-        {
-            slotToReturn = FirstSlotInInventory(CheckInventory(chestSlots, itemName));
-            if (slotToReturn) return slotToReturn;
-        }
-        return FindFreeSlot();
     }
 
     public void AddItemToInventory(Item_Base itemToAdd)
@@ -265,18 +272,18 @@ public class InventoryManager : MonoBehaviour
 
     public ItemUI FindSpecificItem(ItemData.Name itemName)
     {
-        ItemUI itemUI = FirstSlotInInventory(CheckInventory(inventorySlots, itemName, true))?.GetItemInSlot();
+        ItemUI itemUI = FirstSlotInInventory(inventorySlots, itemName, true)?.GetItemInSlot();
         if (itemUI) return itemUI;
 
-        if (backpack.gameObject.activeInHierarchy) // If player has backpack check it
+        if (backpackPanel.gameObject.activeInHierarchy) // If player has backpackPanel check it
         {
-            itemUI = FirstSlotInInventory(CheckInventory(backpackSlots, itemName, true))?.GetItemInSlot();
+            itemUI = FirstSlotInInventory(backpackSlots, itemName, true)?.GetItemInSlot();
             if (itemUI) return itemUI;
         }
         
-        if (chest.gameObject.activeInHierarchy) // If player is searching chest check it
+        if (chestPanel.gameObject.activeInHierarchy) // If player is searching chestPanel check it
         {
-            itemUI = FirstSlotInInventory(CheckInventory(chestSlots, itemName, true))?.GetItemInSlot();
+            itemUI = FirstSlotInInventory(chestSlots, itemName, true)?.GetItemInSlot();
             if (itemUI) return itemUI;
         }
         return null;
@@ -287,31 +294,33 @@ public class InventoryManager : MonoBehaviour
     {
         int totalAmount = 0;
 
-        totalAmount += AddAmountToInventory(CheckInventory(inventorySlots, itemName, false));
-        totalAmount += AddAmountToInventory(CheckInventory(inventorySlots, itemName, true));
+        totalAmount += AddAmountToInventory(inventorySlots, itemName, false);
+        totalAmount += AddAmountToInventory(inventorySlots, itemName, true);
 
-        if (backpack.gameObject.activeInHierarchy)
+        if (backpackPanel.gameObject.activeInHierarchy)
         {
-            totalAmount += AddAmountToInventory(CheckInventory(backpackSlots, itemName, false));
-            totalAmount += AddAmountToInventory(CheckInventory(backpackSlots, itemName, true));
+            totalAmount += AddAmountToInventory(backpackSlots, itemName, false);
+            totalAmount += AddAmountToInventory(backpackSlots, itemName, true);
 
         }
 
-        if (chest.gameObject.activeInHierarchy)
+        if (chestPanel.gameObject.activeInHierarchy)
         {
-            totalAmount += AddAmountToInventory(CheckInventory(chestSlots, itemName, false));
-            totalAmount += AddAmountToInventory(CheckInventory(chestSlots, itemName, true));
+            totalAmount += AddAmountToInventory(chestSlots, itemName, false);
+            totalAmount += AddAmountToInventory(chestSlots, itemName, true);
         }
 
         return totalAmount;
     }
 
-    private int AddAmountToInventory(InventorySlot[] inventory)
+    private int AddAmountToInventory(InventorySlot[] inventory, ItemData.Name itemName, bool fullStack)
     {
-        if (inventory == null) return 0;
-
+        InventorySlot[] listOfSlots = GetInventory(inventory, itemName, fullStack);
         int amount = 0;
-        foreach (InventorySlot slot in inventory)
+
+        if (listOfSlots == null) return amount;
+
+        foreach (InventorySlot slot in listOfSlots)
             amount += slot.GetItemInSlot().GetItemData().currentStack;
 
         return amount;
@@ -320,29 +329,31 @@ public class InventoryManager : MonoBehaviour
     public void SpendResources(ItemData.Name itemName, int itemAmount) 
     {
 
-        if (TakeAmountFromInventory(CheckInventory(inventorySlots, itemName, false), itemAmount)) return;
+        if (TakeAmountFromInventory(inventorySlots, itemName, false, itemAmount)) return;
 
-        if (backpack.gameObject.activeInHierarchy) // If player has backpack check it
-            if (TakeAmountFromInventory(CheckInventory(backpackSlots, itemName, false), itemAmount)) return;
+        if (backpackPanel.gameObject.activeInHierarchy) // If player has backpackPanel check it
+            if (TakeAmountFromInventory(backpackSlots, itemName, false, itemAmount)) return;
 
-        if (chest.gameObject.activeInHierarchy) // If player is checking chest check it
-            if (TakeAmountFromInventory(CheckInventory(chestSlots, itemName, false), itemAmount)) return;
+        if (chestPanel.gameObject.activeInHierarchy) // If player is checking chestPanel check it
+            if (TakeAmountFromInventory(chestSlots, itemName, false, itemAmount)) return;
 
-        if (TakeAmountFromInventory(CheckInventory(inventorySlots, itemName, true), itemAmount)) return;
+        if (TakeAmountFromInventory(inventorySlots, itemName, true, itemAmount)) return;
 
-        if (backpack.gameObject.activeInHierarchy) // If player has backpack check it
-            if (TakeAmountFromInventory(CheckInventory(backpackSlots, itemName, true), itemAmount)) return;
+        if (backpackPanel.gameObject.activeInHierarchy) // If player has backpackPanel check it
+            if (TakeAmountFromInventory(backpackSlots, itemName, true, itemAmount)) return;
 
-        if (chest.gameObject.activeInHierarchy) // If player is checking chest check it
-            if (TakeAmountFromInventory(CheckInventory(chestSlots, itemName, true), itemAmount)) return;
+        if (chestPanel.gameObject.activeInHierarchy) // If player is checking chestPanel check it
+            if (TakeAmountFromInventory(chestSlots, itemName, true, itemAmount)) return;
 
     }
 
-    private bool TakeAmountFromInventory(InventorySlot[] inventory, int itemAmount)
+    private bool TakeAmountFromInventory(InventorySlot[] inventory, ItemData.Name itemName, bool fullStack, int itemAmount)
     {
-        if(inventory == null)   return false;
+        InventorySlot[] listOfSlots = GetInventory(inventory, itemName, fullStack);
 
-        foreach (InventorySlot slot in inventory)
+        if (listOfSlots == null)   return false;
+
+        foreach (InventorySlot slot in listOfSlots)
         {
             int aux = itemAmount;
             itemAmount -= slot.GetItemInSlot().GetItemData().currentStack;
@@ -358,7 +369,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (backpackStorage == null)
         {
-            backpack.gameObject.SetActive(false);
+            backpackPanel.gameObject.SetActive(false);
 
             for (int i = 0; i < backpackSlots.Length; i++)
                 if (backpackSlots[i].CheckIfItHasItem())
@@ -369,21 +380,21 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            backpack.gameObject.SetActive(true);
+            backpackPanel.gameObject.SetActive(true);
 
             StorageData storageData = backpackStorage.GetStorageData();
             if (storageData.size > 8)
             {
-                backpack.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 400);
-                for (int i = 8; i < backpack.childCount; i++)
+                backpackPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 400);
+                for (int i = 8; i < backpackPanel.childCount; i++)
                     backpackSlots[i].gameObject.SetActive(true);
 
 
             }
             else
             {
-                backpack.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 300);
-                for (int i = 8; i < backpack.childCount; i++)
+                backpackPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 300);
+                for (int i = 8; i < backpackPanel.childCount; i++)
                     backpackSlots[i].gameObject.SetActive(false);
 
             }
@@ -401,17 +412,18 @@ public class InventoryManager : MonoBehaviour
     {
         if (chestStorage == null)
         {
-            chest.gameObject.SetActive(false);
+            chestPanel.gameObject.SetActive(false);
 
             for (int i = 0; i < chestSlots.Length; i++)
                 if (chestSlots[i].CheckIfItHasItem())
                     Destroy(chestSlots[i].GetItemInSlot().gameObject);
 
             StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
+            PopUpManager.instance.ShowMousePopUp();
         }
         else
         {
-            chest.gameObject.SetActive(true);
+            chestPanel.gameObject.SetActive(true);
 
             StorageData storageData = chestStorage.GetStorageData();
             for (int i = 0; i < storageData.size; i++)

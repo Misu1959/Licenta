@@ -84,9 +84,7 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
         // Next lines adds the loot to the inventory
         Item item = ItemsManager.instance.CreateItem(drops[0]);
-
         InventoryManager.instance.AddItemToInventory(item);
-        Destroy(item.gameObject);
         
         timerGrow.StartTimer();
         PlayerActionManagement.instance.CompleteAction(); // Complete the action
@@ -113,10 +111,5 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     }
 
-    public virtual bool CheckIfCanBeGathered()
-    {
-        return !timerGrow.IsOn();
-        //if ((int)EquipmentManager.instance.GetHandItem()?.equipmentType == (int)howToGather) // If the item in hand matches the action requirement
-        //return true;
-    }
+    public virtual bool CheckIfCanBeGathered()  {   return !timerGrow.IsOn();   }
 }

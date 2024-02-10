@@ -152,8 +152,8 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
 
     public bool CheckMatchingName(ItemData.Name nameToCompare) { return itemInSlot?.GetItemData().name != nameToCompare ? false : true; }
 
-    public bool IsBackpackSlot() {   return (transform.parent != InventoryManager.instance.backpack) ? false : true; }
+    public bool IsBackpackSlot() {   return (transform.parent != InventoryManager.instance.backpackPanel) ? false : true; }
 
-    public bool IsChestSlot() {   return (transform.parent != InventoryManager.instance.chest) ? false : true; }
+    public bool IsChestSlot() {   return (transform.parent != InventoryManager.instance.chestPanel) ? false : true; }
 
 }

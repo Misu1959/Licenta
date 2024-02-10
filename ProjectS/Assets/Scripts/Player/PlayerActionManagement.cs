@@ -123,7 +123,7 @@ public class PlayerActionManagement : MonoBehaviour
                     GetComponent<Animator>().SetTrigger("PickDrop");
                     currentTarget.GetComponent<Animator>().SetInteger("OpenClose", 1);
 
-                    if (!InventoryManager.instance.chest.gameObject.activeInHierarchy)
+                    if (!InventoryManager.instance.chestPanel.gameObject.activeInHierarchy)
                     {
                         InventoryManager.instance.DisplayChest(currentTarget.GetComponent<Storage>());
                         Invoke(nameof(CompleteAction), .5f);

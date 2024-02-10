@@ -9554,9 +9554,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03110e8ff33a56c4a99851fe0983aa3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventory: {fileID: 1764391166}
-  backpack: {fileID: 1685844712}
-  chest: {fileID: 1562932336}
+  inventoryPanel: {fileID: 1764391166}
+  backpackPanel: {fileID: 1685844712}
+  chestPanel: {fileID: 1562932336}
 --- !u!4 &1996830633
 Transform:
   m_ObjectHideFlags: 0
