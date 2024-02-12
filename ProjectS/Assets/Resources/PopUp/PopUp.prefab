@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4527046927528192375}
   - component: {fileID: 4527046927528192360}
   - component: {fileID: 8083525013856754607}
+  - component: {fileID: 786354116585849828}
   m_Layer: 0
   m_Name: PopUp
   m_TagString: Untagged
@@ -193,3 +194,15 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &786354116585849828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4527046927528192361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c73e7707474f040ac412d41f928a95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

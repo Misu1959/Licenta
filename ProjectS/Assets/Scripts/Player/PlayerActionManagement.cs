@@ -3,6 +3,7 @@ using UnityEngine.Rendering.Universal;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public class PlayerActionManagement : MonoBehaviour
 {
@@ -45,12 +46,16 @@ public class PlayerActionManagement : MonoBehaviour
     {
         if (!Input.GetKeyDown(KeyCode.Space)) return;// If Space is not pressed return otherwise search for items in range
         if (!InteractionManager.CanPlayerInteractWithUI()) return;
-        if (PlayerController.instance.keyboardMovement != Vector2.zero) return;// If it's moving from keyboard don't take space action
+        if (PlayerController.instance.keyboardMovement != Vector3.zero) return;// If it's moving from keyboard don't take space action
 
         InventoryManager.instance.SetBackToSlot();
 
         float closestDistance = 1000;
         GameObject closestObjectToInteractWith = null;
+
+        for (int i = 0; i < itemsInRange.Count; i++)
+            if (itemsInRange[i] == null)
+                itemsInRange.RemoveAt(i);
 
         foreach (GameObject objectToInteractWith in itemsInRange)
         {
@@ -59,7 +64,7 @@ public class PlayerActionManagement : MonoBehaviour
                     continue;
 
             // Check if it's the closest one
-            float dist = Vector2.Distance(transform.position, objectToInteractWith.transform.position);
+            float dist = Vector3.Distance(transform.position, objectToInteractWith.transform.position);
             if (dist < closestDistance)
             {
                 closestDistance = dist;
@@ -104,7 +109,7 @@ public class PlayerActionManagement : MonoBehaviour
             case Action.pick:
                 {
                     PlayerController.instance.SetCanMove(false);
-                    GetComponent<Animator>().SetTrigger("PickDrop");
+                    PlayerStats.instance.animator.SetTrigger("PickDrop");
                 
                     Invoke(nameof(CompleteAction), .5f);
                     break;
@@ -112,7 +117,7 @@ public class PlayerActionManagement : MonoBehaviour
             case Action.drop:
                 {
                     PlayerController.instance.SetCanMove(false);
-                    GetComponent<Animator>().SetTrigger("PickDrop");
+                    PlayerStats.instance.animator.SetTrigger("PickDrop");
 
                     Invoke(nameof(CompleteAction), .5f);
                     break;
@@ -120,8 +125,8 @@ public class PlayerActionManagement : MonoBehaviour
             case Action.search:
                 {
                     PlayerController.instance.SetCanMove(false);
-                    GetComponent<Animator>().SetTrigger("PickDrop");
-                    currentTarget.GetComponent<Animator>().SetInteger("OpenClose", 1);
+                    PlayerStats.instance.animator.SetTrigger("PickDrop");
+                    currentTarget.transform.GetChild(0).GetComponent<Animator>().SetInteger("OpenClose", 1);
 
                     if (!InventoryManager.instance.chestPanel.gameObject.activeInHierarchy)
                     {
@@ -133,7 +138,7 @@ public class PlayerActionManagement : MonoBehaviour
             case Action.equip:
                 {
                     PlayerController.instance.SetCanMove(false);
-                    GetComponent<Animator>().SetTrigger("PickDrop");
+                    PlayerStats.instance.animator.SetTrigger("PickDrop");
 
                     Invoke(nameof(CompleteAction), .5f);
                     break;
@@ -141,7 +146,7 @@ public class PlayerActionManagement : MonoBehaviour
             case Action.addFuel:
                 {
                     PlayerController.instance.SetCanMove(false);
-                    GetComponent<Animator>().SetTrigger("PickDrop");
+                    PlayerStats.instance.animator.SetTrigger("PickDrop");
 
                     Invoke(nameof(CompleteAction), .5f);
                     break;
@@ -151,12 +156,12 @@ public class PlayerActionManagement : MonoBehaviour
                     PlayerController.instance.SetCanMove(false);
                     if (currentTarget.GetComponent<Item_Base>().GetFoodData().quickEat == true)
                     {
-                        GetComponent<Animator>().SetTrigger("IsQuickEating");
+                        PlayerStats.instance.animator.SetTrigger("IsQuickEating");
                         Invoke(nameof(CompleteAction), .5f);
                     }
                     else
                     { 
-                        GetComponent<Animator>().SetTrigger("IsEating");
+                        PlayerStats.instance.animator.SetTrigger("IsEating");
                         Invoke(nameof(CompleteAction), 1);
                     }
                     break;
@@ -164,7 +169,7 @@ public class PlayerActionManagement : MonoBehaviour
         }
         
         isPerformingAction = true;
-        GetComponent<Animator>().SetBool("IsPerformingAction", true);
+        PlayerStats.instance.animator.SetBool("IsPerformingAction", true);
 
     }
 
@@ -194,7 +199,7 @@ public class PlayerActionManagement : MonoBehaviour
             case Action.search:
                 {
                     PlayerController.instance.SetCanMove(true);
-                    GetComponent<Animator>().SetBool("IsPerformingAction", false);
+                    PlayerStats.instance.animator.SetBool("IsPerformingAction", false);
 
                     return; ;
                 }
@@ -218,7 +223,7 @@ public class PlayerActionManagement : MonoBehaviour
         }
         
         isPerformingAction = false;
-        GetComponent<Animator>().SetBool("IsPerformingAction", false);
+        PlayerStats.instance.animator.SetBool("IsPerformingAction", false);
         
         SetTargetAndAction(null, Action.nothing);
         PopUpManager.instance.ShowPopUpAction("Action completed!");
@@ -237,7 +242,7 @@ public class PlayerActionManagement : MonoBehaviour
                 }
             case Action.search:
                 {
-                    currentTarget.GetComponent<Animator>().SetInteger("OpenClose", -1);
+                    currentTarget.transform.GetChild(0).GetComponent<Animator>().SetInteger("OpenClose", -1);
                     InventoryManager.instance.DisplayChest();
                     break;
                 }
@@ -255,7 +260,7 @@ public class PlayerActionManagement : MonoBehaviour
         }
 
         isPerformingAction = false;
-        GetComponent<Animator>().SetBool("IsPerformingAction", false);
+        PlayerStats.instance.animator.SetBool("IsPerformingAction", false);
 
         if (!newAction)
         {
@@ -278,7 +283,7 @@ public class PlayerActionManagement : MonoBehaviour
         if (!currentTarget) return;
 
         // If player is moving on X or Y axis from keyboard cancel the action
-        if (PlayerController.instance.keyboardMovement == Vector2.zero) return;
+        if (PlayerController.instance.keyboardMovement == Vector3.zero) return;
 
         CancelAction();
     }

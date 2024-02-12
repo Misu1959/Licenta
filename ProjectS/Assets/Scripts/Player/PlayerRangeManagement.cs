@@ -15,29 +15,25 @@ public class PlayerRangeManagement : MonoBehaviour
     {
         yield return null; // Wait a frame so that PlayerStats can initialize it's instance
 
-        playerBody       = PlayerStats.instance.gameObject;
-        darknessCollider = PlayerStats.instance.gameObject.transform.GetChild(0).gameObject; // Set darkness collider
-        actionCollider   = PlayerStats.instance.gameObject.transform.GetChild(1).gameObject; // Set action collider
-        searchCollider   = PlayerStats.instance.gameObject.transform.GetChild(2).gameObject; // Set search collider
+        playerBody       = PlayerStats.instance.gameObject.transform.GetChild(0).gameObject; // Set player body 
+        darknessCollider = PlayerStats.instance.gameObject.transform.GetChild(1).gameObject; // Set darkness collider
+        actionCollider   = PlayerStats.instance.gameObject.transform.GetChild(2).gameObject; // Set action collider
+        searchCollider   = PlayerStats.instance.gameObject.transform.GetChild(3).gameObject; // Set search collider
     }
 
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter(Collider other)
     {
 
         if (CheckForSpecificCollider(darknessCollider)) //Checking if something enter collision with darkness collider
         {
-            if (other.gameObject.GetComponent<Light2D>()) // If other object has light source
+            if (other.gameObject.GetComponent<Light>()) // If other object has light source
                 PlayerStats.instance.SetInLight(1);// Add 1 to numbers of light the player is in
         }
         if (CheckForSpecificCollider(actionCollider))  
         {
             if (other.gameObject.GetComponent<Construction>()) // If other object is construction 
-                // Check if it's researchStation
                 PlayerStats.instance.SetResearchLevel(1); // Set player research level
-
-            
-
         }
         if (CheckForSpecificCollider(searchCollider)) //Checking if something enter collision with search collider
         {
@@ -47,9 +43,10 @@ public class PlayerRangeManagement : MonoBehaviour
         }
 
     }
-    private void OnTriggerStay2D(Collider2D other)
+    private void OnTriggerStay(Collider other)
     {
         if (CheckForSpecificCollider(playerBody))
+            if(other.gameObject.GetComponent<SpriteRenderer>())
             if (other.GetComponent<SpriteRenderer>().sortingOrder > GetComponent<SpriteRenderer>().sortingOrder)
             {
                 Color objColor = other.GetComponent<SpriteRenderer>().color;
@@ -67,7 +64,7 @@ public class PlayerRangeManagement : MonoBehaviour
 
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit(Collider other)
     {
         if (CheckForSpecificCollider(playerBody))
         {

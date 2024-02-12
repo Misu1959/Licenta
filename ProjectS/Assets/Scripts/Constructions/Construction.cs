@@ -5,7 +5,10 @@ using UnityEngine.EventSystems;
 
 public class Construction : MonoBehaviour
 {
+    private SpriteRenderer spriteRenderer;
     private Color color;
+
+    private int canBePlaced;
 
     [SerializeField] private float timeToBuild;
     private Timer timer;
@@ -15,8 +18,21 @@ public class Construction : MonoBehaviour
     {
         timer = new Timer(timeToBuild);
 
-        color = GetComponent<SpriteRenderer>().color;
-        GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, .5f);
+        spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        color = spriteRenderer.color;
+
+        spriteRenderer.color = new Color(color.r, color.g, color.b, .5f);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer != 2)
+            canBePlaced++;
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer != 2)
+            canBePlaced--;
     }
 
     void Update()
@@ -29,15 +45,18 @@ public class Construction : MonoBehaviour
     {
         if (!PlayerActionManagement.instance.IsPlacing(this.gameObject)) return; // If player is not placing return
 
-        transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
         PopUpManager.instance.ShowMousePopUp("RMB - cancel");
 
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hitData;
+        if (Physics.Raycast(ray, out hitData, 1000))
+            transform.position = new Vector3(hitData.point.x, 0, hitData.point.z);
 
-        if (CheckIfCanBePlaced() & !MyMethods.CheckIfMouseIsOverUI())
+        if (canBePlaced ==  0 && !MyMethods.CheckIfMouseIsOverUI())
         {
             PopUpManager.instance.ShowMousePopUp("LMB - place\nRMB - cancel");
 
-            GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, .5f);
+            spriteRenderer.color = new Color(color.r, color.g, color.b, .5f);
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -46,7 +65,7 @@ public class Construction : MonoBehaviour
             }
         }
         else
-            GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 128);
+            spriteRenderer.color = new Color32(255, 0, 0, 128);
 
 
         if (Input.GetMouseButtonDown(1))
@@ -72,8 +91,8 @@ public class Construction : MonoBehaviour
         if (!timer.IsElapsed()) return;
 
 
-        GetComponent<SpriteRenderer>().color = color;
-        GetComponent<Collider2D>().isTrigger = false;
+        spriteRenderer.color = color;
+        GetComponent<Collider>().isTrigger = false;
         transform.SetParent(SaveLoadManager.instance.constructions.transform);
 
 
@@ -84,24 +103,6 @@ public class Construction : MonoBehaviour
             InventoryManager.instance.SpendResources(req.name, req.quantity);
 
         PlayerActionManagement.instance.CompleteAction();
-    }
-
-    bool CheckIfCanBePlaced()
-    {
-        ContactFilter2D filter = new ContactFilter2D().NoFilter();
-        List<Collider2D> results = new List<Collider2D>();
-
-        Physics2D.OverlapCollider(GetComponent<Collider2D>(),filter,results);
-
-        for (int i = 0; i < results.Count; i++)
-        {
-            if (results[i].gameObject.layer == 2 || results[i].gameObject == this.gameObject)
-                continue;
-            else
-                return false;
-
-        }
-        return true;
     }
 
 }

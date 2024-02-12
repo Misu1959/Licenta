@@ -5,7 +5,7 @@ using UnityEngine;
 public class ResourceSpawnerManager : MonoBehaviour
 {
     private static System.Random rnd = new System.Random();
-    private int maxItemsForType = 20;
+    private int maxItemsForType = 100;
 
     IEnumerator Start()
     {
@@ -15,7 +15,7 @@ public class ResourceSpawnerManager : MonoBehaviour
         {
             SpawnItems(ItemData.Name.flint);
             SpawnItems(ItemData.Name.seeds);
-
+         
             SpawnResources(Resource.Name.sappling);
             SpawnResources(Resource.Name.tree);
             SpawnResources(Resource.Name.rock);
@@ -26,7 +26,6 @@ public class ResourceSpawnerManager : MonoBehaviour
             SpawnResources(Resource.Name.redShroom);
             SpawnResources(Resource.Name.greenShroom);
             SpawnResources(Resource.Name.blueShroom);
-
         }
     }
 
@@ -39,8 +38,8 @@ public class ResourceSpawnerManager : MonoBehaviour
             Item item = ItemsManager.instance.CreateItem(_name);
 
             item.transform.SetParent(SaveLoadManager.instance.items.transform);
-            item.transform.position = new Vector2(Random.Range(-25, 25), Random.Range(-25, 25));
-        
+            item.transform.position = new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100));
+
         }
     }
 
@@ -50,10 +49,10 @@ public class ResourceSpawnerManager : MonoBehaviour
 
         for (int i = 0; i < nr; i++)
         {
-            Resource resource = Instantiate(ItemsManager.instance.SearchResourcesList(_name)).GetComponent<Resource>();
+            Resource resource = Instantiate(ItemsManager.instance.SearchResourcesList(_name));
 
             resource.transform.SetParent(SaveLoadManager.instance.resources.transform);
-            resource.transform.position = new Vector2(Random.Range(-25, 25), Random.Range(-25, 25));
+            resource.transform.position = new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100));
             resource.name = _name;
         }
     }

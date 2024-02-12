@@ -35,8 +35,8 @@ public class PopUpManager : MonoBehaviour
 
     void SetPopUp(GameObject popUp)
     {
-        Vector2 offset = new Vector2(Random.Range(-.35f, .35f), Random.Range(.6f, .8f));
-        popUp.transform.position = (Vector2)PlayerStats.instance.gameObject.transform.position + offset;
+        Vector3 offset = new Vector3(Random.Range(-.35f, .35f),1, Random.Range(.6f, .8f));
+        popUp.transform.position = PlayerStats.instance.gameObject.transform.position + offset;
         Destroy(popUp, .75f);
     }
 

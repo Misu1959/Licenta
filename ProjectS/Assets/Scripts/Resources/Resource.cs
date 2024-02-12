@@ -18,6 +18,9 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         blueShroom
     };
 
+    private Animator animator;
+
+
     public new Name name;
 
     [SerializeField] protected ItemData.Name[] drops;
@@ -31,7 +34,7 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     private void Start()
     {
-        //        yield return null; // Wait a frame
+        animator = transform.GetChild(0).GetComponent<Animator>();
         timerGather = new Timer(timeToGather);
         timerGrow = new Timer(maxTimeToGrow, timeToGrow);
     }
@@ -57,7 +60,6 @@ public class Resource : MonoBehaviour, IPointerDownHandler
             PopUpManager.instance.ShowMousePopUp();
             return;
         }
-
 
         if (!timerGrow.IsOn())
             PopUpManager.instance.ShowMousePopUp("LMB - Gather");
@@ -92,22 +94,20 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     void Regrow()
     {
-        if (!timerGrow.IsOn())
-            return;
+        if (!timerGrow.IsOn()) return;
+        if (!animator) return;
 
-        if (!GetComponent<Animator>())
-            return;
 
         timerGrow.Tick();
 
         if (timerGrow.IsElapsedPercent(100))
-            GetComponent<Animator>().SetInteger("GrowthStage", 3);
+            animator.SetInteger("GrowthStage", 3);
         else if (timerGrow.IsElapsedPercent(66))
-            GetComponent<Animator>().SetInteger("GrowthStage", 2);
+            animator.SetInteger("GrowthStage", 2);
         else if (timerGrow.IsElapsedPercent(34))
-            GetComponent<Animator>().SetInteger("GrowthStage", 1);
+            animator.SetInteger("GrowthStage", 1);
         else
-            GetComponent<Animator>().SetInteger("GrowthStage", -1);
+            animator.SetInteger("GrowthStage", -1);
 
     }
 

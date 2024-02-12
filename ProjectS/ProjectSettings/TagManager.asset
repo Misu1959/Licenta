@@ -11,26 +11,26 @@ TagManager:
   - Range
   - Water
   - UI
-  - Player
-  - Enemy
-  - 
-  - 
-  - Construction
+  - SpriteRenderer
+  - Ground
   - 
   - 
   - 
   - 
-  - Resource
-  - 
-  - 
-  - 
-  - Item
-  - Food
   - 
   - 
   - 
   - 
-  - Tool
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 

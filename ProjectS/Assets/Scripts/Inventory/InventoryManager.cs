@@ -243,8 +243,16 @@ public class InventoryManager : MonoBehaviour
             PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
             if (Input.GetMouseButtonDown(0))
             {
-                DropItem(selectedItemSlot.GetItemInSlot(), Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 PopUpManager.instance.ShowMousePopUp();
+
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hitData;
+                if (Physics.Raycast(ray, out hitData, 1000))
+                {
+                    DropItem(selectedItemSlot.GetItemInSlot(), hitData.point);
+                    PopUpManager.instance.ShowMousePopUp();
+                }
+
             }
         }
         
@@ -255,13 +263,13 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void DropItem(ItemUI itemToDrop, Vector2 positionToDrop)
+    public void DropItem(ItemUI itemToDrop, Vector3 positionToDrop)
     {
         
         Item item = ItemsManager.instance.CreateItem(itemToDrop);
         
         item.transform.SetParent(SaveLoadManager.instance.items.transform);
-        item.transform.localPosition = positionToDrop;
+        item.transform.localPosition = new Vector3(positionToDrop.x, 0, positionToDrop.z);
         item.SetTransparent(true);
 
         PlayerActionManagement.instance.SetTargetAndAction(item.gameObject, PlayerActionManagement.Action.drop);

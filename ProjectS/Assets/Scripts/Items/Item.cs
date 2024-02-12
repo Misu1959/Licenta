@@ -5,6 +5,10 @@ using UnityEngine.EventSystems;
 
 public abstract class Item : Item_Base, IPointerDownHandler
 {
+    private SpriteRenderer spriteRenderer;
+
+    void Awake() =>  spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>(); 
+
     public abstract void OnMouseOver();
     public void OnMouseExit() { PopUpManager.instance.ShowMousePopUp(); }
 
@@ -34,11 +38,11 @@ public abstract class Item : Item_Base, IPointerDownHandler
 
     public void SetTransparent(bool setTransparent)
     {
-        Color thisColor = GetComponent<SpriteRenderer>().color;
+        Color thisColor = spriteRenderer.color;
 
         if (setTransparent)
-            GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, .5f);
+            spriteRenderer.color = new Color(thisColor.r, thisColor.g, thisColor.b, .5f);
         else
-            GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, 1f);
+            spriteRenderer.color = new Color(thisColor.r, thisColor.g, thisColor.b, 1f);
     }
 }

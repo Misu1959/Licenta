@@ -9,11 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4085315147169609884}
-  - component: {fileID: 4085315147169609859}
-  - component: {fileID: -3527362973804249309}
-  - component: {fileID: 4427489917935079039}
+  - component: {fileID: -2332080916704737273}
+  - component: {fileID: -2421230942577041630}
   - component: {fileID: 4085315147169609886}
-  m_Layer: 20
+  m_Layer: 0
   m_Name: meatC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,17 +30,103 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3544520123494879162}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &4085315147169609859
-SpriteRenderer:
+--- !u!54 &-2332080916704737273
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4085315147169609858}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!135 &-2421230942577041630
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4085315147169609858}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.3
+  m_Center: {x: 0, y: 0.171875, z: 0}
+--- !u!114 &4085315147169609886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4085315147169609858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eab1ab89bbf20854eb6b046c88d2f925, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    uiImg: {fileID: 21300000, guid: e9c4cac39bf9e5345968037b90ae26a4, type: 3}
+    name: 23
+    maxStack: 20
+    currentStack: 0
+    fuelValue: 0
+    hungerAmount: 25
+    hpAmount: 10
+    timeToCook: 1
+    quickEat: 0
+--- !u!1 &6703305242452731771
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3544520123494879162}
+  - component: {fileID: 2750160712470474841}
+  - component: {fileID: 7124494910498670241}
+  - component: {fileID: 5388055004841430275}
+  m_Layer: 6
+  m_Name: Renderer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3544520123494879162
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6703305242452731771}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4085315147169609884}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &2750160712470474841
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6703305242452731771}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -75,7 +160,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 9cacf78c27a13574093cc54778d3e7c3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -87,69 +172,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &-3527362973804249309
-PolygonCollider2D:
+--- !u!65 &7124494910498670241
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4085315147169609858}
-  m_Enabled: 1
-  m_Density: 1
+  m_GameObject: {fileID: 6703305242452731771}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
-    oldSize: {x: 0.62109375, y: 0.34375}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.20242237, y: 0.28837666}
-      - {x: -0.28884685, y: 0.2281562}
-      - {x: -0.22761935, y: 0.122454956}
-      - {x: 0.041104287, y: 0.044351995}
-      - {x: 0.24909842, y: 0.13934147}
-      - {x: 0.29495543, y: 0.2539839}
-      - {x: 0.023089051, y: 0.32604492}
---- !u!114 &4427489917935079039
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.57703125, y: 0.28257775, z: 0.1}
+  m_Center: {x: -0.0014843792, y: 0.17941386, z: 0}
+--- !u!114 &5388055004841430275
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4085315147169609858}
+  m_GameObject: {fileID: 6703305242452731771}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0782d6fb9711f8a4da2425512bcab81e, type: 3}
+  m_Script: {fileID: 11500000, guid: 61c73e7707474f040ac412d41f928a95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4085315147169609886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4085315147169609858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eab1ab89bbf20854eb6b046c88d2f925, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data:
-    uiImg: {fileID: 21300000, guid: e9c4cac39bf9e5345968037b90ae26a4, type: 3}
-    name: 23
-    maxStack: 20
-    currentStack: 0
-    fuelValue: 0
-    hungerAmount: 25
-    hpAmount: 10
-    timeToCook: 1
-    quickEat: 0

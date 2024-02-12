@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     public static PlayerStats instance;
+    public Animator animator { get; private set; }
+    public Rigidbody rigidBody { get; private set; }
 
     #region Stats
     [SerializeField] private float maxHunger;
@@ -29,6 +31,8 @@ public class PlayerStats : MonoBehaviour
     void Start()
     {
         instance = this;
+        animator = transform.GetChild(0).GetComponent<Animator>();
+        rigidBody = GetComponent<Rigidbody>();
 
         hungerTimer = new Timer(1);
         hungerTimer.StartTimer();
