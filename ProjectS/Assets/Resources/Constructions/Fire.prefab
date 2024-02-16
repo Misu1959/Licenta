@@ -144,6 +144,7 @@ GameObject:
   - component: {fileID: 7373524062299181505}
   - component: {fileID: -1044735851342530061}
   - component: {fileID: -4102262700231696223}
+  - component: {fileID: -5403714866863252981}
   - component: {fileID: 7883046425774857044}
   m_Layer: 0
   m_Name: Fire
@@ -212,6 +213,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToBuild: 3
+--- !u!114 &-5403714866863252981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6727790776693729420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f13e0724f481de42bb3bdcfb0c5998f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: Wheel - inspect
+  inspectionTexts: []
 --- !u!114 &7883046425774857044
 MonoBehaviour:
   m_ObjectHideFlags: 0

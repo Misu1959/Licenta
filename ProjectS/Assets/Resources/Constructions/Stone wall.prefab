@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -469888748836541290}
   - component: {fileID: 3490421457737325099}
   - component: {fileID: -8446177346852835360}
+  - component: {fileID: -8841975346542355874}
   m_Layer: 0
   m_Name: Stone wall
   m_TagString: Untagged
@@ -78,6 +79,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToBuild: 3
+--- !u!114 &-8841975346542355874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2505370312106559334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f13e0724f481de42bb3bdcfb0c5998f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: Wheel - inspect
+  inspectionTexts: []
 --- !u!1 &5674200759312571689
 GameObject:
   m_ObjectHideFlags: 0

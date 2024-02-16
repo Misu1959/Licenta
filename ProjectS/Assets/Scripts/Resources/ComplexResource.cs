@@ -7,26 +7,6 @@ public class ComplexResource : Resource
     [SerializeField] EquipmentData.ActionType howToGather;
     [SerializeField] private float hp;
 
-    public override void OnMouseOver()
-    {
-        if (!InteractionManager.CanPlayerInteractWithWorld(false))
-        {
-            PopUpManager.instance.ShowMousePopUp();
-            return;
-        }
-
-        string popUpText = "";
-        bool canBeGathered = CheckIfCanBeGathered();
-
-        if (howToGather == EquipmentData.ActionType.chop && canBeGathered)
-            popUpText = "LMB - Chop";
-        else if (howToGather == EquipmentData.ActionType.mine && canBeGathered)
-            popUpText = "LMB - Mine";
-
-        PopUpManager.instance.ShowMousePopUp(popUpText);
-
-    }
-
     public override void SetToGather()
     {
         if (howToGather == EquipmentData.ActionType.chop)
@@ -77,7 +57,6 @@ public class ComplexResource : Resource
         PlayerActionManagement.instance.CompleteAction(); // Complete the action
         Destroy(this.gameObject); // Destroy this object
 
-        PopUpManager.instance.ShowMousePopUp();
     }
 
     void DropItemOfName(ItemData.Name nameOfItem)

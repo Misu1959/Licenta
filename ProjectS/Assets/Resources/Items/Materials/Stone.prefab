@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 3820334458008863255}
   - component: {fileID: 2728795240065543917}
   - component: {fileID: 1604933138630744404}
+  - component: {fileID: -6933334232585031526}
   m_Layer: 0
   m_Name: Stone
   m_TagString: Untagged
@@ -193,3 +194,19 @@ MonoBehaviour:
     maxStack: 20
     currentStack: 0
     fuelValue: 0
+--- !u!114 &-6933334232585031526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604933138630744405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f188e181bdcf1274e8749c6caa18a74a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: 'Lmb - pick
+
+    Wheel - inspect'
+  inspectionTexts: []

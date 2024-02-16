@@ -9,9 +9,6 @@ public abstract class Item : Item_Base, IPointerDownHandler
 
     void Awake() =>  spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>(); 
 
-    public abstract void OnMouseOver();
-    public void OnMouseExit() { PopUpManager.instance.ShowMousePopUp(); }
-
     public void OnPointerDown(PointerEventData eventData)
     {
         if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
@@ -26,7 +23,7 @@ public abstract class Item : Item_Base, IPointerDownHandler
 
     private void Pick() {   PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.pick);    }
 
-    protected bool IsOnTheGround()
+    public bool IsOnTheGround()
     {
         // If player is not droping it now return true
         if (PlayerActionManagement.instance.currentTarget == this.gameObject &&

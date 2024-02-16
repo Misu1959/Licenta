@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7959948415093034689}
   - component: {fileID: 4316374205575839281}
   - component: {fileID: 4085315147169609886}
+  - component: {fileID: 2919431288018536487}
   m_Layer: 0
   m_Name: SeedsC
   m_TagString: Untagged
@@ -86,6 +87,24 @@ MonoBehaviour:
     hpAmount: 1
     timeToCook: 0
     quickEat: 1
+--- !u!114 &2919431288018536487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4085315147169609858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f188e181bdcf1274e8749c6caa18a74a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: 'Lmb - pick
+
+    Rmb - eat
+
+    Wheel - inspect'
+  inspectionTexts: []
 --- !u!1 &7838832501241435847
 GameObject:
   m_ObjectHideFlags: 0

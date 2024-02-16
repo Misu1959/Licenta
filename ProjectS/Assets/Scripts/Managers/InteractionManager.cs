@@ -6,20 +6,15 @@ public class InteractionManager : MonoBehaviour
 {
     private static bool canInteract;
 
-    private void Start() {  canInteract = true; }
+    private void Start() => canInteract = true; 
 
     public static void SetInteractionStatus(bool status)
     {
         canInteract = status;
         CraftingManager.instance.ActivateCraftingManager(canInteract);
-        PopUpManager.instance.ShowMousePopUp();
     }
 
-    public static bool CanPlayerInteractWithUI()
-    {
-        return canInteract;
-    }
-
+    public static bool CanPlayerInteractWithUI() => canInteract;
     public static bool CanPlayerInteractWithWorld(bool doPlayerNeedSelectedItem)
     {
         if(!doPlayerNeedSelectedItem)

@@ -19,15 +19,4 @@ public class Food : Item
         PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.eat); 
     }
 
-    public override void OnMouseOver()
-    {
-            
-        if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
-
-        if (IsOnTheGround())
-        { 
-            string popUpText = "LMB - Pick\nRMB - Eat";
-            PopUpManager.instance.ShowMousePopUp(popUpText);
-        }
-    }
 }

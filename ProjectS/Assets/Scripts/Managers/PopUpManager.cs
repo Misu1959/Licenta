@@ -11,6 +11,7 @@ public class PopUpManager : MonoBehaviour
 {
     public enum PopUpPriorityLevel
     {
+        none,
         low,
         medium,
         high,
@@ -20,66 +21,64 @@ public class PopUpManager : MonoBehaviour
     public static PopUpManager instance;
     
     private PopUpPriorityLevel popUpPriorityLevel;
+    private PopUpPriorityLevel previousPopUpPriorityLevel;
     [SerializeField] private GameObject mousePopUp;
     [SerializeField] private GameObject popUpPrefab;
 
-    private void Start()
-    {
-        instance = this;
-    }
-
-    private void Update()
-    {
-        MoveMousePopUp();
-    }
-
-    void SetPopUp(GameObject popUp)
+    private void Awake() => instance = this;
+    private void Update() => MoveMousePopUp();
+    void SetPopUp(Transform location,GameObject popUp)
     {
         Vector3 offset = new Vector3(Random.Range(-.35f, .35f),1, Random.Range(.6f, .8f));
-        popUp.transform.position = PlayerStats.instance.gameObject.transform.position + offset;
+        popUp.transform.position = location.position + offset;
         Destroy(popUp, .75f);
     }
 
-    public void ShowPopUpDarkness(int treshhold)
+    public void ShowPopUp(Transform location, string textInput)
     {
         GameObject popUp = Instantiate(popUpPrefab);
-        SetPopUp(popUp);
-
-        if (treshhold == 1)
-            popUp.GetComponent<TextMeshPro>().text = "What was that!";
-        else if (treshhold == 2)
-            popUp.GetComponent<TextMeshPro>().text = "Who's there?";
-        else
-            popUp.GetComponent<TextMeshPro>().text = "Ouch";
-
-    }
-
-    public void ShowPopUpAction(string textInput = "")
-    {
-        GameObject popUp = Instantiate(popUpPrefab);
-        SetPopUp(popUp);
+        SetPopUp(location, popUp);
 
         popUp.GetComponent<TextMeshPro>().text = textInput;
 
     }
 
-
-    public void ShowMousePopUp(string popUpText = "", PopUpPriorityLevel priority = PopUpPriorityLevel.low)
+    public void ShowPopUpDarkness(int treshhold)
     {
-        if (popUpText == "")
-            popUpPriorityLevel = PopUpPriorityLevel.low;
-        else if (popUpPriorityLevel <= priority)
+        GameObject popUp = Instantiate(popUpPrefab);
+        SetPopUp(PlayerStats.instance.transform, popUp);
+
+        if (treshhold == 1)
+            popUp.GetComponent<TextMeshPro>().text = "What was that!";
+        else if (treshhold == 2)
+            popUp.GetComponent<TextMeshPro>().text = "Who's there?";
+        else if (treshhold == 3)
+            popUp.GetComponent<TextMeshPro>().text = "Ouch";
+
+    }
+
+
+
+    public void ShowMousePopUp(string popUpText, PopUpPriorityLevel priority)
+    {
+        if (previousPopUpPriorityLevel == PopUpPriorityLevel.none && priority == PopUpPriorityLevel.none)
+            if (popUpPriorityLevel != PopUpPriorityLevel.none)
+                popUpPriorityLevel = PopUpPriorityLevel.none;
+
+        previousPopUpPriorityLevel = priority;
+        if (popUpPriorityLevel <= priority)
+        {
             popUpPriorityLevel = priority;
 
-        if (popUpPriorityLevel <= priority)
             if (mousePopUp.GetComponent<TextMeshProUGUI>().text != popUpText)
                 mousePopUp.GetComponent<TextMeshProUGUI>().text = popUpText;
-
+        }
     }
 
     private void MoveMousePopUp()
     {
         mousePopUp.transform.position = (Vector2)Input.mousePosition + new Vector2(0,50);
+        ShowMousePopUp("", PopUpPriorityLevel.none);
     }
 
 }

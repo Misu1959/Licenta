@@ -305,6 +305,7 @@ GameObject:
   - component: {fileID: -4656201363532753276}
   - component: {fileID: 4057073603672024931}
   - component: {fileID: -706516065438007141}
+  - component: {fileID: 7480763185440466080}
   m_Layer: 0
   m_Name: Torch
   m_TagString: Untagged
@@ -394,3 +395,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxFireSize: 3
   maxLifetime: 30
+--- !u!114 &7480763185440466080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7566794954163294703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f188e181bdcf1274e8749c6caa18a74a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: 'Lmb - pick
+
+    Rmb - equip
+
+    Wheel - inspect'
+  inspectionTexts: []

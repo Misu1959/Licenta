@@ -6,12 +6,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
+public class InventorySlot : MonoBehaviour, IPointerDownHandler
 {
     protected ItemUI itemInSlot;
-    protected bool isMouseOver;
-
-    void Update() { MouseOver(); }
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
@@ -88,72 +85,15 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
         }
     }
 
-    public void OnPointerEnter(PointerEventData eventData) { isMouseOver = true; }
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        isMouseOver = false;
-        PopUpManager.instance.ShowMousePopUp();
-    }
+    public ItemUI GetItemInSlot() => itemInSlot; 
+    public void SetItemInSlot(ItemUI newItemInSlot) => itemInSlot = newItemInSlot;
 
-    public virtual void MouseOver()
-    {
-        if (!isMouseOver) return;
-        if (!InteractionManager.CanPlayerInteractWithUI()) return;
 
-        if (!itemInSlot) // If I don't have an item in slot
-        {
-            if (InventoryManager.instance.selectedItemSlot.CheckIfItHasItem()) // If I have an item selected
-            {
-                if (InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetComponent<Storage>())
-                    PopUpManager.instance.ShowMousePopUp("RMB - cancel", PopUpManager.PopUpPriorityLevel.medium);
-                else
-                    PopUpManager.instance.ShowMousePopUp("LMB  - place\nRMB - cancel", PopUpManager.PopUpPriorityLevel.medium);
-            }
-            else
-                PopUpManager.instance.ShowMousePopUp();
-        }
-        else // If I have an item in slot
-        {
-            if (!InventoryManager.instance.selectedItemSlot.CheckIfItHasItem()) // If I don't have an item selected
-            {
-                if (itemInSlot.GetComponent<FoodUI>())
-                    PopUpManager.instance.ShowMousePopUp("LMB  - select\nRMB - eat", PopUpManager.PopUpPriorityLevel.medium);
-                else if (itemInSlot.GetComponent<EquipmentUI>())
-                    PopUpManager.instance.ShowMousePopUp("LMB  - select\nRMB - equip", PopUpManager.PopUpPriorityLevel.medium);
-                else
-                    PopUpManager.instance.ShowMousePopUp("LMB  - select", PopUpManager.PopUpPriorityLevel.medium);
-            }
-            else // If I have an item selected
-            {
-                if (!CheckMatchingName(InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetItemData().name)) // if the items are different
-                {
-                    if (InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetComponent<Storage>())
-                        PopUpManager.instance.ShowMousePopUp("RMB - cancel", PopUpManager.PopUpPriorityLevel.medium);
-                    else
-                        PopUpManager.instance.ShowMousePopUp("LMB  - swap\nRMB - cancel", PopUpManager.PopUpPriorityLevel.medium);
-                }
-                else // If the items have the same name
-                {
-                    if (InventoryManager.instance.selectedItemSlot.GetItemInSlot().CheckIfStackIsFull() || itemInSlot.CheckIfStackIsFull()) // If any of the stack are full
-                        PopUpManager.instance.ShowMousePopUp("LMB  - swap\nRMB - cancel", PopUpManager.PopUpPriorityLevel.medium);
-                    else // If neither stacks are full
-                        PopUpManager.instance.ShowMousePopUp("LMB  - add\nRMB - cancel", PopUpManager.PopUpPriorityLevel.medium);
-                }
-            }
-        }
+    public bool CheckIfItHasItem() => itemInSlot == null ? false : true; 
+    public bool CheckMatchingName(ItemData.Name nameToCompare) => itemInSlot?.GetItemData().name != nameToCompare ? false : true;
 
-    }
 
-    public ItemUI GetItemInSlot() { return itemInSlot; }
-
-    public void SetItemInSlot(ItemUI newItemInSlot) { itemInSlot = newItemInSlot; }
-
-    public bool CheckIfItHasItem() { return itemInSlot == null ? false : true; }
-
-    public bool CheckMatchingName(ItemData.Name nameToCompare) { return itemInSlot?.GetItemData().name != nameToCompare ? false : true; }
-
-    public bool IsBackpackSlot() {   return (transform.parent != InventoryManager.instance.backpackPanel) ? false : true; }
-
-    public bool IsChestSlot() {   return (transform.parent != InventoryManager.instance.chestPanel) ? false : true; }
+    public bool IsBackpackSlot() => (transform.parent != InventoryManager.instance.backpackPanel) ? false : true;
+    public bool IsChestSlot() => (transform.parent != InventoryManager.instance.chestPanel) ? false : true;
 
 }

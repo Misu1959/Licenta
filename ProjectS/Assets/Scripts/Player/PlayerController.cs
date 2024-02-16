@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
             keyboardMovement = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
     }
 
-
     void Start()
     {
         instance = this;
@@ -29,17 +28,14 @@ public class PlayerController : MonoBehaviour
         SetCanMove(true);
     }
 
-    void Update()
-    {
-        Move();
-        SetMoveAnim();
-    }
+    void Update() => Move();
 
-    private void FixedUpdate()  {   PlayerStats.instance.GetComponent<Rigidbody>().velocity = movementDir.normalized * PlayerStats.instance.speed;  }
+    private void FixedUpdate()  { PlayerStats.instance.rigidBody.velocity = movementDir.normalized * PlayerStats.instance.speed;  }
 
     private void Move()
     {
         SetKeyboardMovement();
+        SetMovementAnimation();
 
         if (PlayerActionManagement.instance.currentTarget) // If player has a target
         {
@@ -52,7 +48,7 @@ public class PlayerController : MonoBehaviour
             movementDir = keyboardMovement;
     }
 
-    private void SetMoveAnim()
+    private void SetMovementAnimation()
     {
         /*
         For player animation movement

@@ -73,11 +73,11 @@ public class PlayerActionManagement : MonoBehaviour
         }
 
         if (!closestObjectToInteractWith)
-            PopUpManager.instance.ShowPopUpAction("Nothing in range!");
+            PopUpManager.instance.ShowPopUp(this.transform, "Nothing in range!");
         else if (closestObjectToInteractWith.GetComponent<Item>()) // If closest item exist and is an item go and pick it
             SetTargetAndAction(closestObjectToInteractWith, Action.pick);
-        else // If closest item exist and is a resource type go and gather/chop/mine it
-            closestObjectToInteractWith.GetComponent<Resource>()?.SetToGather();
+        else if(closestObjectToInteractWith.GetComponent<Resource>()) // If closest item exist and is a resource type go and gather/chop/mine it
+            closestObjectToInteractWith.GetComponent<Resource>().SetToGather();
 
     }
 
@@ -89,7 +89,7 @@ public class PlayerActionManagement : MonoBehaviour
         if (currentTarget && _target) // If I take a new action cancel the current action
             CancelAction(true);
         else if(_target)
-            PopUpManager.instance.ShowPopUpAction("Action taken!");
+            PopUpManager.instance.ShowPopUp(this.transform, "Action taken!");
 
 
 
@@ -226,7 +226,7 @@ public class PlayerActionManagement : MonoBehaviour
         PlayerStats.instance.animator.SetBool("IsPerformingAction", false);
         
         SetTargetAndAction(null, Action.nothing);
-        PopUpManager.instance.ShowPopUpAction("Action completed!");
+        PopUpManager.instance.ShowPopUp(this.transform, "Action completed!");
 
     }
 
@@ -266,14 +266,14 @@ public class PlayerActionManagement : MonoBehaviour
         {
             SetTargetAndAction(null, Action.nothing);
             if (currentAction != Action.search)
-                PopUpManager.instance.ShowPopUpAction("Action canceled!");
+                PopUpManager.instance.ShowPopUp(this.transform, "Action canceled!");
         }
         else
         {
             if (currentAction == Action.search)
-                PopUpManager.instance.ShowPopUpAction("Action taken!");
+                PopUpManager.instance.ShowPopUp(this.transform, "Action taken!");
             else
-                PopUpManager.instance.ShowPopUpAction("New action taken!");
+                PopUpManager.instance.ShowPopUp(this.transform, "New action taken!");
         }
     }
 

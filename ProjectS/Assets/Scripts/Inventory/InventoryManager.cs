@@ -236,31 +236,21 @@ public class InventoryManager : MonoBehaviour
 
         selectedItemSlot.transform.position = Input.mousePosition;
 
-        if (MyMethods.CheckIfMouseIsOverUI() || MyMethods.CheckIfMouseIsOverItem())
-            PopUpManager.instance.ShowMousePopUp("RMB - Cancel");
-        else
-        {
-            PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel");
-            if (Input.GetMouseButtonDown(0))
-            {
-                PopUpManager.instance.ShowMousePopUp();
-
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hitData;
-                if (Physics.Raycast(ray, out hitData, 1000))
-                {
-                    DropItem(selectedItemSlot.GetItemInSlot(), hitData.point);
-                    PopUpManager.instance.ShowMousePopUp();
-                }
-
-            }
-        }
-        
         if (Input.GetMouseButtonDown(1))
-        {
             SetBackToSlot();
-            PopUpManager.instance.ShowMousePopUp();
+
+        if (MyMethods.CheckIfMouseIsOverUI() || MyMethods.CheckIfMouseIsOverItem()) return;
+
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitData;
+            if (Physics.Raycast(ray, out hitData, 1000))
+                DropItem(selectedItemSlot.GetItemInSlot(), hitData.point);
+
         }
+
     }
 
     public void DropItem(ItemUI itemToDrop, Vector3 positionToDrop)
@@ -384,7 +374,6 @@ public class InventoryManager : MonoBehaviour
                     Destroy(backpackSlots[i].GetItemInSlot().gameObject);
 
             StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
-            PopUpManager.instance.ShowMousePopUp();
         }
         else
         {
@@ -427,7 +416,6 @@ public class InventoryManager : MonoBehaviour
                     Destroy(chestSlots[i].GetItemInSlot().gameObject);
 
             StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
-            PopUpManager.instance.ShowMousePopUp();
         }
         else
         {

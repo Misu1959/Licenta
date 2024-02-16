@@ -214,7 +214,7 @@ MonoBehaviour:
   maxHunger: 100
   maxHp: 100
   maxDmg: 10
-  maxSpeed: 5
+  maxSpeed: 3
 --- !u!114 &-254682147992602175
 MonoBehaviour:
   m_ObjectHideFlags: 0

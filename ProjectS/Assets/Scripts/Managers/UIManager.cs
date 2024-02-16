@@ -35,19 +35,13 @@ public class UIManager : MonoBehaviour
             ShowEscapeScreen();
     }
 
-    public void SetClock(float time)
+    public void SetClock(float dayLength,float dawnLength)
     {
-        clock.transform.parent.GetComponent<Image>().fillAmount = time;
+        clock.transform.parent.GetChild(0).GetComponent<Image>().fillAmount = dawnLength;
+        clock.transform.parent.GetChild(1).GetComponent<Image>().fillAmount = dayLength;
     }
-    public void ShowTime(float timeSpeed)
-    {
-        clock.transform.GetChild(0).eulerAngles -= new Vector3(0, 0, timeSpeed);
-    }
-    public void ShowDayCount(int currentDay)
-    {
-        clock.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Day\n" + currentDay.ToString();
-
-    }
+    public void ShowTime(float timeSpeed) => clock.transform.GetChild(0).eulerAngles -= new Vector3(0, 0, timeSpeed);
+    public void ShowDayCount(int currentDay) => clock.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Day\n" + currentDay.ToString();
 
     public void ShowHp(float maxHp,float hp)
     {

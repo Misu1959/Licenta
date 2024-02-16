@@ -144,6 +144,7 @@ GameObject:
   - component: {fileID: 7247792407938575980}
   - component: {fileID: 2695014455568471271}
   - component: {fileID: 1398942044121527493}
+  - component: {fileID: 6882884118948524786}
   m_Layer: 0
   m_Name: Rock
   m_TagString: Untagged
@@ -215,3 +216,19 @@ MonoBehaviour:
   maxTimeToGrow: 0
   howToGather: 1
   hp: 10
+--- !u!114 &6882884118948524786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8853479105482509436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a23cebbc964d1e442be480a62028965b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: 'Lmb - mine
+
+    Wheel - inspect'
+  inspectionTexts: []

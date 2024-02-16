@@ -49,23 +49,12 @@ public class Resource : MonoBehaviour, IPointerDownHandler
     {
         if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
 
-        if (CheckIfCanBeGathered())
-            SetToGather();
-    }
-
-    public virtual void OnMouseOver()
-    {
-        if (!InteractionManager.CanPlayerInteractWithWorld(false))
+        if (Input.GetMouseButton(0))
         {
-            PopUpManager.instance.ShowMousePopUp();
-            return;
+            if (CheckIfCanBeGathered())
+                SetToGather();
         }
-
-        if (!timerGrow.IsOn())
-            PopUpManager.instance.ShowMousePopUp("LMB - Gather");
     }
-
-    private void OnMouseExit()  {   PopUpManager.instance.ShowMousePopUp(); }
 
     public virtual void SetToGather()   {   PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.gather);  }
 

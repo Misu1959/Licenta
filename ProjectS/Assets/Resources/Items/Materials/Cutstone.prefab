@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -4128452305400903584}
   - component: {fileID: 6171075559032152725}
   - component: {fileID: 1604933138630744404}
+  - component: {fileID: -112196022564073839}
   m_Layer: 0
   m_Name: Cutstone
   m_TagString: Untagged
@@ -82,6 +83,22 @@ MonoBehaviour:
     maxStack: 20
     currentStack: 0
     fuelValue: 0
+--- !u!114 &-112196022564073839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604933138630744405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f188e181bdcf1274e8749c6caa18a74a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: 'Lmb - pick
+
+    Wheel - inspect'
+  inspectionTexts: []
 --- !u!1 &2799142266661379681
 GameObject:
   m_ObjectHideFlags: 0

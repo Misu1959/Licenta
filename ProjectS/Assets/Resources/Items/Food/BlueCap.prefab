@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -4981782391765129380}
   - component: {fileID: -7915097551390462440}
   - component: {fileID: 4085315147169609886}
+  - component: {fileID: -134806578479949763}
   m_Layer: 0
   m_Name: BlueCap
   m_TagString: Untagged
@@ -86,6 +87,24 @@ MonoBehaviour:
     hpAmount: 5
     timeToCook: 1
     quickEat: 1
+--- !u!114 &-134806578479949763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4085315147169609858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f188e181bdcf1274e8749c6caa18a74a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: 'Lmb - pick
+
+    Rmb - eat
+
+    Wheel - inspect'
+  inspectionTexts: []
 --- !u!1 &6635360107036391228
 GameObject:
   m_ObjectHideFlags: 0

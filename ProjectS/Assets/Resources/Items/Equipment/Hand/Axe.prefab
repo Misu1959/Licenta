@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 916987650364321191}
   - component: {fileID: 5819551017395657663}
   - component: {fileID: -28642566494988520}
+  - component: {fileID: 701779448338776790}
   m_Layer: 0
   m_Name: Axe
   m_TagString: Untagged
@@ -197,3 +198,21 @@ MonoBehaviour:
     actionType: 0
     maxDurability: 4
     durability: 0
+--- !u!114 &701779448338776790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7566794954163294703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f188e181bdcf1274e8749c6caa18a74a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: 'Lmb - pick
+
+    Rmb - equip
+
+    Wheel - inspect'
+  inspectionTexts: []

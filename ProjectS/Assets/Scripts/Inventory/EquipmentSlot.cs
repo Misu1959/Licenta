@@ -8,51 +8,6 @@ public class EquipmentSlot : InventorySlot
 {
     private EquipmentData.Type slotType;
 
-    private void Update()   {   MouseOver();    }
-
-    public override void MouseOver()
-    {
-        if (!isMouseOver) return;
-        if (!InteractionManager.CanPlayerInteractWithUI()) return;
-
-        if (!itemInSlot) // If I don't have an item in slot
-        {
-            if (!InventoryManager.instance.selectedItemSlot.CheckIfItHasItem()) // If I don't have an item selected
-                PopUpManager.instance.ShowMousePopUp();
-            else // If I have an item selected
-            {
-                if (!InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetComponent<EquipmentUI>()) // If the item selected is not an equipment
-                    PopUpManager.instance.ShowMousePopUp("RMB - cancel", PopUpManager.PopUpPriorityLevel.medium);
-                else // If the selected item is an equipment
-                {
-                    if (!CheckForMatchingType(InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetEquipmentData().equipmentType)) // If the equipment type does not match
-                        PopUpManager.instance.ShowMousePopUp("RMB - cancel", PopUpManager.PopUpPriorityLevel.medium);
-                    else // If the equipment type match
-                        PopUpManager.instance.ShowMousePopUp("LMB  - equip\nRMB - cancel", PopUpManager.PopUpPriorityLevel.medium);
-                }
-            }
-
-        }
-        else  // If I have an item in slot
-        {
-            if (!InventoryManager.instance.selectedItemSlot.GetItemInSlot()) // If I don't have an item selected
-                PopUpManager.instance.ShowMousePopUp("LMB  - select\nRMB - unequip", PopUpManager.PopUpPriorityLevel.medium);
-            else // If I have an item selected
-            {
-                if (!InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetComponent<EquipmentUI>()) // If the item selected is not an equipment
-                    PopUpManager.instance.ShowMousePopUp("RMB - cancel", PopUpManager.PopUpPriorityLevel.medium);
-                else // If the selected item is an equipment
-                {
-                    if (!CheckForMatchingType(InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetEquipmentData().equipmentType)) // If the equipment type does not match
-                        PopUpManager.instance.ShowMousePopUp("RMB - cancel", PopUpManager.PopUpPriorityLevel.medium);
-                    else // If the equipment type match
-                        PopUpManager.instance.ShowMousePopUp("LMB  - swap\nRMB - cancel", PopUpManager.PopUpPriorityLevel.medium);
-                }
-            }
-        }
-
-    }
-
     public override void OnPointerDown(PointerEventData eventData)
     {
         if (!InteractionManager.CanPlayerInteractWithUI()) return;
@@ -93,7 +48,7 @@ public class EquipmentSlot : InventorySlot
         }
     }
 
-    public void SetSlotType(EquipmentData.Type _type) { slotType = _type; }// Set slot type
+    public void SetSlotType(EquipmentData.Type _type) => slotType = _type; // Set slot type
                                                                            
-    private bool CheckForMatchingType(EquipmentData.Type equipmentType) { return (slotType != equipmentType) ? false : true; }// check if the Equipment type match slot type or not
+    public bool CheckForMatchingType(EquipmentData.Type equipmentType) => (slotType != equipmentType) ? false : true; // check if the Equipment type match slot type or not
 }

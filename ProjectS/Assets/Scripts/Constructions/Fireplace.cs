@@ -28,7 +28,6 @@ public class Fireplace : Fire, IPointerDownHandler
             PopUpManager.instance.ShowMousePopUp("Lmb - add fuel\nRMB - cancel", PopUpManager.PopUpPriorityLevel.low);
 
     }
-    public void OnMouseExit() { PopUpManager.instance.ShowMousePopUp(); }
 
     public void OnPointerDown(PointerEventData eventData)
     {

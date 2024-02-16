@@ -12,6 +12,7 @@ public class ItemsManager : MonoBehaviour
 
     private Item[] items;
     private Resource[] resources;
+    private MobStats[] mobs;
     
     private void Start()
     {
@@ -23,6 +24,7 @@ public class ItemsManager : MonoBehaviour
     {
         items     = Resources.LoadAll<Item>("Items");
         resources = Resources.LoadAll<Resource>("Res");
+        mobs = Resources.LoadAll<MobStats>("Mobs");
     }
 
     public Item SearchItemsList(ItemData.Name nameOfItemToFind)
@@ -33,14 +35,26 @@ public class ItemsManager : MonoBehaviour
 
         return null;
     }
-    public Resource SearchResourcesList(Resource.Name nameOfItemToFind)
+    public Resource SearchResourcesList(Resource.Name nameOfResourceToFind)
     {
         foreach (Resource resource in resources)
-            if (resource.name == nameOfItemToFind)
+            if (resource.name == nameOfResourceToFind)
                 return resource;
 
         return null;
     }
+
+    public MobStats SearchMobsList(MobStats.Name nameOfMobToFind)
+    {
+        foreach (MobStats mob in mobs)
+            if (mob.name == nameOfMobToFind)
+                return mob;
+
+        return null;
+    }
+
+
+
 
     public ItemUI CreateItemUI(Item item) // Create a new itemUI based on an Item
     {

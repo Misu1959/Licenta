@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 9215201417742760659}
   - component: {fileID: 2026284039491214755}
   - component: {fileID: -2489891301222990490}
+  - component: {fileID: 7235068087401651803}
   m_Layer: 0
   m_Name: Research station
   m_TagString: Untagged
@@ -189,3 +190,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToBuild: 3
+--- !u!114 &7235068087401651803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4721609731605561328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f13e0724f481de42bb3bdcfb0c5998f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: Wheel - inspect
+  inspectionTexts: []

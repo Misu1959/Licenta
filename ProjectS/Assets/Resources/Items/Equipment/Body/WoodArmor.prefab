@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 4208425805593630033}
   - component: {fileID: -3653136853954139529}
   - component: {fileID: -1429506714421017873}
+  - component: {fileID: -2435389822483850895}
   m_Layer: 0
   m_Name: WoodArmor
   m_TagString: Untagged
@@ -197,3 +198,21 @@ MonoBehaviour:
     actionType: 3
     maxDurability: 100
     durability: 0
+--- !u!114 &-2435389822483850895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7566794954163294703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f188e181bdcf1274e8749c6caa18a74a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: 'Lmb - pick
+
+    Rmb - equip
+
+    Wheel - inspect'
+  inspectionTexts: []

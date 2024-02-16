@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6540783094816905598}
   - component: {fileID: -5028179719987429629}
   - component: {fileID: 4085315147169609886}
+  - component: {fileID: -1205886725232338506}
   m_Layer: 0
   m_Name: RedCap
   m_TagString: Untagged
@@ -86,6 +87,24 @@ MonoBehaviour:
     hpAmount: -10
     timeToCook: 0
     quickEat: 1
+--- !u!114 &-1205886725232338506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4085315147169609858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f188e181bdcf1274e8749c6caa18a74a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: 'Lmb - pick
+
+    Rmb - eat
+
+    Wheel - inspect'
+  inspectionTexts: []
 --- !u!1 &9146651740536249120
 GameObject:
   m_ObjectHideFlags: 0

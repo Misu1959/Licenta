@@ -10,16 +10,4 @@ public class ItemMaterial : Item
 
     public override void OnRightMouseButtonPressed(){}
 
-    public override void OnMouseOver()
-    {
-        if (!InteractionManager.CanPlayerInteractWithWorld(false))
-        {
-            PopUpManager.instance.ShowMousePopUp();
-            return;
-        }
-
-        if (IsOnTheGround())
-            PopUpManager.instance.ShowMousePopUp("LMB - Pick");
-    }
-
 }

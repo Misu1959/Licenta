@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 2041825570923527520}
   - component: {fileID: -1427642305606064538}
   - component: {fileID: 6108510407911126654}
+  - component: {fileID: 2012361949359756262}
   m_Layer: 0
   m_Name: Charcoal
   m_TagString: Untagged
@@ -193,3 +194,19 @@ MonoBehaviour:
     maxStack: 20
     currentStack: 0
     fuelValue: 10
+--- !u!114 &2012361949359756262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6108510407911126625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f188e181bdcf1274e8749c6caa18a74a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: 'Lmb - pick
+
+    Wheel - inspect'
+  inspectionTexts: []

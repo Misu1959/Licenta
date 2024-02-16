@@ -13,13 +13,4 @@ public class Chest : Construction, IPointerDownHandler
             PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.search);
     }
 
-    public void OnMouseOver()
-    {
-        if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
-
-        PopUpManager.instance.ShowMousePopUp("Lmb - search", PopUpManager.PopUpPriorityLevel.low);
-
-    }
-
-    public void OnMouseExit() { PopUpManager.instance.ShowMousePopUp(); }
 }

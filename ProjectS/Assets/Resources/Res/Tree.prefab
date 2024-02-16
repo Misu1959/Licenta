@@ -144,6 +144,7 @@ GameObject:
   - component: {fileID: 1146324563397235265}
   - component: {fileID: 237755918368816763}
   - component: {fileID: -2621727114431176223}
+  - component: {fileID: -5646847343718734843}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Untagged
@@ -215,3 +216,19 @@ MonoBehaviour:
   maxTimeToGrow: 0
   howToGather: 0
   hp: 10
+--- !u!114 &-5646847343718734843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603796599140895000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a23cebbc964d1e442be480a62028965b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: 'Lmb - chop
+
+    Wheel - inspect'
+  inspectionTexts: []

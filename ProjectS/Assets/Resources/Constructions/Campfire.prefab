@@ -228,6 +228,7 @@ GameObject:
   - component: {fileID: 4548898404401052325}
   - component: {fileID: 1196604048894529357}
   - component: {fileID: -4102262700231696223}
+  - component: {fileID: 4902530296511335358}
   - component: {fileID: -1013791105269569540}
   m_Layer: 0
   m_Name: Campfire
@@ -296,6 +297,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToBuild: 3
+--- !u!114 &4902530296511335358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6727790776693729420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f13e0724f481de42bb3bdcfb0c5998f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: Wheel - inspect
+  inspectionTexts: []
 --- !u!114 &-1013791105269569540
 MonoBehaviour:
   m_ObjectHideFlags: 0

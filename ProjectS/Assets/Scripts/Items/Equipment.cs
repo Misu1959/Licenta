@@ -21,18 +21,4 @@ public class Equipment : Item
     {
         PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.equip);
     }
-
-    public override void OnMouseOver()
-    {
-        if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
-        if (!IsOnTheGround()) return;
-        
-        if(EquipmentManager.instance.BackpackStorage() && GetComponent<Storage>())
-            PopUpManager.instance.ShowMousePopUp("LMB|RMB\nChange backpack");
-        else if(GetComponent<Storage>())
-            PopUpManager.instance.ShowMousePopUp("LMB|RMB\nEquip backpack");
-        else
-            PopUpManager.instance.ShowMousePopUp("LMB - Pick\nRMB - Equip");
-    }
-
 }

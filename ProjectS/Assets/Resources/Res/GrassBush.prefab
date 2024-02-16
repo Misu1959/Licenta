@@ -144,6 +144,7 @@ GameObject:
   - component: {fileID: 6816583183020146494}
   - component: {fileID: 7755957346110613664}
   - component: {fileID: 7053707916684687096}
+  - component: {fileID: -6774048859313184494}
   m_Layer: 0
   m_Name: GrassBush
   m_TagString: Untagged
@@ -213,3 +214,19 @@ MonoBehaviour:
   drops: 05000000
   timeToGather: 2
   maxTimeToGrow: 20
+--- !u!114 &-6774048859313184494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4527292107853598546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a23cebbc964d1e442be480a62028965b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: 'Lmb - gather
+
+    Wheel - inspect'
+  inspectionTexts: []

@@ -63,6 +63,14 @@ public class Timer
         isOn = true;
     }
 
+    public void SetTime(float amount)
+    {
+        if (amount > maxTime)
+            amount = maxTime;
+            
+        remainedtime = amount;
+    }
+
     public void AddTime(float _timeToAdd) // Ads time to timer remained time
     {
         remainedtime = Mathf.Clamp(remainedtime + _timeToAdd, 0, maxTime); // clamps the time between 0 and maxTime

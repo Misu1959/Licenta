@@ -45,7 +45,7 @@ public class Construction : MonoBehaviour
     {
         if (!PlayerActionManagement.instance.IsPlacing(this.gameObject)) return; // If player is not placing return
 
-        PopUpManager.instance.ShowMousePopUp("RMB - cancel");
+        PopUpManager.instance.ShowMousePopUp("RMB - cancel", PopUpManager.PopUpPriorityLevel.low);
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitData;
@@ -54,15 +54,12 @@ public class Construction : MonoBehaviour
 
         if (canBePlaced ==  0 && !MyMethods.CheckIfMouseIsOverUI())
         {
-            PopUpManager.instance.ShowMousePopUp("LMB - place\nRMB - cancel");
+            PopUpManager.instance.ShowMousePopUp("LMB - place\nRMB - cancel", PopUpManager.PopUpPriorityLevel.low);
 
             spriteRenderer.color = new Color(color.r, color.g, color.b, .5f);
 
             if (Input.GetMouseButtonDown(0))
-            {
                 PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.build);
-                PopUpManager.instance.ShowMousePopUp();
-            }
         }
         else
             spriteRenderer.color = new Color32(255, 0, 0, 128);
@@ -71,7 +68,6 @@ public class Construction : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             PlayerActionManagement.instance.CancelAction();
-            PopUpManager.instance.ShowMousePopUp();
             Destroy(this.gameObject);
             return;
         }

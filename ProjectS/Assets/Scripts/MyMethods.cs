@@ -27,7 +27,7 @@ public class MyMethods
         List<RaycastResult> raycastResultsList = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerEventData, raycastResultsList);
 
-        return raycastResultsList.Count == 0 ? false : true;
+        return raycastResultsList.Count == 1 ? false : true;
 
 
     }

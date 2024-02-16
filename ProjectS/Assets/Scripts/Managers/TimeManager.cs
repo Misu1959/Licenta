@@ -3,22 +3,37 @@ using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
+    public enum DayState
+    {
+        day,
+        dawn,
+        night
+    }
+
+
     [SerializeField] private GameObject sun;
 
-    [SerializeField] private float dayLength;
-    [Range(0,1)][SerializeField] private float dayTime;
-    private float currentTime;
-    private bool isDay = true;
+    [SerializeField] private float dayDuration;
+    [Range(1,16)][SerializeField] private int dayLength;
+    [Range(1,16)][SerializeField] private int dawnLength;
+
+    private const int nrOfHoursInDay = 16;
+    private const float hourLength = .0625f;
+
+    private int currentHour;
     private int currentDay;
 
-
-    private float maxTimeForPlayerInDarkness = 6;
-    private float timeForPlayerInDarkness;
-
+    public DayState dayState { get; private set; }
+    private Timer timerHour;
+    
+    private Timer timerPlayerInDarkness;
     private int nrOfPopUps;
 
     private IEnumerator Start()
     {
+        timerHour = new Timer(hourLength * dayDuration);
+        timerPlayerInDarkness = new Timer(6);
+
         yield return null;
 
         if (currentDay == 0)
@@ -29,83 +44,107 @@ public class TimeManager : MonoBehaviour
         else
             currentDay = PlayerPrefs.GetInt("currentDay");
 
-        UIManager.instance.SetClock(dayTime);
+        UIManager.instance.SetClock(dayLength * hourLength, dawnLength * hourLength);
         UIManager.instance.ShowDayCount(currentDay);
+
+        dayState = DayState.day;
 
     }
 
     void Update()
     {
-        UIManager.instance.ShowTime((360 / dayLength) * Time.deltaTime);
+        PassTime();
+        PassHour();
 
-        currentTime += Time.deltaTime;
-
-
-        if (currentTime >= dayLength - 1)
-        {
-            currentDay++;
-            currentTime -= dayLength;
-            
-            StartCoroutine(SetDayTime(true));
-            //SaveLoadManager.instance.SaveWorld();
-
-            UIManager.instance.ShowDayCount(currentDay);
-            PlayerPrefs.SetInt("currentDay", currentDay); // Save day
-
-        }
-        else if (currentTime >= (dayTime * dayLength) - 1 && isDay)
-            if(sun.GetComponent<Animator>().GetBool("isDay"))
-                StartCoroutine(SetDayTime(false));
 
         DarknessHitPlayer();
     }
 
-    IEnumerator SetDayTime(bool _isDay)
+    private void PassTime() => UIManager.instance.ShowTime((360 / dayDuration) * Time.deltaTime);
+    private void PassHour()
     {
-        if (sun.GetComponent<Animator>().GetBool("isDay") != _isDay)
-            sun.GetComponent<Animator>().SetBool("isDay", _isDay);
+        timerHour.StartTimer();
+        timerHour.Tick();
 
-        yield return new WaitForSeconds(1.25f);
-        isDay = _isDay;
+        if(timerHour.IsElapsed())
+        {
+            currentHour++;
+            
+            if (currentHour >= dayLength && dayState == DayState.day) // Turn dawn
+            {
+                if(dawnLength>dayLength) // There is dawn
+                    ChangeDayState(DayState.dawn);
+                else // There is no dawn
+                    ChangeDayState(DayState.night);
+
+            }
+            else if (currentHour >= dawnLength && dayState == DayState.dawn) // Turn night
+                ChangeDayState(DayState.night);
+            else if (currentHour >= nrOfHoursInDay) // Turn day
+                ChangeDayState(DayState.day);
+
+        }
     }
+    private void PassDay()
+    {
+        currentHour = 0;
+        currentDay++;
+        // Save world
+
+    }
+    private void ChangeDayState(DayState newState)
+    {
+        switch(newState)
+        {
+            case DayState.day:
+                {
+                    PassDay();
+                    break;
+                }
+            case DayState.dawn:
+                {
+                    // Turn on dawn light
+                    break;
+                }
+            case DayState.night:
+                {
+                    // Turn of light
+                    break;
+                }
+        }
+        dayState = newState;
+    }
+
 
     void DarknessHitPlayer()
     {
-        if (isDay || PlayerStats.instance.isInLight > 0)
+
+        if (dayState != DayState.night || PlayerStats.instance.isInLight > 0)
         {
-            if (timeForPlayerInDarkness != maxTimeForPlayerInDarkness)
-            {
-                timeForPlayerInDarkness = maxTimeForPlayerInDarkness;
-                nrOfPopUps = 0;
-            }
+            nrOfPopUps = 0;
+            timerPlayerInDarkness.RestartTimer();
             return;
         }
 
-        if (timeForPlayerInDarkness <= 0)
+        timerPlayerInDarkness.StartTimer();
+        timerPlayerInDarkness.Tick();
+
+        if (timerPlayerInDarkness.IsElapsed() && nrOfPopUps == 2)
         {
-            PlayerStats.instance.TakeDmg(25);
+            nrOfPopUps = 0;
             PopUpManager.instance.ShowPopUpDarkness(3);
 
-            nrOfPopUps = 0;
-            timeForPlayerInDarkness = maxTimeForPlayerInDarkness;
+            PlayerStats.instance.TakeDmg(25);
         }
-        else if (timeForPlayerInDarkness < maxTimeForPlayerInDarkness / 3)
+        else if (timerPlayerInDarkness.IsElapsedPercent(2 / 3) && nrOfPopUps == 1)
         {
-            if (nrOfPopUps == 1)
-            {
-                PopUpManager.instance.ShowPopUpDarkness(2);
-                nrOfPopUps++;
-            }
+            nrOfPopUps++;
+            PopUpManager.instance.ShowPopUpDarkness(2);
         }
-        else if (timeForPlayerInDarkness < (2 * maxTimeForPlayerInDarkness) / 3)
+        else if (timerPlayerInDarkness.IsElapsedPercent(1 / 3) && nrOfPopUps == 0)
         {
-            if(nrOfPopUps == 0)
-            {
-                PopUpManager.instance.ShowPopUpDarkness(1);
-                nrOfPopUps++;
-            }
+            nrOfPopUps++;
+            PopUpManager.instance.ShowPopUpDarkness(1);
         }
-        timeForPlayerInDarkness-=Time.deltaTime;
-
     }
 }
