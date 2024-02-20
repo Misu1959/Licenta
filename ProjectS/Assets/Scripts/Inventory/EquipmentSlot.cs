@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class EquipmentSlot : InventorySlot
 {
-    private EquipmentData.Type slotType;
+    private EquipmentType slotType;
 
     public override void OnPointerDown(PointerEventData eventData)
     {
@@ -48,7 +48,7 @@ public class EquipmentSlot : InventorySlot
         }
     }
 
-    public void SetSlotType(EquipmentData.Type _type) => slotType = _type; // Set slot type
+    public void SetSlotType(EquipmentType _type) => slotType = _type; // Set slot type
                                                                            
-    public bool CheckForMatchingType(EquipmentData.Type equipmentType) => (slotType != equipmentType) ? false : true; // check if the Equipment type match slot type or not
+    public bool CheckForMatchingType(EquipmentType equipmentType) => (slotType != equipmentType) ? false : true; // check if the Equipment type match slot type or not
 }

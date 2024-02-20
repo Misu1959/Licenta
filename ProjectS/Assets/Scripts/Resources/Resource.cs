@@ -6,24 +6,12 @@ using UnityEngine.EventSystems;
 
 public class Resource : MonoBehaviour, IPointerDownHandler
 {
-    public enum Name
-    {
-        berryBush,
-        grassBush,
-        sappling,
-        rock,
-        tree,
-        redShroom,
-        greenShroom,
-        blueShroom
-    };
 
     private Animator animator;
 
+    public new ObjectName name;
 
-    public new Name name;
-
-    [SerializeField] protected ItemData.Name[] drops;
+    [SerializeField] protected ObjectName[] drops;
 
     [SerializeField] protected float timeToGather;
     protected Timer timerGather;
@@ -56,7 +44,7 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         }
     }
 
-    public virtual void SetToGather()   {   PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.gather);  }
+    public virtual void SetToGather()   =>   PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.gather);
 
     public virtual void GatherItemOfType()
     {
@@ -100,5 +88,5 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     }
 
-    public virtual bool CheckIfCanBeGathered()  {   return !timerGrow.IsOn();   }
+    public virtual bool CheckIfCanBeGathered()  => !timerGrow.IsOn();
 }

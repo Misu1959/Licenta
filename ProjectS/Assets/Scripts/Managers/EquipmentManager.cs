@@ -23,13 +23,13 @@ public class EquipmentManager : MonoBehaviour
     private void SetEquipmentSlots()
     {
         handSlot = equipmentPanel.GetChild(0).GetComponent<EquipmentSlot>(); // Set hand slot
-        handSlot.SetSlotType(EquipmentData.Type.hand); // Set hand slot type
+        handSlot.SetSlotType(EquipmentType.hand); // Set hand slot type
 
         bodySlot = equipmentPanel.GetChild(1).GetComponent<EquipmentSlot>(); // Set body slot
-        bodySlot.SetSlotType(EquipmentData.Type.body); // Set body slot type
+        bodySlot.SetSlotType(EquipmentType.body); // Set body slot type
 
         headSlot = equipmentPanel.GetChild(2).GetComponent<EquipmentSlot>(); // Set head slot
-        headSlot.SetSlotType(EquipmentData.Type.head); // Set head slot type
+        headSlot.SetSlotType(EquipmentType.head); // Set head slot type
     }
 
     public bool SetEquipment(Item_Base equipmentToAdd,bool unequipCurrent, bool keepSelected)
@@ -57,12 +57,12 @@ public class EquipmentManager : MonoBehaviour
 
         switch (itemToEquip.GetEquipmentData().equipmentType)
         {
-            case EquipmentData.Type.hand:
+            case EquipmentType.hand:
                 {
                     slotToSet = handSlot;
                     break;
                 }
-            case EquipmentData.Type.body:
+            case EquipmentType.body:
                 {
                     if (itemToEquip.GetComponent<Storage>())
                         InventoryManager.instance.DisplayBackpack(itemToEquip.GetComponent<Storage>());
@@ -70,7 +70,7 @@ public class EquipmentManager : MonoBehaviour
                     slotToSet = bodySlot;
                     break;
                 }
-            case EquipmentData.Type.head:
+            case EquipmentType.head:
                 {
                     slotToSet = headSlot;
                     break;
@@ -86,13 +86,13 @@ public class EquipmentManager : MonoBehaviour
             return false;
     }
 
-    public void UnequipItem(EquipmentData.Type equipmentType, bool keepSelected)
+    public void UnequipItem(EquipmentType equipmentType, bool keepSelected)
     {
         InventorySlot slotToSet = null;
 
         switch (equipmentType)
         {
-            case EquipmentData.Type.hand:
+            case EquipmentType.hand:
                 {
                     if (!GetHandItem()) return;
 
@@ -105,7 +105,7 @@ public class EquipmentManager : MonoBehaviour
                     break;
 
                 }
-                case EquipmentData.Type.body:
+                case EquipmentType.body:
                 {
                     if (!GetBodyItem()) return;
 
@@ -115,7 +115,7 @@ public class EquipmentManager : MonoBehaviour
                     slotToSet = bodySlot;
                     break;
                 }
-                case EquipmentData.Type.head:
+                case EquipmentType.head:
                 {
                     if (!GetHeadItem()) return;
 
@@ -136,7 +136,7 @@ public class EquipmentManager : MonoBehaviour
     }
 
 
-    public void ReplenishItem(ItemData.Name oldItemName)
+    public void ReplenishItem(ObjectName oldItemName)
     {
         ItemUI newItem = InventoryManager.instance.FindSpecificItem(oldItemName);
         

@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 279250c743f15ea4fb806fc446c533fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 0
+  name: 40001
   maxHp: 250
   dmg: 30
   speed: 2

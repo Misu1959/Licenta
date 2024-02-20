@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2924ae2340d26f439081899886b8862, type: 3}
+  m_Name: BeeBox
+  m_EditorClassIdentifier: 
+  recipeUI: {fileID: 2112962722, guid: 4c7ec4d5c23fbdd408721ca0fc847f78, type: 3}
+  prefabItem: {fileID: 8012892728087145197, guid: c341f02e3ca70e74da47953b5e0b8202, type: 3}
+  isLearned: 0
+  requirements:
+  - name: 8
+    quantity: 4
+  - name: 10
+    quantity: 2

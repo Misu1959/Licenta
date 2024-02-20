@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ComplexMobSpawner : MobSpawner
 {
-    [SerializeField] private MobStats.Name mobName;
+    [SerializeField] private ObjectName mobName;
     [SerializeField] private int maxNumberOfMobs;
     
     private List<GameObject> mobsList = new List<GameObject>();

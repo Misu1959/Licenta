@@ -297,8 +297,8 @@ public class SaveLoadManager : MonoBehaviour
     {
         for (int i = 0; i < PlayerPrefs.GetInt("nrOfResources"); i++)
         {
-            GameObject resource = Instantiate(ItemsManager.instance.SearchResourcesList((Resource.Name)PlayerPrefs.GetInt("resource " + i + " name")).gameObject);
-            resource.GetComponent<Resource>().name = (Resource.Name)PlayerPrefs.GetInt("resource " + i + " name");
+            GameObject resource = Instantiate(ItemsManager.instance.SearchResourcesList((ObjectName)PlayerPrefs.GetInt("resource " + i + " name")).gameObject);
+            resource.GetComponent<Resource>().name = (ObjectName)PlayerPrefs.GetInt("resource " + i + " name");
 
             //resource.GetComponent<Resource>().timeToGrow = PlayerPrefs.GetFloat("resource " + i + " timeToGrow");
 

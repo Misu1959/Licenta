@@ -90,7 +90,7 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler
 
 
     public bool CheckIfItHasItem() => itemInSlot == null ? false : true; 
-    public bool CheckMatchingName(ItemData.Name nameToCompare) => itemInSlot?.GetItemData().name != nameToCompare ? false : true;
+    public bool CheckMatchingName(ObjectName nameToCompare) => itemInSlot?.GetItemData().name != nameToCompare ? false : true;
 
 
     public bool IsBackpackSlot() => (transform.parent != InventoryManager.instance.backpackPanel) ? false : true;

@@ -19,9 +19,8 @@ public abstract class Item : Item_Base, IPointerDownHandler
         if (Input.GetMouseButtonDown(1))
             OnRightMouseButtonPressed();
     }
-    public virtual void OnLeftMouseButtonPressed(int amount = -1) { Pick(); }
-
-    private void Pick() {   PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.pick);    }
+    public virtual void OnLeftMouseButtonPressed(int amount = -1) => Pick(); 
+    private void Pick() =>   PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.pick); 
 
     public bool IsOnTheGround()
     {

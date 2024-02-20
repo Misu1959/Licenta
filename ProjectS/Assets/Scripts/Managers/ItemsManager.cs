@@ -27,7 +27,7 @@ public class ItemsManager : MonoBehaviour
         mobs = Resources.LoadAll<MobStats>("Mobs");
     }
 
-    public Item SearchItemsList(ItemData.Name nameOfItemToFind)
+    public Item SearchItemsList(ObjectName nameOfItemToFind)
     {
         foreach (Item item in items) 
             if (item.GetItemData().name == nameOfItemToFind)
@@ -35,7 +35,7 @@ public class ItemsManager : MonoBehaviour
 
         return null;
     }
-    public Resource SearchResourcesList(Resource.Name nameOfResourceToFind)
+    public Resource SearchResourcesList(ObjectName nameOfResourceToFind)
     {
         foreach (Resource resource in resources)
             if (resource.name == nameOfResourceToFind)
@@ -44,7 +44,7 @@ public class ItemsManager : MonoBehaviour
         return null;
     }
 
-    public MobStats SearchMobsList(MobStats.Name nameOfMobToFind)
+    public MobStats SearchMobsList(ObjectName nameOfMobToFind)
     {
         foreach (MobStats mob in mobs)
             if (mob.name == nameOfMobToFind)
@@ -62,17 +62,17 @@ public class ItemsManager : MonoBehaviour
 
         switch (item.GetItemData().GetItemType())
         {
-            case ItemData.ItemType.material:
+            case ItemType.material:
             {
                 newItemUI.AddComponent<ItemMaterialUI>();
                 break;
             }
-            case ItemData.ItemType.food:
+            case ItemType.food:
             {
                 newItemUI.AddComponent<FoodUI>();
                 break;
             }
-            case ItemData.ItemType.equipment:
+            case ItemType.equipment:
             {
                 newItemUI.AddComponent<EquipmentUI>();
                 break;
@@ -95,17 +95,17 @@ public class ItemsManager : MonoBehaviour
 
         switch (newData.GetItemType())
         {
-            case ItemData.ItemType.material:
+            case ItemType.material:
                 {
                     newItemUI.AddComponent<ItemMaterialUI>();
                     break;
                 }
-            case ItemData.ItemType.food:
+            case ItemType.food:
                 {
                     newItemUI.AddComponent<FoodUI>();
                     break;
                 }
-            case ItemData.ItemType.equipment:
+            case ItemType.equipment:
                 {
                     newItemUI.AddComponent<EquipmentUI>();
                     break;
@@ -131,7 +131,7 @@ public class ItemsManager : MonoBehaviour
         return newItem;
     } 
 
-    public Item CreateItem(ItemData.Name newItemName) // Create a totaly new item
+    public Item CreateItem(ObjectName newItemName) // Create a totaly new item
     {
         Item oldItem = SearchItemsList(newItemName);
         Item newItem = Instantiate(oldItem).GetComponent<Item>();

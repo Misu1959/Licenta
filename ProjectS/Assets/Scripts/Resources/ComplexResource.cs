@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class ComplexResource : Resource
 {
-    [SerializeField] EquipmentData.ActionType howToGather;
+    [SerializeField] EquipmentActionType howToGather;
     [SerializeField] private float hp;
 
     public override void SetToGather()
     {
-        if (howToGather == EquipmentData.ActionType.chop)
+        if (howToGather == EquipmentActionType.chop)
             PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.chop);
-        else if (howToGather == EquipmentData.ActionType.mine)
+        else if (howToGather == EquipmentActionType.mine)
             PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.mine);
     }
 
@@ -51,7 +51,7 @@ public class ComplexResource : Resource
 
     void DestroyResource()
     {
-        foreach(ItemData.Name loot in drops)
+        foreach(ObjectName loot in drops)
             DropItemOfName(loot); // Drop the loot
 
         PlayerActionManagement.instance.CompleteAction(); // Complete the action
@@ -59,7 +59,7 @@ public class ComplexResource : Resource
 
     }
 
-    void DropItemOfName(ItemData.Name nameOfItem)
+    void DropItemOfName(ObjectName nameOfItem)
     {
         Item drop = ItemsManager.instance.CreateItem(nameOfItem);
 

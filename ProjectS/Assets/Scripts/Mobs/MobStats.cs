@@ -5,16 +5,11 @@ using UnityEngine;
 
 public class MobStats : MonoBehaviour
 {
-    public enum Name
-    {
-        pig
-    };
-
     public Animator animator { get; private set; }
 
     [Header("Stats")]
 
-    public new Name name;
+    public new ObjectName name;
 
     [SerializeField] private float maxHp;
     public float hp { get; private set; }

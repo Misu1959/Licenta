@@ -78,8 +78,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e2ae38218547f5469b93478dde60ee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 7
-  drops: 14000000
+  name: 10008
+  drops: d9070000
   timeToGather: 1
   maxTimeToGrow: 15
 --- !u!114 &-6067753236568621766

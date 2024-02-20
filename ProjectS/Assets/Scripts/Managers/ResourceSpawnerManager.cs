@@ -13,23 +13,23 @@ public class ResourceSpawnerManager : MonoBehaviour
      
         if (PlayerPrefs.GetInt("prevWorld") <= 1)
         {
-            SpawnItems(ItemData.Name.flint);
-            SpawnItems(ItemData.Name.seeds);
+            SpawnItems(ObjectName.flint);
+            SpawnItems(ObjectName.seeds);
          
-            SpawnResources(Resource.Name.sappling);
-            SpawnResources(Resource.Name.tree);
-            SpawnResources(Resource.Name.rock);
-            SpawnResources(Resource.Name.grassBush);
+            SpawnResources(ObjectName.sappling);
+            SpawnResources(ObjectName.tree);
+            SpawnResources(ObjectName.rock);
+            SpawnResources(ObjectName.grassBush);
 
-            SpawnResources(Resource.Name.berryBush);
+            SpawnResources(ObjectName.berryBush);
 
-            SpawnResources(Resource.Name.redShroom);
-            SpawnResources(Resource.Name.greenShroom);
-            SpawnResources(Resource.Name.blueShroom);
+            SpawnResources(ObjectName.redShroom);
+            SpawnResources(ObjectName.greenShroom);
+            SpawnResources(ObjectName.blueShroom);
         }
     }
 
-    void SpawnItems(ItemData.Name _name)
+    void SpawnItems(ObjectName _name)
     {
         int nr = rnd.Next(maxItemsForType / 2, maxItemsForType);
 
@@ -43,7 +43,7 @@ public class ResourceSpawnerManager : MonoBehaviour
         }
     }
 
-    void SpawnResources(Resource.Name _name)
+    void SpawnResources(ObjectName _name)
     {
         int nr = rnd.Next(maxItemsForType / 2, maxItemsForType);
 

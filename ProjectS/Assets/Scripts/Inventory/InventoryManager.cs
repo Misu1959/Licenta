@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class InventoryManager : MonoBehaviour
     {
         instance = this;
         SetSlots();
+
     }
 
     private void Update() { MoveSelectedItem(); }
@@ -40,9 +42,9 @@ public class InventoryManager : MonoBehaviour
             chestSlots[i] = chestPanel.GetChild(i).GetComponent<InventorySlot>();
     }
 
-    private bool CheckSlot(InventorySlot slot, ItemData.Name itemName, bool fullStack)
+    private bool CheckSlot(InventorySlot slot, ObjectName itemName, bool fullStack)
     {
-        if (itemName == ItemData.Name.empty) return !slot.CheckIfItHasItem();
+        if (itemName == ObjectName.empty) return !slot.CheckIfItHasItem();
         if (!slot.CheckIfItHasItem()) return false;
         if (!slot.CheckMatchingName(itemName)) return false;
         
@@ -52,14 +54,14 @@ public class InventoryManager : MonoBehaviour
             return slot.GetItemInSlot().CheckIfStackIsFull();
     }
 
-    private InventorySlot[] GetInventory(InventorySlot[] inventoryToCheck, ItemData.Name itemName, bool fullStack)
+    private InventorySlot[] GetInventory(InventorySlot[] inventoryToCheck, ObjectName itemName, bool fullStack)
     {
         if (inventoryToCheck.Where(slot => CheckSlot(slot, itemName, fullStack)).ToArray().Length == 0) return null;
 
         return inventoryToCheck.Where(slot => CheckSlot(slot, itemName, fullStack)).ToArray();
     }
 
-    private InventorySlot FirstSlotInInventory(InventorySlot[] inventory, ItemData.Name itemName, bool fullStack) 
+    private InventorySlot FirstSlotInInventory(InventorySlot[] inventory, ObjectName itemName, bool fullStack) 
     {
         InventorySlot[] listOfSlots = GetInventory(inventory, itemName, fullStack);
         return (listOfSlots == null) ? null : listOfSlots[0];  
@@ -67,11 +69,11 @@ public class InventoryManager : MonoBehaviour
 
     private InventorySlot FirstEmptySlotInInventory(InventorySlot[] inventory)
     {
-        InventorySlot[] listOfSlots = GetInventory(inventory, ItemData.Name.empty, false);
+        InventorySlot[] listOfSlots = GetInventory(inventory, ObjectName.empty, false);
         return (listOfSlots == null) ? null : listOfSlots[0];
     }
 
-    public InventorySlot FindSlot(ItemData.Name itemName)
+    public InventorySlot FindSlot(ObjectName itemName)
     {
         InventorySlot slotToReturn = FirstSlotInInventory(inventorySlots, itemName, false);
         if (slotToReturn) return slotToReturn;
@@ -268,7 +270,7 @@ public class InventoryManager : MonoBehaviour
 
     }
 
-    public ItemUI FindSpecificItem(ItemData.Name itemName)
+    public ItemUI FindSpecificItem(ObjectName itemName)
     {
         ItemUI itemUI = FirstSlotInInventory(inventorySlots, itemName, true)?.GetItemInSlot();
         if (itemUI) return itemUI;
@@ -288,7 +290,7 @@ public class InventoryManager : MonoBehaviour
     }
 
 
-    public int AmountOwned(ItemData.Name itemName)
+    public int AmountOwned(ObjectName itemName)
     {
         int totalAmount = 0;
 
@@ -311,7 +313,7 @@ public class InventoryManager : MonoBehaviour
         return totalAmount;
     }
 
-    private int AddAmountToInventory(InventorySlot[] inventory, ItemData.Name itemName, bool fullStack)
+    private int AddAmountToInventory(InventorySlot[] inventory, ObjectName itemName, bool fullStack)
     {
         InventorySlot[] listOfSlots = GetInventory(inventory, itemName, fullStack);
         int amount = 0;
@@ -324,7 +326,7 @@ public class InventoryManager : MonoBehaviour
         return amount;
     }
 
-    public void SpendResources(ItemData.Name itemName, int itemAmount) 
+    public void SpendResources(ObjectName itemName, int itemAmount) 
     {
 
         if (TakeAmountFromInventory(inventorySlots, itemName, false, itemAmount)) return;
@@ -345,7 +347,7 @@ public class InventoryManager : MonoBehaviour
 
     }
 
-    private bool TakeAmountFromInventory(InventorySlot[] inventory, ItemData.Name itemName, bool fullStack, int itemAmount)
+    private bool TakeAmountFromInventory(InventorySlot[] inventory, ObjectName itemName, bool fullStack, int itemAmount)
     {
         InventorySlot[] listOfSlots = GetInventory(inventory, itemName, fullStack);
 
@@ -397,7 +399,7 @@ public class InventoryManager : MonoBehaviour
             }
 
             for (int i = 0; i < storageData.size; i++)
-                if (storageData.items[i].name != ItemData.Name.empty)
+                if (storageData.items[i].name != ObjectName.empty)
                 {
                     ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.items[i]);
                     AddItemToSlot(backpackSlots[i], itemUI);
@@ -423,7 +425,7 @@ public class InventoryManager : MonoBehaviour
 
             StorageData storageData = chestStorage.GetStorageData();
             for (int i = 0; i < storageData.size; i++)
-                if (storageData.items[i]?.name != ItemData.Name.empty)
+                if (storageData.items[i]?.name != ObjectName.empty)
                 {
                     ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.items[i]);
                     AddItemToSlot(chestSlots[i], itemUI);

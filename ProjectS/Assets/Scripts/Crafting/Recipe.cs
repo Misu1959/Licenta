@@ -9,7 +9,7 @@ public class Recipe : ScriptableObject
     [System.Serializable]
     public struct Requiremets
     {
-        public ItemData.Name name;
+        public ObjectName name;
         public int quantity;
     };
 
