@@ -21,13 +21,13 @@ public class ComplexResource : Resource
         // If player isn't harvesting it or if it's not grown
         if (!PlayerActionManagement.instance.IsGathering(this.gameObject))
         {
-            timerGather.RestartTimer();
+            gatherTimer.RestartTimer();
             return;
         }
 
-        timerGather.StartTimer();
-        timerGather.Tick();
-        if (!timerGather.IsElapsed())
+        gatherTimer.StartTimer();
+        gatherTimer.Tick();
+        if (!gatherTimer.IsElapsed())
             return;
 
         TakeDmg();

@@ -183,7 +183,11 @@ MonoBehaviour:
   name: 10007
   drops: d7070000
   timeToGather: 1
+  gatherTimer:
+    maxTime: 1
   maxTimeToGrow: 15
+  growTimer:
+    maxTime: 15
 --- !u!54 &127275194193062327
 Rigidbody:
   m_ObjectHideFlags: 0

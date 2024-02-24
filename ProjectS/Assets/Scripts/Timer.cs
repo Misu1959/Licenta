@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
+[Serializable]
 public class Timer
 {
+    [SerializeField]
     private float maxTime;
     private float remainedtime;
     private bool isOn;

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
+    public static TimeManager instance;
+
     public enum DayState
     {
         day,
@@ -31,6 +33,8 @@ public class TimeManager : MonoBehaviour
 
     private IEnumerator Start()
     {
+        instance = this;
+
         timerHour = new Timer(hourLength * dayDuration);
         timerPlayerInDarkness = new Timer(6);
 

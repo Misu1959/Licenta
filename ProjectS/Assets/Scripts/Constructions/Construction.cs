@@ -10,14 +10,11 @@ public class Construction : MonoBehaviour
 
     private int canBePlaced;
 
-    [SerializeField] private float timeToBuild;
-    private Timer timer;
+    [SerializeField] private Timer buildTimer;
 
 
     private void Start()
     {
-        timer = new Timer(timeToBuild);
-
         spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         color = spriteRenderer.color;
 
@@ -78,13 +75,13 @@ public class Construction : MonoBehaviour
     {
         if (!PlayerActionManagement.instance.IsBuilding(this.gameObject))
         {
-            timer.RestartTimer();
+            buildTimer.RestartTimer();
             return;
         }
 
-        timer.StartTimer();
-        timer.Tick();
-        if (!timer.IsElapsed()) return;
+        buildTimer.StartTimer();
+        buildTimer.Tick();
+        if (!buildTimer.IsElapsed()) return;
 
 
         spriteRenderer.color = color;

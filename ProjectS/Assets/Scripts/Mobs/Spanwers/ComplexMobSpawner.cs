@@ -5,25 +5,14 @@ using UnityEngine;
 
 public class ComplexMobSpawner : MobSpawner
 {
-    [SerializeField] private ObjectName mobName;
-    [SerializeField] private int maxNumberOfMobs;
-    
     private List<GameObject> mobsList = new List<GameObject>();
+    [SerializeField] private Timer respawnTimer;
 
-    private Timer respawnTimer;
+    private void Update() => SpawnMob();
 
-    private void Start()
+    protected override void SpawnMob()
     {
-        respawnTimer = new Timer(3);
-    }
 
-    private void Update()
-    {
-        SpawnMob();
-    }
-
-    private void SpawnMob()
-    {
         if(mobsList.Count == maxNumberOfMobs)
         {
             respawnTimer.RestartTimer();
@@ -47,7 +36,8 @@ public class ComplexMobSpawner : MobSpawner
 
     private void GetMobsInside()
     {
-
+        //foreach(GameObject mob in mobsList)
+           // mob.GetComponent<MobController>().SetTarget()
     }
 
     private void GetMobsOutside()

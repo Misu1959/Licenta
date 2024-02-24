@@ -213,7 +213,11 @@ MonoBehaviour:
   name: 10005
   drops: ea030000
   timeToGather: 1
+  gatherTimer:
+    maxTime: 1
   maxTimeToGrow: 0
+  growTimer:
+    maxTime: 0
   howToGather: 0
   hp: 10
 --- !u!114 &-5646847343718734843

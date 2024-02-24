@@ -79,6 +79,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mobName: 40002
   maxNumberOfMobs: 1
+  respawnTimer:
+    maxTime: 3
 --- !u!1 &8795154026345667903
 GameObject:
   m_ObjectHideFlags: 0

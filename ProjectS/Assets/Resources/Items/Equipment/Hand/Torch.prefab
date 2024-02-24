@@ -393,8 +393,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6d0a732dceb1fc44890f076a8076730, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxFireSize: 3
-  maxLifetime: 30
+  fireSize: 2
+  fireTimer:
+    maxTime: 15
 --- !u!114 &7480763185440466080
 MonoBehaviour:
   m_ObjectHideFlags: 0

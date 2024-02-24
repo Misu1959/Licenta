@@ -79,6 +79,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToBuild: 3
+  buildTimer:
+    maxTime: 3
 --- !u!114 &-8841975346542355874
 MonoBehaviour:
   m_ObjectHideFlags: 0

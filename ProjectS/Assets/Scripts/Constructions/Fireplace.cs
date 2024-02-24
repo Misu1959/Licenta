@@ -47,7 +47,7 @@ public class Fireplace : Fire, IPointerDownHandler
     {
         if (InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetItemData().fuelValue != 0)
         {
-            timer.AddTime(InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetItemData().fuelValue);
+            fireTimer.AddTime(InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetItemData().fuelValue);
             InventoryManager.instance.selectedItemSlot.GetItemInSlot().TakeFromStack(1);
         }
 
@@ -59,11 +59,11 @@ public class Fireplace : Fire, IPointerDownHandler
         
         if (!PlayerActionManagement.instance.IsCooking(this.gameObject)) return;
 
-        InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetFoodData().timer.StartTimer();
-        InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetFoodData().timer.Tick();
+        InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetFoodData().cookTimer.StartTimer();
+        InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetFoodData().cookTimer.Tick();
 
 
-        if (!InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetFoodData().timer.IsElapsed()) return;
+        if (!InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetFoodData().cookTimer.IsElapsed()) return;
 
         InventoryManager.instance.selectedItemSlot.GetItemInSlot().TakeFromStack(1);
 

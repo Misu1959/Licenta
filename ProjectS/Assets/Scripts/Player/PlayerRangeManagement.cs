@@ -74,7 +74,7 @@ public class PlayerRangeManagement : MonoBehaviour
 
         if (CheckForSpecificCollider(darknessCollider)) //Checking if something exit collision with darkness collider
         {
-            if (other.gameObject.GetComponent<Light2D>()) // If player get's out of the light 
+            if (other.gameObject.GetComponent<Light>()) // If player get's out of the light 
                 PlayerStats.instance.SetInLight(-1); // Remove one from the number of lights player is in
         }
 

@@ -211,7 +211,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae362fcf39f705445aac1f40a9815e1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToBuild: 5
+  buildTimer:
+    maxTime: 0
 --- !u!114 &5954010302140524819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,3 +241,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mobName: 40003
   maxNumberOfMobs: 3
+  respawnTimer:
+    maxTime: 3

@@ -149,16 +149,14 @@ public class FoodData : ItemData
     public float hungerAmount;
     public float hpAmount;
 
-    public float timeToCook;
     public bool quickEat;
 
-    public Timer timer { get; private set; }
+    public Timer cookTimer;
 
     public FoodData(FoodData newItemData) : base(newItemData)
     {
         hungerAmount    = newItemData.hungerAmount;
         hpAmount        = newItemData.hpAmount;
-        timeToCook      = newItemData.timeToCook;
         quickEat        = newItemData.quickEat;
     }
 

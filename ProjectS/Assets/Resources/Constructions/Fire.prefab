@@ -212,7 +212,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae362fcf39f705445aac1f40a9815e1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToBuild: 3
+  buildTimer:
+    maxTime: 3
 --- !u!114 &-5403714866863252981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,8 +240,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a54a326f70d996944967b87c18b93a7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxFireSize: 3
-  maxLifetime: 30
+  fireSize: 3
+  fireTimer:
+    maxTime: 30
   isCampfire: 0
 --- !u!1 &7865998234945837477
 GameObject:

@@ -85,8 +85,9 @@ MonoBehaviour:
     fuelValue: 0
     hungerAmount: 20
     hpAmount: 5
-    timeToCook: 2
     quickEat: 0
+    cookTimer:
+      maxTime: 5
 --- !u!114 &-8772974172087142507
 MonoBehaviour:
   m_ObjectHideFlags: 0

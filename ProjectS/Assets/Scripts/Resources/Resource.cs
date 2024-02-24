@@ -13,18 +13,12 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     [SerializeField] protected ObjectName[] drops;
 
-    [SerializeField] protected float timeToGather;
-    protected Timer timerGather;
-
-    [SerializeField] private float maxTimeToGrow;
-    private float timeToGrow;
-    private Timer timerGrow;
+    [SerializeField] protected Timer gatherTimer;
+    [SerializeField] private Timer growTimer;
 
     private void Start()
     {
         animator = transform.GetChild(0).GetComponent<Animator>();
-        timerGather = new Timer(timeToGather);
-        timerGrow = new Timer(maxTimeToGrow, timeToGrow);
     }
 
     private void Update()
@@ -52,41 +46,41 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         // If player isn't harvesting it or if it's not grown
         if (!PlayerActionManagement.instance.IsGathering(this.gameObject))
         {
-            timerGather.RestartTimer();
+            gatherTimer.RestartTimer();
             return;
         }
 
-        timerGather.StartTimer();
-        timerGather.Tick();
-        if (!timerGather.IsElapsed())
+        gatherTimer.StartTimer();
+        gatherTimer.Tick();
+        if (!gatherTimer.IsElapsed())
             return;
 
         // Next lines adds the loot to the inventory
         Item item = ItemsManager.instance.CreateItem(drops[0]);
         InventoryManager.instance.AddItemToInventory(item);
         
-        timerGrow.StartTimer();
+        growTimer.StartTimer();
         PlayerActionManagement.instance.CompleteAction(); // Complete the action
     }
 
     void Regrow()
     {
-        if (!timerGrow.IsOn()) return;
+        if (!growTimer.IsOn()) return;
         if (!animator) return;
 
 
-        timerGrow.Tick();
+        growTimer.Tick();
 
-        if (timerGrow.IsElapsedPercent(100))
+        if (growTimer.IsElapsedPercent(100))
             animator.SetInteger("GrowthStage", 3);
-        else if (timerGrow.IsElapsedPercent(66))
+        else if (growTimer.IsElapsedPercent(66))
             animator.SetInteger("GrowthStage", 2);
-        else if (timerGrow.IsElapsedPercent(34))
+        else if (growTimer.IsElapsedPercent(34))
             animator.SetInteger("GrowthStage", 1);
         else
             animator.SetInteger("GrowthStage", -1);
 
     }
 
-    public virtual bool CheckIfCanBeGathered()  => !timerGrow.IsOn();
+    public virtual bool CheckIfCanBeGathered()  => !growTimer.IsOn();
 }
