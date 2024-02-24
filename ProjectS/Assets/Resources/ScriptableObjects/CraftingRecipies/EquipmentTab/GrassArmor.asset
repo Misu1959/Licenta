@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeUI: {fileID: 21300000, guid: 000f249ef95c83641b3ae150d162cc6b, type: 3}
   prefabItem: {fileID: 7566794954163294703, guid: 1a92e7445f0861f41ae301456368e936, type: 3}
-  isLearned: 1
+  isLearned: 0
   requirements:
-  - name: 5
+  - name: 1005
     quantity: 3
-  - name: 10
+  - name: 1010
     quantity: 1

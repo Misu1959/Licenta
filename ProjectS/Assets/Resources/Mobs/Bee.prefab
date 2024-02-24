@@ -64,10 +64,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.2
-  m_Height: 1.3
+  m_Radius: 0.09371364
+  m_Height: 0.38290015
   m_Direction: 1
-  m_Center: {x: 0, y: 0.65, z: 0}
+  m_Center: {x: -0.05769837, y: 0.19145007, z: 0}
 --- !u!114 &9196395222536779288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,12 +109,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voiceLines:
-  - Oink.
-  - Oink oink
-  - Oinkk?
-  - Oink oi.
-  - Oink, oi oink
-  - Oin oi
+  - bzz
+  - bz
+  - bzz bz
 --- !u!114 &2987173636656430889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,7 +203,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2136218551, guid: 6941c9e8533adf749b379cf448ed65fa, type: 3}
+  m_Sprite: {fileID: -1517457078, guid: d897348c30c638c4a87b9a3139d8087f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -227,7 +224,7 @@ Animator:
   m_GameObject: {fileID: 2669008101967473552}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: bd4e01d888e86204cac6df4599886283, type: 2}
+  m_Controller: {fileID: 9100000, guid: 12afa6ba2cfc66a468cc080624f36678, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -248,8 +245,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9952191, y: 1.2801384, z: 0.1}
-  m_Center: {x: -0.006167233, y: 0.62728125, z: 0}
+  m_Size: {x: 0.28461838, y: 0.48450875, z: 0.1}
+  m_Center: {x: -0.051718473, y: 0.22946644, z: 0}
 --- !u!114 &2669008101967473558
 MonoBehaviour:
   m_ObjectHideFlags: 0

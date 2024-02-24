@@ -16,5 +16,5 @@ MonoBehaviour:
   prefabItem: {fileID: 1604933138630744405, guid: f11880d2a1da6664da10a1f64e688537, type: 3}
   isLearned: 1
   requirements:
-  - name: 4
+  - name: 1004
     quantity: 3

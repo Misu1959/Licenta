@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2924ae2340d26f439081899886b8862, type: 3}
   m_Name: BeeBox
   m_EditorClassIdentifier: 
-  recipeUI: {fileID: 2112962722, guid: 4c7ec4d5c23fbdd408721ca0fc847f78, type: 3}
+  recipeUI: {fileID: 21300000, guid: 08129d9f387fd6b4091a1a4d1acd4945, type: 3}
   prefabItem: {fileID: 8012892728087145197, guid: c341f02e3ca70e74da47953b5e0b8202, type: 3}
   isLearned: 0
   requirements:
-  - name: 8
+  - name: 1008
     quantity: 4
-  - name: 10
+  - name: 1010
     quantity: 2

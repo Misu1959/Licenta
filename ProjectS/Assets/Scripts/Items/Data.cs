@@ -23,6 +23,7 @@ public enum ObjectName
     [InspectorName("Items/Materials/Rope")] rope,
     [InspectorName("Items/Materials/Silk")] silk,
     [InspectorName("Items/Materials/Gold")] gold,
+    [InspectorName("Items/Materials/Pig Skin")] pigSkin,
 
     #endregion
 
@@ -56,6 +57,7 @@ public enum ObjectName
     [InspectorName("Items/Equipment/Body/Backpack")] backpack,
     [InspectorName("Items/Equipment/Body/Grass Armor")] grassArmor,
     [InspectorName("Items/Equipment/Body/Wood Armor")] woodArmor,
+    [InspectorName("Items/Equipment/Body/Piggy Backpack")] piggyBackpack,
 
     #endregion
 

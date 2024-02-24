@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2924ae2340d26f439081899886b8862, type: 3}
   m_Name: PigHouse
   m_EditorClassIdentifier: 
-  recipeUI: {fileID: 2112962722, guid: 4c7ec4d5c23fbdd408721ca0fc847f78, type: 3}
+  recipeUI: {fileID: 21300000, guid: 3b34c3901f9c2d4489e63b1a99a4ef3b, type: 3}
   prefabItem: {fileID: 7331630685063679944, guid: a1f16bdf469159842a6011ec3341f278, type: 3}
   isLearned: 1
   requirements:
-  - name: 1
+  - name: 1001
     quantity: 1
