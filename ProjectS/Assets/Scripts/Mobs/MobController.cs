@@ -4,44 +4,20 @@ using UnityEngine;
 
 public class MobController : MonoBehaviour
 {
-    private GameObject currentTarget;
+    public Transform spawner { private get; set; }
+    private Transform restObject;
 
     private Vector3 targetPosition;
     private Vector3 movementDirection;
 
-    private Timer targetTimer;
-    private bool isWaiting;
-    private bool isFallowingPlayer;
+    [HideInInspector] public bool isWaiting;
 
     private void Start()
     {
-        targetTimer = new Timer(10);
+        SetRestObject();
+        SetTargetPosition();
     }
-
-    private void Update()
-    {
-        Move();
-
-        if (currentTarget) return;
-
-        targetTimer.StartTimer();
-        targetTimer.Tick();
-
-        if (HasArrivedOnPosition() && !isWaiting)
-        {
-            targetTimer.SetTime(3);
-            movementDirection = Vector3.zero;
-            isWaiting = true;
-        }
-
-        if (targetTimer.IsElapsed())
-        {
-            SetNewTargetPosition();
-            
-            if(isWaiting)
-                isWaiting = false;
-        }
-    }
+    private void Update() => Move();
 
     void FixedUpdate() => GetComponent<Rigidbody>().velocity = movementDirection.normalized * GetComponent<MobStats>().GetSpeed();
 
@@ -49,23 +25,37 @@ public class MobController : MonoBehaviour
     private void Move()
     {
         SetMovementAnimation();
-        if (isWaiting) return;
 
-        if(currentTarget)
-            targetPosition = currentTarget.transform.position;
-            
+        if (isWaiting)
+        {
+            movementDirection = Vector3.zero;
+            return;
+        }
+
+        if (GetComponent<MobActionManagement>().currentTarget)
+            targetPosition = GetComponent<MobActionManagement>().currentTarget.transform.position;
+
         movementDirection = targetPosition - transform.position;
     }
 
-    private void SetNewTargetPosition()
+    private void SetRestObject()
     {
-        targetPosition = new Vector3(Random.Range(transform.position.x - 10, transform.position.x + 10), 0,
-                                     Random.Range(transform.position.z - 10, transform.position.z + 10));
-    
+        restObject = transform.GetChild(1);
+        restObject.SetParent(null);
     }
 
+    public void SetTargetPosition()
+    {
+        if(!spawner)
+            targetPosition = new Vector3(Random.Range(spawner.position.x - 10, spawner.position.x + 10), 0,
+                                         Random.Range(spawner.position.z - 10, spawner.position.z + 10));
+        else
+            targetPosition = new Vector3(Random.Range(transform.position.x - 10, transform.position.x + 10), 0,
+                                         Random.Range(transform.position.z - 10, transform.position.z + 10));
 
-    private bool HasArrivedOnPosition() => Vector3.Distance(transform.position, targetPosition) > 1 ? false : true;
+        restObject.transform.position = targetPosition;
+        GetComponent<MobActionManagement>().SetTargetAndAction(restObject.gameObject, MobActionManagement.Action.rest);
+    }
 
     private void SetMovementAnimation()
     {
@@ -97,8 +87,9 @@ public class MobController : MonoBehaviour
             // Set mob moving state
 
             int val = 0;
-            if (isFallowingPlayer)
-                val = 1;
+            if (GetComponent<MobActionManagement>().currentTarget)
+                if (GetComponent<MobActionManagement>().currentTarget != restObject.gameObject)
+                    val = 1;
 
             if (movementDirection.z < 0) // Check If mob is going downwards
             {

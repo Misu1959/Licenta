@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
 
     void Update() => Move();
 
-    private void FixedUpdate()  { PlayerStats.instance.rigidBody.velocity = movementDir.normalized * PlayerStats.instance.speed;  }
+    private void FixedUpdate()  => PlayerStats.instance.rigidBody.velocity = movementDir.normalized * PlayerStats.instance.speed;
 
     private void Move()
     {

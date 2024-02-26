@@ -1,4 +1,3 @@
-using Newtonsoft.Json.Bson;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,27 +24,29 @@ public class ComplexMobSpawner : MobSpawner
         if (respawnTimer.IsElapsed())
         {
             GameObject newMob = Instantiate(ItemsManager.instance.SearchMobsList(mobName).gameObject);
+            newMob.GetComponent<MobController>().spawner = this.transform;
 
             newMob.transform.position = transform.position;
-            newMob.transform.SetParent(SaveLoadManager.instance.mobs.transform);
+            newMob.transform.SetParent(WorldManager.instance.mobs.transform);
             mobsList.Add(newMob);
 
         }
 
     }
 
-    private void GetMobsInside()
+    public void GetMobsInside()
     {
-        //foreach(GameObject mob in mobsList)
-           // mob.GetComponent<MobController>().SetTarget()
+        foreach (GameObject mob in mobsList)
+            mob.GetComponent<MobActionManagement>().SetTargetAndAction(this.gameObject, MobActionManagement.Action.goInside);
     }
 
-    private void GetMobsOutside()
+    public void GetMobsOutside()
     {
-
+        foreach (GameObject mob in mobsList)
+        {
+            mob.SetActive(true);
+            mob.GetComponent<MobController>().SetTargetPosition();
+        }
     }
-
-
-
 
 }

@@ -66,7 +66,7 @@ public class ComplexResource : Resource
         // Set loot position
         drop.transform.position = new Vector2(Random.Range(transform.position.x - 1, transform.position.x + 1),
                                               Random.Range(transform.position.y - 1, transform.position.y + 1));
-        drop.transform.SetParent(SaveLoadManager.instance.items.transform); // Set loot parent object
+        drop.transform.SetParent(WorldManager.instance.items.transform); // Set loot parent object
 
     }
 

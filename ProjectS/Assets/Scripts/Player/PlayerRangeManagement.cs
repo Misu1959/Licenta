@@ -5,37 +5,24 @@ using UnityEngine;
 
 public class PlayerRangeManagement : MonoBehaviour
 {
-    private static GameObject playerBody;
-    private static GameObject darknessCollider;
-    private static GameObject actionCollider;
-    private static GameObject searchCollider;
-
-
-    IEnumerator Start()
+    private enum RangeType
     {
-        yield return null; // Wait a frame so that PlayerStats can initialize it's instance
-
-        playerBody       = PlayerStats.instance.gameObject.transform.GetChild(0).gameObject; // Set player body 
-        darknessCollider = PlayerStats.instance.gameObject.transform.GetChild(1).gameObject; // Set darkness collider
-        actionCollider   = PlayerStats.instance.gameObject.transform.GetChild(2).gameObject; // Set action collider
-        searchCollider   = PlayerStats.instance.gameObject.transform.GetChild(3).gameObject; // Set search collider
+        darkness,
+        action,
+        search
     }
-
+    [SerializeField] private RangeType rangeType;
 
     private void OnTriggerEnter(Collider other)
     {
 
-        if (CheckForSpecificCollider(darknessCollider)) //Checking if something enter collision with darkness collider
+        if (CheckForSpecificCollider(RangeType.darkness)) //Checking if something enter collision with darkness collider
         {
             if (other.gameObject.GetComponent<Light>()) // If other object has light source
                 PlayerStats.instance.SetInLight(1);// Add 1 to numbers of light the player is in
         }
-        if (CheckForSpecificCollider(actionCollider))  
-        {
-            if (other.gameObject.GetComponent<Construction>()) // If other object is construction 
-                PlayerStats.instance.SetResearchLevel(1); // Set player research level
-        }
-        if (CheckForSpecificCollider(searchCollider)) //Checking if something enter collision with search collider
+
+        if (CheckForSpecificCollider(RangeType.search)) //Checking if something enter collision with search collider
         {
             if (other.GetComponent<Item_Base>() || other.GetComponent<Resource>()) // Check if other object is item or resource 
                 PlayerActionManagement.instance.itemsInRange.Add(other.gameObject); //add it to the list
@@ -45,20 +32,7 @@ public class PlayerRangeManagement : MonoBehaviour
     }
     private void OnTriggerStay(Collider other)
     {
-        if (CheckForSpecificCollider(playerBody))
-            if(other.gameObject.GetComponent<SpriteRenderer>())
-            if (other.GetComponent<SpriteRenderer>().sortingOrder > GetComponent<SpriteRenderer>().sortingOrder)
-            {
-                Color objColor = other.GetComponent<SpriteRenderer>().color;
-                other.GetComponent<SpriteRenderer>().color = new Color(objColor.r, objColor.g, objColor.b, .5f);
-            }
-            else if (other.GetComponent<SpriteRenderer>().sortingOrder <= GetComponent<SpriteRenderer>().sortingOrder)
-            {
-                Color objColor = other.GetComponent<SpriteRenderer>().color;
-                other.GetComponent<SpriteRenderer>().color = new Color(objColor.r, objColor.g, objColor.b, 1);
-            }
-
-        if(CheckForSpecificCollider(actionCollider))
+        if(CheckForSpecificCollider(RangeType.action))
             if (PlayerActionManagement.instance.currentTarget == other.gameObject)// Check if player reached the target 
                 PlayerActionManagement.instance.PerformAction(); //perform the action
 
@@ -66,32 +40,13 @@ public class PlayerRangeManagement : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (CheckForSpecificCollider(playerBody))
-        {
-            Color objColor = other.GetComponent<SpriteRenderer>().color;
-            other.GetComponent<SpriteRenderer>().color = new Color(objColor.r, objColor.g, objColor.b, 1);
-        }
-
-        if (CheckForSpecificCollider(darknessCollider)) //Checking if something exit collision with darkness collider
+        if (CheckForSpecificCollider(RangeType.darkness)) //Checking if something exit collision with darkness collider
         {
             if (other.gameObject.GetComponent<Light>()) // If player get's out of the light 
                 PlayerStats.instance.SetInLight(-1); // Remove one from the number of lights player is in
         }
 
-        if (CheckForSpecificCollider(actionCollider)) //Checking if something exit collision with action collider
-        {
-            if (other.GetComponent<Construction>()) // If the other object is a construction 
-            {
-                //It has bugs
-
-                // If the other object is a resarchStation
-                if (other.gameObject.layer == 10)
-                    PlayerStats.instance.SetResearchLevel(0); // Set player research level
-
-            }
-        }
-
-        if (CheckForSpecificCollider(searchCollider)) //Checking if something exit collision with search collider
+        if (CheckForSpecificCollider(RangeType.search)) //Checking if something exit collision with search collider
         {
             if (other.GetComponent<Item_Base>() || other.GetComponent<Resource>()) // Check if other object is an item or a res
                 PlayerActionManagement.instance.itemsInRange.Remove(other.gameObject); // Eliminate it from the list
@@ -99,8 +54,6 @@ public class PlayerRangeManagement : MonoBehaviour
         }
     }
 
-    bool CheckForSpecificCollider(GameObject collider)
-    {
-        return (this.gameObject == collider) ? true : false;
-    }
+    bool CheckForSpecificCollider(RangeType rangeTypeToCheck) => (rangeType == rangeTypeToCheck) ? true : false;
+
 }

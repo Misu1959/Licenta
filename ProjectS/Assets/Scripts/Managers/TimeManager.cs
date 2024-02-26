@@ -103,10 +103,12 @@ public class TimeManager : MonoBehaviour
             case DayState.day:
                 {
                     PassDay();
+                    WorldManager.instance.WakeUpMobs();
                     break;
                 }
             case DayState.dawn:
                 {
+                    WorldManager.instance.SendMobsToSleep();
                     // Turn on dawn light
                     break;
                 }

@@ -10,10 +10,6 @@ public class SaveLoadManager : MonoBehaviour
     
     public static SaveLoadManager instance;
 
-    public GameObject items;
-    public GameObject resources;
-    public GameObject constructions;
-    public GameObject mobs;
     void Start()
     {
         instance = this;

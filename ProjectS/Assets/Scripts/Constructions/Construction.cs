@@ -17,8 +17,6 @@ public class Construction : MonoBehaviour
     {
         spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         color = spriteRenderer.color;
-
-        spriteRenderer.color = new Color(color.r, color.g, color.b, .5f);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -46,6 +44,7 @@ public class Construction : MonoBehaviour
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitData;
+
         if (Physics.Raycast(ray, out hitData, 1000))
             transform.position = new Vector3(hitData.point.x, 0, hitData.point.z);
 
@@ -86,13 +85,16 @@ public class Construction : MonoBehaviour
 
         spriteRenderer.color = color;
         GetComponent<Collider>().isTrigger = false;
-        transform.SetParent(SaveLoadManager.instance.constructions.transform);
+        transform.SetParent(WorldManager.instance.constructions.transform);
 
 
         if (GetComponent<Fireplace>())
             GetComponent<Fireplace>().enabled = true;
-
-        foreach(Recipe.Requiremets req in CraftingManager.instance.GetCurrentCraftingRecipe().GetRecipe().requirements)
+        
+        if (GetComponent<ComplexMobSpawner>())
+            GetComponent<ComplexMobSpawner>().enabled = true;
+        
+        foreach (Recipe.Requiremets req in CraftingManager.instance.GetCurrentCraftingRecipe().GetRecipe().requirements)
             InventoryManager.instance.SpendResources(req.name, req.quantity);
 
         PlayerActionManagement.instance.CompleteAction();

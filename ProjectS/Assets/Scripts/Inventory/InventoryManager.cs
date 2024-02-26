@@ -260,7 +260,7 @@ public class InventoryManager : MonoBehaviour
         
         Item item = ItemsManager.instance.CreateItem(itemToDrop);
         
-        item.transform.SetParent(SaveLoadManager.instance.items.transform);
+        item.transform.SetParent(WorldManager.instance.items.transform);
         item.transform.localPosition = new Vector3(positionToDrop.x, 0, positionToDrop.z);
         item.SetTransparent(true);
 

@@ -53,9 +53,6 @@ public class ItemsManager : MonoBehaviour
         return null;
     }
 
-
-
-
     public ItemUI CreateItemUI(Item item) // Create a new itemUI based on an Item
     {
         GameObject newItemUI = Instantiate(itemUIPrefab);

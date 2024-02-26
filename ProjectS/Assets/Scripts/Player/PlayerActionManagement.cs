@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEngine.Rendering.Universal;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -35,7 +34,7 @@ public class PlayerActionManagement : MonoBehaviour
 
     public bool isPerformingAction { get; private set; }
 
-    void Start() {   instance = this;    }
+    void Start() =>   instance = this;
 
     void Update()
     {
@@ -301,7 +300,7 @@ public class PlayerActionManagement : MonoBehaviour
         if (currentAction != Action.place)
             return false;
      
-        if (constructionToPlace.transform.parent?.gameObject == SaveLoadManager.instance.constructions)
+        if (constructionToPlace.transform.parent?.gameObject == WorldManager.instance.constructions)
             return false;
 
         return true; 
