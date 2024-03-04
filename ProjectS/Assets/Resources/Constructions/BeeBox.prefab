@@ -240,6 +240,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mobName: 40003
-  maxNumberOfMobs: 3
+  maxNumberOfMobs: 5
   respawnTimer:
     maxTime: 3

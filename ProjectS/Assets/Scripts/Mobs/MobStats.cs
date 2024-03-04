@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class MobStats : MonoBehaviour
 {
     public Animator animator { get; private set; }
+
+    private Transform spawner;
 
     [Header("Stats")]
 
@@ -17,8 +18,13 @@ public class MobStats : MonoBehaviour
     [SerializeField] private float dmg;
 
     [SerializeField] private float speed;
+    [SerializeField] private float runSpeed;
 
     public float GetSpeed() => speed;
+    public float GetRunSpeed() => runSpeed;
+    public Transform GetSpawner() => spawner;
+    public void SetSpawner(Transform _spawner) => spawner = _spawner;
+
 
     private void Start()
     {

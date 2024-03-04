@@ -68,6 +68,7 @@ public enum ObjectName
     [InspectorName("Resources/Grass Bush")] grassBush,
     [InspectorName("Resources/Sappling")] sappling,
     [InspectorName("Resources/Rock")] rock,
+    [InspectorName("Resources/Rock Gold")] rockGold,
     [InspectorName("Resources/Tree")] tree,
     [InspectorName("Resources/Red Mushroom")] redShroom,
     [InspectorName("Resources/Green Mushroom")] greenShroom,
@@ -90,7 +91,9 @@ public enum ObjectName
 
     [InspectorName("Mobs/Pig")] pig,
     [InspectorName("Mobs/Rabbit")] rabbit,
-    [InspectorName("Mobs/Bee")] bee
+    [InspectorName("Mobs/Bee")] bee,
+    [InspectorName("Mobs/Hound")] hound,
+    [InspectorName("Mobs/Spider")] spider
     #endregion
 };
 

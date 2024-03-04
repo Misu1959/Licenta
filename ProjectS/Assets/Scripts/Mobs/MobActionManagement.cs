@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class MobActionManagement : MonoBehaviour
@@ -17,16 +18,34 @@ public class MobActionManagement : MonoBehaviour
         eat
     };
 
-    [HideInInspector] public List<GameObject> itemsInRange = new List<GameObject>();
-    
-    public GameObject currentTarget { get; private set; }
-    public Action currentAction { get; private set; }
-    public bool isPerformingAction { get; private set; }
+    public enum ActionMode
+    {
+        idle,
+        rest,
+        performingAction,
+        fallowingPlayer
+    }
 
+    [HideInInspector] public List<GameObject> itemsInRange = new List<GameObject>();
+
+    
+    private Transform personalTarget;
+    public GameObject currentTarget { get; private set; }
+    
+    public Action currentAction { get; private set; }
+
+    public ActionMode currentActionMode { get; private set; }
+
+
+    private void Start()
+    {
+        SetPersonalTarget();
+        SetTargetPosition();
+    }
 
     private void Update() => CancelActionForTakingToLong();
 
-    void SearchForItemInRange()
+    private void SearchForItemInRange()
     {
         float closestDistance = 1000;
         GameObject closestObjectToInteractWith = null;
@@ -58,24 +77,49 @@ public class MobActionManagement : MonoBehaviour
 
     }
 
+    private void SetPersonalTarget()
+    {
+        personalTarget = transform.GetChild(1);
+        personalTarget.SetParent(null);
+    }
+
+    private void SetTargetPosition()
+    {
+        Vector3 newPos;
+        Vector3 targetPos;
+        if(currentActionMode == ActionMode.fallowingPlayer)
+            targetPos = PlayerStats.instance.transform.position;
+        else if(GetComponent<MobStats>().GetSpawner())
+            targetPos = GetComponent<MobStats>().GetSpawner().position;
+        else
+            targetPos = transform.position;
+        
+        newPos = new Vector3(Random.Range(targetPos.x - 10, targetPos.x + 10), 0,
+                             Random.Range(targetPos.z - 10, targetPos.z + 10));
+
+        personalTarget.transform.position = newPos;
+        SetTargetAndAction(personalTarget.gameObject, Action.rest);
+    }
+
     public void SetTargetAndAction(GameObject _target, Action _currentAction)
     {
         CancelAction(true);
         currentTarget = _target;
         currentAction = _currentAction;
+
+        actionExpireTimer.RestartTimer();
     }
 
     public void PerformAction()
     {
-        if (isPerformingAction) return;
-        actionExpireTimer.RestartTimer();
+        if (currentActionMode != ActionMode.idle) return;
 
         switch (currentAction)
         {
             case Action.rest:
                 {
-                    GetComponent<MobController>().isWaiting = true;
-                    Invoke(nameof(CompleteAction), 10f);
+                    currentActionMode = ActionMode.rest;
+                    Invoke(nameof(CompleteAction), 5f);
                     break;
                 }
             case Action.goInside:
@@ -101,7 +145,6 @@ public class MobActionManagement : MonoBehaviour
                 }
         }
 
-        isPerformingAction = true;
     }
 
     public void CompleteAction()
@@ -110,7 +153,6 @@ public class MobActionManagement : MonoBehaviour
         {
             case Action.rest:
                 {
-                    GetComponent<MobController>().isWaiting = false;
                     break;
                 }
             case Action.goInside:
@@ -129,8 +171,8 @@ public class MobActionManagement : MonoBehaviour
                 }
         }
 
-        isPerformingAction = false;
-        GetComponent<MobController>().SetTargetPosition();
+        currentActionMode = ActionMode.idle;
+        SetTargetPosition();
     }
 
     public void CancelAction(bool newAction = false)
@@ -139,18 +181,17 @@ public class MobActionManagement : MonoBehaviour
         {
             case Action.rest:
                 {
-                    GetComponent<MobController>().isWaiting = false;
                     break;
                 }
         }
 
-        isPerformingAction = false;
+        currentActionMode = ActionMode.idle;
 
-        if(!newAction)
-            GetComponent<MobController>().SetTargetPosition();
+        if (!newAction)
+            SetTargetPosition();
     }
 
-    Timer actionExpireTimer = new Timer(10);
+    Timer actionExpireTimer = new Timer(30);
     private void CancelActionForTakingToLong()
     {
         actionExpireTimer.StartTimer();
@@ -160,4 +201,7 @@ public class MobActionManagement : MonoBehaviour
             CancelAction();
 
     }    
+
+    public bool IsRunning() => (personalTarget.gameObject == currentTarget) ? false : true;
+
 }

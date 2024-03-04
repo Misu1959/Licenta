@@ -69,9 +69,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.2
-  m_Height: 1.3
+  m_Height: 0.57881474
   m_Direction: 1
-  m_Center: {x: 0, y: 0.65, z: 0}
+  m_Center: {x: 0, y: 0.28940737, z: 0}
 --- !u!114 &9196395222536779288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,7 +87,8 @@ MonoBehaviour:
   name: 40002
   maxHp: 50
   dmg: 0
-  speed: 4
+  speed: 3
+  runSpeed: 4
 --- !u!114 &3348216668384095557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,7 +101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1914edb010946544595a3703be1bb0d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isWaiting: 0
 --- !u!114 &1427495297047920267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,7 +224,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2136218551, guid: 6941c9e8533adf749b379cf448ed65fa, type: 3}
+  m_Sprite: {fileID: -1969363683, guid: 22b1b52948f7e1742bb09861c341151f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -245,7 +245,7 @@ Animator:
   m_GameObject: {fileID: 2669008101967473552}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: bd4e01d888e86204cac6df4599886283, type: 2}
+  m_Controller: {fileID: 9100000, guid: 7c9088c6c01918c44a138f2e92ee0429, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -266,8 +266,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9952191, y: 1.2801384, z: 0.1}
-  m_Center: {x: -0.006167233, y: 0.62728125, z: 0}
+  m_Size: {x: 0.51149726, y: 0.63810766, z: 0.1}
+  m_Center: {x: -0.028154597, y: 0.3062659, z: 0}
 --- !u!114 &2669008101967473558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -515,7 +515,7 @@ GameObject:
   - component: {fileID: 9085504476630302075}
   - component: {fileID: 30801335127880957}
   m_Layer: 0
-  m_Name: RestObject
+  m_Name: PersonalTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

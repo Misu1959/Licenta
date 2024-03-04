@@ -76,12 +76,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 01a989e9bb40b24438285c8174d9f7c8, type: 3}
+  m_Sprite: {fileID: 1403262091, guid: f097c5cbda31ee34181351c8691d20bc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.2382812, y: 3.883112}
+  m_Size: {x: 1.1760851, y: 1.4023438}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -210,6 +210,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mobName: 40003
-  maxNumberOfMobs: 3
+  maxNumberOfMobs: 5
   respawnTimer:
     maxTime: 3

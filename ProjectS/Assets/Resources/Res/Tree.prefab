@@ -76,12 +76,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: eea732becbfcb174c9e40d3d3cc36816, type: 3}
+  m_Sprite: {fileID: 2129623162, guid: c35fb14128d5f404e8b916b0619bd206, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.6015625, y: 3.8671875}
+  m_Size: {x: 2.6015625, y: 3.8705864}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -97,7 +97,7 @@ Animator:
   m_GameObject: {fileID: 1511848935513710524}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3cdc0ca6a42402e49b3024f90ec30e76, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -210,12 +210,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 749dabed3bbb7ad4d91b5196b723d3db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 10005
+  name: 10006
   drops: ea030000
-  timeToGather: 1
   gatherTimer:
     maxTime: 1
-  maxTimeToGrow: 0
   growTimer:
     maxTime: 0
   howToGather: 0

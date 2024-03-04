@@ -61,15 +61,15 @@ public class PlayerController : MonoBehaviour
         {
             // Seting player idle state
 
-            if (PlayerStats.instance.animator.GetInteger("GoingUpDown") == 2)
-                PlayerStats.instance.animator.SetInteger("GoingUpDown", 1);
-            else if (PlayerStats.instance.animator.GetInteger("GoingUpDown") == -2)
-                PlayerStats.instance.animator.SetInteger("GoingUpDown", -1);
+            if (PlayerStats.instance.animator.GetInteger("MovingUpDown") == 2)
+                PlayerStats.instance.animator.SetInteger("MovingUpDown", 1);
+            else if (PlayerStats.instance.animator.GetInteger("MovingUpDown") == -2)
+                PlayerStats.instance.animator.SetInteger("MovingUpDown", -1);
 
-            if (PlayerStats.instance.animator.GetInteger("GoingLeftRight") == 2)
-                PlayerStats.instance.animator.SetInteger("GoingLeftRight", 1);
-            else if (PlayerStats.instance.animator.GetInteger("GoingLeftRight") == -2)
-                PlayerStats.instance.animator.SetInteger("GoingLeftRight", -1);
+            if (PlayerStats.instance.animator.GetInteger("MovingLeftRight") == 2)
+                PlayerStats.instance.animator.SetInteger("MovingLeftRight", 1);
+            else if (PlayerStats.instance.animator.GetInteger("MovingLeftRight") == -2)
+                PlayerStats.instance.animator.SetInteger("MovingLeftRight", -1);
 
         }
         else // If the player is moving
@@ -78,25 +78,25 @@ public class PlayerController : MonoBehaviour
 
             if (movementDir.z < 0) // Check If player is going downwards
             {
-                PlayerStats.instance.animator.SetInteger("GoingUpDown", -2);
-                PlayerStats.instance.animator.SetInteger("GoingLeftRight", 0);
+                PlayerStats.instance.animator.SetInteger("MovingUpDown", -2);
+                PlayerStats.instance.animator.SetInteger("MovingLeftRight", 0);
             }
             else if (movementDir.z > 0) // Check If player is going upwards
             {
-                PlayerStats.instance.animator.SetInteger("GoingUpDown", 2);
-                PlayerStats.instance.animator.SetInteger("GoingLeftRight", 0);
+                PlayerStats.instance.animator.SetInteger("MovingUpDown", 2);
+                PlayerStats.instance.animator.SetInteger("MovingLeftRight", 0);
             }
             else // If it;s not moving on Y axis check for X axis
             {
                 if (movementDir.x < 0) // Check If player is going to the left
                 {
-                    PlayerStats.instance.animator.SetInteger("GoingLeftRight", -2);
-                    PlayerStats.instance.animator.SetInteger("GoingUpDown", 0);
+                    PlayerStats.instance.animator.SetInteger("MovingLeftRight", -2);
+                    PlayerStats.instance.animator.SetInteger("MovingUpDown", 0);
                 }
                 else if (movementDir.x > 0) // Check If player is going to the right
                 {
-                    PlayerStats.instance.animator.SetInteger("GoingLeftRight", 2);
-                    PlayerStats.instance.animator.SetInteger("GoingUpDown", 0);
+                    PlayerStats.instance.animator.SetInteger("MovingLeftRight", 2);
+                    PlayerStats.instance.animator.SetInteger("MovingUpDown", 0);
                 }
             }
         }

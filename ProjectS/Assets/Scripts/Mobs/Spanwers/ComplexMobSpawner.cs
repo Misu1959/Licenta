@@ -24,7 +24,7 @@ public class ComplexMobSpawner : MobSpawner
         if (respawnTimer.IsElapsed())
         {
             GameObject newMob = Instantiate(ItemsManager.instance.SearchMobsList(mobName).gameObject);
-            newMob.GetComponent<MobController>().spawner = this.transform;
+            newMob.GetComponent<MobStats>().SetSpawner(this.transform);
 
             newMob.transform.position = transform.position;
             newMob.transform.SetParent(WorldManager.instance.mobs.transform);
@@ -45,7 +45,7 @@ public class ComplexMobSpawner : MobSpawner
         foreach (GameObject mob in mobsList)
         {
             mob.SetActive(true);
-            mob.GetComponent<MobController>().SetTargetPosition();
+           /// mob.GetComponent<MobController>().SetTargetPosition();
         }
     }
 

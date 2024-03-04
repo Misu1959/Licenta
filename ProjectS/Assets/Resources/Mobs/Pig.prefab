@@ -87,7 +87,8 @@ MonoBehaviour:
   name: 40001
   maxHp: 250
   dmg: 30
-  speed: 2
+  speed: 1
+  runSpeed: 2
 --- !u!114 &3348216668384095557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,7 +101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1914edb010946544595a3703be1bb0d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isWaiting: 0
 --- !u!114 &5131646491710186845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,7 +403,7 @@ GameObject:
   - component: {fileID: 4742327373434050328}
   - component: {fileID: 8128767072588702675}
   m_Layer: 0
-  m_Name: RestObject
+  m_Name: PersonalTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
