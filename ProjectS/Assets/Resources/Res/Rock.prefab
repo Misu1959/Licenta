@@ -97,7 +97,7 @@ Animator:
   m_GameObject: {fileID: 7034603349411258757}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f09ea2f96c4edb046a27b045f83854b6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -217,7 +217,7 @@ MonoBehaviour:
   growTimer:
     maxTime: 0
   howToGather: 1
-  hp: 10
+  maxHp: 4
 --- !u!114 &6882884118948524786
 MonoBehaviour:
   m_ObjectHideFlags: 0

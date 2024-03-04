@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class Resource : MonoBehaviour, IPointerDownHandler
 {
 
-    private Animator animator;
+    protected Animator animator;
 
     public new ObjectName name;
 
@@ -16,11 +16,7 @@ public class Resource : MonoBehaviour, IPointerDownHandler
     [SerializeField] protected Timer gatherTimer;
     [SerializeField] private Timer growTimer;
 
-    private void Start()
-    {
-        animator = transform.GetChild(0).GetComponent<Animator>();
-    }
-
+    private void Start() => animator = transform.GetChild(0).GetComponent<Animator>();
     private void Update()
     {
         GatherItemOfType();
@@ -32,10 +28,8 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
 
         if (Input.GetMouseButton(0))
-        {
             if (CheckIfCanBeGathered())
                 SetToGather();
-        }
     }
 
     public virtual void SetToGather()   =>   PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.gather);
@@ -55,6 +49,8 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         if (!gatherTimer.IsElapsed())
             return;
 
+        animator.SetTrigger("PlayerInput");
+
         // Next lines adds the loot to the inventory
         Item item = ItemsManager.instance.CreateItem(drops[0]);
         InventoryManager.instance.AddItemToInventory(item);
@@ -70,17 +66,19 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
 
         growTimer.Tick();
-
-        if (growTimer.IsElapsedPercent(100))
-            animator.SetInteger("GrowthStage", 3);
-        else if (growTimer.IsElapsedPercent(66))
-            animator.SetInteger("GrowthStage", 2);
-        else if (growTimer.IsElapsedPercent(34))
-            animator.SetInteger("GrowthStage", 1);
-        else
-            animator.SetInteger("GrowthStage", -1);
-
+        SetAnim();
     }
 
     public virtual bool CheckIfCanBeGathered()  => !growTimer.IsOn();
+
+    public virtual void SetAnim()
+    {
+        if (growTimer.IsElapsedPercent(100))
+            animator.SetInteger("Stage", 10);
+        else if (growTimer.IsElapsedPercent(66))
+            animator.SetInteger("Stage", 2);
+        else if (growTimer.IsElapsedPercent(34))
+            animator.SetInteger("Stage", 1);
+    }
+
 }

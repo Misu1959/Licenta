@@ -217,7 +217,7 @@ MonoBehaviour:
   growTimer:
     maxTime: 0
   howToGather: 0
-  hp: 10
+  maxHp: 4
 --- !u!114 &-5646847343718734843
 MonoBehaviour:
   m_ObjectHideFlags: 0

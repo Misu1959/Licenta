@@ -80,10 +80,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 10001
   drops: d3070000
-  timeToGather: 3
   gatherTimer:
     maxTime: 3
-  maxTimeToGrow: 30
   growTimer:
     maxTime: 30
 --- !u!114 &385432992285720956
@@ -178,12 +176,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e3975ca4927e9b94dbb71e2698cbf66f, type: 3}
+  m_Sprite: {fileID: 554695920, guid: 0cd02cca3384cf7479090f259677e04d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 1.7812499, y: 1.760376}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

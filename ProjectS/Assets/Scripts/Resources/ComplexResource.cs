@@ -5,7 +5,13 @@ using UnityEngine;
 public class ComplexResource : Resource
 {
     [SerializeField] EquipmentActionType howToGather;
-    [SerializeField] private float hp;
+    [SerializeField] private float maxHp;
+    private float hp;
+
+    private void Start()
+    {
+        hp = maxHp;
+    }
 
     public override void SetToGather()
     {
@@ -44,6 +50,7 @@ public class ComplexResource : Resource
     void TakeDmg()
     {
         hp--;
+        SetAnim();
 
         if (hp <= 0)
             DestroyResource();
@@ -72,7 +79,16 @@ public class ComplexResource : Resource
 
     public override bool CheckIfCanBeGathered()
     {
-        // If the item equiped in hand matches the action requirement return true else return false
         return EquipmentManager.instance.GetHandItem()?.GetEquipmentData().actionType != howToGather ? false : true;
+    }
+
+    public override void SetAnim()
+    {
+        animator.SetTrigger("PlayerInput");
+        if (hp < .34f * maxHp)
+            animator.SetInteger("Stage", 2);
+        else if (hp < .66f * maxHp)
+            animator.SetInteger("Stage", 1);
+        
     }
 }
