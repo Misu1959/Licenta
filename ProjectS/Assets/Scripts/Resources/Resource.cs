@@ -16,7 +16,8 @@ public class Resource : MonoBehaviour, IPointerDownHandler
     [SerializeField] protected Timer gatherTimer;
     [SerializeField] private Timer growTimer;
 
-    private void Start() => animator = transform.GetChild(0).GetComponent<Animator>();
+    protected virtual void Start() => animator = transform.GetChild(0).GetComponent<Animator>();
+
     private void Update()
     {
         GatherItemOfType();
@@ -32,13 +33,13 @@ public class Resource : MonoBehaviour, IPointerDownHandler
                 SetToGather();
     }
 
-    public virtual void SetToGather()   =>   PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.gather);
+    public virtual void SetToGather()   =>   PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.gather);
 
     public virtual void GatherItemOfType()
     {
 
         // If player isn't harvesting it or if it's not grown
-        if (!PlayerActionManagement.instance.IsGathering(this.gameObject))
+        if (!PlayerBehaviour.instance.IsGathering(this.transform))
         {
             gatherTimer.RestartTimer();
             return;
@@ -46,24 +47,26 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
         gatherTimer.StartTimer();
         gatherTimer.Tick();
-        if (!gatherTimer.IsElapsed())
-            return;
+        if (!gatherTimer.IsElapsed()) return;
 
-        animator.SetTrigger("PlayerInput");
 
         // Next lines adds the loot to the inventory
+
         Item item = ItemsManager.instance.CreateItem(drops[0]);
         InventoryManager.instance.AddItemToInventory(item);
         
+        PlayerBehaviour.instance.CompleteAction(); // Complete the action
+
+        animator.SetTrigger("PlayerInput");
+        animator.SetInteger("Stage", -1);
+
         growTimer.StartTimer();
-        PlayerActionManagement.instance.CompleteAction(); // Complete the action
     }
 
     void Regrow()
     {
         if (!growTimer.IsOn()) return;
         if (!animator) return;
-
 
         growTimer.Tick();
         SetAnim();
@@ -74,11 +77,11 @@ public class Resource : MonoBehaviour, IPointerDownHandler
     public virtual void SetAnim()
     {
         if (growTimer.IsElapsedPercent(100))
-            animator.SetInteger("Stage", 10);
+            animator.SetInteger("Stage", 0);
         else if (growTimer.IsElapsedPercent(66))
-            animator.SetInteger("Stage", 2);
-        else if (growTimer.IsElapsedPercent(34))
-            animator.SetInteger("Stage", 1);
+            animator.SetInteger("Stage", -3);
+        else if (growTimer.IsElapsedPercent(33))
+            animator.SetInteger("Stage", -2);
     }
 
 }

@@ -54,7 +54,7 @@ public class CraftingRecipe : MonoBehaviour
         else // If the crafted thing is a construction
         {
             Instantiate(recipe.prefabItem);
-            PlayerActionManagement.instance.SetTargetAndAction(null, PlayerActionManagement.Action.place); // Set player action to placement mode
+            PlayerBehaviour.instance.SetTargetAndAction(null, PlayerBehaviour.Action.place); // Set player action to placement mode
         }
 
         CraftingManager.instance.SetRecipesList(); // Close crafting manager

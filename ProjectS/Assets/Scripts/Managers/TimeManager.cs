@@ -93,22 +93,26 @@ public class TimeManager : MonoBehaviour
     {
         currentHour = 0;
         currentDay++;
+        UIManager.instance.ShowDayCount(currentDay);
         // Save world
 
     }
     private void ChangeDayState(DayState newState)
     {
-        switch(newState)
+
+
+        WorldManager.instance.SendMobsToSleep(newState);
+        WorldManager.instance.WakeUpMobs(newState);
+
+        switch (newState)
         {
             case DayState.day:
                 {
                     PassDay();
-                    WorldManager.instance.WakeUpMobs();
                     break;
                 }
             case DayState.dawn:
                 {
-                    WorldManager.instance.SendMobsToSleep();
                     // Turn on dawn light
                     break;
                 }

@@ -21,32 +21,16 @@ public class ComplexMobSpawner : MobSpawner
         respawnTimer.StartTimer();
         respawnTimer.Tick();
 
-        if (respawnTimer.IsElapsed())
-        {
-            GameObject newMob = Instantiate(ItemsManager.instance.SearchMobsList(mobName).gameObject);
-            newMob.GetComponent<MobStats>().SetSpawner(this.transform);
+        if (!respawnTimer.IsElapsed()) return;
+        
+        GameObject newMob = Instantiate(ItemsManager.instance.SearchMobsList(mobName).gameObject);
+        newMob.GetComponent<MobStats>().SetSpawner(this.transform);
 
-            newMob.transform.position = transform.position;
-            newMob.transform.SetParent(WorldManager.instance.mobs.transform);
-            mobsList.Add(newMob);
+        newMob.transform.position = transform.position;
+        newMob.transform.SetParent(WorldManager.instance.mobs);
+        mobsList.Add(newMob);
 
-        }
 
-    }
-
-    public void GetMobsInside()
-    {
-        foreach (GameObject mob in mobsList)
-            mob.GetComponent<MobActionManagement>().SetTargetAndAction(this.gameObject, MobActionManagement.Action.goInside);
-    }
-
-    public void GetMobsOutside()
-    {
-        foreach (GameObject mob in mobsList)
-        {
-            mob.SetActive(true);
-           /// mob.GetComponent<MobController>().SetTargetPosition();
-        }
     }
 
 }

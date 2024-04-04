@@ -9,20 +9,17 @@ public class PlayerStats : MonoBehaviour
     public Rigidbody rigidBody { get; private set; }
 
     #region Stats
-    [SerializeField] private float maxHunger;
-    public float hunger { get; private set; }
+    [SerializeField] private int maxHunger;
+    public int hunger { get; private set; }
 
     private Timer hungerTimer;
     private Timer starveTimer;
 
-    [SerializeField] private float maxHp;
-    public float hp { get; private set; }
-
-    [SerializeField] private float maxDmg;
-    public float dmg { get; private set; }
+    [SerializeField] private int maxHp;
+    public int hp { get; private set; }
     
-    [SerializeField] private float maxSpeed;
-    public float speed { get; private set; }
+    [SerializeField] private int maxSpeed;
+    public int speed { get; private set; }
 
     #endregion
     public int isInLight { get; private set; }
@@ -42,7 +39,7 @@ public class PlayerStats : MonoBehaviour
         hunger = maxHunger;
         hp = maxHp;
         //if (PlayerPrefs.GetInt("prevWorld") <= 1)
-            StartCoroutine(SetStats(maxHp,maxDmg,maxSpeed,maxHunger,Vector2.zero));
+            StartCoroutine(SetStats(maxHp,maxSpeed,maxHunger,Vector2.zero));
     
     }
 
@@ -73,11 +70,10 @@ public class PlayerStats : MonoBehaviour
             starveTimer.RestartTimer();
     }
 
-    public IEnumerator SetStats(float _hp,float _dmg,float _speed,float _hunger, Vector2 pos)
+    public IEnumerator SetStats(int _hp, int _speed, int _hunger, Vector2 pos)
     {
         yield return null;
         hp      = _hp;
-        dmg     = _dmg;
         speed   = _speed;
         hunger  = _hunger;
         transform.position = pos;
@@ -86,7 +82,7 @@ public class PlayerStats : MonoBehaviour
         UIManager.instance.ShowHunger(maxHunger, hunger);
     }
 
-    public void TakeDmg(float dmgAmount)
+    public void TakeDmg(int dmgAmount)
     {
         hp = Mathf.Clamp(hp - dmgAmount, 0, maxHp);
         UIManager.instance.ShowHp(maxHp, hp);
@@ -96,7 +92,7 @@ public class PlayerStats : MonoBehaviour
             Die("by taking damage!");
     }
 
-    private void Starve(float dmgAmount)
+    private void Starve(int dmgAmount)
     {
         hp = Mathf.Clamp(hp - dmgAmount, 0, maxHp);
         UIManager.instance.ShowHp(maxHp, hp);
@@ -106,7 +102,7 @@ public class PlayerStats : MonoBehaviour
             Die("by starvation!");
     }
 
-    public void Heal(float healAmount)
+    public void Heal(int healAmount)
     {
         hp = Mathf.Clamp(hp + healAmount, 0, maxHp);
         UIManager.instance.ShowHp(maxHp, hp);
@@ -114,8 +110,8 @@ public class PlayerStats : MonoBehaviour
 
     public void Eat(Item_Base food)
     {
-        hunger = Mathf.Clamp(hunger + food.GetFoodData().hungerAmount, 0, maxHunger);
-        hp = Mathf.Clamp(hp + food.GetFoodData().hpAmount, 0, maxHp);
+        hunger  = (int)Mathf.Clamp(hunger + food.GetFoodData().hungerAmount, 0, maxHunger);
+        hp      = (int)Mathf.Clamp(hp + food.GetFoodData().hpAmount, 0, maxHp);
 
         food.TakeFromStack(1);
 
@@ -127,6 +123,21 @@ public class PlayerStats : MonoBehaviour
     }
 
     void Die(string causeOfDeath)   {   UIManager.instance.ShowDeathScreen(causeOfDeath);   }
+
+
+    public int GetActualDamage()
+    {
+        if (!EquipmentManager.instance.GetHandItem()) return 0;
+
+        if (EquipmentManager.instance.GetHandItem().GetEquipmentData().actionType == EquipmentActionType.fight)
+            return EquipmentManager.instance.GetHandItem().GetEquipmentData().dmg;
+        else
+            return EquipmentManager.instance.GetHandItem().GetEquipmentData().dmg / 2;
+
+    }
+
+
+
 
     public void SetResearchLevel(int newResearchLevel)  {   researchLevel = newResearchLevel;   }
 

@@ -36,9 +36,9 @@ public class Fireplace : Fire, IPointerDownHandler
         if (Input.GetMouseButtonDown(0))
         {
             if (InventoryManager.instance.selectedItemSlot.GetItemInSlot()?.GetComponent<Food>())
-                PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.cook);
+                PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.cook);
             else
-                PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.addFuel);
+                PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.addFuel);
         }
 
     }
@@ -57,7 +57,7 @@ public class Fireplace : Fire, IPointerDownHandler
     public void Cook()
     {
         
-        if (!PlayerActionManagement.instance.IsCooking(this.gameObject)) return;
+        if (!PlayerBehaviour.instance.IsCooking(this.transform)) return;
 
         InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetFoodData().cookTimer.StartTimer();
         InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetFoodData().cookTimer.Tick();
@@ -70,7 +70,7 @@ public class Fireplace : Fire, IPointerDownHandler
         Item_Base cookedItem = ItemsManager.instance.CreateItem(InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetItemData().name + 1);
         InventoryManager.instance.AddItemToInventory(cookedItem);
 
-        PlayerActionManagement.instance.CompleteAction();
+        PlayerBehaviour.instance.CompleteAction();
     }
 
 }

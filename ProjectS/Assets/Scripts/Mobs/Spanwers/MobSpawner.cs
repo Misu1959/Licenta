@@ -20,7 +20,7 @@ public class MobSpawner : MonoBehaviour
         GameObject newMob = Instantiate(ItemsManager.instance.SearchMobsList(mobName).gameObject);
 
         newMob.transform.position = transform.position;
-        newMob.transform.SetParent(WorldManager.instance.mobs.transform);
+        newMob.transform.SetParent(WorldManager.instance.mobs);
 
         Invoke(nameof(SpawnMob), .5f);
 

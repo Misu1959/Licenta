@@ -37,7 +37,7 @@ public class ResourceSpawnerManager : MonoBehaviour
         {
             Item item = ItemsManager.instance.CreateItem(_name);
 
-            item.transform.SetParent(WorldManager.instance.items.transform);
+            item.transform.SetParent(WorldManager.instance.items);
             item.transform.position = new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100));
 
         }
@@ -51,7 +51,7 @@ public class ResourceSpawnerManager : MonoBehaviour
         {
             Resource resource = Instantiate(ItemsManager.instance.SearchResourcesList(_name));
 
-            resource.transform.SetParent(WorldManager.instance.resources.transform);
+            resource.transform.SetParent(WorldManager.instance.resources);
             resource.transform.position = new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100));
             resource.name = _name;
         }

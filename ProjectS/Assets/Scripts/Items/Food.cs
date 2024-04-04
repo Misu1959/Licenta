@@ -16,7 +16,7 @@ public class Food : Item
 
     public override void OnRightMouseButtonPressed() 
     {
-        PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.eat); 
+        PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.eat); 
     }
 
 }

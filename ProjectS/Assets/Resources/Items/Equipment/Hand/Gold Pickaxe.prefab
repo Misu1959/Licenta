@@ -196,7 +196,8 @@ MonoBehaviour:
     fuelValue: 5
     equipmentType: 0
     actionType: 1
-    maxDurability: 100
+    dmg: 30
+    maxDurability: 20
     durability: 0
 --- !u!114 &-2911407597478236158
 MonoBehaviour:

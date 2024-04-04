@@ -10,7 +10,7 @@ public class Chest : Construction, IPointerDownHandler
         if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
 
         if (Input.GetMouseButtonDown(0))
-            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.search);
+            PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.search);
     }
 
 }

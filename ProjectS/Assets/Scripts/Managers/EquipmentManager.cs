@@ -97,9 +97,11 @@ public class EquipmentManager : MonoBehaviour
                     if (!GetHandItem()) return;
 
                     // Cancel the action when unequiping the tool
-                    if (PlayerActionManagement.instance.currentAction >= PlayerActionManagement.Action.chop &&
-                        PlayerActionManagement.instance.currentAction <= PlayerActionManagement.Action.mine)
-                        PlayerActionManagement.instance.CancelAction();
+                    if ((PlayerBehaviour.instance.currentAction >= PlayerBehaviour.Action.chop &&
+                        PlayerBehaviour.instance.currentAction <= PlayerBehaviour.Action.mine) ||
+                        PlayerBehaviour.instance.currentAction == PlayerBehaviour.Action.attack
+                        )
+                        PlayerBehaviour.instance.CancelAction();
 
                     slotToSet = handSlot;
                     break;

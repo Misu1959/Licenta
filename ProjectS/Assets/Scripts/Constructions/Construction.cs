@@ -38,7 +38,7 @@ public class Construction : MonoBehaviour
 
     void Place()
     {
-        if (!PlayerActionManagement.instance.IsPlacing(this.gameObject)) return; // If player is not placing return
+        if (!PlayerBehaviour.instance.IsPlacing(this.transform)) return; // If player is not placing return
 
         PopUpManager.instance.ShowMousePopUp("RMB - cancel", PopUpManager.PopUpPriorityLevel.low);
 
@@ -55,7 +55,7 @@ public class Construction : MonoBehaviour
             spriteRenderer.color = new Color(color.r, color.g, color.b, .5f);
 
             if (Input.GetMouseButtonDown(0))
-                PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.build);
+                PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.build);
         }
         else
             spriteRenderer.color = new Color32(255, 0, 0, 128);
@@ -63,7 +63,7 @@ public class Construction : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            PlayerActionManagement.instance.CancelAction();
+            PlayerBehaviour.instance.CancelAction();
             Destroy(this.gameObject);
             return;
         }
@@ -72,7 +72,7 @@ public class Construction : MonoBehaviour
 
     public void Build()
     {
-        if (!PlayerActionManagement.instance.IsBuilding(this.gameObject))
+        if (!PlayerBehaviour.instance.IsBuilding(this.transform))
         {
             buildTimer.RestartTimer();
             return;
@@ -85,7 +85,7 @@ public class Construction : MonoBehaviour
 
         spriteRenderer.color = color;
         GetComponent<Collider>().isTrigger = false;
-        transform.SetParent(WorldManager.instance.constructions.transform);
+        transform.SetParent(WorldManager.instance.constructions);
 
 
         if (GetComponent<Fireplace>())
@@ -97,7 +97,7 @@ public class Construction : MonoBehaviour
         foreach (Recipe.Requiremets req in CraftingManager.instance.GetCurrentCraftingRecipe().GetRecipe().requirements)
             InventoryManager.instance.SpendResources(req.name, req.quantity);
 
-        PlayerActionManagement.instance.CompleteAction();
+        PlayerBehaviour.instance.CompleteAction();
     }
 
 }

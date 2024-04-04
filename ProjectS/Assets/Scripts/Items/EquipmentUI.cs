@@ -10,13 +10,13 @@ public class EquipmentUI : ItemUI
 {
     [SerializeField]
     private EquipmentData data;
-    public override ItemData GetItemData() { return data; }
+    public override ItemData GetItemData() => data;
 
-    public override void SetItemData(ItemData newData) { data = new EquipmentData((EquipmentData)newData); }
+    public override void SetItemData(ItemData newData) => data = new EquipmentData((EquipmentData)newData); 
 
-    public override void OnRightMouseButtonPressed() {   Equip();    }
+    public override void OnRightMouseButtonPressed() => Equip();    
 
-    private void Equip() { EquipmentManager.instance.SetEquipment(this, true, false);   }
+    private void Equip() => EquipmentManager.instance.SetEquipment(this, true, false);   
 
     public override void DisplayItem()
     {
@@ -33,7 +33,7 @@ public class EquipmentUI : ItemUI
             transform.GetChild(1).gameObject.SetActive(true);
 
             transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetItemData().name.ToString();
-            transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = GetEquipmentData().durability.ToString();
+            transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = (float)GetEquipmentData().durability / (float)GetEquipmentData().maxDurability * 100 + " %";
         }
     }
 

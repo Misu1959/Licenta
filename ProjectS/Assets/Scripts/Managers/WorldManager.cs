@@ -8,39 +8,68 @@ public class WorldManager : MonoBehaviour
 
     [SerializeField] private GameObject world;
 
-    public GameObject items { get; private set; }
-    public GameObject resources { get; private set; }
-    public GameObject constructions { get; private set; }
-    public GameObject mobs { get; private set; }
-    public GameObject mobSpawners { get; private set; }
+    public Transform items { get; private set; }
+    public Transform resources { get; private set; }
+    public Transform constructions { get; private set; }
+    public Transform mobs { get; private set; }
+    public Transform mobSpawners { get; private set; }
 
     void Start()
     {
         instance = this;
 
-        items           = world.transform.GetChild(2).gameObject;
-        resources       = world.transform.GetChild(3).gameObject;
-        constructions   = world.transform.GetChild(4).gameObject;
-        mobs            = world.transform.GetChild(5).gameObject;
-        mobSpawners     = world.transform.GetChild(6).gameObject;
+        items           = world.transform.GetChild(2);
+        resources       = world.transform.GetChild(3);
+        constructions   = world.transform.GetChild(4);
+        mobs            = world.transform.GetChild(5);
+        mobSpawners     = world.transform.GetChild(6);
     }
 
-    public void SendMobsToSleep()
+    public void SendMobsToSleep(TimeManager.DayState currentDayState)
     {
-        for (int i = 0; i < mobSpawners.transform.childCount; i++)
-            mobSpawners.transform.GetChild(i).GetComponent<ComplexMobSpawner>().GetMobsInside();
+        foreach (Transform mob in mobs)
+        {
+            if (mob.GetComponent<MobStats>().GetSleepPeriod() == TimeManager.DayState.night)
+            {
+                if (currentDayState == TimeManager.DayState.dawn)
+                    mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob.GetComponent<MobStats>().GetSpawner(), MobBehaviour.Action.goInside);
+                else if (currentDayState == TimeManager.DayState.night)
+                    mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob, MobBehaviour.Action.sleep);
 
-        for (int i = 0; i < constructions.transform.childCount; i++)
-            constructions.transform.GetChild(i).GetComponent<ComplexMobSpawner>()?.GetMobsInside();
+            }
+            else if(mob.GetComponent<MobStats>().GetSleepPeriod() == TimeManager.DayState.day)
+            {
+                if (currentDayState == TimeManager.DayState.day)
+                    if(mob.GetComponent<MobStats>().GetSpawner())
+                        mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob.GetComponent<MobStats>().GetSpawner(), MobBehaviour.Action.goInside);
+                    else
+                        mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob, MobBehaviour.Action.sleep);
+            }
+        }
     }
 
-    public void WakeUpMobs()
+    public void WakeUpMobs(TimeManager.DayState currentDayState)
     {
-        for (int i = 0; i < mobSpawners.transform.childCount; i++)
-            mobSpawners.transform.GetChild(i).GetComponent<ComplexMobSpawner>().GetMobsOutside();
+        foreach (Transform mob in mobs)
+        {
+            if (mob.GetComponent<MobStats>().GetSleepPeriod() == TimeManager.DayState.night)
+            {
+                if (currentDayState == TimeManager.DayState.day)
+                {
+                    mob.gameObject.SetActive(true);
+                    mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob,MobBehaviour.Action.wakeUp);
+                }
+            }
+            else if (mob.GetComponent<MobStats>().GetSleepPeriod() == TimeManager.DayState.day)
+            {
+                if (currentDayState == TimeManager.DayState.dawn)
+                {
+                    mob.gameObject.SetActive(true);
+                    mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob, MobBehaviour.Action.wakeUp);
+                }
+            }
 
-        for (int i = 0; i < constructions.transform.childCount; i++)
-            constructions.transform.GetChild(i).GetComponent<ComplexMobSpawner>()?.GetMobsOutside();
-
+        }
     }
+
 }

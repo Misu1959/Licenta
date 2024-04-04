@@ -149,8 +149,8 @@ public class ItemData
 [Serializable]
 public class FoodData : ItemData
 {
-    public float hungerAmount;
-    public float hpAmount;
+    public int hungerAmount;
+    public int hpAmount;
 
     public bool quickEat;
 
@@ -173,16 +173,21 @@ public class EquipmentData : ItemData
     public EquipmentType equipmentType;
     public EquipmentActionType actionType;
 
-    public float maxDurability;
-    [HideInInspector]public float durability;
+    public int dmg;
+
+    public int maxDurability;
+    [HideInInspector] public int durability;
 
 
     public EquipmentData(EquipmentData newItemData) : base(newItemData)
     {
         equipmentType   = newItemData.equipmentType;
         actionType      = newItemData.actionType;
+            
+        dmg             = newItemData.dmg;  
         maxDurability   = newItemData.maxDurability;
-        durability      = newItemData.durability == 0 ? maxDurability : newItemData.durability;
+        durability      = newItemData.durability == 0 ? newItemData.maxDurability : newItemData.durability;
+
     }
 
     public override ItemType GetItemType() { return ItemType.equipment; }

@@ -172,7 +172,7 @@ public class InventoryManager : MonoBehaviour
             EquipmentManager.instance.BackpackStorage()?.AddData(itemToAdd.GetItemData(), slot.transform.GetSiblingIndex());
 
         if (slot.IsChestSlot())
-            PlayerActionManagement.instance.currentTarget?.GetComponent<Storage>()?.AddData(itemToAdd.GetItemData(), slot.transform.GetSiblingIndex());
+            PlayerBehaviour.instance.currentTarget?.GetComponent<Storage>()?.AddData(itemToAdd.GetItemData(), slot.transform.GetSiblingIndex());
         
         itemToAdd.DisplayItem();
         StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
@@ -185,7 +185,7 @@ public class InventoryManager : MonoBehaviour
             EquipmentManager.instance.BackpackStorage().RemoveData(slot.transform.GetSiblingIndex());
 
         if (slot.IsChestSlot())
-            PlayerActionManagement.instance.currentTarget?.GetComponent<Storage>()?.RemoveData(slot.transform.GetSiblingIndex());
+            PlayerBehaviour.instance.currentTarget?.GetComponent<Storage>()?.RemoveData(slot.transform.GetSiblingIndex());
         
         slot.SetItemInSlot(null);
     }
@@ -227,9 +227,9 @@ public class InventoryManager : MonoBehaviour
         AddItemToSlot(selectedItemSlot, itemToSelect); // Set the selected item
 
         // If player is going to add fuel or to cook and I change the selected item or unselect it cancel the action
-        if (PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.addFuel ||
-            PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.cook)
-            PlayerActionManagement.instance.CancelAction();
+        if (PlayerBehaviour.instance.currentAction == PlayerBehaviour.Action.addFuel ||
+            PlayerBehaviour.instance.currentAction == PlayerBehaviour.Action.cook)
+            PlayerBehaviour.instance.CancelAction();
     }
 
     private void MoveSelectedItem()
@@ -260,11 +260,11 @@ public class InventoryManager : MonoBehaviour
         
         Item item = ItemsManager.instance.CreateItem(itemToDrop);
         
-        item.transform.SetParent(WorldManager.instance.items.transform);
+        item.transform.SetParent(WorldManager.instance.items);
         item.transform.localPosition = new Vector3(positionToDrop.x, 0, positionToDrop.z);
         item.SetTransparent(true);
 
-        PlayerActionManagement.instance.SetTargetAndAction(item.gameObject, PlayerActionManagement.Action.drop);
+        PlayerBehaviour.instance.SetTargetAndAction(item.transform, PlayerBehaviour.Action.drop);
 
         Destroy(itemToDrop.gameObject,.01f);
 

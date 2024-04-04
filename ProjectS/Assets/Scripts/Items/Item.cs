@@ -20,13 +20,13 @@ public abstract class Item : Item_Base, IPointerDownHandler
             OnRightMouseButtonPressed();
     }
     public virtual void OnLeftMouseButtonPressed(int amount = -1) => Pick(); 
-    private void Pick() =>   PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.pick); 
+    private void Pick() =>   PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.pick); 
 
     public bool IsOnTheGround()
     {
         // If player is not droping it now return true
-        if (PlayerActionManagement.instance.currentTarget == this.gameObject &&
-        PlayerActionManagement.instance.currentAction == PlayerActionManagement.Action.drop)
+        if (PlayerBehaviour.instance.currentTarget == this.gameObject &&
+        PlayerBehaviour.instance.currentAction == PlayerBehaviour.Action.drop)
             return false;
         else
             return true;

@@ -8,24 +8,25 @@ public class ComplexResource : Resource
     [SerializeField] private float maxHp;
     private float hp;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         hp = maxHp;
     }
 
     public override void SetToGather()
     {
         if (howToGather == EquipmentActionType.chop)
-            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.chop);
+            PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.chop);
         else if (howToGather == EquipmentActionType.mine)
-            PlayerActionManagement.instance.SetTargetAndAction(this.gameObject, PlayerActionManagement.Action.mine);
+            PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.mine);
     }
 
     public override void GatherItemOfType()
     {
 
         // If player isn't harvesting it or if it's not grown
-        if (!PlayerActionManagement.instance.IsGathering(this.gameObject))
+        if (!PlayerBehaviour.instance.IsGathering(this.transform))
         {
             gatherTimer.RestartTimer();
             return;
@@ -40,10 +41,10 @@ public class ComplexResource : Resource
         EquipmentManager.instance.GetHandItem()?.GetComponent<EquipmentUI>().UseTool();
 
         if(!EquipmentManager.instance.GetHandItem()) // If there is no equipment stop action
-            PlayerActionManagement.instance.CompleteAction();
+            PlayerBehaviour.instance.CompleteAction();
 
         if (!Input.GetKey(KeyCode.Space) && !Input.GetMouseButton(0)) // If player don't hold space or LMB
-            PlayerActionManagement.instance.CompleteAction();
+            PlayerBehaviour.instance.CompleteAction();
 
     }
 
@@ -61,7 +62,7 @@ public class ComplexResource : Resource
         foreach(ObjectName loot in drops)
             DropItemOfName(loot); // Drop the loot
 
-        PlayerActionManagement.instance.CompleteAction(); // Complete the action
+        PlayerBehaviour.instance.CompleteAction(); // Complete the action
         Destroy(this.gameObject); // Destroy this object
 
     }
@@ -71,9 +72,9 @@ public class ComplexResource : Resource
         Item drop = ItemsManager.instance.CreateItem(nameOfItem);
 
         // Set loot position
-        drop.transform.position = new Vector2(Random.Range(transform.position.x - 1, transform.position.x + 1),
-                                              Random.Range(transform.position.y - 1, transform.position.y + 1));
-        drop.transform.SetParent(WorldManager.instance.items.transform); // Set loot parent object
+        drop.transform.position = new Vector3(Random.Range(transform.position.x - 1, transform.position.x + 1),0,
+                                              Random.Range(transform.position.z - 1, transform.position.z + 1));
+        drop.transform.SetParent(WorldManager.instance.items); // Set loot parent object
 
     }
 
@@ -85,10 +86,12 @@ public class ComplexResource : Resource
     public override void SetAnim()
     {
         animator.SetTrigger("PlayerInput");
-        if (hp < .34f * maxHp)
-            animator.SetInteger("Stage", 2);
+        if (hp <= 0)
+            animator.SetInteger("Stage", -10);
+        else if (hp < .34f * maxHp)
+            animator.SetInteger("Stage", -2);
         else if (hp < .66f * maxHp)
-            animator.SetInteger("Stage", 1);
+            animator.SetInteger("Stage", -1);
         
     }
 }
