@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 7755957346110613664}
   - component: {fileID: 7053707916684687096}
   - component: {fileID: -6774048859313184494}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GrassBush
   m_TagString: Untagged
   m_Icon: {fileID: 0}

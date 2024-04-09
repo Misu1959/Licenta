@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 127275194193062327}
   - component: {fileID: 5950503053825285457}
   - component: {fileID: 6013702083805775228}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GreenShroom
   m_TagString: Untagged
   m_Icon: {fileID: 0}

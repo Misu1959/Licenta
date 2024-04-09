@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: -3653136853954139529}
   - component: {fileID: -1429506714421017873}
   - component: {fileID: -2435389822483850895}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: WoodArmor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

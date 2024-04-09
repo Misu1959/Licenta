@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 75806707101876470}
   - component: {fileID: 4085315147169609886}
   - component: {fileID: 6871171467178172672}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BerriesC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,8 +85,9 @@ MonoBehaviour:
     fuelValue: 0
     hungerAmount: 5
     hpAmount: 3
-    timeToCook: 0
     quickEat: 1
+    cookTimer:
+      maxTime: 0
 --- !u!114 &6871171467178172672
 MonoBehaviour:
   m_ObjectHideFlags: 0

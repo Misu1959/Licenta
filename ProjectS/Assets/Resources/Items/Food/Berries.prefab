@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -8788764634806971655}
   - component: {fileID: 4085315147169609886}
   - component: {fileID: 7066248860876660586}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Berries
   m_TagString: Untagged
   m_Icon: {fileID: 0}

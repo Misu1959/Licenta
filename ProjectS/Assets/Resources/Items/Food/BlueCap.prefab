@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -7915097551390462440}
   - component: {fileID: 4085315147169609886}
   - component: {fileID: -134806578479949763}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BlueCap
   m_TagString: Untagged
   m_Icon: {fileID: 0}

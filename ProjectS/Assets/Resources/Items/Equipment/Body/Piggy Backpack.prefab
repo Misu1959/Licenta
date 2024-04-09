@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: -28642566494988520}
   - component: {fileID: -4485857812694653194}
   - component: {fileID: 1619669827645063861}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Piggy Backpack
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -43,9 +43,8 @@ public class Construction : MonoBehaviour
         PopUpManager.instance.ShowMousePopUp("RMB - cancel", PopUpManager.PopUpPriorityLevel.low);
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hitData;
 
-        if (Physics.Raycast(ray, out hitData, 1000))
+        if (Physics.Raycast(ray, out RaycastHit hitData, float.MaxValue, MyMethods.LayerToLayerMask(7)))
             transform.position = new Vector3(hitData.point.x, 0, hitData.point.z);
 
         if (canBePlaced ==  0 && !MyMethods.CheckIfMouseIsOverUI())

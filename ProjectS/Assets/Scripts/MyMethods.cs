@@ -32,4 +32,5 @@ public class MyMethods
 
     }
 
+    public static int LayerToLayerMask(int layerNr) => (int)Mathf.Pow(2, layerNr);
 }

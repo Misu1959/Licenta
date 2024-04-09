@@ -230,7 +230,7 @@ GameObject:
   - component: {fileID: -4102262700231696223}
   - component: {fileID: 4902530296511335358}
   - component: {fileID: -1013791105269569540}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Campfire
   m_TagString: Untagged
   m_Icon: {fileID: 0}

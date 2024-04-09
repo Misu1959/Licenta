@@ -100,9 +100,8 @@ public class TimeManager : MonoBehaviour
     private void ChangeDayState(DayState newState)
     {
 
-
-        WorldManager.instance.SendMobsToSleep(newState);
         WorldManager.instance.WakeUpMobs(newState);
+        WorldManager.instance.SendMobsToSleep(newState);
 
         switch (newState)
         {

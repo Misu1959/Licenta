@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 3011455697114291424}
   - component: {fileID: 4085315147169609886}
   - component: {fileID: 6721935399538711665}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: GreenCap
   m_TagString: Untagged
   m_Icon: {fileID: 0}

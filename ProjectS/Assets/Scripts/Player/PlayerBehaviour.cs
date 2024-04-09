@@ -30,10 +30,9 @@ public class PlayerBehaviour : MonoBehaviour
     public static PlayerBehaviour instance;
 
 
-
     [HideInInspector] public List<Transform> itemsInRange = new List<Transform>();
-    public Transform currentTarget { get; private set; }
     
+    public Transform currentTarget { get; private set; }
     public Action currentAction { get; private set; }
 
 
@@ -55,7 +54,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (!Input.GetKeyDown(KeyCode.Space)) return;// If Space is not pressed return otherwise search for items in range
         if (!InteractionManager.CanPlayerInteractWithUI()) return;
         if (PlayerController.instance.keyboardMovement != Vector3.zero) return;// If it's moving from keyboard don't take space action
-        
+
         InventoryManager.instance.SetBackToSlot();
 
         float closestDistance = 1000;
@@ -199,6 +198,19 @@ public class PlayerBehaviour : MonoBehaviour
                     Invoke(nameof(CompleteAction), .5f);
                     break;
                 }
+            case Action.place:
+                {
+                    InteractionManager.SetInteractionStatus(false);
+                    break;
+                }
+            case Action.build:
+                {
+                    InteractionManager.SetInteractionStatus(false);
+                    PlayerStats.instance.animator.SetBool("Gather", true);
+
+                    break;
+                }
+
 
             case Action.gather:
                 {
@@ -208,12 +220,14 @@ public class PlayerBehaviour : MonoBehaviour
                 }
             case Action.chop:
                 {
+                    PlayerController.instance.SetCanMove(false);
                     PlayerStats.instance.animator.SetBool("Chop", true);
                     break;
                 }
 
             case Action.mine:
                 {
+                    PlayerController.instance.SetCanMove(false);
                     PlayerStats.instance.animator.SetBool("Mine", true);
                     break;
                 }
@@ -269,12 +283,25 @@ public class PlayerBehaviour : MonoBehaviour
                 }
             case Action.search:
                 {
+                    PlayerController.instance.SetCanMove(true);
                     PlayerStats.instance.animator.SetBool("Gather", false);
                     return;
                 }
             case Action.addFuel:
                 {
                     currentTarget.GetComponent<Fireplace>().AddFuel();
+                    break;
+                }
+            case Action.place:
+                {
+                    InteractionManager.SetInteractionStatus(true);
+                    break;
+                }
+            case Action.build:
+                {
+                    InteractionManager.SetInteractionStatus(true);
+                    PlayerStats.instance.animator.SetBool("Gather", false);
+
                     break;
                 }
 
@@ -300,12 +327,6 @@ public class PlayerBehaviour : MonoBehaviour
             case Action.eat:
                 {
                     PlayerStats.instance.Eat(currentTarget.GetComponent<Item_Base>());
-                    break;
-                }
-
-            case Action.attack:
-                {
-                    transform.GetChild(4).gameObject.SetActive(false);
                     break;
                 }
         }
@@ -343,7 +364,9 @@ public class PlayerBehaviour : MonoBehaviour
             case Action.build:
                 {
                     InteractionManager.SetInteractionStatus(true);
-                    Destroy(currentTarget);
+
+                    PlayerStats.instance.animator.SetBool("Gather", false);
+                    Destroy(currentTarget.gameObject);
                     break;
                 }
 

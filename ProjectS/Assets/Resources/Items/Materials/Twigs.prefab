@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 2940367164760821758}
   - component: {fileID: 6108510407911126654}
   - component: {fileID: 818144573255270398}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Twigs
   m_TagString: Untagged
   m_Icon: {fileID: 0}

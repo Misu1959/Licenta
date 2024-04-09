@@ -40,15 +40,22 @@ public class MobBehaviour : MonoBehaviour
         action_3
     };
 
-    [SerializeField] private AgroType agroType;
-    public AgroType GetAgroType() => agroType;
 
+    [SerializeField] private AgroType agroType;
     public Behaviour behaviour { get; private set; }
     public Action action { get; private set; }
 
-    Timer actionTimer;
 
-    private void Start() => actionTimer = new Timer(10, .001f);
+    [Tooltip("Time between actions")]
+    [SerializeField] private Timer actionTimer;
+    
+    [Tooltip("How long does agro last")]
+    [SerializeField] private Timer agroTimer;
+
+    public bool isPlayerInRange { private get; set; }
+
+
+    private void Start() =>actionTimer.SetTime(.001f);
 
     void Update() => CheckForNewAction();
     
@@ -166,62 +173,162 @@ public class MobBehaviour : MonoBehaviour
         return Action.walk;
     }
 
-    public void CompleteAction()
+    public IEnumerator CompleteAction()
     {
-        if (action == Action.nothing || !GetComponent<MobController>().currentTarget) return;
-
-        switch(action)
+        if (GetComponent<MobController>().currentTarget && action != Action.nothing)
         {
-            case Action.action_1:
-                GetComponent<MobStats>().animator.SetTrigger("Action_1");
-                break;
-            case Action.action_2:
-                GetComponent<MobStats>().animator.SetTrigger("Action_2");
-                break;
-            case Action.action_3:
-                GetComponent<MobStats>().animator.SetTrigger("Action_3");
-                break;
+            switch (action)
+            {
+                case Action.walk:
+                    {
+                        action = Action.nothing;
+                        actionTimer.SetTime(3);
 
-            case Action.sleep:
-                GetComponent<MobStats>().animator.SetTrigger("Sleep");
-                GetComponent<MobController>().currentTarget = null;
-                return;
-            case Action.wakeUp:
-                GetComponent<MobStats>().animator.SetTrigger("WakeUp");
-                GetComponent<MobController>().currentTarget = null;
-                actionTimer.SetTime(.5f);
-                return;
-            
-            case Action.goInside:
-                gameObject.SetActive(false);
-                break;
-            case Action.attack:
-                GetComponent<MobStats>().animator.SetTrigger("Attack");
-                break;
+                        break;
+                    }
+                case Action.action_1:
+                    GetComponent<MobStats>().animator.SetTrigger("Action_1");
+                    action = Action.nothing;
+                    actionTimer.SetTime(3);
+
+                    break;
+                case Action.action_2:
+                    GetComponent<MobStats>().animator.SetTrigger("Action_2");
+                    action = Action.nothing;
+                    actionTimer.SetTime(3);
+                    
+                    break;
+                case Action.action_3:
+                    GetComponent<MobStats>().animator.SetTrigger("Action_3");
+                    action = Action.nothing;
+                    actionTimer.SetTime(3);
+
+                    break;
+                case Action.sleep:
+                    GetComponent<MobStats>().animator.SetTrigger("Sleep");
+                    GetComponent<MobController>().currentTarget = null;
+
+                    GetComponent<MobController>().SetCanMove(false);
+                    break;
+                case Action.wakeUp:
+                    GetComponent<MobStats>().animator.SetTrigger("WakeUp");
+                    GetComponent<MobController>().currentTarget = null;
+
+                    GetComponent<MobController>().SetCanMove(true);
+                    actionTimer.SetTime(.5f);
+
+                    break;
+                case Action.goInside:
+                    gameObject.SetActive(false);
+                
+                    break;
+                case Action.attack:
+                    GetComponent<MobStats>().animator.SetTrigger("Attack");
+                    action = Action.nothing;
+
+                    GetComponent<MobController>().SetCanMove(false);
+                    yield return new WaitForSeconds(1);
+                    GetComponent<MobController>().SetCanMove(true);
+
+                    if (!agroTimer.IsElapsed())
+                        FightOrFlight();
+
+                    break;
+            }
         }
-
-        action = Action.nothing;
-        actionTimer.SetTime(3);
+        yield return null;
     }
 
     void CheckForNewAction()
     {
 
+        agroTimer.Tick();
+
         actionTimer.StartTimer();
         actionTimer.Tick();
 
+        if (!agroTimer.IsElapsed()) return;
         if (!actionTimer.IsElapsed()) return;
 
         if (action == Action.goInside) return;
         if (action == Action.sleep) return;
-        
+
+
+        if (CheckTeritory()) return;
+
         SetNewTargetAndAction();
     }
 
 
+    public void FightOrFlight()
+    {
+        if (agroTimer.IsOn())
+            agroTimer.RestartTimer();
+
+        agroTimer.StartTimer();
+
+
+        switch(agroType)
+        {
+            case AgroType.passive:
+                {
+                    SetNewTargetAndAction(PlayerStats.instance.transform, Action.runAway);
+                    break;
+                }
+            case AgroType.teritorial_passive:
+                {
+                    SetNewTargetAndAction(PlayerStats.instance.transform, Action.runAway);
+                    break;
+                }
+
+
+            case AgroType.neutral:
+                {
+                    SetNewTargetAndAction(PlayerStats.instance.transform, Action.attack);
+                    break;
+                }
+            case AgroType.aggressive:
+                {
+                    SetNewTargetAndAction(PlayerStats.instance.transform, Action.attack);
+                    break;
+                }
+            case AgroType.teritorial_aggressive:
+                {
+                    SetNewTargetAndAction(PlayerStats.instance.transform, Action.attack);
+                    break;
+                }
+        }
+        
+    
+    }
+
+    private bool CheckTeritory()
+    {
+        if (agroType == AgroType.aggressive)
+        {
+            FightOrFlight();
+            return true;
+        }
+
+        if (!isPlayerInRange) return false;
+        switch (agroType)
+        {
+            case AgroType.teritorial_passive:
+                {
+                    SetNewTargetAndAction(PlayerStats.instance.transform, Action.runAway);
+                    return true;
+                }
+
+            case AgroType.teritorial_aggressive:
+                {
+                    SetNewTargetAndAction(PlayerStats.instance.transform, Action.attack);
+                    return true;
+                }
+        }
+
+        return false;
+    }
+
 
     void FallowPlayer() => behaviour = Behaviour.fallowPlayer;
-
-    void RunAwayFromTarget() => SetNewTargetAndAction(PlayerStats.instance.transform, Action.runAway);
-
 }

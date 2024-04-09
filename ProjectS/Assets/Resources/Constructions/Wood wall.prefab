@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -1735043713078125885}
   - component: {fileID: -8446177346852835360}
   - component: {fileID: -2097700749952892349}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Wood wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae362fcf39f705445aac1f40a9815e1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToBuild: 3
   buildTimer:
     maxTime: 3
 --- !u!114 &-2097700749952892349

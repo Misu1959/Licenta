@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -5028179719987429629}
   - component: {fileID: 4085315147169609886}
   - component: {fileID: -1205886725232338506}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: RedCap
   m_TagString: Untagged
   m_Icon: {fileID: 0}

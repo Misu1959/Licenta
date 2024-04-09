@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: -5178899095772156775}
   - component: {fileID: 4085315147169609886}
   - component: {fileID: 4173855634441239083}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Seeds
   m_TagString: Untagged
   m_Icon: {fileID: 0}

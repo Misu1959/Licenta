@@ -8,38 +8,38 @@ public class MobStats : MonoBehaviour
     public Rigidbody  rigidBody     { get; private set; }
     public Animator   animator      { get; private set; }
 
+
     private Transform spawner;
 
-
     [Header("Stats")]
-
+    
     public new ObjectName name;
 
     [SerializeField] TimeManager.DayState sleepPeriod;
 
+    [SerializeField] private int maxHp;
+    public int hp { get; private set; }
 
-    [SerializeField] private float maxHp;
-    public float hp { get; private set; }
+    [SerializeField] private int dmg;
 
-    [SerializeField] private float dmg;
 
-    [SerializeField] private float walkSpeed;
-    [SerializeField] private float runSpeed;
-
+    [SerializeField] private int walkSpeed;
+    [SerializeField] private int runSpeed;
 
     public TimeManager.DayState GetSleepPeriod() => sleepPeriod;
-    public float GetWalkSpeed() => walkSpeed;
-    public float GetRunSpeed() => runSpeed;
-
     public Transform GetSpawner() => spawner;
     public void SetSpawner(Transform _spawner) => spawner = _spawner;
 
+
+    public int GetDmg() => dmg;
+    public int GetWalkSpeed() => walkSpeed;
+    public int GetRunSpeed() => runSpeed;
 
     private void Start()
     {
         rigidBody   = GetComponent<Rigidbody>();
         animator    = transform.GetChild(0).GetComponent<Animator>();
-        
+
         hp = maxHp;
     }
 
@@ -56,7 +56,8 @@ public class MobStats : MonoBehaviour
 
     public void TakeDmg(int amount)
     {
-        //run or fight depending on agresivity
+        GetComponent<MobBehaviour>().FightOrFlight();
+
         animator.SetTrigger("Hit");
 
         hp = Mathf.Clamp(hp - amount, 0, maxHp);

@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 161749594306663753}
   - component: {fileID: 4085315147169609886}
   - component: {fileID: -8580954894156109506}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: GreenCapC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,8 +196,9 @@ MonoBehaviour:
     fuelValue: 0
     hungerAmount: 5
     hpAmount: 5
-    timeToCook: 1
     quickEat: 1
+    cookTimer:
+      maxTime: 0
 --- !u!114 &-8580954894156109506
 MonoBehaviour:
   m_ObjectHideFlags: 0

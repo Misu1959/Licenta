@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 602046102139722766}
   - component: {fileID: 2954841773153990670}
   - component: {fileID: 385432992285720956}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BerryBush
   m_TagString: Untagged
   m_Icon: {fileID: 0}

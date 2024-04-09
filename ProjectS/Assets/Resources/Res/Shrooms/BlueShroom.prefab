@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5252892354032812908}
   - component: {fileID: -2873541358997206482}
   - component: {fileID: -6067753236568621766}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BlueShroom
   m_TagString: Untagged
   m_Icon: {fileID: 0}

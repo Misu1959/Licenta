@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4398221758340855373}
   - component: {fileID: 2848480281141090956}
   - component: {fileID: -7096337778156316990}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Flint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

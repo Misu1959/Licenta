@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3515054827240655075}
   - component: {fileID: 4219149626793159480}
   - component: {fileID: 3101708968664975741}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Chest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af7596fa0df78bd438251cf4459e3b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToBuild: 1
   buildTimer:
     maxTime: 1
 --- !u!114 &4219149626793159480

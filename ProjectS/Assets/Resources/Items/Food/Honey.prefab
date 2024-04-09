@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: -723909063168551187}
   - component: {fileID: 4085315147169609886}
   - component: {fileID: -1231608990759657256}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Honey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,8 +196,9 @@ MonoBehaviour:
     fuelValue: 0
     hungerAmount: 5
     hpAmount: 20
-    timeToCook: 0
     quickEat: 1
+    cookTimer:
+      maxTime: 0
 --- !u!114 &-1231608990759657256
 MonoBehaviour:
   m_ObjectHideFlags: 0

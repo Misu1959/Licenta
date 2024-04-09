@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6171075559032152725}
   - component: {fileID: 1604933138630744404}
   - component: {fileID: -112196022564073839}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cutstone
   m_TagString: Untagged
   m_Icon: {fileID: 0}

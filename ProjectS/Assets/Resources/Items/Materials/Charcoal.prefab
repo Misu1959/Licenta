@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: -1427642305606064538}
   - component: {fileID: 6108510407911126654}
   - component: {fileID: 2012361949359756262}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Charcoal
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -10,9 +10,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 movementDir;
     public  Vector3 keyboardMovement { get; private set; }
     public bool canMove { get; private set; }
+    public void SetCanMove(bool state) => canMove = state;
 
-
-    public void SetCanMove(bool state) { canMove = state; }
     public void SetKeyboardMovement()  
     {
         if (!canMove)

@@ -32,7 +32,10 @@ public class WorldManager : MonoBehaviour
             if (mob.GetComponent<MobStats>().GetSleepPeriod() == TimeManager.DayState.night)
             {
                 if (currentDayState == TimeManager.DayState.dawn)
-                    mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob.GetComponent<MobStats>().GetSpawner(), MobBehaviour.Action.goInside);
+                {
+                    if(mob.GetComponent<MobStats>().GetSpawner())
+                        mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob.GetComponent<MobStats>().GetSpawner(), MobBehaviour.Action.goInside);
+                }
                 else if (currentDayState == TimeManager.DayState.night)
                     mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob, MobBehaviour.Action.sleep);
 

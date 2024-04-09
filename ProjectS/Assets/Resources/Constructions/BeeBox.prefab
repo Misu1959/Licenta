@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 1679976424084060879}
   - component: {fileID: 5954010302140524819}
   - component: {fileID: 760171794472201813}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: BeeBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: -8897653219624139742}
   - component: {fileID: -2376848000442445953}
   - component: {fileID: -2911407597478236158}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Gold Pickaxe
   m_TagString: Untagged
   m_Icon: {fileID: 0}

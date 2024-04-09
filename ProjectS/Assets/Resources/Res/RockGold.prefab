@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 2695014455568471271}
   - component: {fileID: 1398942044121527493}
   - component: {fileID: 6882884118948524786}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: RockGold
   m_TagString: Untagged
   m_Icon: {fileID: 0}

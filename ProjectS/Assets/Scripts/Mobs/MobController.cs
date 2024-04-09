@@ -12,6 +12,10 @@ public class MobController : MonoBehaviour
 
     private Vector3 movementDirection;
 
+    public bool canMove { get; private set; }
+    public void SetCanMove(bool state) => canMove = state;
+
+
     private void Start()
     {
         mobStats = GetComponent<MobStats>();
@@ -19,6 +23,8 @@ public class MobController : MonoBehaviour
 
         personalTarget = transform.GetChild(1);
         personalTarget.SetParent(null);
+
+        SetCanMove(true);
     }
     void Update() => Move();
 
@@ -45,6 +51,9 @@ public class MobController : MonoBehaviour
 
     private float CurrentSpeed()
     {
+        if (!canMove)
+            return 0;
+
         if (mobBehaviour.action == MobBehaviour.Action.nothing ||
             mobBehaviour.action == MobBehaviour.Action.sleep)
             return 0;
@@ -83,6 +92,7 @@ public class MobController : MonoBehaviour
         else // If the mob is moving
         {
             // Set mob moving state
+
             int val = CurrentSpeed() == mobStats.GetWalkSpeed() ? 0 : 1;
 
             if (Mathf.Abs(movementDirection.z) >= Mathf.Abs(movementDirection.x))

@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: -6991585290062499247}
   - component: {fileID: 1604933138630744404}
   - component: {fileID: -115826426327013582}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Silk
   m_TagString: Untagged
   m_Icon: {fileID: 0}

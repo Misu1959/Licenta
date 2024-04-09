@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 1439272874577478578}
   - component: {fileID: 1439272874577478579}
   - component: {fileID: 8522636021730592526}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: SpiderCocoon
   m_TagString: Untagged
   m_Icon: {fileID: 0}

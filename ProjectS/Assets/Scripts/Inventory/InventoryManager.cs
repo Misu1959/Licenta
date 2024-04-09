@@ -248,7 +248,7 @@ public class InventoryManager : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitData;
-            if (Physics.Raycast(ray, out hitData, 1000))
+            if (Physics.Raycast(ray, out hitData, float.MaxValue,MyMethods.LayerToLayerMask(7)))
                 DropItem(selectedItemSlot.GetItemInSlot(), hitData.point);
 
         }

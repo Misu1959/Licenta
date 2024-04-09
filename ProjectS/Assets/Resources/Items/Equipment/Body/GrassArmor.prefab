@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: -2108142139288308365}
   - component: {fileID: -2376848000442445953}
   - component: {fileID: 1458487215851569044}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: GrassArmor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
