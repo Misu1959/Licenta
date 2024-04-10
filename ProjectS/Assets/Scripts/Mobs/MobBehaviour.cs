@@ -55,7 +55,7 @@ public class MobBehaviour : MonoBehaviour
     public bool isPlayerInRange { private get; set; }
 
 
-    private void Start() =>actionTimer.SetTime(.001f);
+    private void Start() => actionTimer.SetTime(.001f);
 
     void Update() => CheckForNewAction();
     
@@ -211,14 +211,18 @@ public class MobBehaviour : MonoBehaviour
                     GetComponent<MobController>().SetCanMove(false);
                     break;
                 case Action.wakeUp:
+
                     GetComponent<MobStats>().animator.SetTrigger("WakeUp");
                     GetComponent<MobController>().currentTarget = null;
 
-                    GetComponent<MobController>().SetCanMove(true);
+                    action = Action.nothing;
                     actionTimer.SetTime(.5f);
+                    yield return new WaitForSeconds(.5f);
+                    GetComponent<MobController>().SetCanMove(true);
 
                     break;
                 case Action.goInside:
+                    action = Action.sleep;
                     gameObject.SetActive(false);
                 
                     break;
@@ -227,11 +231,10 @@ public class MobBehaviour : MonoBehaviour
                     action = Action.nothing;
 
                     GetComponent<MobController>().SetCanMove(false);
+                    actionTimer.SetTime(1);
+
                     yield return new WaitForSeconds(1);
                     GetComponent<MobController>().SetCanMove(true);
-
-                    if (!agroTimer.IsElapsed())
-                        FightOrFlight();
 
                     break;
             }
@@ -241,27 +244,32 @@ public class MobBehaviour : MonoBehaviour
 
     void CheckForNewAction()
     {
-
-        agroTimer.Tick();
-
         actionTimer.StartTimer();
         actionTimer.Tick();
+        agroTimer.Tick();
 
-        if (!agroTimer.IsElapsed()) return;
         if (!actionTimer.IsElapsed()) return;
 
         if (action == Action.goInside) return;
         if (action == Action.sleep) return;
 
-
+        if (!agroTimer.IsElapsed())
+        {
+            FightOrFlight();
+            return;
+        }
+        
         if (CheckTeritory()) return;
-
         SetNewTargetAndAction();
     }
 
 
     public void FightOrFlight()
     {
+        //Wake mob ub
+        GetComponent<MobController>().SetCanMove(true);
+
+
         if (agroTimer.IsOn())
             agroTimer.RestartTimer();
 
@@ -328,7 +336,6 @@ public class MobBehaviour : MonoBehaviour
 
         return false;
     }
-
 
     void FallowPlayer() => behaviour = Behaviour.fallowPlayer;
 }

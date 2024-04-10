@@ -24,7 +24,7 @@ public class MobRange : MonoBehaviour
 
         }
 
-        if(CheckForSpecificCollider(RangeType.attack))
+        if (CheckForSpecificCollider(RangeType.attack))
         {
             if (transform.parent.parent.GetComponent<MobController>().currentTarget == other.transform)
                 PlayerStats.instance.TakeDmg(transform.parent.parent.GetComponent<MobStats>().GetDmg());

@@ -253,8 +253,6 @@ public class PlayerBehaviour : MonoBehaviour
                     PlayerController.instance.SetCanMove(false);
                     PlayerStats.instance.animator.SetTrigger("Attack");
 
-                    transform.GetChild(4).gameObject.SetActive(true);
-                    
                     Invoke(nameof(CompleteAction), .5f);
                     break;
                 }

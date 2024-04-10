@@ -87,7 +87,9 @@ public class PlayerStats : MonoBehaviour
         hp = Mathf.Clamp(hp - dmgAmount, 0, maxHp);
         UIManager.instance.ShowHp(maxHp, hp);
 
-
+        PlayerController.instance.SetCanMove();
+        animator.SetTrigger("Hit");
+        
         if (hp <= 0)
             Die("by taking damage!");
     }
@@ -122,7 +124,11 @@ public class PlayerStats : MonoBehaviour
         UIManager.instance.ShowHp(maxHp, hp);
     }
 
-    void Die(string causeOfDeath)   {   UIManager.instance.ShowDeathScreen(causeOfDeath);   }
+    void Die(string causeOfDeath)   
+    {
+        animator.SetTrigger("Die");
+        UIManager.instance.ShowDeathScreen(causeOfDeath);   
+    }
 
 
     public int GetActualDamage()

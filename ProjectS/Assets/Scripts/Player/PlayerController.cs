@@ -11,6 +11,14 @@ public class PlayerController : MonoBehaviour
     public  Vector3 keyboardMovement { get; private set; }
     public bool canMove { get; private set; }
     public void SetCanMove(bool state) => canMove = state;
+    public void SetCanMove() => StartCoroutine(SetCanMove(.5f));
+
+    private IEnumerator SetCanMove(float timeToWait)
+    {
+        canMove = false;
+        yield return new WaitForSeconds(timeToWait);
+        canMove = true;
+    }
 
     public void SetKeyboardMovement()  
     {

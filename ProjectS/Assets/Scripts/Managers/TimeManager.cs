@@ -53,6 +53,9 @@ public class TimeManager : MonoBehaviour
 
         dayState = DayState.day;
 
+
+        WorldManager.instance.SendMobsToSleep(DayState.day);
+        WorldManager.instance.SendMobsToSleep(DayState.day);
     }
 
     void Update()
@@ -99,9 +102,8 @@ public class TimeManager : MonoBehaviour
     }
     private void ChangeDayState(DayState newState)
     {
-
-        WorldManager.instance.WakeUpMobs(newState);
         WorldManager.instance.SendMobsToSleep(newState);
+        WorldManager.instance.WakeUpMobs(newState);
 
         switch (newState)
         {

@@ -24,7 +24,6 @@ public class WorldManager : MonoBehaviour
         mobs            = world.transform.GetChild(5);
         mobSpawners     = world.transform.GetChild(6);
     }
-
     public void SendMobsToSleep(TimeManager.DayState currentDayState)
     {
         foreach (Transform mob in mobs)
@@ -55,6 +54,8 @@ public class WorldManager : MonoBehaviour
     {
         foreach (Transform mob in mobs)
         {
+            if (mob.GetComponent<MobBehaviour>().action != MobBehaviour.Action.sleep) continue;
+
             if (mob.GetComponent<MobStats>().GetSleepPeriod() == TimeManager.DayState.night)
             {
                 if (currentDayState == TimeManager.DayState.day)
@@ -74,5 +75,4 @@ public class WorldManager : MonoBehaviour
 
         }
     }
-
 }
