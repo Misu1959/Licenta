@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 127275194193062327}
   - component: {fileID: 5950503053825285457}
   - component: {fileID: 6013702083805775228}
+  - component: {fileID: 4708518634696808241}
   m_Layer: 11
   m_Name: GreenShroom
   m_TagString: Untagged
@@ -181,7 +182,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: 10008
-  drops: d7070000
   gatherTimer:
     maxTime: 1
   growTimer:
@@ -232,3 +232,18 @@ MonoBehaviour:
 
     Wheel - inspect'
   inspectionTexts: []
+--- !u!114 &4708518634696808241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4085315147169609858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 765b0846d694443448a4756de15071e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loot:
+  - name: 2007
+    amount: 1

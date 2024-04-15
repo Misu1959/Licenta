@@ -17,6 +17,7 @@ public abstract class BaseInspector : MonoBehaviour, IPointerDownHandler
     private void Inspect()
     {
         if (!Input.GetMouseButtonDown(2)) return;
+        if(inspectionTexts.Count == 0) return;
 
         int nr = rnd.Next(inspectionTexts.Count);
         if (nr != previousInspection || inspectionTexts.Count == 1)

@@ -87,9 +87,14 @@ public class PlayerStats : MonoBehaviour
         hp = Mathf.Clamp(hp - dmgAmount, 0, maxHp);
         UIManager.instance.ShowHp(maxHp, hp);
 
+        if(PlayerController.instance.canMove)
+            PlayerBehaviour.instance.CancelAction();
+    
         PlayerController.instance.SetCanMove();
         animator.SetTrigger("Hit");
         
+
+
         if (hp <= 0)
             Die("by taking damage!");
     }

@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 237755918368816763}
   - component: {fileID: -2621727114431176223}
   - component: {fileID: -5646847343718734843}
+  - component: {fileID: -2806365844988230856}
   m_Layer: 11
   m_Name: Tree
   m_TagString: Untagged
@@ -211,7 +212,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: 10006
-  drops: ea030000
   gatherTimer:
     maxTime: 1
   growTimer:
@@ -234,3 +234,20 @@ MonoBehaviour:
 
     Wheel - inspect'
   inspectionTexts: []
+--- !u!114 &-2806365844988230856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603796599140895000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 765b0846d694443448a4756de15071e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loot:
+  - name: 1002
+    amount: 3
+  - name: 1007
+    amount: 1

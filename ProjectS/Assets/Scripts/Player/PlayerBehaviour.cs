@@ -409,7 +409,7 @@ public class PlayerBehaviour : MonoBehaviour
         // If player has no target there is nothing to cancel
         if (!currentTarget) return;
 
-        // If player is moving on X or Y axis from keyboard cancel the action
+        // If player is moving on X or Z axis from keyboard cancel the action
         if (PlayerController.instance.keyboardMovement == Vector3.zero) return;
 
         CancelAction();

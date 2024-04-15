@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class MobStats : MonoBehaviour
+public class MobStats : MonoBehaviour,IPointerDownHandler
 {
 
     public Rigidbody  rigidBody     { get; private set; }
@@ -43,6 +44,16 @@ public class MobStats : MonoBehaviour
         hp = maxHp;
     }
 
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
+
+        if (Input.GetMouseButton(0))
+            if (PlayerStats.instance.GetActualDamage() > 0)
+                PlayerBehaviour.instance.SetTargetAndAction(transform, PlayerBehaviour.Action.attack);
+    }
+
+
     private void Regenerate(int percent)
     {
         int amount = (int)((float)percent / 100 * maxHp);
@@ -67,7 +78,11 @@ public class MobStats : MonoBehaviour
 
     private void Die()
     {
+        GetComponent<LootManagement>().DropLoot();
+
         animator.SetTrigger("Die");
         Destroy(this.gameObject, 1);
     }
+
+
 }

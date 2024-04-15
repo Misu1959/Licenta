@@ -11,7 +11,6 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     public new ObjectName name;
 
-    [SerializeField] protected ObjectName[] drops;
 
     [SerializeField] protected Timer gatherTimer;
     [SerializeField] private Timer growTimer;
@@ -50,10 +49,7 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         if (!gatherTimer.IsElapsed()) return;
 
 
-        // Next lines adds the loot to the inventory
-
-        Item item = ItemsManager.instance.CreateItem(drops[0]);
-        InventoryManager.instance.AddItemToInventory(item);
+        GetComponent<LootManagement>().CollectLoot();
         
         PlayerBehaviour.instance.CompleteAction(); // Complete the action
 

@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 4081707739373696303}
   - component: {fileID: 8852237484522628924}
   - component: {fileID: 1919859459188226732}
+  - component: {fileID: -2368890606771798305}
   m_Layer: 11
   m_Name: Sapling
   m_TagString: Untagged
@@ -181,7 +182,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: 10003
-  drops: e9030000
   gatherTimer:
     maxTime: 2
   growTimer:
@@ -232,3 +232,18 @@ MonoBehaviour:
 
     Wheel - inspect'
   inspectionTexts: []
+--- !u!114 &-2368890606771798305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4527292107853598546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 765b0846d694443448a4756de15071e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loot:
+  - name: 1001
+    amount: 1

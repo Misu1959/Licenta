@@ -59,29 +59,14 @@ public class ComplexResource : Resource
 
     void DestroyResource()
     {
-        foreach(ObjectName loot in drops)
-            DropItemOfName(loot); // Drop the loot
+        GetComponent<LootManagement>().DropLoot();
 
         PlayerBehaviour.instance.CompleteAction(); // Complete the action
         Destroy(this.gameObject); // Destroy this object
 
     }
 
-    void DropItemOfName(ObjectName nameOfItem)
-    {
-        Item drop = ItemsManager.instance.CreateItem(nameOfItem);
-
-        // Set loot position
-        drop.transform.position = new Vector3(Random.Range(transform.position.x - 1, transform.position.x + 1),0,
-                                              Random.Range(transform.position.z - 1, transform.position.z + 1));
-        drop.transform.SetParent(WorldManager.instance.items); // Set loot parent object
-
-    }
-
-    public override bool CheckIfCanBeGathered()
-    {
-        return EquipmentManager.instance.GetHandItem()?.GetEquipmentData().actionType != howToGather ? false : true;
-    }
+    public override bool CheckIfCanBeGathered() => EquipmentManager.instance.GetHandItem()?.GetEquipmentData().actionType != howToGather ? false : true;
 
     public override void SetAnim()
     {

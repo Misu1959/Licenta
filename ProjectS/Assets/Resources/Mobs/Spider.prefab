@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 74496761571669062}
   - component: {fileID: 2987173636656430889}
   - component: {fileID: 7607663335473560827}
+  - component: {fileID: 2511515539417682734}
   m_Layer: 10
   m_Name: Spider
   m_TagString: Untagged
@@ -131,9 +132,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c944f8e632c02446a967ac4e7534816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverText: Wheel - inspect
-  inspectionTexts:
-  - Something is odd about him
+  hoverText: 'Lmb - Attack
+
+    Wheel - inspect'
+  inspectionTexts: []
 --- !u!114 &7607663335473560827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,13 +148,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5c13132f6c389d44b27602b11e54165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voiceLines:
-  - Oink.
-  - Oink oink
-  - Oinkk?
-  - Oink oi.
-  - Oink, oi oink
-  - Oin oi
+  voiceLines: []
+--- !u!114 &2511515539417682734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2669008101069052024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 765b0846d694443448a4756de15071e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loot:
+  - name: 2011
+    amount: 1
+  - name: 1011
+    amount: 1
 --- !u!1 &2669008101967473552
 GameObject:
   m_ObjectHideFlags: 0

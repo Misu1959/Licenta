@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 7755957346110613664}
   - component: {fileID: 7053707916684687096}
   - component: {fileID: -6774048859313184494}
+  - component: {fileID: 6212501123267931088}
   m_Layer: 11
   m_Name: GrassBush
   m_TagString: Untagged
@@ -211,7 +212,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: 10002
-  drops: ed030000
   gatherTimer:
     maxTime: 2
   growTimer:
@@ -232,3 +232,18 @@ MonoBehaviour:
 
     Wheel - inspect'
   inspectionTexts: []
+--- !u!114 &6212501123267931088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4527292107853598546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 765b0846d694443448a4756de15071e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loot:
+  - name: 1005
+    amount: 1

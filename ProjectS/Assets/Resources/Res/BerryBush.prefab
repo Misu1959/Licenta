@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 602046102139722766}
   - component: {fileID: 2954841773153990670}
   - component: {fileID: 385432992285720956}
+  - component: {fileID: -7447097088248374956}
   m_Layer: 11
   m_Name: BerryBush
   m_TagString: Untagged
@@ -79,7 +80,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: 10001
-  drops: d3070000
   gatherTimer:
     maxTime: 3
   growTimer:
@@ -100,6 +100,21 @@ MonoBehaviour:
 
     Wheel - Inspect'
   inspectionTexts: []
+--- !u!114 &-7447097088248374956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 411325465883690188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 765b0846d694443448a4756de15071e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loot:
+  - name: 2003
+    amount: 1
 --- !u!1 &6377630255506869822
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,15 +21,19 @@ public class MobSpeaker : MonoBehaviour
         voiceLineTimer.StartTimer();
         voiceLineTimer.Tick();
 
-        if (voiceLineTimer.IsElapsed())
-        {
-            voiceLineTimer.RestartTimer();
-            SayVoiceline();
-        }
+        if (!voiceLineTimer.IsElapsed()) return;
+
+        SayVoiceline();
     }
 
     private void SayVoiceline()
     {
+        if (voiceLines.Count == 0)  // Remove for final version
+        {
+            Destroy(this);
+            return; 
+        }
+
         int nr = rnd.Next(voiceLines.Count);
 
         if (nr != previousVoiceLine)

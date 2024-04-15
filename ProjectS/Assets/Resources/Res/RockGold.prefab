@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 2695014455568471271}
   - component: {fileID: 1398942044121527493}
   - component: {fileID: 6882884118948524786}
+  - component: {fileID: -1144104405006784982}
   m_Layer: 11
   m_Name: RockGold
   m_TagString: Untagged
@@ -211,7 +212,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: 10005
-  drops: f4030000
   gatherTimer:
     maxTime: 1
   growTimer:
@@ -234,3 +234,20 @@ MonoBehaviour:
 
     Wheel - inspect'
   inspectionTexts: []
+--- !u!114 &-1144104405006784982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8853479105482509436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 765b0846d694443448a4756de15071e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loot:
+  - name: 1004
+    amount: 2
+  - name: 1012
+    amount: 1

@@ -37,7 +37,6 @@ public class PlayerRange : MonoBehaviour
                 {
                     EquipmentManager.instance.GetHandItem()?.GetComponent<EquipmentUI>().UseTool();
                     other.gameObject.GetComponent<MobStats>().TakeDmg(PlayerStats.instance.GetActualDamage());
-                    Debug.Log("Mob Hit");
                 }
         }
 
