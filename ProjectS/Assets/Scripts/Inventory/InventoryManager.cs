@@ -22,7 +22,7 @@ public class InventoryManager : MonoBehaviour
 
     }
 
-    private void Update() { MoveSelectedItem(); }
+    private void Update() => MoveSelectedItem(); 
 
     private void SetSlots()
     {
@@ -247,8 +247,7 @@ public class InventoryManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hitData;
-            if (Physics.Raycast(ray, out hitData, float.MaxValue,MyMethods.LayerToLayerMask(7)))
+            if (Physics.Raycast(ray, out RaycastHit hitData, float.MaxValue,MyMethods.LayerToLayerMask(7)))
                 DropItem(selectedItemSlot.GetItemInSlot(), hitData.point);
 
         }
@@ -399,11 +398,12 @@ public class InventoryManager : MonoBehaviour
             }
 
             for (int i = 0; i < storageData.size; i++)
-                if (storageData.items[i].name != ObjectName.empty)
-                {
-                    ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.items[i]);
-                    AddItemToSlot(backpackSlots[i], itemUI);
-                }
+                if (storageData.items[i] != null)
+                    if (storageData.items[i].name != ObjectName.empty)
+                    {
+                        ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.items[i]);
+                        AddItemToSlot(backpackSlots[i], itemUI);
+                    }
         }
     }
 
@@ -425,11 +425,12 @@ public class InventoryManager : MonoBehaviour
 
             StorageData storageData = chestStorage.GetStorageData();
             for (int i = 0; i < storageData.size; i++)
-                if (storageData.items[i]?.name != ObjectName.empty)
-                {
-                    ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.items[i]);
-                    AddItemToSlot(chestSlots[i], itemUI);
-                }
+                if (storageData.items[i] != null)
+                    if (storageData.items[i].name != ObjectName.empty)
+                    {
+                        ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.items[i]);
+                        AddItemToSlot(chestSlots[i], itemUI);
+                    }
         }
     }
 

@@ -72,11 +72,11 @@ public class ComplexResource : Resource
     {
         animator.SetTrigger("PlayerInput");
         if (hp <= 0)
-            animator.SetInteger("Stage", -10);
+            animator.SetInteger("Stage", (int)GrowthStages.dead);
         else if (hp < .34f * maxHp)
-            animator.SetInteger("Stage", -2);
+            animator.SetInteger("Stage", (int)GrowthStages.barrelyFull);
         else if (hp < .66f * maxHp)
-            animator.SetInteger("Stage", -1);
+            animator.SetInteger("Stage", (int)GrowthStages.almostFull);
         
     }
 }

@@ -1,4 +1,4 @@
-using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,10 +6,25 @@ using UnityEngine.EventSystems;
 
 public class Resource : MonoBehaviour, IPointerDownHandler
 {
+    public enum GrowthStages
+    {
+        dead        = -10,
+        empty       = -1,
+        barrelyFull = -2,
+        almostFull  = -3,
+
+        full        = 0,
+        hide        = 1,
+        show        = 2
+
+    };
 
     protected Animator animator;
 
     public new ObjectName name;
+
+    [SerializeField] protected TimeManager.DayState harvestPeriod;
+    public TimeManager.DayState GetHarvestPeriod() => harvestPeriod;
 
 
     [SerializeField] protected Timer gatherTimer;
@@ -48,13 +63,12 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         gatherTimer.Tick();
         if (!gatherTimer.IsElapsed()) return;
 
-
         GetComponent<LootManagement>().CollectLoot();
         
         PlayerBehaviour.instance.CompleteAction(); // Complete the action
 
         animator.SetTrigger("PlayerInput");
-        animator.SetInteger("Stage", -1);
+        animator.SetInteger("Stage", (int)GrowthStages.empty);
 
         growTimer.StartTimer();
     }
@@ -68,16 +82,34 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         SetAnim();
     }
 
-    public virtual bool CheckIfCanBeGathered()  => !growTimer.IsOn();
+    public virtual bool CheckIfCanBeGathered()
+    {
+        if (growTimer.IsOn())
+            return false;
+
+        if (harvestPeriod == TimeManager.DayState.allDay)
+            return true;
+        else if (harvestPeriod == TimeManager.instance.dayState)
+            return true;
+
+        return false;
+
+    }
 
     public virtual void SetAnim()
     {
         if (growTimer.IsElapsedPercent(100))
-            animator.SetInteger("Stage", 0);
+        {
+            if(harvestPeriod == TimeManager.instance.dayState)
+                animator.SetInteger("Stage", (int)GrowthStages.show);
+            else
+                animator.SetInteger("Stage", (int)GrowthStages.hide);
+
+        }
         else if (growTimer.IsElapsedPercent(66))
-            animator.SetInteger("Stage", -3);
+            animator.SetInteger("Stage", (int)GrowthStages.almostFull);
         else if (growTimer.IsElapsedPercent(33))
-            animator.SetInteger("Stage", -2);
+            animator.SetInteger("Stage", (int)GrowthStages.barrelyFull);
     }
 
 }

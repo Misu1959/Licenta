@@ -194,7 +194,7 @@ MonoBehaviour:
     maxStack: 1
     currentStack: 0
     fuelValue: 0
-    equipmentType: 0
+    equipmentType: 1
     actionType: 3
     dmg: 0
     maxDurability: 100

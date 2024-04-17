@@ -33,7 +33,7 @@ public class EquipmentSlot : InventorySlot
                 if (Input.GetMouseButtonDown(0)) // If I press LMB
                     EquipmentManager.instance.UnequipItem(slotType, true); //Unequip item and keep it selected
                 else if (Input.GetMouseButtonDown(1)) // If I press RMB
-                    EquipmentManager.instance.UnequipItem(slotType, false); // unequip the item and set it in inventory
+                    EquipmentManager.instance.UnequipItem(slotType, false); // unequip the item and add it to inventory
             }
             else // If have an item selected
             {

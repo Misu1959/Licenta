@@ -23,6 +23,7 @@ public class WorldManager : MonoBehaviour
         constructions   = world.transform.GetChild(4);
         mobs            = world.transform.GetChild(5);
         mobSpawners     = world.transform.GetChild(6);
+
     }
     public void SendMobsToSleep(TimeManager.DayState currentDayState)
     {
@@ -75,4 +76,24 @@ public class WorldManager : MonoBehaviour
 
         }
     }
+
+
+    public void SetResourcesToHarvest(TimeManager.DayState currentDayState)
+    {
+        foreach (Transform res in resources)
+            if (res.GetComponent<Resource>().GetHarvestPeriod() == TimeManager.DayState.allDay) 
+                continue;
+            else
+            {
+                if (res.GetChild(0).GetComponent<Animator>().GetInteger("Stage") >= (int)Resource.GrowthStages.full)
+                {
+                    if (res.GetComponent<Resource>().GetHarvestPeriod() != currentDayState)
+                        res.GetChild(0).GetComponent<Animator>().SetInteger("Stage", (int)Resource.GrowthStages.hide);
+                    else
+                        res.GetChild(0).GetComponent<Animator>().SetInteger("Stage", (int)Resource.GrowthStages.show);
+                }
+            }
+
+    }
+
 }

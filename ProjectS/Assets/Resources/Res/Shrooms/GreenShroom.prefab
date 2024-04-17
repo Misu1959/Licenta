@@ -141,9 +141,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4085315147169609884}
-  - component: {fileID: 3792760301679492037}
   - component: {fileID: 127275194193062327}
   - component: {fileID: 5950503053825285457}
+  - component: {fileID: 3792760301679492037}
   - component: {fileID: 6013702083805775228}
   - component: {fileID: 4708518634696808241}
   m_Layer: 11
@@ -169,23 +169,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3792760301679492037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4085315147169609858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e2ae38218547f5469b93478dde60ee4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  name: 10008
-  gatherTimer:
-    maxTime: 1
-  growTimer:
-    maxTime: 15
 --- !u!54 &127275194193062327
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -216,6 +199,24 @@ CapsuleCollider:
   m_Height: 0.7
   m_Direction: 1
   m_Center: {x: 0, y: 0.35, z: 0}
+--- !u!114 &3792760301679492037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4085315147169609858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ae38218547f5469b93478dde60ee4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: 10008
+  harvestPeriod: 1
+  gatherTimer:
+    maxTime: 1
+  growTimer:
+    maxTime: 15
 --- !u!114 &6013702083805775228
 MonoBehaviour:
   m_ObjectHideFlags: 0

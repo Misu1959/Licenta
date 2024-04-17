@@ -9,7 +9,9 @@ public class TimeManager : MonoBehaviour
     {
         day,
         dawn,
-        night
+        night,
+
+        allDay
     }
 
 
@@ -56,6 +58,8 @@ public class TimeManager : MonoBehaviour
 
         WorldManager.instance.SendMobsToSleep(DayState.day);
         WorldManager.instance.SendMobsToSleep(DayState.day);
+        WorldManager.instance.SetResourcesToHarvest(DayState.day);
+
     }
 
     void Update()
@@ -104,6 +108,8 @@ public class TimeManager : MonoBehaviour
     {
         WorldManager.instance.SendMobsToSleep(newState);
         WorldManager.instance.WakeUpMobs(newState);
+
+        WorldManager.instance.SetResourcesToHarvest(newState);
 
         switch (newState)
         {

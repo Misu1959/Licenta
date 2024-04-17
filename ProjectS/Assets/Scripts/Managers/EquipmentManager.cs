@@ -34,7 +34,7 @@ public class EquipmentManager : MonoBehaviour
 
     public bool SetEquipment(Item_Base equipmentToAdd,bool unequipCurrent, bool keepSelected)
     {
-        ItemUI equipmentUIToAdd = equipmentToAdd.GetComponent < ItemUI>();
+        ItemUI equipmentUIToAdd = equipmentToAdd.GetComponent <ItemUI>();
         
         if (equipmentToAdd.GetComponent<Item>()) // If not an UI item
         {
@@ -51,7 +51,7 @@ public class EquipmentManager : MonoBehaviour
         }
     }
 
-    public bool EquipItem(ItemUI itemToEquip)
+    private bool EquipItem(ItemUI itemToEquip)
     {
         InventorySlot slotToSet = null;
 
@@ -67,6 +67,8 @@ public class EquipmentManager : MonoBehaviour
                     if (itemToEquip.GetComponent<Storage>())
                         InventoryManager.instance.DisplayBackpack(itemToEquip.GetComponent<Storage>());
 
+                    Debug.Log("Equip body piece");
+
                     slotToSet = bodySlot;
                     break;
                 }
@@ -79,6 +81,7 @@ public class EquipmentManager : MonoBehaviour
 
         if (!slotToSet.CheckIfItHasItem())
         {
+            Debug.Log("Final");
             InventoryManager.instance.AddItemToSlot(slotToSet, itemToEquip);
             return true;
         }
@@ -114,6 +117,7 @@ public class EquipmentManager : MonoBehaviour
                     if (bodySlot.GetItemInSlot().GetComponent<Storage>())
                         InventoryManager.instance.DisplayBackpack();
 
+                    Debug.Log("Unequip body piece");
                     slotToSet = bodySlot;
                     break;
                 }

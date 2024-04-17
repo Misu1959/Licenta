@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: 10009
+  harvestPeriod: 2
   gatherTimer:
     maxTime: 1
   growTimer:

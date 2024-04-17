@@ -204,7 +204,9 @@ public class StorageData
 
         items = new ItemData[size];
         for (int i = 0; i < newStorageData.items.Length; i++)
-            items[i] = new ItemData(newStorageData.items[i]);
+            if (newStorageData.items[i] != null)
+                if (newStorageData.items[i].name != ObjectName.empty)
+                    items[i] = new ItemData(newStorageData.items[i]);
     }
 
 
