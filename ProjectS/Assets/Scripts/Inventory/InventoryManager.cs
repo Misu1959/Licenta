@@ -80,13 +80,13 @@ public class InventoryManager : MonoBehaviour
 
         if (backpackPanel.gameObject.activeInHierarchy)
         {
-            slotToReturn = FirstSlotInInventory(inventorySlots, itemName, false);
+            slotToReturn = FirstSlotInInventory(backpackSlots, itemName, false);
             if (slotToReturn) return slotToReturn;
         }
 
         if (chestPanel.gameObject.activeInHierarchy)
         {
-            slotToReturn = FirstSlotInInventory(inventorySlots, itemName, false);
+            slotToReturn = FirstSlotInInventory(chestSlots, itemName, false);
             if (slotToReturn) return slotToReturn;
         }
 
@@ -261,9 +261,12 @@ public class InventoryManager : MonoBehaviour
         
         item.transform.SetParent(WorldManager.instance.items);
         item.transform.localPosition = new Vector3(positionToDrop.x, 0, positionToDrop.z);
-        item.SetTransparent(true);
 
-        PlayerBehaviour.instance.SetTargetAndAction(item.transform, PlayerBehaviour.Action.drop);
+        if (PlayerBehaviour.instance.currentAction != PlayerBehaviour.Action.pick)
+        {
+            item.SetTransparent(true);
+            PlayerBehaviour.instance.SetTargetAndAction(item.transform, PlayerBehaviour.Action.drop);
+        }
 
         Destroy(itemToDrop.gameObject,.01f);
 

@@ -206,7 +206,14 @@ public class StorageData
         for (int i = 0; i < newStorageData.items.Length; i++)
             if (newStorageData.items[i] != null)
                 if (newStorageData.items[i].name != ObjectName.empty)
-                    items[i] = new ItemData(newStorageData.items[i]);
+                {
+                    if (newStorageData.items[i].GetItemType() == ItemType.material)
+                        items[i] = new ItemData(newStorageData.items[i]);
+                    else if (newStorageData.items[i].GetItemType() == ItemType.food)
+                        items[i] = new FoodData((FoodData)newStorageData.items[i]);
+                    else if (newStorageData.items[i].GetItemType() == ItemType.equipment)
+                        items[i] = new EquipmentData((EquipmentData)newStorageData.items[i]);
+                }
     }
 
 

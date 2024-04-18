@@ -32,10 +32,10 @@ public class EquipmentManager : MonoBehaviour
         headSlot.SetSlotType(EquipmentType.head); // Set head slot type
     }
 
-    public bool SetEquipment(Item_Base equipmentToAdd,bool unequipCurrent, bool keepSelected)
+    public bool SetEquipment(Item_Base equipmentToAdd, bool unequipCurrent, bool keepSelected)
     {
-        ItemUI equipmentUIToAdd = equipmentToAdd.GetComponent <ItemUI>();
-        
+        ItemUI equipmentUIToAdd = equipmentToAdd.GetComponent<ItemUI>();
+
         if (equipmentToAdd.GetComponent<Item>()) // If not an UI item
         {
             equipmentUIToAdd = ItemsManager.instance.CreateItemUI(equipmentToAdd.GetComponent<Item>());
@@ -46,9 +46,16 @@ public class EquipmentManager : MonoBehaviour
             return EquipItem(equipmentUIToAdd);
         else
         {
-            UnequipItem(equipmentToAdd.GetEquipmentData().equipmentType, keepSelected);
-            return EquipItem(equipmentUIToAdd);
+            StartCoroutine(SwapEquipment(equipmentUIToAdd,keepSelected));
+            return true;
         }
+    }
+
+    private IEnumerator SwapEquipment(ItemUI itemToEquip, bool keepSelected)
+    {
+        UnequipItem(itemToEquip.GetEquipmentData().equipmentType, keepSelected);
+        yield return new WaitForSeconds (.01f);
+        EquipItem(itemToEquip);
     }
 
     private bool EquipItem(ItemUI itemToEquip)
@@ -67,8 +74,6 @@ public class EquipmentManager : MonoBehaviour
                     if (itemToEquip.GetComponent<Storage>())
                         InventoryManager.instance.DisplayBackpack(itemToEquip.GetComponent<Storage>());
 
-                    Debug.Log("Equip body piece");
-
                     slotToSet = bodySlot;
                     break;
                 }
@@ -81,7 +86,6 @@ public class EquipmentManager : MonoBehaviour
 
         if (!slotToSet.CheckIfItHasItem())
         {
-            Debug.Log("Final");
             InventoryManager.instance.AddItemToSlot(slotToSet, itemToEquip);
             return true;
         }
@@ -110,18 +114,17 @@ public class EquipmentManager : MonoBehaviour
                     break;
 
                 }
-                case EquipmentType.body:
+            case EquipmentType.body:
                 {
                     if (!GetBodyItem()) return;
 
                     if (bodySlot.GetItemInSlot().GetComponent<Storage>())
                         InventoryManager.instance.DisplayBackpack();
 
-                    Debug.Log("Unequip body piece");
                     slotToSet = bodySlot;
                     break;
                 }
-                case EquipmentType.head:
+            case EquipmentType.head:
                 {
                     if (!GetHeadItem()) return;
 
@@ -145,16 +148,16 @@ public class EquipmentManager : MonoBehaviour
     public void ReplenishItem(ObjectName oldItemName)
     {
         ItemUI newItem = InventoryManager.instance.FindSpecificItem(oldItemName);
-        
-        if(newItem)
+
+        if (newItem)
             SetEquipment(newItem, true, false);
     }
 
-    public ItemUI GetHandItem() { return handSlot.CheckIfItHasItem() == true ? handSlot.GetItemInSlot() : null; }
+    public ItemUI GetHandItem() => handSlot.CheckIfItHasItem() == true ? handSlot.GetItemInSlot() : null;
 
-    public ItemUI GetBodyItem() { return bodySlot.CheckIfItHasItem() == true ? bodySlot.GetItemInSlot() : null; }
+    public ItemUI GetBodyItem() => bodySlot.CheckIfItHasItem() == true ? bodySlot.GetItemInSlot() : null;
 
-    public ItemUI GetHeadItem() { return headSlot.CheckIfItHasItem() == true ? headSlot.GetItemInSlot() : null; }
+    public ItemUI GetHeadItem() => headSlot.CheckIfItHasItem() == true ? headSlot.GetItemInSlot() : null;
 
     public Storage BackpackStorage()    
     {
