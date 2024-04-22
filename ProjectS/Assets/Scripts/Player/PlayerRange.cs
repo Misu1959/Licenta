@@ -19,7 +19,7 @@ public class PlayerRange : MonoBehaviour
 
         if (CheckForSpecificCollider(RangeType.darkness)) //Checking if something enter collision with darkness collider
         {
-            if (other.gameObject.GetComponent<Light>()) // If other object has light source
+            if (other.transform.GetChild(0).GetComponent<Light>()) // If other object has light source
                 PlayerStats.instance.SetInLight(1);// Add 1 to numbers of light the player is in
         }
 
@@ -53,7 +53,7 @@ public class PlayerRange : MonoBehaviour
     {
         if (CheckForSpecificCollider(RangeType.darkness)) //Checking if something exit collision with darkness collider
         {
-            if (other.gameObject.GetComponent<Light>()) // If player get's out of the light 
+            if (other.transform.GetChild(0).GetComponent<Light>()) // If player get's out of the light 
                 PlayerStats.instance.SetInLight(-1); // Remove one from the number of lights player is in
         }
 

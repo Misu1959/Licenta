@@ -116,6 +116,7 @@ public class TimeManager : MonoBehaviour
             case DayState.day:
                 {
                     PassDay();
+                    sun.GetComponent<Animator>().SetBool("isDay", true);
                     break;
                 }
             case DayState.dawn:
@@ -125,7 +126,7 @@ public class TimeManager : MonoBehaviour
                 }
             case DayState.night:
                 {
-                    // Turn of light
+                    sun.GetComponent<Animator>().SetBool("isDay", false);
                     break;
                 }
         }
@@ -153,12 +154,12 @@ public class TimeManager : MonoBehaviour
 
             PlayerStats.instance.TakeDmg(25);
         }
-        else if (timerPlayerInDarkness.IsElapsedPercent(2 / 3) && nrOfPopUps == 1)
+        else if (timerPlayerInDarkness.IsElapsedPercent(66) && nrOfPopUps == 1)
         {
             nrOfPopUps++;
             PopUpManager.instance.ShowPopUpDarkness(2);
         }
-        else if (timerPlayerInDarkness.IsElapsedPercent(1 / 3) && nrOfPopUps == 0)
+        else if (timerPlayerInDarkness.IsElapsedPercent(33) && nrOfPopUps == 0)
         {
             nrOfPopUps++;
             PopUpManager.instance.ShowPopUpDarkness(1);

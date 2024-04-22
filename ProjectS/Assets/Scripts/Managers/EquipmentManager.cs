@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using System.Diagnostics.CodeAnalysis;
+using Unity.VisualScripting;
 
 public class EquipmentManager : MonoBehaviour
 {
@@ -67,6 +68,10 @@ public class EquipmentManager : MonoBehaviour
             case EquipmentType.hand:
                 {
                     slotToSet = handSlot;
+
+                    if(itemToEquip.GetComponent<TorchUI>())
+                        itemToEquip.GetComponent<TorchUI>().SetisEquiped(true);
+
                     break;
                 }
             case EquipmentType.body:
@@ -109,6 +114,9 @@ public class EquipmentManager : MonoBehaviour
                         PlayerBehaviour.instance.currentAction == PlayerBehaviour.Action.attack
                         )
                         PlayerBehaviour.instance.CancelAction();
+
+                    if (GetHandItem().GetComponent<TorchUI>())
+                        GetHandItem().GetComponent<TorchUI>().SetisEquiped(false);
 
                     slotToSet = handSlot;
                     break;

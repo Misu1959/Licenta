@@ -72,6 +72,10 @@ public class ItemsManager : MonoBehaviour
             case ItemType.equipment:
             {
                 newItemUI.AddComponent<EquipmentUI>();
+
+                if (item.GetEquipmentData().actionType == EquipmentActionType.torch)
+                    newItemUI.AddComponent<TorchUI>();
+
                 break;
             }
         }

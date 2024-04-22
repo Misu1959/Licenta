@@ -54,7 +54,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: ac86514e3517f464e9c0f20a5473715d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,8 +97,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.6, y: 0.6, z: 0.1}
-  m_Center: {x: 0.01, y: 0.45, z: 0}
+  m_Size: {x: 0.6, y: 0.6101652, z: 0.1}
+  m_Center: {x: 0.00999999, y: 0.27888516, z: 0}
 --- !u!114 &5696636742799813847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,7 +175,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.35
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-28642566494988520
 MonoBehaviour:
   m_ObjectHideFlags: 0

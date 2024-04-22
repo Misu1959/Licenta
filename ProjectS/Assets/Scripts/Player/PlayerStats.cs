@@ -87,7 +87,7 @@ public class PlayerStats : MonoBehaviour
         hp = Mathf.Clamp(hp - dmgAmount, 0, maxHp);
         UIManager.instance.ShowHp(maxHp, hp);
 
-        if(PlayerController.instance.canMove)
+        if (PlayerController.instance.canMove && PlayerBehaviour.instance.currentTarget != null)
             PlayerBehaviour.instance.CancelAction();
     
         PlayerController.instance.SetCanMove();
@@ -150,8 +150,11 @@ public class PlayerStats : MonoBehaviour
 
 
 
-    public void SetResearchLevel(int newResearchLevel)  {   researchLevel = newResearchLevel;   }
+    public void SetResearchLevel(int newResearchLevel)  =>   researchLevel = newResearchLevel;   
 
-    public void SetInLight(int _isIntLight) {   isInLight += _isIntLight;   }
-
+    public void SetInLight(int _isIntLight) 
+    {
+        isInLight += _isIntLight;   
+        Debug.Log(isInLight);
+    }
 }

@@ -70,6 +70,8 @@ public class Timer
 
     public float RemainedTime() => remainedtime;
 
+    public float MaxTime() => maxTime;
+
     public bool IsOn() => isOn;
 
     public void StopTimer() => isOn = false;
