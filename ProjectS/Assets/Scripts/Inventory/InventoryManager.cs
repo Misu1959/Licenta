@@ -198,6 +198,9 @@ public class InventoryManager : MonoBehaviour
 
             if (slotToRemoveFrom.GetItemInSlot() == itemToBeRemoved)
                 RemoveItemFromSlot(slotToRemoveFrom);
+
+            if (slotToRemoveFrom == selectedItemSlot && itemToBeRemoved.GetItemData().currentStack>0)
+                SetSelectedItem(null);
         }
     }
 
@@ -220,13 +223,16 @@ public class InventoryManager : MonoBehaviour
             EquipmentManager.instance.SetEquipment(selectedItemSlot.GetItemInSlot(), false, false);
         else
             AddItemToInventory(selectedItemSlot.GetItemInSlot());
+
+        SetSelectedItem(null);
     }
 
     public void SetSelectedItem(ItemUI itemToSelect)
     {
-        AddItemToSlot(selectedItemSlot, itemToSelect); // Set the selected item
+        if(itemToSelect)
+            AddItemToSlot(selectedItemSlot, itemToSelect); // Set the selected item
 
-        // If player is going to add fuel or to cook and I change the selected item or unselect it cancel the action
+        // If player is going to add fuel or to cook and I change the selected item or unselect it
         if (PlayerBehaviour.instance.currentAction == PlayerBehaviour.Action.addFuel ||
             PlayerBehaviour.instance.currentAction == PlayerBehaviour.Action.cook)
             PlayerBehaviour.instance.CancelAction();

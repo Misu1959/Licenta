@@ -6,15 +6,45 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(Construction))]
 public class ConstructionInspector : BaseInspector
 {
-    private Construction construction;
-
-    private void Start() => construction = GetComponent<Construction>();
+    [SerializeField] private bool doPlayerNeedSelectedItemToInteract;
 
     public void OnMouseOver()
     {
-        if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
+        if (!InteractionManager.CanPlayerInteractWithWorld(doPlayerNeedSelectedItemToInteract)) return;
 
 
-        PopUpManager.instance.ShowMousePopUp(hoverText, PopUpManager.PopUpPriorityLevel.low);
+        if(CanPlayerInteractWithConstruction())
+            PopUpManager.instance.ShowMousePopUp(hoverText, PopUpManager.PopUpPriorityLevel.high);
+        else
+            PopUpManager.instance.ShowMousePopUp("Wheel - inspect", PopUpManager.PopUpPriorityLevel.low);
+
+    }
+
+    private bool CanPlayerInteractWithConstruction()
+    {
+        if (!doPlayerNeedSelectedItemToInteract)
+            return true;
+        else if (!InventoryManager.instance.selectedItemSlot.GetItemInSlot())
+            return false;
+        else
+        {
+            ItemUI selectedItem = InventoryManager.instance.selectedItemSlot.GetItemInSlot();
+            if (GetComponent<Fireplace>())
+            {
+                if (GetComponent<Fireplace>().IsFireOn() &&
+                    selectedItem.GetItemData().GetItemType() == ItemType.food &&
+                    selectedItem.GetFoodData().canBeCoocked)
+                {
+                    hoverText = "Lmb - cook\nWheel - inspect";
+                    return true;
+                }
+                else if (selectedItem.GetItemData().fuelValue > 0)
+                {
+                    hoverText = "Lmb - add fuel\nWheel - inspect";
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

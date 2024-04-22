@@ -387,8 +387,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f13e0724f481de42bb3bdcfb0c5998f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverText: Wheel - inspect
+  hoverText: 'Add fuel
+
+    Cook
+
+    Wheel - inspect'
   inspectionTexts: []
+  doPlayerNeedSelectedItemToInteract: 1
 --- !u!114 &-1013791105269569540
 MonoBehaviour:
   m_ObjectHideFlags: 0

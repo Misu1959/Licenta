@@ -86,6 +86,7 @@ MonoBehaviour:
     hungerAmount: 20
     hpAmount: 5
     quickEat: 0
+    canBeCoocked: 1
     cookTimer:
       maxTime: 5
 --- !u!114 &-8772974172087142507

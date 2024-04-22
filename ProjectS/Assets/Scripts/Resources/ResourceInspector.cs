@@ -9,9 +9,12 @@ public class ResourceInspector : BaseInspector
     {
         if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
 
-        if (!GetComponent<Resource>().CheckIfCanBeGathered())
-            PopUpManager.instance.ShowMousePopUp("Wheel - inspect", PopUpManager.PopUpPriorityLevel.low);
-        else
+        if (CanPlayerInteractWithResource())
             PopUpManager.instance.ShowMousePopUp(hoverText, PopUpManager.PopUpPriorityLevel.low);
+        else
+            PopUpManager.instance.ShowMousePopUp("Wheel - inspect", PopUpManager.PopUpPriorityLevel.low);
     }
+
+    private bool CanPlayerInteractWithResource() => GetComponent<Resource>().CheckIfCanBeGathered();
+
 }

@@ -88,8 +88,8 @@ public class PlayerStats : MonoBehaviour
         UIManager.instance.ShowHp(maxHp, hp);
 
         if (PlayerController.instance.canMove && PlayerBehaviour.instance.currentTarget != null)
-            PlayerBehaviour.instance.CancelAction();
-    
+            PlayerBehaviour.instance.CancelAction(actionInterrupted: true);
+
         PlayerController.instance.SetCanMove();
         animator.SetTrigger("Hit");
         
@@ -152,9 +152,5 @@ public class PlayerStats : MonoBehaviour
 
     public void SetResearchLevel(int newResearchLevel)  =>   researchLevel = newResearchLevel;   
 
-    public void SetInLight(int _isIntLight) 
-    {
-        isInLight += _isIntLight;   
-        Debug.Log(isInLight);
-    }
+    public void SetInLight(int _isIntLight) => isInLight += _isIntLight;  
 }

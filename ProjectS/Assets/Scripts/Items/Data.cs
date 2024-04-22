@@ -154,6 +154,7 @@ public class FoodData : ItemData
 
     public bool quickEat;
 
+    public bool canBeCoocked;
     public Timer cookTimer;
 
     public FoodData(FoodData newItemData) : base(newItemData)
@@ -161,6 +162,10 @@ public class FoodData : ItemData
         hungerAmount    = newItemData.hungerAmount;
         hpAmount        = newItemData.hpAmount;
         quickEat        = newItemData.quickEat;
+        canBeCoocked    = newItemData.canBeCoocked;
+
+        if (canBeCoocked)
+            cookTimer = new Timer(newItemData.cookTimer.MaxTime());
     }
 
     public override ItemType GetItemType() { return ItemType.food; }

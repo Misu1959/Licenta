@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f13e0724f481de42bb3bdcfb0c5998f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doPlayerNeedSelectedItemToInteract: 0
   hoverText: Wheel - inspect
   inspectionTexts: []
 --- !u!1 &5674200759312571689

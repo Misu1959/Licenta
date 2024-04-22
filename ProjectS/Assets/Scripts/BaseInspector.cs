@@ -8,7 +8,7 @@ public abstract class BaseInspector : MonoBehaviour, IPointerDownHandler
 {
     private static System.Random rnd = new System.Random();
     private int previousInspection = -1;
-
+    
     [TextArea(1, 3)]
     [SerializeField] protected string hoverText;
     [SerializeField] protected List<string> inspectionTexts;

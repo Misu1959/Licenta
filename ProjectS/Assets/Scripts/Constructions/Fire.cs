@@ -8,6 +8,8 @@ public class Fire : MonoBehaviour
 
     private GameObject lightObject;
 
+    [SerializeField] private bool isCampfire;
+
     [SerializeField] protected Timer fireTimer;
     [SerializeField] private int rangeHitBox;
 
@@ -26,19 +28,20 @@ public class Fire : MonoBehaviour
     void SetFireLight()
     {
         fireTimer.Tick();
+
+        SetLightSize();
+        SetAnim();
+
         if (fireTimer.IsElapsed())
         {
-            if(GetComponent<Fireplace>()?.isCampfire == false)
+            if (PlayerBehaviour.instance.IsCooking(this.transform))
+                PlayerBehaviour.instance.CancelAction(actionInterrupted: true);
+
+            if (!isCampfire)
                 Destroy(this.gameObject);
 
         }
-        else
-        {
-            SetLightSize();
-            SetAnim();
-        }
     }
-
 
 
     void SetLightSize()
@@ -49,9 +52,10 @@ public class Fire : MonoBehaviour
 
         lightObject.transform.GetChild(0).GetComponent<Light>().spotAngle = lightSize;
         lightObject.transform.GetChild(0).GetComponent<Light>().innerSpotAngle = lightSize / 3;
+
     }
 
-
+    public bool IsFireOn() => fireTimer.RemainedTime() <= 0 ? false : true;
 
     void SetAnim()
     {

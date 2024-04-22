@@ -93,8 +93,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f13e0724f481de42bb3bdcfb0c5998f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverText: Wheel - inspect
+  hoverText: 'Lmb - search
+
+    Wheel - inspect'
   inspectionTexts: []
+  doPlayerNeedSelectedItemToInteract: 0
 --- !u!114 &3101708968664975741
 MonoBehaviour:
   m_ObjectHideFlags: 0

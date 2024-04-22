@@ -72,9 +72,9 @@ public class InventorySlotInspector : MonoBehaviour,IPointerEnterHandler,IPointe
         if (!inventorySlot.CheckIfItHasItem()) return false;
 
         if (MyMethods.CheckIfMouseIsOverUI() || MyMethods.CheckIfMouseIsOverItem())
-            PopUpManager.instance.ShowMousePopUp("RMB - Cancel", PopUpManager.PopUpPriorityLevel.medium);
+            PopUpManager.instance.ShowMousePopUp("RMB - Cancel", PopUpManager.PopUpPriorityLevel.low);
         else
-            PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel", PopUpManager.PopUpPriorityLevel.medium);
+            PopUpManager.instance.ShowMousePopUp("LMB - Drop\nRMB - Cancel", PopUpManager.PopUpPriorityLevel.low);
 
         return true;
     }

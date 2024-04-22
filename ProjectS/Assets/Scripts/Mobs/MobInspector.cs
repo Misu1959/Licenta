@@ -11,9 +11,11 @@ public class MobInspector : BaseInspector
         if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
 
 
-        if (PlayerStats.instance.GetActualDamage() == 0)
-            PopUpManager.instance.ShowMousePopUp("Wheel - inspect", PopUpManager.PopUpPriorityLevel.low);
-        else 
+        if (CanPlayerInteractWithMob())
             PopUpManager.instance.ShowMousePopUp(hoverText, PopUpManager.PopUpPriorityLevel.low);
+        else
+            PopUpManager.instance.ShowMousePopUp("Wheel - inspect", PopUpManager.PopUpPriorityLevel.low);
     }
+
+    private bool CanPlayerInteractWithMob() => (PlayerStats.instance.GetActualDamage() == 0) ? false : true;
 }

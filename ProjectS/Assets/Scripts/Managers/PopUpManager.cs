@@ -61,18 +61,22 @@ public class PopUpManager : MonoBehaviour
 
     public void ShowMousePopUp(string popUpText, PopUpPriorityLevel priority)
     {
-        if (previousPopUpPriorityLevel == PopUpPriorityLevel.none && priority == PopUpPriorityLevel.none)
-            if (popUpPriorityLevel != PopUpPriorityLevel.none)
-                popUpPriorityLevel = PopUpPriorityLevel.none;
-
-        previousPopUpPriorityLevel = priority;
-        if (popUpPriorityLevel <= priority)
+        if (priority >= popUpPriorityLevel)
         {
             popUpPriorityLevel = priority;
 
             if (mousePopUp.GetComponent<TextMeshProUGUI>().text != popUpText)
                 mousePopUp.GetComponent<TextMeshProUGUI>().text = popUpText;
         }
+        else
+        {
+            if(previousPopUpPriorityLevel < popUpPriorityLevel &&
+                priority < popUpPriorityLevel)
+                popUpPriorityLevel = priority;
+
+
+        }
+        previousPopUpPriorityLevel = priority;
     }
 
     private void MoveMousePopUp()

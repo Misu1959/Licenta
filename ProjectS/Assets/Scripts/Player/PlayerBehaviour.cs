@@ -198,6 +198,12 @@ public class PlayerBehaviour : MonoBehaviour
                     Invoke(nameof(CompleteAction), .5f);
                     break;
                 }
+            case Action.cook:
+                {
+                    PlayerStats.instance.animator.SetBool("Gather", true);
+                    break;
+                }
+
             case Action.place:
                 {
                     InteractionManager.SetInteractionStatus(false);
@@ -290,6 +296,12 @@ public class PlayerBehaviour : MonoBehaviour
                     currentTarget.GetComponent<Fireplace>().AddFuel();
                     break;
                 }
+            case Action.cook:
+                {
+                    PlayerStats.instance.animator.SetBool("Gather", false);
+                    break;
+                }
+
             case Action.place:
                 {
                     InteractionManager.SetInteractionStatus(true);
@@ -338,7 +350,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     }
 
-    public void CancelAction(bool newAction = false)
+    public void CancelAction(bool newAction = false, bool actionInterrupted = false)
     {
         switch (currentAction)
         {
@@ -354,6 +366,13 @@ public class PlayerBehaviour : MonoBehaviour
                     InventoryManager.instance.DisplayChest();
                     break;
                 }
+
+            case Action.cook:
+                {
+                    PlayerStats.instance.animator.SetBool("Gather", false);
+                    break;
+                }
+
             case Action.place:
                 {
                     InteractionManager.SetInteractionStatus(true);
@@ -388,6 +407,13 @@ public class PlayerBehaviour : MonoBehaviour
         }
 
         isPerformingAction = false;
+
+        if (actionInterrupted)
+        {
+            SetTargetAndAction(null, Action.nothing);
+            PopUpManager.instance.ShowPopUp(this.transform, "Action interrupted!");
+            return;
+        }
 
         if (!newAction)
         {
