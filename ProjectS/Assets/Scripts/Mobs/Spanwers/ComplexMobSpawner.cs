@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class ComplexMobSpawner : MobSpawner
 {
-    private List<GameObject> mobsList = new List<GameObject>();
+    private List<MobStats> mobsList = new List<MobStats>();
     [SerializeField] private Timer respawnTimer;
 
-    private void Update() => SpawnMob();
+    private int mobsToSpawn;
 
-    protected override void SpawnMob()
+    private IEnumerator Start()
     {
+        yield return null;
+        mobsToSpawn = maxNumberOfMobs;
+        SpawnMobs();
+    }
+    private void Update() => SpawnMobOnTime();
 
-        if(mobsList.Count == maxNumberOfMobs)
+    private void SpawnMobOnTime()
+    {
+        if (mobsList.Count == maxNumberOfMobs)
         {
             respawnTimer.RestartTimer();
             return;
@@ -22,14 +29,33 @@ public class ComplexMobSpawner : MobSpawner
         respawnTimer.Tick();
 
         if (!respawnTimer.IsElapsed()) return;
-        
-        GameObject newMob = Instantiate(ItemsManager.instance.SearchMobsList(mobName).gameObject);
-        newMob.GetComponent<MobStats>().SetSpawner(this.transform);
 
-        newMob.transform.position = transform.position;
-        newMob.transform.SetParent(WorldManager.instance.mobs);
-        mobsList.Add(newMob);
+        if (ItemsManager.instance.GetOriginalMob(mobName).GetSleepPeriod() == TimeManager.instance.dayState)
+            respawnTimer.SetTime(.001f);
+        else
+        {
+            if (mobsToSpawn + mobsList.Count < maxNumberOfMobs)
+                mobsToSpawn++;
 
+            SpawnMobs();
+        }
+    }
+
+    protected override void SpawnMobs()
+    {
+        if (ItemsManager.instance.GetOriginalMob(mobName).GetSleepPeriod() == TimeManager.instance.dayState) return;
+
+
+        for (int i = 0; i < mobsToSpawn; i++)
+        {
+            MobStats newMob = Instantiate(ItemsManager.instance.GetOriginalMob(mobName));
+            newMob.SetSpawner(this.transform);
+
+            newMob.transform.position = transform.position;
+            newMob.transform.SetParent(WorldManager.instance.mobs);
+            mobsList.Add(newMob);
+        }
+        mobsToSpawn = 0;
 
     }
 

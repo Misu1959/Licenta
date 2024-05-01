@@ -44,5 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c3e4989ea6ba2f44a4405c88f0b40e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mobName: 40004
+  name: 30004
+  mobName: 40005
   maxNumberOfMobs: 3

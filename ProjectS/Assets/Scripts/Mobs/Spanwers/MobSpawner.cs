@@ -4,25 +4,23 @@ using UnityEngine;
 
 public class MobSpawner : MonoBehaviour
 {
+    new public ObjectName name;
+
     [SerializeField] protected ObjectName mobName;
     [SerializeField] protected int maxNumberOfMobs;
 
-    private void Start() => Invoke(nameof(SpawnMob), .5f);
-    
+    private void Start() => Invoke(nameof(SpawnMobs), .5f);
 
-    protected virtual void SpawnMob()
+    protected virtual void SpawnMobs()
     {
-        if (maxNumberOfMobs <= 0) return;
 
-        maxNumberOfMobs--;
-
-
-        GameObject newMob = Instantiate(ItemsManager.instance.SearchMobsList(mobName).gameObject);
+        MobStats newMob = Instantiate(ItemsManager.instance.GetOriginalMob(mobName));
+        newMob.SetSpawner(this.transform);
 
         newMob.transform.position = transform.position;
         newMob.transform.SetParent(WorldManager.instance.mobs);
 
-        Invoke(nameof(SpawnMob), .5f);
-
+        maxNumberOfMobs--;
+        Invoke(nameof(SpawnMobs), .5f);
     }
 }

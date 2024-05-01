@@ -69,9 +69,6 @@ public class EquipmentManager : MonoBehaviour
                 {
                     slotToSet = handSlot;
 
-                    if(itemToEquip.GetComponent<TorchUI>())
-                        itemToEquip.GetComponent<TorchUI>().SetisEquiped(true);
-
                     break;
                 }
             case EquipmentType.body:
@@ -92,6 +89,10 @@ public class EquipmentManager : MonoBehaviour
         if (!slotToSet.CheckIfItHasItem())
         {
             InventoryManager.instance.AddItemToSlot(slotToSet, itemToEquip);
+
+            if (itemToEquip.GetComponent<TorchUI>())
+                itemToEquip.GetComponent<TorchUI>().SetisEquiped(true);
+
             return true;
         }
         else

@@ -79,6 +79,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af7596fa0df78bd438251cf4459e3b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normalMaterial: {fileID: 2100000, guid: ac86514e3517f464e9c0f20a5473715d, type: 2}
+  canBePlacedMaterial: {fileID: 2100000, guid: 310e9e72bf3411b4e8b07d3e1f3f4723, type: 2}
+  cantBePlacedMaterial: {fileID: 2100000, guid: c3da3060c0fca084cbeb035cf0f512ca, type: 2}
   buildTimer:
     maxTime: 1
 --- !u!114 &4219149626793159480

@@ -26,7 +26,7 @@ public class CraftingRecipe : MonoBehaviour
     private bool CheckIfHaveRosources()
     {
         foreach(Recipe.Requiremets req in recipe.requirements)
-            if (InventoryManager.instance.AmountOwned(req.name) < req.quantity)
+            if (InventoryManager.instance.AmountOwned(req.name, !recipe.prefabItem.GetComponent<Construction>()) < req.quantity)
                 return false;
 
         return true;

@@ -10,49 +10,40 @@ public class ItemsManager : MonoBehaviour
     public static ItemsManager instance;
     [SerializeField] private GameObject itemUIPrefab;
 
-    private Item[] items;
-    private Resource[] resources;
-    private MobStats[] mobs;
+    Dictionary<ObjectName, Item>        itemsDictionary         = new Dictionary<ObjectName, Item>();
+    Dictionary<ObjectName, Resource>    resourcesDictionary     = new Dictionary<ObjectName, Resource>();
+    Dictionary<ObjectName, MobStats> mobsDictionary             = new Dictionary<ObjectName, MobStats>();
+    Dictionary<ObjectName, MobSpawner>  mobSpawnersDictionary   = new Dictionary<ObjectName, MobSpawner>();
     
     private void Start()
     {
         instance = this;
-        SetPrefabs();
+        SetDictionaries();
     }
 
-    private void SetPrefabs()
+    private void SetDictionaries()
     {
-        items     = Resources.LoadAll<Item>("Items");
-        resources = Resources.LoadAll<Resource>("Res");
-        mobs = Resources.LoadAll<MobStats>("Mobs");
+        foreach (Item item in Resources.LoadAll<Item>("Items"))
+            itemsDictionary.Add(item.GetItemData().name, item);
+        
+        foreach (Resource res in Resources.LoadAll<Resource>("Res"))
+            resourcesDictionary.Add(res.name, res);
+
+        foreach (MobStats mob in Resources.LoadAll<MobStats>("Mobs"))
+            mobsDictionary.Add(mob.name, mob);
+
+        foreach (MobSpawner mobSpawner in Resources.LoadAll<MobSpawner>("MobSpawners"))
+            mobSpawnersDictionary.Add(mobSpawner.name, mobSpawner);
+
     }
 
-    public Item SearchItemsList(ObjectName nameOfItemToFind)
-    {
-        foreach (Item item in items) 
-            if (item.GetItemData().name == nameOfItemToFind)
-                return item;
+    public Item GetOriginalItem(ObjectName nameOfItem) => itemsDictionary[nameOfItem];
+    public Resource GetOriginalResource(ObjectName nameOfResource) => resourcesDictionary[nameOfResource];
 
-        return null;
-    }
-    public Resource SearchResourcesList(ObjectName nameOfResourceToFind)
-    {
-        foreach (Resource resource in resources)
-            if (resource.name == nameOfResourceToFind)
-                return resource;
+    public MobStats GetOriginalMob(ObjectName nameOfMob) => mobsDictionary[nameOfMob];
 
-        return null;
-    }
 
-    public MobStats SearchMobsList(ObjectName nameOfMobToFind)
-    {
-        foreach (MobStats mob in mobs)
-            if (mob.name == nameOfMobToFind)
-                return mob;
-
-        return null;
-    }
-
+    public MobSpawner GetOriginalMobSpawner(ObjectName nameOfMobSpawner) => mobSpawnersDictionary[nameOfMobSpawner];
     public ItemUI CreateItemUI(Item item) // Create a new itemUI based on an Item
     {
         GameObject newItemUI = Instantiate(itemUIPrefab);
@@ -123,7 +114,7 @@ public class ItemsManager : MonoBehaviour
 
     public Item CreateItem(ItemUI item) // Create a new item based on an ui Item
     {
-        Item newItem = Instantiate(SearchItemsList(item.GetItemData().name)).GetComponent<Item>();
+        Item newItem = Instantiate(GetOriginalItem(item.GetItemData().name));
         newItem.SetItemData(item.GetItemData());
 
         if (item.GetComponent<Storage>())
@@ -134,7 +125,7 @@ public class ItemsManager : MonoBehaviour
 
     public Item CreateItem(ObjectName newItemName) // Create a totaly new item
     {
-        Item oldItem = SearchItemsList(newItemName);
+        Item oldItem = GetOriginalItem(newItemName);
         Item newItem = Instantiate(oldItem).GetComponent<Item>();
         newItem.SetItemData(oldItem.GetItemData());
 

@@ -26,6 +26,11 @@ public class ResourceSpawnerManager : MonoBehaviour
             SpawnResources(ObjectName.redShroom);
             SpawnResources(ObjectName.greenShroom);
             SpawnResources(ObjectName.blueShroom);
+
+
+            SpawnMobSpawners(ObjectName.rabbitHole);
+            SpawnMobSpawners(ObjectName.beehive);
+            SpawnMobSpawners(ObjectName.cocoon);
         }
     }
 
@@ -49,11 +54,24 @@ public class ResourceSpawnerManager : MonoBehaviour
 
         for (int i = 0; i < nr; i++)
         {
-            Resource resource = Instantiate(ItemsManager.instance.SearchResourcesList(_name));
+            Resource resource = Instantiate(ItemsManager.instance.GetOriginalResource(_name));
 
             resource.transform.SetParent(WorldManager.instance.resources);
             resource.transform.position = new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100));
-            resource.name = _name;
         }
     }
+
+    void SpawnMobSpawners(ObjectName _name)
+    {
+        int nr = rnd.Next(maxItemsForType / 5, maxItemsForType / 2);
+
+        for (int i = 0; i < nr; i++)
+        {
+            MobSpawner mobSpawner = Instantiate(ItemsManager.instance.GetOriginalMobSpawner(_name));
+
+            mobSpawner.transform.SetParent(WorldManager.instance.mobSpawners);
+            mobSpawner.transform.position = new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100));
+        }
+    }
+
 }

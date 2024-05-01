@@ -10,6 +10,10 @@ public class TorchUI : MonoBehaviour
     {
         isEquipped = _isEquipped;
         PlayerStats.instance.transform.GetChild(4).gameObject.SetActive(isEquipped);
+
+        int val = isEquipped == false ? -1 : 1;
+        PlayerStats.instance.SetInLight(val);
+
     }
 
     private void Start() => torchTimer = new Timer(1);
@@ -33,5 +37,5 @@ public class TorchUI : MonoBehaviour
         GetComponent<EquipmentUI>().UseTool();
     }
 
-    private void OnDestroy() => PlayerStats.instance.transform.GetChild(4).gameObject.SetActive(false);
+    private void OnDestroy() => SetisEquiped(false);
 }

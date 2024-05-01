@@ -13,7 +13,7 @@ public class MobStats : MonoBehaviour,IPointerDownHandler
     private Transform spawner;
 
     [Header("Stats")]
-    
+
     public new ObjectName name;
 
     [SerializeField] TimeManager.DayState sleepPeriod;

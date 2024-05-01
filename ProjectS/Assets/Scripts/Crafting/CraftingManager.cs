@@ -229,7 +229,7 @@ public class CraftingManager : MonoBehaviour
             Recipe.Requiremets req = currentCraftingRecipe.GetRecipe().requirements[i];
             Transform reqUI = requirementsList.GetChild(i);
 
-            reqUI.GetComponent<Image>().sprite = ItemsManager.instance.SearchItemsList(req.name).GetItemData().uiImg;
+            reqUI.GetComponent<Image>().sprite = ItemsManager.instance.GetOriginalItem(req.name).GetItemData().uiImg;
             reqUI.GetChild(0).GetComponent<TextMeshProUGUI>().text = InventoryManager.instance.AmountOwned(req.name) + " / " + req.quantity.ToString();
         }
 

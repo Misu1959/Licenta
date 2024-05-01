@@ -62,7 +62,10 @@ public class PlayerBehaviour : MonoBehaviour
 
         for (int i = 0; i < itemsInRange.Count; i++)
             if (itemsInRange[i] == null)
+            {
                 itemsInRange.RemoveAt(i);
+                i--;
+            }
 
         foreach (Transform objectToInteractWith in itemsInRange)
         {
@@ -104,7 +107,10 @@ public class PlayerBehaviour : MonoBehaviour
 
         for (int i = 0; i < itemsInRange.Count; i++)
             if (itemsInRange[i] == null)
+            {
                 itemsInRange.RemoveAt(i);
+                i--;
+            }
 
         foreach (Transform objectToInteractWith in itemsInRange)
         {
@@ -288,7 +294,7 @@ public class PlayerBehaviour : MonoBehaviour
             case Action.search:
                 {
                     PlayerController.instance.SetCanMove(true);
-                    PlayerStats.instance.animator.SetBool("Gather", false);
+                    PlayerStats.instance.animator.SetBool("Gather", true);
                     return;
                 }
             case Action.addFuel:
@@ -362,7 +368,9 @@ public class PlayerBehaviour : MonoBehaviour
                 }
             case Action.search:
                 {
-                    currentTarget.transform.GetChild(0).GetComponent<Animator>().SetInteger("OpenClose", -1);
+                    currentTarget.GetChild(0).GetComponent<Animator>().SetInteger("OpenClose", -1);
+                    PlayerStats.instance.animator.SetBool("Gather", false);
+
                     InventoryManager.instance.DisplayChest();
                     break;
                 }
@@ -417,9 +425,10 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (!newAction)
         {
-            SetTargetAndAction(null, Action.nothing);
             if (currentAction != Action.search)
                 PopUpManager.instance.ShowPopUp(this.transform, "Action canceled!");
+
+            SetTargetAndAction(null, Action.nothing);
         }
         else
         {

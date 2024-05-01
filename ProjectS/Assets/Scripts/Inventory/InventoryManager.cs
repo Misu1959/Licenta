@@ -298,7 +298,7 @@ public class InventoryManager : MonoBehaviour
     }
 
 
-    public int AmountOwned(ObjectName itemName)
+    public int AmountOwned(ObjectName itemName , bool lookInChest = true)
     {
         int totalAmount = 0;
 
@@ -312,7 +312,7 @@ public class InventoryManager : MonoBehaviour
 
         }
 
-        if (chestPanel.gameObject.activeInHierarchy)
+        if (chestPanel.gameObject.activeInHierarchy && lookInChest)
         {
             totalAmount += AddAmountToInventory(chestSlots, itemName, false);
             totalAmount += AddAmountToInventory(chestSlots, itemName, true);

@@ -6,19 +6,19 @@ using UnityEngine.EventSystems;
 public class Construction : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
-    private Color color;
+
+    [Header("Materials")]
+    [SerializeField] private Material normalMaterial;
+    [SerializeField] private Material canBePlacedMaterial;
+    [SerializeField] private Material cantBePlacedMaterial;
+
+    [Header("Properties")]
 
     private int canBePlaced;
-
     [SerializeField] private Timer buildTimer;
 
 
-    private void Start()
-    {
-        spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        color = spriteRenderer.color;
-    }
-
+    private void Start() => spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer != 2)
@@ -51,13 +51,13 @@ public class Construction : MonoBehaviour
         {
             PopUpManager.instance.ShowMousePopUp("LMB - place\nRMB - cancel", PopUpManager.PopUpPriorityLevel.low);
 
-            spriteRenderer.color = new Color(color.r, color.g, color.b, .5f);
+            spriteRenderer.material = canBePlacedMaterial;
 
             if (Input.GetMouseButtonDown(0))
                 PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.build);
         }
         else
-            spriteRenderer.color = new Color32(255, 0, 0, 128);
+            spriteRenderer.material = cantBePlacedMaterial;
 
 
         if (Input.GetMouseButtonDown(1))
@@ -82,7 +82,7 @@ public class Construction : MonoBehaviour
         if (!buildTimer.IsElapsed()) return;
 
 
-        spriteRenderer.color = color;
+        spriteRenderer.material = normalMaterial;
         GetComponent<Collider>().isTrigger = false;
         transform.SetParent(WorldManager.instance.constructions);
 

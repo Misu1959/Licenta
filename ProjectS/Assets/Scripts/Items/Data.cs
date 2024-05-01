@@ -83,6 +83,12 @@ public enum ObjectName
 
     #region MobSpawners
     [InspectorName(null)] mobSpawners = 30000,
+    [InspectorName("MobSpawners/RabbitHole")] rabbitHole,
+    [InspectorName("MobSpawners/Beehive")] beehive,
+    [InspectorName("MobSpawners/Cacoon")] cocoon,
+    [InspectorName("MobSpawners/HoundSpawner")] houndSpawner,
+
+
 
     #endregion
 
@@ -92,8 +98,8 @@ public enum ObjectName
     [InspectorName("Mobs/Pig")] pig,
     [InspectorName("Mobs/Rabbit")] rabbit,
     [InspectorName("Mobs/Bee")] bee,
-    [InspectorName("Mobs/Hound")] hound,
-    [InspectorName("Mobs/Spider")] spider
+    [InspectorName("Mobs/Spider")] spider,
+    [InspectorName("Mobs/Hound")] hound
     #endregion
 };
 
