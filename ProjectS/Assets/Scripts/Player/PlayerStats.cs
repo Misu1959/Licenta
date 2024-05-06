@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerStats : MonoBehaviour
 {
     public static PlayerStats instance;
     public Animator animator { get; private set; }
     public Rigidbody rigidBody { get; private set; }
+
+    public PlayerInputActions inputActions { get; private set; }
+
+    [SerializeField] private InputActionAsset asset;
 
     #region Stats
     [SerializeField] private int maxHunger;
@@ -22,8 +27,15 @@ public class PlayerStats : MonoBehaviour
     public int speed { get; private set; }
 
     #endregion
+    
     public int isInLight { get; private set; }
     public int researchLevel { get; private set; }
+
+    private void Awake()
+    {
+        inputActions = new PlayerInputActions(asset);
+        inputActions.Enable();
+    }
 
     void Start()
     {

@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
 using System;
-using System.Linq;
 
 public class PlayerBehaviour : MonoBehaviour
 {
@@ -39,21 +39,24 @@ public class PlayerBehaviour : MonoBehaviour
     public bool isPerformingAction { get; private set; }
 
 
-
-    void Start() =>   instance = this;
-
-    void Update()
+    void Awake()
     {
-        SearchForItemInRange();
-        SearchForMobInRange();
-
-        CancelActionByMoving();
+        instance = this;
+        Invoke(nameof(Initialize), .01f);
     }
-    void SearchForItemInRange()
+
+    private void Initialize()
     {
-        if (!Input.GetKeyDown(KeyCode.Space)) return;// If Space is not pressed return otherwise search for items in range
+        PlayerStats.instance.inputActions.Player.Interact.performed    += SearchForItemInRange;
+        PlayerStats.instance.inputActions.Player.Attack.performed      += SearchForMobInRange;
+    }
+
+    void Update() => CancelActionByMoving();
+    private void SearchForItemInRange(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;// If interact_closest button is not pressed return otherwise search for items in range
         if (!InteractionManager.CanPlayerInteractWithUI()) return;
-        if (PlayerController.instance.keyboardMovement != Vector3.zero) return;// If it's moving from keyboard don't take space action
+        if (PlayerController.instance.isMovingByKeyboard) return;// If it's moving from keyboard don't take space action
 
         InventoryManager.instance.SetBackToSlot();
 
@@ -93,15 +96,18 @@ public class PlayerBehaviour : MonoBehaviour
 
     }
 
-    void SearchForMobInRange()
+    private void SearchForMobInRange(InputAction.CallbackContext context)
     {
-        if (!Input.GetKeyDown(KeyCode.F)) return;// If F is not pressed return otherwise search for items in range
+        if (!context.performed) return;// If attack_closest button is not pressed return otherwise search for items in range
         if (!InteractionManager.CanPlayerInteractWithUI()) return;
-        if (PlayerController.instance.keyboardMovement != Vector3.zero) return;
-        if (!EquipmentManager.instance.GetHandItem()) return;
+        if (PlayerController.instance.isMovingByKeyboard) return;
+        if (!EquipmentManager.instance.GetHandItem())
+        {
+            PopUpManager.instance.ShowPopUp(this.transform, "I need some equipment\nto be able to attack!");
+            return;
+        }
 
         InventoryManager.instance.SetBackToSlot();
-
         float closestDistance = 1000;
         Transform closestObjectToInteractWith = null;
 
@@ -445,8 +451,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (!currentTarget) return;
 
         // If player is moving on X or Z axis from keyboard cancel the action
-        if (PlayerController.instance.keyboardMovement == Vector3.zero) return;
-
+        if (!PlayerController.instance.isMovingByKeyboard) return;
         CancelAction();
     }
 

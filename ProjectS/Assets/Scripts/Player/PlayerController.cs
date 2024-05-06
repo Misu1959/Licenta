@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
 
     private Vector3 movementDir;
-    public  Vector3 keyboardMovement { get; private set; }
     public bool canMove { get; private set; }
     public void SetCanMove(bool state) => canMove = state;
     public void SetCanMove() => StartCoroutine(SetCanMove(.5f));
@@ -20,39 +19,31 @@ public class PlayerController : MonoBehaviour
         canMove = true;
     }
 
-    public void SetKeyboardMovement()  
-    {
-        if (!canMove)
-            keyboardMovement = Vector3.zero;
-        else
-            keyboardMovement = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-    }
+    public bool isMovingByKeyboard { get; private set; }
 
-    void Start()
+    void Awake()
     {
         instance = this;
-
         SetCanMove(true);
     }
 
-    void Update() => Move();
-
-    private void FixedUpdate()  => PlayerStats.instance.rigidBody.velocity = movementDir.normalized * PlayerStats.instance.speed;
+    private void Update() => Move();
+    private void FixedUpdate() => PlayerStats.instance.rigidBody.velocity = movementDir.normalized * PlayerStats.instance.speed * ((canMove == false) ? 0 : 1);
 
     private void Move()
     {
-        SetKeyboardMovement();
-        SetMovementAnimation();
+        Vector2 keyboardinput = PlayerStats.instance.inputActions.Player.Move.ReadValue<Vector2>();
+        isMovingByKeyboard = (keyboardinput == Vector2.zero) ? false : true;
 
         if (PlayerBehaviour.instance.currentTarget) // If player has a target
         {
-            if (PlayerBehaviour.instance.isPerformingAction)
-                movementDir = Vector2.zero;
-            else if (canMove)
-                movementDir = PlayerBehaviour.instance.currentTarget.transform.position - transform.position;
+            Vector3 targetWay = PlayerBehaviour.instance.currentTarget.position - transform.position;
+            movementDir = PlayerBehaviour.instance.isPerformingAction ? Vector2.zero : targetWay;
         }
         else
-            movementDir = keyboardMovement;
+            movementDir = new Vector3(keyboardinput.x, 0, keyboardinput.y);
+
+        SetMovementAnimation();
     }
 
     private void SetMovementAnimation()

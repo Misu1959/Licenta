@@ -15,6 +15,7 @@ public class ItemsManager : MonoBehaviour
     Dictionary<ObjectName, MobStats> mobsDictionary             = new Dictionary<ObjectName, MobStats>();
     Dictionary<ObjectName, MobSpawner>  mobSpawnersDictionary   = new Dictionary<ObjectName, MobSpawner>();
     
+
     private void Start()
     {
         instance = this;
@@ -37,13 +38,13 @@ public class ItemsManager : MonoBehaviour
 
     }
 
-    public Item GetOriginalItem(ObjectName nameOfItem) => itemsDictionary[nameOfItem];
-    public Resource GetOriginalResource(ObjectName nameOfResource) => resourcesDictionary[nameOfResource];
+    public Item GetOriginalItem(ObjectName nameOfItem) => itemsDictionary.ContainsKey(nameOfItem) ? itemsDictionary[nameOfItem] : null;
+    public Resource GetOriginalResource(ObjectName nameOfResource) => resourcesDictionary.ContainsKey(nameOfResource) ? resourcesDictionary[nameOfResource] : null;
 
-    public MobStats GetOriginalMob(ObjectName nameOfMob) => mobsDictionary[nameOfMob];
+    public MobStats GetOriginalMob(ObjectName nameOfMob) => mobsDictionary.ContainsKey(nameOfMob) ? mobsDictionary[nameOfMob] : null;
 
 
-    public MobSpawner GetOriginalMobSpawner(ObjectName nameOfMobSpawner) => mobSpawnersDictionary[nameOfMobSpawner];
+    public MobSpawner GetOriginalMobSpawner(ObjectName nameOfMobSpawner) => mobSpawnersDictionary.ContainsKey(nameOfMobSpawner) ? mobSpawnersDictionary[nameOfMobSpawner] : null;
     public ItemUI CreateItemUI(Item item) // Create a new itemUI based on an Item
     {
         GameObject newItemUI = Instantiate(itemUIPrefab);
