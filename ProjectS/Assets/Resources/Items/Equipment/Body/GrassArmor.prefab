@@ -190,7 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     uiImg: {fileID: 21300000, guid: 000f249ef95c83641b3ae150d162cc6b, type: 3}
-    name: 3008
+    objectName: 3008
     maxStack: 1
     currentStack: 0
     fuelValue: 0

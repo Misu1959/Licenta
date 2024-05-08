@@ -28,7 +28,7 @@ public class FoodUI : ItemUI
             transform.GetChild(0).gameObject.SetActive(true);
             transform.GetChild(1).gameObject.SetActive(true);
 
-            transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetItemData().name.ToString();
+            transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetItemData().objectName.ToString();
             transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = GetItemData().currentStack + " " + GetItemData().maxStack;
         }
 

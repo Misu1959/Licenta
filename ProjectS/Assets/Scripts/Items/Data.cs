@@ -4,6 +4,15 @@ using UnityEditor;
 using UnityEngine;
 
 
+public enum ObjectType
+{
+    item,
+    resource,
+    construction,
+    mob,
+    spawner
+}
+
 public enum ObjectName
 {
 
@@ -126,13 +135,12 @@ public enum EquipmentActionType
 };
 
 
-
 [Serializable]
 public class ItemData
 {
     public Sprite uiImg;
 
-    public ObjectName name;
+    public ObjectName objectName;
 
     public int maxStack;
     [HideInInspector]public int currentStack;
@@ -141,14 +149,15 @@ public class ItemData
 
     public ItemData(ItemData newItemData)
     {
+        objectName = newItemData.objectName;
+
         uiImg           = newItemData.uiImg;
-        name            = newItemData.name;
         maxStack        = newItemData.maxStack;
         currentStack    = newItemData.currentStack == 0 ? 1 : newItemData.currentStack;
         fuelValue       = newItemData.fuelValue;
     }
 
-    public virtual ItemType GetItemType() { return ItemType.material; }
+    public virtual ItemType GetItemType() => ItemType.material;
 
 }
 
@@ -174,7 +183,7 @@ public class FoodData : ItemData
             cookTimer = new Timer(newItemData.cookTimer.MaxTime());
     }
 
-    public override ItemType GetItemType() { return ItemType.food; }
+    public override ItemType GetItemType() => ItemType.food; 
 }
 
 [Serializable]
@@ -201,7 +210,7 @@ public class EquipmentData : ItemData
 
     }
 
-    public override ItemType GetItemType() { return ItemType.equipment; }
+    public override ItemType GetItemType() => ItemType.equipment;
 }
 
 [Serializable]
@@ -216,7 +225,7 @@ public class StorageData
         items = new ItemData[size];
         for (int i = 0; i < newStorageData.items.Length; i++)
             if (newStorageData.items[i] != null)
-                if (newStorageData.items[i].name != ObjectName.empty)
+                if (newStorageData.items[i].objectName != ObjectName.empty)
                 {
                     if (newStorageData.items[i].GetItemType() == ItemType.material)
                         items[i] = new ItemData(newStorageData.items[i]);

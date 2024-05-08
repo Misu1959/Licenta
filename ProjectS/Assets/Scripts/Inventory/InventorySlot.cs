@@ -61,7 +61,7 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler
                 {
                     if (InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetComponent<Storage>()) return;
 
-                    if (CheckMatchingName(InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetItemData().name))
+                    if (CheckMatchingName(InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetItemData().objectName))
                     {
                         if (itemInSlot.CheckIfStackIsFull() || InventoryManager.instance.selectedItemSlot.GetItemInSlot().CheckIfStackIsFull())
                             InventoryManager.instance.SwapTwoSlots(this);
@@ -90,7 +90,7 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler
 
 
     public bool CheckIfItHasItem() => itemInSlot == null ? false : true; 
-    public bool CheckMatchingName(ObjectName nameToCompare) => itemInSlot?.GetItemData().name != nameToCompare ? false : true;
+    public bool CheckMatchingName(ObjectName nameToCompare) => itemInSlot?.GetItemData().objectName != nameToCompare ? false : true;
 
 
     public bool IsBackpackSlot() => (transform.parent != InventoryManager.instance.backpackPanel) ? false : true;

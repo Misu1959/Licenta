@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e2ae38218547f5469b93478dde60ee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 10001
+  objectName: 10001
   harvestPeriod: 3
   gatherTimer:
     maxTime: 3

@@ -14,7 +14,7 @@ public class MobStats : MonoBehaviour,IPointerDownHandler
 
     [Header("Stats")]
 
-    public new ObjectName name;
+    public ObjectName objectName;
 
     [SerializeField] TimeManager.DayState sleepPeriod;
 

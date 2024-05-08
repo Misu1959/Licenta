@@ -21,7 +21,7 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     protected Animator animator;
 
-    public new ObjectName name;
+    public ObjectName objectName;
 
     [SerializeField] protected TimeManager.DayState harvestPeriod;
     public TimeManager.DayState GetHarvestPeriod() => harvestPeriod;

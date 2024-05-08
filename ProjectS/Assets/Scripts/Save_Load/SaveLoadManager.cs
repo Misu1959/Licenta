@@ -14,14 +14,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         instance = this;
 
-        if (PlayerPrefs.GetInt("prevWorld") == 0)
-        {
-            PlayerPrefs.SetInt("prevWorld", 1);
-           // Invoke("SaveWorld", 1); // Should save when everything in the world is initialized
-        }
-        //else
-            //StartCoroutine(LoadWorld());
-    
+        
     }
     /*
     private void Update()

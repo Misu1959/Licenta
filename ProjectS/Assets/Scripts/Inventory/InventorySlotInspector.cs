@@ -47,7 +47,7 @@ public class InventorySlotInspector : MonoBehaviour,IPointerEnterHandler,IPointe
             }
             else // If I have an item selected
             {
-                if (!inventorySlot.CheckMatchingName(InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetItemData().name)) // if the items are different
+                if (!inventorySlot.CheckMatchingName(InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetItemData().objectName)) // if the items are different
                 {
                     if (InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetComponent<Storage>())
                         PopUpManager.instance.ShowMousePopUp("RMB - cancel", PopUpManager.PopUpPriorityLevel.medium);

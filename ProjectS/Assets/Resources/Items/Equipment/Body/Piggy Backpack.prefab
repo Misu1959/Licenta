@@ -191,7 +191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     uiImg: {fileID: 21300000, guid: 4e25df0c30cda7e4f9453ec05ef69928, type: 3}
-    name: 3010
+    objectName: 3010
     maxStack: 1
     currentStack: 0
     fuelValue: 0
@@ -216,62 +216,62 @@ MonoBehaviour:
     size: 12
     items:
     - uiImg: {fileID: 0}
-      name: 0
+      objectName: 0
       maxStack: 0
       currentStack: 0
       fuelValue: 0
     - uiImg: {fileID: 0}
-      name: 0
+      objectName: 0
       maxStack: 0
       currentStack: 0
       fuelValue: 0
     - uiImg: {fileID: 0}
-      name: 0
+      objectName: 0
       maxStack: 0
       currentStack: 0
       fuelValue: 0
     - uiImg: {fileID: 0}
-      name: 0
+      objectName: 0
       maxStack: 0
       currentStack: 0
       fuelValue: 0
     - uiImg: {fileID: 0}
-      name: 0
+      objectName: 0
       maxStack: 0
       currentStack: 0
       fuelValue: 0
     - uiImg: {fileID: 0}
-      name: 0
+      objectName: 0
       maxStack: 0
       currentStack: 0
       fuelValue: 0
     - uiImg: {fileID: 0}
-      name: 0
+      objectName: 0
       maxStack: 0
       currentStack: 0
       fuelValue: 0
     - uiImg: {fileID: 0}
-      name: 0
+      objectName: 0
       maxStack: 0
       currentStack: 0
       fuelValue: 0
     - uiImg: {fileID: 0}
-      name: 0
+      objectName: 0
       maxStack: 0
       currentStack: 0
       fuelValue: 0
     - uiImg: {fileID: 0}
-      name: 0
+      objectName: 0
       maxStack: 0
       currentStack: 0
       fuelValue: 0
     - uiImg: {fileID: 0}
-      name: 0
+      objectName: 0
       maxStack: 0
       currentStack: 0
       fuelValue: 0
     - uiImg: {fileID: 0}
-      name: 0
+      objectName: 0
       maxStack: 0
       currentStack: 0
       fuelValue: 0

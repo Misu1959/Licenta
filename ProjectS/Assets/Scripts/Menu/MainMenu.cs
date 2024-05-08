@@ -24,6 +24,9 @@ public class MainMenu : MonoBehaviour
 
     [Header("- World settings menu buttons")]
     [SerializeField] private Button buttonBackFromWorldSettingsMenu;
+    [SerializeField] private Button buttonResetWorldSettings;
+    [SerializeField] private Button buttonStartGame;
+
 
     [Header("- Controls menu buttons")]
     [SerializeField] private Button buttonOpenControlsMenu;
@@ -40,17 +43,30 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button buttonCloseQuitGamePanel;
     [SerializeField] private Button buttonQuitGame;
 
+
+    PlayerInputActions inputActions;
     private void Start() => SetButtonsFunctionality();
 
-    #region Buttons setup
+    private void OnEnable()
+    {
+        inputActions = new PlayerInputActions();
+        inputActions.Menu.BackToMenu.performed += BackToMainMenu;
+        inputActions.Menu.Enable();
 
+    }
+
+    private void OnDisable()
+    {
+        inputActions.Menu.Disable();
+    }
+
+
+
+    #region Buttons setup
     void SetButtonsFunctionality()
     {
-        PlayerInputActions inputActions = new PlayerInputActions();
-        inputActions.Menu.Enable();
-        inputActions.Menu.BackToMenu.performed += BackToMainMenu;
 
-        buttonContinue.interactable = (PlayerPrefs.GetInt("LastWorld") == 0) ? false : true;
+        buttonContinue.interactable = (PlayerPrefs.GetInt(SaveData.LAST_WORLD) == 0) ? false : true;
         buttonContinue.onClick.AddListener(() => ContinueGame());
 
         SetWorldSelectionButtons();
@@ -84,6 +100,8 @@ public class MainMenu : MonoBehaviour
     void SetWorldSettingsMenuButtons()
     {
         buttonBackFromWorldSettingsMenu.onClick.AddListener(() => BackToMainMenu());
+        buttonResetWorldSettings.onClick.AddListener(() => WorldSettingsManager.ResetAllSettings());
+        buttonStartGame.onClick.AddListener(() => StartGame());
     }
     void SetControlsMenuButtons()
     {
@@ -101,7 +119,7 @@ public class MainMenu : MonoBehaviour
 
     #region Main menu
 
-    void ContinueGame() => SceneManager.LoadScene(PlayerPrefs.GetInt("LastWorld"));
+    void ContinueGame() => SceneManager.LoadScene(PlayerPrefs.GetInt(SaveData.LAST_WORLD));
 
     void OpenWorldSelectionPanel()
     {
@@ -109,28 +127,25 @@ public class MainMenu : MonoBehaviour
         SetMainButtonsInteractable(false);
 
         for (int i = 0; i < 3; i++)
-            buttonDeleteWorld[i].gameObject.SetActive(!(PlayerPrefs.GetInt("World " + (i + 1) + " day") == 0));
-        
+            buttonDeleteWorld[i].gameObject.SetActive(!(PlayerPrefs.GetInt(SaveData.NEW_WORLD + (i + 1)) == 0));
+
     }
 
     void SelectWorld(int worldToSelect) 
     {
-        SceneManager.LoadScene(worldToSelect);
-        return;
+        PlayerPrefs.SetInt(SaveData.SELECTED_WORLD, worldToSelect);
 
-        if (PlayerPrefs.GetInt("World " + worldToSelect + " day") == 0)
-        {
+        if (PlayerPrefs.GetInt(SaveData.NEW_WORLD + worldToSelect) == 0)
             OpenWorldSettingsMenu();
-            PlayerPrefs.SetInt("SelectedWorld", worldToSelect);
-        }
         else
             SceneManager.LoadScene(worldToSelect);
     }
     void DeleteWorld(int worldToDelete)
     {
         buttonDeleteWorld[worldToDelete - 1].gameObject.SetActive(false);
-        
-        Debug.Log("Delete "+ worldToDelete);
+        PlayerPrefs.SetInt(SaveData.NEW_WORLD + worldToDelete, 0);
+
+
         // Open confirmation panel
         // Clear all world related playerprefs
     }
@@ -167,7 +182,7 @@ public class MainMenu : MonoBehaviour
 
     void SetMainButtonsInteractable(bool activeOrNot)
     {
-        buttonContinue.interactable = ((PlayerPrefs.GetInt("LastWorld") == 0) || activeOrNot == false) ? false : true;
+        buttonContinue.interactable = ((PlayerPrefs.GetInt(SaveData.LAST_WORLD) == 0) || activeOrNot == false) ? false : true;
 
         buttonOpenWorldSelectionPanel.interactable  = activeOrNot;
         buttonOpenControlsMenu.interactable         = activeOrNot;
@@ -181,13 +196,11 @@ public class MainMenu : MonoBehaviour
     void OpenWorldSettingsMenu() => worldSettingsMenu.SetActive(true);
 
 
-    void StartGame() => SceneManager.LoadScene(PlayerPrefs.GetInt("SelectedWorld"));
-
-    void ApplySettings()
+    void StartGame()
     {
-
+        WorldSettingsManager.SaveAllSetings();
+        SceneManager.LoadScene(PlayerPrefs.GetInt(SaveData.SELECTED_WORLD));
     }
-
 
 
     #endregion

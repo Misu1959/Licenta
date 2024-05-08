@@ -59,7 +59,7 @@ public class Fireplace : Fire, IPointerDownHandler
 
         if (!InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetFoodData().cookTimer.IsElapsed()) return;
 
-        Item_Base cookedItem = ItemsManager.instance.CreateItem(InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetItemData().name + 1);
+        Item_Base cookedItem = ItemsManager.instance.CreateItem(InventoryManager.instance.selectedItemSlot.GetItemInSlot().GetItemData().objectName + 1);
         InventoryManager.instance.AddItemToInventory(cookedItem);
 
         InventoryManager.instance.selectedItemSlot.GetItemInSlot().TakeFromStack(1);

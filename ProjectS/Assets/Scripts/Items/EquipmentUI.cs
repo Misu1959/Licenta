@@ -32,7 +32,7 @@ public class EquipmentUI : ItemUI
             transform.GetChild(0).gameObject.SetActive(true);
             transform.GetChild(1).gameObject.SetActive(true);
 
-            transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetItemData().name.ToString();
+            transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetItemData().objectName.ToString();
             transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = (float)GetEquipmentData().durability / (float)GetEquipmentData().maxDurability * 100 + " %";
         }
     }
@@ -43,7 +43,7 @@ public class EquipmentUI : ItemUI
         if (data.durability <= 0)
         {
             InventoryManager.instance.RemoveItemFromSlot(this);
-            EquipmentManager.instance.ReplenishItem(data.name);
+            EquipmentManager.instance.ReplenishItem(data.objectName);
             Destroy(this.gameObject);
         }
         DisplayItem();

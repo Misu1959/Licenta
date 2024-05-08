@@ -85,7 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 279250c743f15ea4fb806fc446c533fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 40004
+  objectName: 40004
   sleepPeriod: 0
   maxHp: 50
   dmg: 20

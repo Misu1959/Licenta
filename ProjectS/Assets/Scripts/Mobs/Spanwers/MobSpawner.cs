@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MobSpawner : MonoBehaviour
 {
-    new public ObjectName name;
+    public ObjectName objectName;
 
     [SerializeField] protected ObjectName mobName;
     [SerializeField] protected int maxNumberOfMobs;

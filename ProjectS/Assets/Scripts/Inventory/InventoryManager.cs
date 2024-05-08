@@ -129,7 +129,7 @@ public class InventoryManager : MonoBehaviour
             if (itemAddedToEquipmentSlot) return;
         }
 
-        InventorySlot slot = FindSlot(itemUIToAdd.GetItemData().name);
+        InventorySlot slot = FindSlot(itemUIToAdd.GetItemData().objectName);
         if (slot == null) // If I haven't found an available slot
         {
             DropItem(itemUIToAdd, PlayerStats.instance.transform.position);
@@ -166,7 +166,8 @@ public class InventoryManager : MonoBehaviour
         slot.SetItemInSlot(itemToAdd); // Add it to the new slot
 
         itemToAdd.transform.SetParent(slot.transform);
-        itemToAdd.transform.localPosition = Vector2.zero;
+        itemToAdd.transform.localScale      = Vector3.one;
+        itemToAdd.transform.localPosition   = Vector2.zero;
 
         if (slot.IsBackpackSlot())
             EquipmentManager.instance.BackpackStorage()?.AddData(itemToAdd.GetItemData(), slot.transform.GetSiblingIndex());
@@ -408,7 +409,7 @@ public class InventoryManager : MonoBehaviour
 
             for (int i = 0; i < storageData.size; i++)
                 if (storageData.items[i] != null)
-                    if (storageData.items[i].name != ObjectName.empty)
+                    if (storageData.items[i].objectName != ObjectName.empty)
                     {
                         ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.items[i]);
                         AddItemToSlot(backpackSlots[i], itemUI);
@@ -435,7 +436,7 @@ public class InventoryManager : MonoBehaviour
             StorageData storageData = chestStorage.GetStorageData();
             for (int i = 0; i < storageData.size; i++)
                 if (storageData.items[i] != null)
-                    if (storageData.items[i].name != ObjectName.empty)
+                    if (storageData.items[i].objectName != ObjectName.empty)
                     {
                         ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.items[i]);
                         AddItemToSlot(chestSlots[i], itemUI);

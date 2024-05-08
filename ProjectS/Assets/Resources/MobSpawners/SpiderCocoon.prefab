@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd14016a3281ec44b864b3b8baf2602c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 30003
+  objectName: 30003
   mobName: 40004
   maxNumberOfMobs: 2
   respawnTimer:

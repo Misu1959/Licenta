@@ -12,7 +12,7 @@ public class ItemsManager : MonoBehaviour
 
     Dictionary<ObjectName, Item>        itemsDictionary         = new Dictionary<ObjectName, Item>();
     Dictionary<ObjectName, Resource>    resourcesDictionary     = new Dictionary<ObjectName, Resource>();
-    Dictionary<ObjectName, MobStats> mobsDictionary             = new Dictionary<ObjectName, MobStats>();
+    Dictionary<ObjectName, MobStats>    mobsDictionary          = new Dictionary<ObjectName, MobStats>();
     Dictionary<ObjectName, MobSpawner>  mobSpawnersDictionary   = new Dictionary<ObjectName, MobSpawner>();
     
 
@@ -25,16 +25,16 @@ public class ItemsManager : MonoBehaviour
     private void SetDictionaries()
     {
         foreach (Item item in Resources.LoadAll<Item>("Items"))
-            itemsDictionary.Add(item.GetItemData().name, item);
+            itemsDictionary.Add(item.GetItemData().objectName, item);
         
         foreach (Resource res in Resources.LoadAll<Resource>("Res"))
-            resourcesDictionary.Add(res.name, res);
+            resourcesDictionary.Add(res.objectName, res);
 
         foreach (MobStats mob in Resources.LoadAll<MobStats>("Mobs"))
-            mobsDictionary.Add(mob.name, mob);
+            mobsDictionary.Add(mob.objectName, mob);
 
         foreach (MobSpawner mobSpawner in Resources.LoadAll<MobSpawner>("MobSpawners"))
-            mobSpawnersDictionary.Add(mobSpawner.name, mobSpawner);
+            mobSpawnersDictionary.Add(mobSpawner.objectName, mobSpawner);
 
     }
 
@@ -115,7 +115,7 @@ public class ItemsManager : MonoBehaviour
 
     public Item CreateItem(ItemUI item) // Create a new item based on an ui Item
     {
-        Item newItem = Instantiate(GetOriginalItem(item.GetItemData().name));
+        Item newItem = Instantiate(GetOriginalItem(item.GetItemData().objectName));
         newItem.SetItemData(item.GetItemData());
 
         if (item.GetComponent<Storage>())
