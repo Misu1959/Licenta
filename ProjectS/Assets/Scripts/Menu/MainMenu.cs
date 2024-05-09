@@ -7,10 +7,13 @@ using UnityEngine.InputSystem;
 
 public class MainMenu : MonoBehaviour
 {
+    public static MainMenu instance { get; private set; }
+
     [Header("* Menus")]
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject controlsMenu;
     [SerializeField] private GameObject worldSettingsMenu;
+    [SerializeField] private CheckActionPanel checkActionPanel;
 
     [Header("* Buttons")]
     [SerializeField] private Button buttonContinue;
@@ -23,8 +26,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button[] buttonDeleteWorld;
 
     [Header("- World settings menu buttons")]
-    [SerializeField] private Button buttonBackFromWorldSettingsMenu;
-    [SerializeField] private Button buttonResetWorldSettings;
+    [SerializeField] private Button buttonBackFromWorldSettingsMenuCheck;
+    [SerializeField] private Button buttonResetWorldSettingsCheck;
     [SerializeField] private Button buttonStartGame;
 
 
@@ -32,16 +35,12 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button buttonOpenControlsMenu;
     [SerializeField] private Button buttonBackFromControlsMenu;
     
-    [SerializeField] private Button buttonOpenResetControlsCheck;
-    [SerializeField] private Button buttonCloseResetControlsCheck;
-    [SerializeField] private Button buttonResetControls;
+    [SerializeField] private Button buttonResetControlsCheck;
     [SerializeField] private InputActionAsset input;
 
     [Header("- Quit game panel buttons")]
 
-    [SerializeField] private Button buttonOpenQuitGamePanel;
-    [SerializeField] private Button buttonCloseQuitGamePanel;
-    [SerializeField] private Button buttonQuitGame;
+    [SerializeField] private Button buttonQuitGameCheck;
 
 
     PlayerInputActions inputActions;
@@ -49,6 +48,8 @@ public class MainMenu : MonoBehaviour
 
     private void OnEnable()
     {
+        instance = this;
+
         inputActions = new PlayerInputActions();
         inputActions.Menu.BackToMenu.performed += BackToMainMenu;
         inputActions.Menu.Enable();
@@ -66,7 +67,7 @@ public class MainMenu : MonoBehaviour
     void SetButtonsFunctionality()
     {
 
-        buttonContinue.interactable = (PlayerPrefs.GetInt(SaveData.LAST_WORLD) == 0) ? false : true;
+        buttonContinue.interactable = (SaveLoadManager.Get_Last_world() == 0) ? false : true;
         buttonContinue.onClick.AddListener(() => ContinueGame());
 
         SetWorldSelectionButtons();
@@ -81,45 +82,44 @@ public class MainMenu : MonoBehaviour
         buttonOpenWorldSelectionPanel.onClick.AddListener(() => OpenWorldSelectionPanel());
         buttonCloseWorldSelectionPanel.onClick.AddListener(() => BackToMainMenu());
 
+
         for (int i = 0; i < 3; i++)
         {
             int x = i + 1;
-            buttonSelectWorld[i].onClick.AddListener(() => SelectWorld(x));
-            buttonDeleteWorld[i].onClick.AddListener(() => DeleteWorld(x));
+            int j = i;
+            
+            buttonSelectWorld[j].onClick.AddListener(() => SelectWorld(x));
+            buttonDeleteWorld[j].onClick.AddListener(() => checkActionPanel.OpenPanel(buttonSelectWorld[j].transform, "Are you sure you want to\ndelete this world ?", DeleteWorld, x));
+
         }
 
     }
 
-    void SetQuitGameButtons()
-    {
-        buttonOpenQuitGamePanel.onClick.AddListener(() => OpenQuitPanel());
-        buttonCloseQuitGamePanel.onClick.AddListener(() => BackToMainMenu());
-        buttonQuitGame.onClick.AddListener(() => QuitGame());
-    }
+    void SetQuitGameButtons() => buttonQuitGameCheck.onClick.AddListener(() => checkActionPanel.OpenPanel(buttonQuitGameCheck.transform, "Are you sure you want to quit ?", QuitGame));
 
     void SetWorldSettingsMenuButtons()
     {
-        buttonBackFromWorldSettingsMenu.onClick.AddListener(() => BackToMainMenu());
-        buttonResetWorldSettings.onClick.AddListener(() => WorldSettingsManager.ResetAllSettings());
         buttonStartGame.onClick.AddListener(() => StartGame());
+        buttonBackFromWorldSettingsMenuCheck.onClick.AddListener(() => BackFromWorldSettingsMenu());
+        buttonResetWorldSettingsCheck.onClick.AddListener(() => checkActionPanel.OpenPanel(buttonResetWorldSettingsCheck.transform, "Are you sure you want to reset the settings ?", WorldSettingsManager.ResetAllSettings));
+
+        SetInteractable_ResetSettingsButton(0);
     }
     void SetControlsMenuButtons()
     {
         buttonOpenControlsMenu.onClick.AddListener(() => OpenControlsMenu());
         buttonBackFromControlsMenu.onClick.AddListener(() => BackToMainMenu());
-        buttonResetControls.onClick.AddListener(() => ResetControlsSettings());
+
+        buttonResetControlsCheck.onClick.AddListener(() => checkActionPanel.OpenPanel(buttonResetControlsCheck.transform, "Are you sure you want to reset the controls?", ResetControlsSettings));
+
+        SetInteractable_ResetControlsButton(0);
     }
-
-
-
-
-
 
     #endregion
 
     #region Main menu
 
-    void ContinueGame() => SceneManager.LoadScene(PlayerPrefs.GetInt(SaveData.LAST_WORLD));
+    void ContinueGame() => SceneManager.LoadScene(SaveLoadManager.Get_Last_world());
 
     void OpenWorldSelectionPanel()
     {
@@ -127,15 +127,15 @@ public class MainMenu : MonoBehaviour
         SetMainButtonsInteractable(false);
 
         for (int i = 0; i < 3; i++)
-            buttonDeleteWorld[i].gameObject.SetActive(!(PlayerPrefs.GetInt(SaveData.NEW_WORLD + (i + 1)) == 0));
+            buttonDeleteWorld[i].gameObject.SetActive(SaveLoadManager.Get_Old_World(i + 1) == 1);
 
     }
 
     void SelectWorld(int worldToSelect) 
     {
-        PlayerPrefs.SetInt(SaveData.SELECTED_WORLD, worldToSelect);
+        SaveLoadManager.Set_Selected_world(worldToSelect);
 
-        if (PlayerPrefs.GetInt(SaveData.NEW_WORLD + worldToSelect) == 0)
+        if (SaveLoadManager.Get_Old_World_Current() == 0)
             OpenWorldSettingsMenu();
         else
             SceneManager.LoadScene(worldToSelect);
@@ -143,50 +143,49 @@ public class MainMenu : MonoBehaviour
     void DeleteWorld(int worldToDelete)
     {
         buttonDeleteWorld[worldToDelete - 1].gameObject.SetActive(false);
-        PlayerPrefs.SetInt(SaveData.NEW_WORLD + worldToDelete, 0);
+        SaveLoadManager.Set_Old_World(worldToDelete, 0);
 
+        if (SaveLoadManager.Get_Last_world() == worldToDelete)
+            SaveLoadManager.Set_Last_world(0);
 
         // Open confirmation panel
         // Clear all world related playerprefs
     }
 
-    void OpenQuitPanel()
-    {
-        buttonOpenQuitGamePanel.GetComponent<Animator>().SetBool("ShowPanel", true);
-        SetMainButtonsInteractable(false);
-    }
     void QuitGame() => Application.Quit();
 
     void BackToMainMenu(InputAction.CallbackContext context)
     {
-        SetMainButtonsInteractable(true);
-
-        buttonOpenWorldSelectionPanel.GetComponent<Animator>().SetBool("ShowPanel", false);
-        buttonOpenQuitGamePanel.GetComponent<Animator>().SetBool("ShowPanel", false);
-
-        worldSettingsMenu.SetActive(false);
-        controlsMenu.SetActive(false);
+        if (!context.performed) return;
+        BackToMainMenu();
     }
 
     void BackToMainMenu()
     {
-        SetMainButtonsInteractable(true);
+        if (checkActionPanel.IsOn())
+            checkActionPanel.ClosePanel();
+        else
+        {
+            SetMainButtonsInteractable(true);
 
-        buttonOpenWorldSelectionPanel.GetComponent<Animator>().SetBool("ShowPanel", false);
-        buttonOpenQuitGamePanel.GetComponent<Animator>().SetBool("ShowPanel", false);
+            worldSettingsMenu.SetActive(false);
+            controlsMenu.SetActive(false);
 
-        worldSettingsMenu.SetActive(false);
-        controlsMenu.SetActive(false);
+            if (WorldSettingsManager.GetNrOfChanges() != 0)
+                WorldSettingsManager.ResetAllSettings();
+
+            buttonOpenWorldSelectionPanel.GetComponent<Animator>().SetBool("ShowPanel", false);
+        }
     }
 
 
     void SetMainButtonsInteractable(bool activeOrNot)
     {
-        buttonContinue.interactable = ((PlayerPrefs.GetInt(SaveData.LAST_WORLD) == 0) || activeOrNot == false) ? false : true;
+        buttonContinue.interactable = ((SaveLoadManager.Get_Last_world() == 0) || activeOrNot == false) ? false : true;
 
         buttonOpenWorldSelectionPanel.interactable  = activeOrNot;
         buttonOpenControlsMenu.interactable         = activeOrNot;
-        buttonOpenQuitGamePanel.interactable        = activeOrNot;
+        buttonQuitGameCheck.interactable            = activeOrNot;
     }
 
     #endregion
@@ -199,9 +198,26 @@ public class MainMenu : MonoBehaviour
     void StartGame()
     {
         WorldSettingsManager.SaveAllSetings();
-        SceneManager.LoadScene(PlayerPrefs.GetInt(SaveData.SELECTED_WORLD));
+
+        SaveLoadManager.Set_Last_world(SaveLoadManager.Get_Selected_world());
+        SceneManager.LoadScene(SaveLoadManager.Get_Selected_world());
     }
 
+    private void BackFromWorldSettingsMenu()
+    {
+        if(WorldSettingsManager.GetNrOfChanges() == 0)
+            BackToMainMenu();
+        else
+            checkActionPanel.OpenPanel(buttonBackFromWorldSettingsMenuCheck.transform, "Are you sure you want to go back ?", ConfirmClose);
+    }
+
+    private void ConfirmClose()
+    {
+        checkActionPanel.gameObject.SetActive(false);
+        BackToMainMenu();
+    }
+
+    public void SetInteractable_ResetSettingsButton(int nr) => buttonResetWorldSettingsCheck.interactable = (nr == 0) ? false : true;
 
     #endregion
 
@@ -215,8 +231,13 @@ public class MainMenu : MonoBehaviour
         foreach(InputActionMap map in input.actionMaps)
             map.RemoveAllBindingOverrides();
 
-        PlayerPrefs.DeleteKey("rebinds");
+        SaveLoadManager.Delete_Rebinds();
+        SetInteractable_ResetControlsButton(0);
+        SaveLoadManager.Set_Nr_Rebinds_Changes(0);
+
     }
+
+    public void SetInteractable_ResetControlsButton(int nr) => buttonResetControlsCheck.interactable = (nr == 0) ? false : true;
 
     #endregion
 

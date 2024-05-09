@@ -12,6 +12,5 @@ public class WorldSettingPrefab : SettingPrefab
 
     protected override void DisplayName() => labelName.text = settingName.ToString();
 
-    public override void SaveSetting(int settingNumber) => PlayerPrefs.SetInt(settingName.ToString(), worldSettingsDictionary[settingName][currentSettingValue]);
-
+    public override void SaveSetting(int settingNumber) => SaveLoadManager.Set_World_Setting(settingName.ToString(), worldSettingsDictionary[settingName][currentSettingValue]);
 }

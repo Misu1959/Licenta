@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class UIManager : MonoBehaviour
 {
@@ -25,19 +26,12 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         instance = this;
-        escapeButton.GetComponent<Button>().onClick.AddListener(() => ShowEscapeScreen());
-
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            ShowEscapeScreen();
+        PlayerStats.instance.inputActions.Player.Pause.performed += ShowEscapeScreen;
     }
 
     public void SetClock(float dayLength,float dawnLength)
     {
-        clock.transform.parent.GetChild(0).GetComponent<Image>().fillAmount = dawnLength;
+        clock.transform.parent.GetChild(0).GetComponent<Image>().fillAmount = dawnLength + dayLength;
         clock.transform.parent.GetChild(1).GetComponent<Image>().fillAmount = dayLength;
     }
     public void ShowTime(float timeSpeed) => clock.transform.GetChild(0).eulerAngles -= new Vector3(0, 0, timeSpeed);
@@ -91,8 +85,10 @@ public class UIManager : MonoBehaviour
         hungerText.GetComponent<TextMeshProUGUI>().text = hunger.ToString();
     }
 
-    private void ShowEscapeScreen()
+    private void ShowEscapeScreen(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
+
         escapeScreen.SetActive(!escapeScreen.activeInHierarchy);
 
         Time.timeScale = escapeScreen.activeInHierarchy ? 0.0f : 1.0f;

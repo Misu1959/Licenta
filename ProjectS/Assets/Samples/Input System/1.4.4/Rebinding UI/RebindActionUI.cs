@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine.Events;
-using UnityEngine.UI;
+using UnityEngine;
 using TMPro;
 
 ////TODO: localization support
@@ -15,8 +15,19 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
     /// </summary>
     public class RebindActionUI : MonoBehaviour
     {
-        private void Awake() => UpdateBindingDisplay();
+        static int nrOfChanges = 0;
+        public static void SetNrOfChanges(int val)
+        {
+            nrOfChanges += val;
+            MainMenu.instance.SetInteractable_ResetControlsButton(nrOfChanges);
+            SaveLoadManager.Set_Nr_Rebinds_Changes(nrOfChanges);
+        }
 
+        private void Awake()
+        {
+            SetNrOfChanges(SaveLoadManager.Get_Nr_Rebinds_Changes());
+            UpdateBindingDisplay();
+        }
 
         /// <summary>
         /// Reference to the action that is to be rebound.
@@ -203,6 +214,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 var bindingIndex = action.bindings.IndexOf(x => x.id.ToString() == m_BindingId);
                 if (bindingIndex != -1)
                     displayString = action.GetBindingDisplayString(bindingIndex, out deviceLayoutName, out controlPath, displayStringOptions);
+
             }
 
             // Set on label (if any).
@@ -211,6 +223,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
             // Give listeners a chance to configure UI in response.
             m_UpdateBindingUIEvent?.Invoke(this, displayString, deviceLayoutName, controlPath);
+
         }
 
         /// <summary>
@@ -295,6 +308,11 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                             PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
                             return;
                         }
+
+                        if (action.bindings[bindingIndex].path != action.bindings[bindingIndex].effectivePath)
+                            SetNrOfChanges(+1);
+                        else
+                            SetNrOfChanges(-1);
 
                         UpdateBindingDisplay();
                         CleanUp();

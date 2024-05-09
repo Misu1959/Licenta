@@ -17,12 +17,14 @@ public class TimeManager : MonoBehaviour
 
     [SerializeField] private GameObject sun;
 
-    [SerializeField] private float dayDuration;
-    [Range(1,16)][SerializeField] private int dayLength;
-    [Range(1,16)][SerializeField] private int dawnLength;
-
     private const int nrOfHoursInDay = 16;
-    private const float hourLength = .0625f;
+    private const float hourLength = 100 / (float)nrOfHoursInDay / 100; // How much does one hour represent of a day length in percents 
+
+
+    private int dayDuration;
+    private int dayLength;
+    private int dawnLength;
+    private int nightLength;
 
     private int currentHour;
     private int currentDay;
@@ -36,9 +38,11 @@ public class TimeManager : MonoBehaviour
     private IEnumerator Start()
     {
         instance = this;
+        SetSettings();
 
         timerHour = new Timer(hourLength * dayDuration);
         timerPlayerInDarkness = new Timer(6);
+
 
         yield return null;
 
@@ -50,6 +54,7 @@ public class TimeManager : MonoBehaviour
         else
             currentDay = PlayerPrefs.GetInt("currentDay");
 
+
         UIManager.instance.SetClock(dayLength * hourLength, dawnLength * hourLength);
         UIManager.instance.ShowDayCount(currentDay);
 
@@ -59,7 +64,6 @@ public class TimeManager : MonoBehaviour
         WorldManager.instance.SendMobsToSleep(DayState.day);
         WorldManager.instance.SendMobsToSleep(DayState.day);
         WorldManager.instance.SetResourcesToHarvest(DayState.day);
-
     }
 
     void Update()
@@ -70,6 +74,15 @@ public class TimeManager : MonoBehaviour
 
         DarknessHitPlayer();
     }
+
+    private void SetSettings()
+    {
+        dayDuration = SaveLoadManager.Get_Day_Duration();
+        dayLength   = SaveLoadManager.Get_Day_Length();
+        nightLength = SaveLoadManager.Get_Night_Length();
+        dawnLength = 16 - dayLength - nightLength;
+    }
+
 
     private void PassTime() => UIManager.instance.ShowTime((360 / dayDuration) * Time.deltaTime);
     private void PassHour()

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class WorldSettingsManager : MonoBehaviour
 {
     #region World Settings 
@@ -34,9 +33,9 @@ public class WorldSettingsManager : MonoBehaviour
     private static Dictionary<SettingValue, int> dayLengthDictionary = new Dictionary<SettingValue, int>()
     {
         { SettingValue.none,    0  },
-        { SettingValue.less,    120  },
-        { SettingValue.normal,  240  },
-        { SettingValue.more,    360  }
+        { SettingValue.less,    6  },
+        { SettingValue.normal,  8  },
+        { SettingValue.more,    10  }
 
     };
 
@@ -52,9 +51,9 @@ public class WorldSettingsManager : MonoBehaviour
     private static Dictionary<SettingValue, int> nightLengthDictionary = new Dictionary<SettingValue, int>()
     {
         { SettingValue.none,    0  },
-        { SettingValue.less,    120  },
-        { SettingValue.normal,  240  },
-        { SettingValue.more,    360  }
+        { SettingValue.less,    2  },
+        { SettingValue.normal,  3  },
+        { SettingValue.more,    4  }
 
     };
 
@@ -74,9 +73,9 @@ public class WorldSettingsManager : MonoBehaviour
     #region Spawn Settings
     public enum ObjectSpawnRarity
     {
-        common = 100,
-        uncommon = 75,
-        rare = 40
+        common      = 100,
+        uncommon    = 75,
+        rare        = 40
     }
 
     private static Dictionary<SettingValue, int> itemsSpawnRate = new Dictionary<SettingValue, int>()
@@ -174,7 +173,17 @@ public class WorldSettingsManager : MonoBehaviour
     #endregion
 
 
+    private static int nrOfChanges = 0;
+    public static int GetNrOfChanges() => nrOfChanges;
+    public static void SetNrOfChanges(int val)
+    {
+        nrOfChanges += val;
+        MainMenu.instance.SetInteractable_ResetSettingsButton(nrOfChanges);
+    }
+
+
     static SettingPrefab[] settingPrefabs;
+
 
     private void Awake() => settingPrefabs = GameObject.FindObjectsOfType<SettingPrefab>();
     public static void SaveAllSetings()
@@ -187,11 +196,12 @@ public class WorldSettingsManager : MonoBehaviour
             else
                 settingPrefabs[i].SaveSetting();
 
-        PlayerPrefs.SetInt(SaveData.NR_SPAWN_SETTINGS, x);
+        SaveLoadManager.Set_Spawn_Setting_Amount(x);
     }
 
     public static void ResetAllSettings()
     {
+        SetNrOfChanges(-GetNrOfChanges());
         for (int i = 0; i < settingPrefabs.Length; i++)
             settingPrefabs[i].ResetSetting();
     }

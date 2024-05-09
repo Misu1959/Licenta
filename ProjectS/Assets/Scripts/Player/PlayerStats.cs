@@ -33,13 +33,14 @@ public class PlayerStats : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
+
         inputActions = new PlayerInputActions(asset);
         inputActions.Enable();
     }
 
     void Start()
     {
-        instance = this;
         animator = transform.GetChild(0).GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
 

@@ -26,9 +26,8 @@ public class SpawnSettingPrefab : SettingPrefab
 
     public override void SaveSetting(int settingNumber)
     {
-        PlayerPrefs.SetInt(SaveData.SPAWN_SETTING_NAME + settingNumber, (int)objectName);
-        PlayerPrefs.SetInt(SaveData.SPAWN_SETTING_VALUE + settingNumber, CalculateSetting());
-
+        SaveLoadManager.Set_Spawn_Setting_Name(settingNumber, (int)objectName);
+        SaveLoadManager.Set_Spawn_Setting_Value(settingNumber, CalculateSetting());
     }
 
 

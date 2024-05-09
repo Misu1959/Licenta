@@ -24,32 +24,25 @@ public abstract class SettingPrefab : MonoBehaviour
 
     private void InitializePrefab()
     {
-        leftButton.onClick.AddListener(() => LowerSetting());
-        rightButton.onClick.AddListener(() => GreaterSetting());
+        leftButton.onClick.AddListener(() => ChangeSetting(-1));
+        rightButton.onClick.AddListener(() => ChangeSetting(1));
 
         DisplayName();
         DisplayValue();
     }
 
-    private void LowerSetting()
+    private void ChangeSetting(int value)
     {
-        currentSettingValue--;
+        currentSettingValue += value;
         leftButton.interactable  = CheckValueWithinRange(-1);
         rightButton.interactable = CheckValueWithinRange(1);
 
-        DisplayValue();
-    }
-    private void GreaterSetting()
-    {
-        currentSettingValue++;
-        leftButton.interactable = CheckValueWithinRange(-1);
-        rightButton.interactable = CheckValueWithinRange(1);
+        int isDefault = (currentSettingValue == SettingValue.normal) ? -1 : 1;
+        WorldSettingsManager.SetNrOfChanges(isDefault);
 
         DisplayValue();
     }
 
-
-    
     public void ResetSetting()
     {
         currentSettingValue = SettingValue.normal;

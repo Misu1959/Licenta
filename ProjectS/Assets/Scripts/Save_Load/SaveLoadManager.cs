@@ -1,311 +1,91 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine;
-using static UnityEditor.Progress;
-using Unity.VisualScripting;
+using static WorldSettingsManager;
 
-public class SaveLoadManager : MonoBehaviour
+public static class SaveLoadManager 
 {
-    
-    public static SaveLoadManager instance;
 
-    void Start()
-    {
-        instance = this;
 
+    private const string S_WORLD                    = "WORLD";
+    private const string S_OLD_WORLD                = "OLD_WORLD";
         
-    }
-    /*
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            Debug.Log("Stats saved");
-            SaveWorld();
-        }
-    }
+    private const string S_LAST_WORLD               = "LastWorld";
+    private const string S_SELECTED_WORLD           = "SelectedWorld";
 
-    #region Save
-    public void SaveWorld()
-    {
-        PlayerPrefs.SetInt("prevWorld", PlayerPrefs.GetInt("prevWorld") + 1);
+    #region Rebinds
 
-        SavePlayer();
-        SaveItems();
-        SaveResources();
-        SaveConstructions();
-        SaveMobs();
-    }
+    private static string S_NR_REBINDS_CHANGES = "rebinds changes";
+    private static string S_REBINDS = "rebinds";
 
-    void SavePlayer()
-    {
-        PlayerPrefs.SetFloat("playerHp", PlayerStats.instance.hp);
-        PlayerPrefs.SetFloat("playerDmg", PlayerStats.instance.dmg);
-        PlayerPrefs.SetFloat("playerHunger", PlayerStats.instance.hunger);
-        PlayerPrefs.SetFloat("playerSpeed", PlayerStats.instance.speed);
+    public static int Get_Nr_Rebinds_Changes() => PlayerPrefs.GetInt(S_NR_REBINDS_CHANGES);
+    public static void Set_Nr_Rebinds_Changes(int value) => PlayerPrefs.SetInt(S_NR_REBINDS_CHANGES, value);
 
-        PlayerPrefs.SetFloat("playerPosX", PlayerStats.instance.gameObject.transform.position.x);
-        PlayerPrefs.SetFloat("playerPosY", PlayerStats.instance.gameObject.transform.position.y);
+    public static string Get_Rebinds() => PlayerPrefs.GetString(S_REBINDS);
+    public static void Set_Rebinds(string str) => PlayerPrefs.SetString(S_REBINDS, str);
+    public static void Delete_Rebinds() => PlayerPrefs.DeleteKey(S_REBINDS);
+    #endregion
 
-        SaveInventory();
-        // Save equipment
-    }
+    #region Spawn Settings
 
-    void SaveInventory()
-    {
-        int nrOfItemsInInventory = 0;
-        for (int i = 0; i < 15; i++)
-            if (InventoryManager.instance.inventoryPanel.GetChild(i).childCount > 0)
-            {
-                Item item = InventoryManager.instance.inventoryPanel.GetChild(i).GetChild(0).GetComponent<Item>();
-                if (item.GetComponent<ItemUI>())
-                    PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " typeOfItem", 1);
-                else if (item.GetComponent<FoodUI>())
-                {
-                    PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " typeOfItem", 2);
-                    PlayerPrefs.SetFloat("itemUI " + nrOfItemsInInventory + " foodHpAmount",item.GetComponent<Food>().hpAmount);
-                    PlayerPrefs.SetFloat("itemUI " + nrOfItemsInInventory + " foodHungerAmount",item.GetComponent<Food>().hungerAmount);
-                }
-                if (item.GetComponent<EquipmentUI>())
-                {
-                    PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " typeOfItem", 3);
-                    PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " equipmentNumber", (int)item.GetComponent<Equipment>().equipmentType);
-                    PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " equipmentActionNumber", (int)item.GetComponent<Equipment>().actionType);
-                    PlayerPrefs.SetFloat("itemUI " + nrOfItemsInInventory + " equipmentDurability", item.GetComponent<Equipment>().durability);
-                }
+    private const string S_NR_SPAWN_SETTINGS = "NrSpawnSettings";
+    private const string S_SPAWN_SETTING_NAME = "SpawnSettingName";
+    private const string S_SPAWN_SETTING_VALUE = "SpawnSettingValue";
+
+    public static int Get_Spawn_Setting_Amount() => PlayerPrefs.GetInt(Current_World() + S_NR_SPAWN_SETTINGS);
+    public static void Set_Spawn_Setting_Amount(int value) => PlayerPrefs.SetInt(Current_World() + S_NR_SPAWN_SETTINGS, value);
 
 
 
-                PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " parentSlot", i);
-                PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " name", (int)item.name);
+    public static int Get_Spawn_Setting_Name(int key) => PlayerPrefs.GetInt(Current_World() + S_SPAWN_SETTING_NAME + key);
+    public static void Set_Spawn_Setting_Name(int key, int value) => PlayerPrefs.SetInt(Current_World() + S_SPAWN_SETTING_NAME + key, value);
 
-                PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " currentStack", item.currentStack);
-                PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " maxStack", item.maxStack);
-                
-                PlayerPrefs.SetInt("itemUI " + nrOfItemsInInventory + " fuelValue", item.fuelValue);
-
-                nrOfItemsInInventory++;
-            }
-        /*
-        if(InventoryManager.instance.selectedItem)
-        {
-            PlayerPrefs.SetInt("selectedItem", 1);
-
-            Item selectedItem = InventoryManager.instance.selectedItem;
-
-            if (selectedItem.GetComponent<ItemUI>())
-                PlayerPrefs.SetInt("selectedItem typeOfItem", 1);
-            else if (selectedItem.GetComponent<FoodUI>())
-            {
-                PlayerPrefs.SetInt("selectedItem typeOfItem", 2);
-                PlayerPrefs.SetFloat("selectedItem foodHpAmount", selectedItem.GetComponent<Food>().hpAmount);
-                PlayerPrefs.SetFloat("selectedItem hungerHpAmount", selectedItem.GetComponent<Food>().hungerAmount);
-            }
-            if (selectedItem.GetComponent<EquipmentUI>())
-            {
-                PlayerPrefs.SetInt("selectedItem typeOfItem", 3);
-                PlayerPrefs.SetInt("selectedItem equipmentNumber", (int)selectedItem.GetComponent<Equipment>().equipmentType);
-                PlayerPrefs.SetInt("selectedItem equipmentActionNumber", selectedItem.GetComponent<Equipment>().actionNumber);
-                PlayerPrefs.SetFloat("selectedItem equipmentDurability", selectedItem.GetComponent<Equipment>().durability);
-            }
-
-
-            PlayerPrefs.SetString("selectedItem type", InventoryManager.instance.selectedItem.name);
-
-            PlayerPrefs.SetInt("selectedItem maxStack", InventoryManager.instance.selectedItem.maxStack);
-            PlayerPrefs.SetInt("selectedItem currentStack", InventoryManager.instance.selectedItem.currentStack);
-
-            PlayerPrefs.SetInt("selectedItem fuelValue", InventoryManager.instance.selectedItem.fuelValue);
-        }
-        else
-            PlayerPrefs.SetInt("selectedItem", 0);
-        
-        PlayerPrefs.SetInt("nrOfItemsInInventory", nrOfItemsInInventory);
-    }
-
-    void SaveItems()
-    {
-        PlayerPrefs.SetInt("nrOfItems", items.transform.childCount);
-        for(int i=0;i<items.transform.childCount;i++) 
-        {
-            Item item= items.transform.GetChild(i).GetComponent<Item>();
-
-            PlayerPrefs.SetInt("item " + i + " name", (int)item.name);
-            PlayerPrefs.SetInt("item " + i + " currentStack", item.currentStack);
-
-            PlayerPrefs.SetFloat("item " + i + " posX", item.transform.position.x);
-            PlayerPrefs.SetFloat("item " + i + " posY", item.transform.position.y);
-        }
-    }
-
-    void SaveResources()
-    {
-        PlayerPrefs.SetInt("nrOfResources", resources.transform.childCount);
-        for (int i = 0; i < resources.transform.childCount; i++)
-        {
-            Resource resource = resources.transform.GetChild(i).GetComponent<Resource>();
-
-            PlayerPrefs.SetInt("resource " + i + " name", (int)resource.name);
-
-            //PlayerPrefs.SetFloat("resource " + i + " timeToGrow", resource.timeToGrow);
-
-            PlayerPrefs.SetFloat("resource " + i + " posX", resource.transform.position.x);
-            PlayerPrefs.SetFloat("resource " + i + " posY", resource.transform.position.y);
-
-        }
-    }
-    void SaveConstructions()
-    {
-
-    }
-
-    void SaveMobs()
-    {
-
-    }
+    public static int Get_Spawn_Setting_Value(int key) => PlayerPrefs.GetInt(Current_World() + S_SPAWN_SETTING_VALUE + key);
+    public static void Set_Spawn_Setting_Value(int key, int value) => PlayerPrefs.SetInt(Current_World() + S_SPAWN_SETTING_VALUE + key, value);
 
     #endregion
 
-    #region Load
-
-    IEnumerator LoadWorld()
-    {
-        yield return null;
-
-        LoadPlayer();
-        LoadItems();
-        LoadResources();
-        LoadConstructions();
-        LoadMobs();
-    }
-
-    void LoadPlayer()
-    {
-        float _hp       = PlayerPrefs.GetFloat("playerHp");
-        float _dmg      = PlayerPrefs.GetFloat("playerDmg");
-        float _speed    = PlayerPrefs.GetFloat("playerSpeed");
-        float _hunger   = PlayerPrefs.GetFloat("playerHunger");
-        Vector2 _pos = new Vector2(PlayerPrefs.GetFloat("playerPosX"), PlayerPrefs.GetFloat("playerPosY"));
-
-        StartCoroutine(PlayerStats.instance.SetStats(_hp,_dmg,_speed,_hunger,_pos));
-        LoadInventory();
-    }
-
-    void LoadInventory()
-    {
-
-        for (int i = 0; i < PlayerPrefs.GetInt("nrOfItemsInInventory"); i++)
-        {
-            GameObject itemUI = Instantiate(ItemsManager.instance.itemUI);
-            if (PlayerPrefs.GetInt("itemUI " + i + " typeOfItem") == 1)
-                itemUI.AddComponent<ItemUI>();
-            else if (PlayerPrefs.GetInt("itemUI " + i + " typeOfItem") == 2)
-            {
-                itemUI.AddComponent<FoodUI>();
-
-                itemUI.GetComponent<Food>().hpAmount     = PlayerPrefs.GetFloat("itemUI " + i + " foodHpAmount");
-                itemUI.GetComponent<Food>().hungerAmount = PlayerPrefs.GetFloat("itemUI " + i + " foodHungerAmount");
-
-            }
-            else if (PlayerPrefs.GetInt("itemUI " + i + " typeOfItem") == 3)
-            {
-                itemUI.AddComponent<EquipmentUI>();
-
-                itemUI.GetComponent<Equipment>().equipmentType = (Equipment.Type)PlayerPrefs.GetInt("itemUI " + i + " equipmentNumber");
-                itemUI.GetComponent<Equipment>().actionType = (Equipment.ActionType)PlayerPrefs.GetInt("itemUI " + i + " equipmentActionNumber");
-                itemUI.GetComponent<Equipment>().SetDurability(PlayerPrefs.GetFloat("itemUI " + i + " equipmentDurability"));
-            }
+    #region World Settings
+    public static void Set_World_Setting(string name, int value) => PlayerPrefs.SetInt(Current_World() + name, value);
+    public static int Get_World_Setting(string name) => PlayerPrefs.GetInt(Current_World() + name);
 
 
-            itemUI.GetComponent<Item>().name = (Item.Name)PlayerPrefs.GetInt("itemUI " + i + " name");
-            itemUI.GetComponent<Item>().AddToStack(PlayerPrefs.GetInt("itemUI " + i + " currentStack"));
-
-            itemUI.GetComponent<Item>().maxStack = PlayerPrefs.GetInt("itemUI " + i + " maxStack");
-            itemUI.GetComponent<Item>().fuelValue = PlayerPrefs.GetInt("itemUI " + i + " fuelValue");
-
-            itemUI.GetComponent<Item>().transform.SetParent(InventoryManager.instance.inventoryPanel.GetChild(PlayerPrefs.GetInt("itemUI " + i + " parentSlot")));
-            itemUI.GetComponent<Item>().transform.localPosition = Vector2.zero;
-
-            itemUI.GetComponent<Item>().uiImg = ItemsManager.instance.SearchItemsList(itemUI.GetComponent<Item>().name).GetComponent<Item>().uiImg;
-            itemUI.GetComponent<Item>().GetComponent<Image>().sprite = itemUI.GetComponent<Item>().uiImg;
-        }
-        /*
-        if (PlayerPrefs.GetInt("selectedItem") == 1)
-        {
-            GameObject selectedItem = Instantiate(ItemsManager.instance.itemUI);
-
-            if (PlayerPrefs.GetInt("selectedItem typeOfItem") == 1)
-                selectedItem.AddComponent<ItemUI>();
-            else if (PlayerPrefs.GetInt("selectedItem typeOfItem") == 2)
-            {
-                selectedItem.AddComponent<FoodUI>();
-
-                selectedItem.GetComponent<Food>().hpAmount = PlayerPrefs.GetFloat("selectedItem foodHpAmount");
-                selectedItem.GetComponent<Food>().hungerAmount = PlayerPrefs.GetFloat("selectedItem foodHungerAmount");
-
-            }
-            else if (PlayerPrefs.GetInt("selectedItem typeOfItem") == 3)
-            {
-                selectedItem.AddComponent<EquipmentUI>();
-
-                selectedItem.GetComponent<Equipment>().equipmentType = (Equipment.Type)PlayerPrefs.GetInt("selectedItem equipmentNumber");
-                selectedItem.GetComponent<Equipment>().actionNumber = PlayerPrefs.GetInt("selectedItem equipmentActionNumber");
-                selectedItem.GetComponent<Equipment>().SetDurability(PlayerPrefs.GetFloat("selectedItem equipmentDurability"));
-            }
-
-            selectedItem.GetComponent<Item>().SetName(PlayerPrefs.GetString("selectedItem type"));
-            selectedItem.GetComponent<Item>().AddToStack(PlayerPrefs.GetInt("selectedItem currentStack"));
-
-            selectedItem.GetComponent<Item>().maxStack = PlayerPrefs.GetInt("selectedItem maxStack");
-            selectedItem.GetComponent<Item>().fuelValue = PlayerPrefs.GetInt("selectedItem fuelValue");
-
-            selectedItem.GetComponent<Item>().transform.SetParent(InventoryManager.instance.inventoryPanel);
-            InventoryManager.instance.se = selectedItem.GetComponent<Item>();
-
-            selectedItem.GetComponent<Image>().color = ItemsManager.instance.SearchItemsList(selectedItem.GetComponent<Item>().name).GetComponent<SpriteRenderer>().color;
-        }
-    }
+    public static int Get_World_Size() => Get_World_Setting(WorldSettingName.WorldSize.ToString());
+    public static int Get_Day_Duration() => Get_World_Setting(WorldSettingName.DayDuration.ToString());
+    public static int Get_Day_Length() => Get_World_Setting(WorldSettingName.DayLength.ToString());
+    public static int Get_Dawn_Length() => Get_World_Setting(WorldSettingName.DawnLength.ToString());
+    public static int Get_Night_Length() => Get_World_Setting(WorldSettingName.NightLength.ToString());
 
 
-    void LoadItems()
-    {
-        for (int i = 0; i < PlayerPrefs.GetInt("nrOfItems"); i++)
-        {
-            Item item = Instantiate(ItemsManager.instance.SearchItemsList((Item.Name)PlayerPrefs.GetInt("item " + i + " name"))).GetComponent<Item>();
-
-            item.name = (Item.Name)PlayerPrefs.GetInt("item " + i + " name");
-            item.AddToStack(PlayerPrefs.GetInt("item " + i + " currentStack"));
-
-            item.transform.SetParent(items.transform);
-            item.transform.position = new Vector2(PlayerPrefs.GetFloat("item " + i + " posX"), PlayerPrefs.GetFloat("item " + i + " posY"));
-        }
-    }
-
-    void LoadResources()
-    {
-        for (int i = 0; i < PlayerPrefs.GetInt("nrOfResources"); i++)
-        {
-            GameObject resource = Instantiate(ItemsManager.instance.SearchResourcesList((ObjectName)PlayerPrefs.GetInt("resource " + i + " name")).gameObject);
-            resource.GetComponent<Resource>().name = (ObjectName)PlayerPrefs.GetInt("resource " + i + " name");
-
-            //resource.GetComponent<Resource>().timeToGrow = PlayerPrefs.GetFloat("resource " + i + " timeToGrow");
-
-            resource.transform.SetParent(resources.transform);
-            resource.transform.position = new Vector2(PlayerPrefs.GetFloat("resource " + i + " posX"), PlayerPrefs.GetFloat("resource " + i + " posY"));
-        }
-
-    }
-
-    void LoadConstructions()
-    {
-
-    }
-
-    void LoadMobs()
-    {
-        
-    }
     #endregion
-*/
+
+
+
+
+
+    private static string World(int key) => S_WORLD + key.ToString();
+    private static string Current_World() => World(Get_Selected_world());
+
+
+    public static void Set_Last_world(int value) => PlayerPrefs.SetInt(S_LAST_WORLD, value);
+    public static int Get_Last_world() => PlayerPrefs.GetInt(S_LAST_WORLD);
+
+
+    public static void Set_Selected_world(int value) => PlayerPrefs.SetInt(S_SELECTED_WORLD, value);
+    public static int Get_Selected_world() => PlayerPrefs.GetInt(S_SELECTED_WORLD);
+
+
+    public static void Set_Old_World(int key, int value) => PlayerPrefs.SetInt(World(key) + S_OLD_WORLD, value);
+    public static int Get_Old_World(int key) => PlayerPrefs.GetInt(World(key) + S_OLD_WORLD);
+
+
+    public static void Set_Old_World_Current(int value) => PlayerPrefs.SetInt(Current_World() + S_OLD_WORLD, value);
+    public static int Get_Old_World_Current() => PlayerPrefs.GetInt(Current_World() + S_OLD_WORLD);
+
+
+
+
+
+
+
 }
