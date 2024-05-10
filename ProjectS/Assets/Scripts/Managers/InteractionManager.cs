@@ -4,18 +4,26 @@ using UnityEngine;
 
 public class InteractionManager : MonoBehaviour
 {
-    private static bool canInteract;
+    public static InteractionManager instance { get; private set; }
+    
+    private bool canInteract;
+
+    private void Awake()
+    {
+        instance = this;
+        this.gameObject.SetActive(false);
+    }
 
     private void Start() => canInteract = true; 
 
-    public static void SetInteractionStatus(bool status)
+    public void SetInteractionStatus(bool status)
     {
         canInteract = status;
         CraftingManager.instance.ActivateCraftingManager(canInteract);
     }
 
-    public static bool CanPlayerInteractWithUI() => canInteract;
-    public static bool CanPlayerInteractWithWorld(bool doPlayerNeedSelectedItem)
+    public bool CanPlayerInteractWithUI() => canInteract;
+    public bool CanPlayerInteractWithWorld(bool doPlayerNeedSelectedItem)
     {
         if(!doPlayerNeedSelectedItem)
             return canInteract & !MyMethods.CheckIfMouseIsOverUI() & !InventoryManager.instance.selectedItemSlot.CheckIfItHasItem();

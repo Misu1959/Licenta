@@ -29,8 +29,10 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     [SerializeField] protected Timer gatherTimer;
     [SerializeField] private Timer growTimer;
+    public float GetGrowTimer_RemainedTime() => growTimer.RemainedTime();
 
-    protected virtual void Start() => animator = transform.GetChild(0).GetComponent<Animator>();
+
+    private void Awake() => animator = transform.GetChild(0).GetComponent<Animator>();
 
     private void Update()
     {
@@ -40,11 +42,22 @@ public class Resource : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
+        if (!InteractionManager.instance.CanPlayerInteractWithWorld(false)) return;
 
         if (Input.GetMouseButton(0))
             if (CheckIfCanBeGathered())
                 SetToGather();
+    }
+
+    public virtual void SetResourceData()
+    {
+        gatherTimer.SetTime(gatherTimer.MaxTime());
+        growTimer.SetTime(growTimer.MaxTime());
+    }
+    public virtual void SetResourceData(float growTimer_RemainedTime, int _hp)
+    {
+        gatherTimer.SetTime(gatherTimer.MaxTime());
+        growTimer.SetTime(growTimer_RemainedTime);
     }
 
     public virtual void SetToGather()   =>   PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.gather);
@@ -73,7 +86,7 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         growTimer.StartTimer();
     }
 
-    void Regrow()
+    private void Regrow()
     {
         if (!growTimer.IsOn()) return;
         if (!animator) return;

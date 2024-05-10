@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spear
   m_EditorClassIdentifier: 
   recipeUI: {fileID: 21300000, guid: ef0ff5e4170055c4d97730fed180dfe8, type: 3}
-  prefabItem: {fileID: 7566794954163294703, guid: 5f96a5266bcc04d40aff8a060f0130d0, type: 3}
+  objectName: 3003
   isLearned: 0
   requirements:
   - name: 1001

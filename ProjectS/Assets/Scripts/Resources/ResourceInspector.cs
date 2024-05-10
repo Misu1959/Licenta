@@ -7,7 +7,7 @@ public class ResourceInspector : BaseInspector
 {
     public void OnMouseOver()
     {
-        if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
+        if (!InteractionManager.instance.CanPlayerInteractWithWorld(false)) return;
 
         if (CanPlayerInteractWithResource())
             PopUpManager.instance.ShowMousePopUp(hoverText, PopUpManager.PopUpPriorityLevel.low);

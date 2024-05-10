@@ -41,7 +41,7 @@ public class Timer
     {
         if (isOn) return;// If timer is on don't start again
 
-        remainedtime = remainedtime <= 0 ? maxTime : remainedtime; // Set the time to max time if remained time is 0 is given
+        remainedtime = (remainedtime >= 0 && remainedtime <= maxTime) ? remainedtime : maxTime; // Set the time to max time if remained time lower than 0 or higher tan maxTime
         isOn = true; // Turn timer on
     }
 

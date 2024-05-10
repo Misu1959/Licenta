@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Gold axe
   m_EditorClassIdentifier: 
   recipeUI: {fileID: 21300000, guid: bd44c6aa0a5445342a167e6b615c045c, type: 3}
-  prefabItem: {fileID: 7566794954163294703, guid: c9b5f76557c9bfc48af42b775ae043c6, type: 3}
+  objectName: 3005
   isLearned: 0
   requirements:
   - name: 1001

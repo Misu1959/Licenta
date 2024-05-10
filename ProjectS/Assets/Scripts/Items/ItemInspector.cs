@@ -12,7 +12,7 @@ public class ItemInspector : BaseInspector
     
     public void OnMouseOver()
     {
-        if (!InteractionManager.CanPlayerInteractWithWorld(false) || !item.IsOnTheGround()) return;
+        if (!InteractionManager.instance.CanPlayerInteractWithWorld(false) || !item.IsOnTheGround()) return;
 
         if (EquipmentManager.instance.BackpackStorage() && GetComponent<Storage>())
             PopUpManager.instance.ShowMousePopUp("LMB|RMB\nChange backpack\nWheel - inspect", PopUpManager.PopUpPriorityLevel.low);

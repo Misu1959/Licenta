@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Piggy Backpack
   m_EditorClassIdentifier: 
   recipeUI: {fileID: 21300000, guid: 4e25df0c30cda7e4f9453ec05ef69928, type: 3}
-  prefabItem: {fileID: 7566794954163294703, guid: 76f595ca4224bc74d873d04cf2f283ed, type: 3}
+  objectName: 3010
   isLearned: 0
   requirements:
   - name: 1010

@@ -22,7 +22,12 @@ public class PopUpManager : MonoBehaviour
     [SerializeField] private GameObject mousePopUp;
     [SerializeField] private GameObject popUpPrefab;
 
-    private void Awake() => instance = this;
+    private void Awake()
+    {
+        instance = this;
+        this.gameObject.SetActive(false);
+    }
+
     private void Update() => MoveMousePopUp();
     void SetPopUp(Transform location,GameObject popUp)
     {

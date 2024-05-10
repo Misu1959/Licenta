@@ -6,13 +6,11 @@ public class FoodUI : ItemUI
 {
     [SerializeField]
     private FoodData data;
-    public override ItemData GetItemData() { return data; }
+    public override ItemData GetItemData() => data;
 
-    public override void SetItemData(ItemData newData) { data = new FoodData((FoodData)newData); }
+    public override void SetItemData(ItemData newData) => data = new FoodData((FoodData)newData);
 
-    public override void OnRightMouseButtonPressed() { Eat(); }
-
-    private void Eat() {   PlayerStats.instance.Eat(GetComponent<Item_Base>());    }
+    public override void OnRightMouseButtonPressed() => Eat();
     
     public override void DisplayItem()
     {
@@ -33,5 +31,15 @@ public class FoodUI : ItemUI
         }
 
     }
+
+
+    public void LoadData(int _stack)
+    {
+        data.currentStack = _stack;
+        DisplayItem();
+    }
+
+    private void Eat() => PlayerStats.instance.Eat(GetComponent<Item_Base>());
+    
 
 }

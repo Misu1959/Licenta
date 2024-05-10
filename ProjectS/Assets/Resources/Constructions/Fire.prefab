@@ -376,6 +376,7 @@ MonoBehaviour:
   normalMaterial: {fileID: 2100000, guid: ac86514e3517f464e9c0f20a5473715d, type: 2}
   canBePlacedMaterial: {fileID: 2100000, guid: 310e9e72bf3411b4e8b07d3e1f3f4723, type: 2}
   cantBePlacedMaterial: {fileID: 2100000, guid: c3da3060c0fca084cbeb035cf0f512ca, type: 2}
+  objectName: 20003
   buildTimer:
     maxTime: 3
 --- !u!114 &-5403714866863252981

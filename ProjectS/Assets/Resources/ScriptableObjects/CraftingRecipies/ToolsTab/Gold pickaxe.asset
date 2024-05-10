@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Gold pickaxe
   m_EditorClassIdentifier: 
   recipeUI: {fileID: 21300000, guid: 83b551f948fe88049b560f9fcb931d53, type: 3}
-  prefabItem: {fileID: 7566794954163294703, guid: f1036ce26c11b0b47a12b431765a08a3, type: 3}
+  objectName: 3006
   isLearned: 0
   requirements:
   - name: 1001

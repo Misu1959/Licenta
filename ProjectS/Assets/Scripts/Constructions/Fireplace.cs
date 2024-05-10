@@ -5,11 +5,6 @@ using UnityEngine.EventSystems;
 
 public class Fireplace : Fire, IPointerDownHandler
 {
-    public override void Start()
-    {
-        base.Start(); // it does fire stuff
-    }
-
     public override void Update()
     {
         base.Update(); // it does fire stuff
@@ -19,7 +14,7 @@ public class Fireplace : Fire, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!InteractionManager.CanPlayerInteractWithWorld(true)) return;
+        if (!InteractionManager.instance.CanPlayerInteractWithWorld(true)) return;
 
         if (Input.GetMouseButtonDown(0))
         {

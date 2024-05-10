@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rope
   m_EditorClassIdentifier: 
   recipeUI: {fileID: 21300000, guid: 468e1452330a88640a3b60d38b77a013, type: 3}
-  prefabItem: {fileID: 5801102831372823624, guid: 5fcd93d70582c3c45ae07aa9a9e3ffbf, type: 3}
+  objectName: 1010
   isLearned: 1
   requirements:
   - name: 1005

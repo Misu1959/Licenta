@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BeeBox
   m_EditorClassIdentifier: 
   recipeUI: {fileID: 21300000, guid: 08129d9f387fd6b4091a1a4d1acd4945, type: 3}
-  prefabItem: {fileID: 8012892728087145197, guid: c341f02e3ca70e74da47953b5e0b8202, type: 3}
+  objectName: 20007
   isLearned: 0
   requirements:
   - name: 1008

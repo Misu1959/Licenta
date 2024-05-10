@@ -138,8 +138,8 @@ public class MobBehaviour : MonoBehaviour
             Vector3 pos;
             if (behaviour == Behaviour.fallowPlayer)
                 pos = PlayerStats.instance.transform.position;
-            else if (GetComponent<MobStats>().GetSpawner())
-                pos = GetComponent<MobStats>().GetSpawner().position;
+            else if (GetComponent<MobStats>().spawner)
+                pos = GetComponent<MobStats>().spawner.position;
             else
                 pos = transform.position;
 

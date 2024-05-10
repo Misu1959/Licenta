@@ -195,7 +195,7 @@ public class CraftingManager : MonoBehaviour
     private void SetTooltipRequirements()
     {
         TextMeshProUGUI itemName = toolTip.GetChild(0).GetComponent<TextMeshProUGUI>();
-        itemName.text = currentCraftingRecipe.GetRecipe().prefabItem.name;
+        itemName.text = currentCraftingRecipe.GetRecipe().objectName.ToString();
 
         int nrOfReq = currentCraftingRecipe.GetRecipe().requirements.Length - 1;
         if (nrOfReq > 0)

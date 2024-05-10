@@ -13,11 +13,13 @@ public class EquipmentManager : MonoBehaviour
     private EquipmentSlot bodySlot;
     private EquipmentSlot headSlot;
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
-        SetEquipmentSlots();
+        this.gameObject.SetActive(false);
     }
+
+    private void Start() => SetEquipmentSlots();
 
     private void SetEquipmentSlots()
     {

@@ -14,7 +14,7 @@ public class WorldManager : MonoBehaviour
     public Transform mobs { get; private set; }
     public Transform mobSpawners { get; private set; }
 
-    void Start()
+    void Awake()
     {
         instance = this;
 
@@ -24,7 +24,10 @@ public class WorldManager : MonoBehaviour
         mobs            = world.transform.GetChild(5);
         mobSpawners     = world.transform.GetChild(6);
 
+        this.gameObject.SetActive(false);
     }
+
+
     public void SendMobsToSleep(TimeManager.DayState currentDayState)
     {
         foreach (Transform mob in mobs)
@@ -33,8 +36,8 @@ public class WorldManager : MonoBehaviour
             {
                 if (currentDayState == TimeManager.DayState.dawn)
                 {
-                    if(mob.GetComponent<MobStats>().GetSpawner())
-                        mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob.GetComponent<MobStats>().GetSpawner(), MobBehaviour.Action.goInside);
+                    if(mob.GetComponent<MobStats>().spawner)
+                        mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob.GetComponent<MobStats>().spawner, MobBehaviour.Action.goInside);
                 }
                 else if (currentDayState == TimeManager.DayState.night)
                     mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob, MobBehaviour.Action.sleep);
@@ -43,8 +46,8 @@ public class WorldManager : MonoBehaviour
             else if(mob.GetComponent<MobStats>().GetSleepPeriod() == TimeManager.DayState.day)
             {
                 if (currentDayState == TimeManager.DayState.day)
-                    if(mob.GetComponent<MobStats>().GetSpawner())
-                        mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob.GetComponent<MobStats>().GetSpawner(), MobBehaviour.Action.goInside);
+                    if(mob.GetComponent<MobStats>().spawner)
+                        mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob.GetComponent<MobStats>().spawner, MobBehaviour.Action.goInside);
                     else
                         mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob, MobBehaviour.Action.sleep);
             }

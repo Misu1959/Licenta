@@ -7,7 +7,7 @@ public class MobInspector : BaseInspector
 {
     public void OnMouseOver()
     {
-        if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
+        if (!InteractionManager.instance.CanPlayerInteractWithWorld(false)) return;
 
 
         if (CanPlayerInteractWithMob())

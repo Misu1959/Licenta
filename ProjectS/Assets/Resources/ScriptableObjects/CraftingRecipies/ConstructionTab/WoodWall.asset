@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WoodWall
   m_EditorClassIdentifier: 
   recipeUI: {fileID: 21300000, guid: a6e99a1d6f3645849ab81de9df2f506e, type: 3}
-  prefabItem: {fileID: 2505370312106559334, guid: be1d8e47fb6ce274291c4a042bab6ce1, type: 3}
+  objectName: 20001
   isLearned: 1
   requirements:
   - name: 1002

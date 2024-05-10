@@ -10,7 +10,7 @@ public class ConstructionInspector : BaseInspector
 
     public void OnMouseOver()
     {
-        if (!InteractionManager.CanPlayerInteractWithWorld(doPlayerNeedSelectedItemToInteract)) return;
+        if (!InteractionManager.instance.CanPlayerInteractWithWorld(doPlayerNeedSelectedItemToInteract)) return;
 
 
         if(CanPlayerInteractWithConstruction())

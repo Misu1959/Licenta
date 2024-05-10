@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Backpack
   m_EditorClassIdentifier: 
   recipeUI: {fileID: 21300000, guid: 45dac911de8d140488633eb9e2e6e4f8, type: 3}
-  prefabItem: {fileID: 7566794954163294703, guid: 3c8509a8ba0e9bb4cabb49a907265521, type: 3}
+  objectName: 3007
   isLearned: 1
   requirements:
   - name: 1005

@@ -7,7 +7,7 @@ public class Chest : Construction, IPointerDownHandler
 {
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
+        if (!InteractionManager.instance.CanPlayerInteractWithWorld(false)) return;
 
         if (Input.GetMouseButtonDown(0))
             PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.search);

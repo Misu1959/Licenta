@@ -21,11 +21,9 @@ public class PlayerController : MonoBehaviour
 
     public bool isMovingByKeyboard { get; private set; }
 
-    void Awake()
-    {
-        instance = this;
-        SetCanMove(true);
-    }
+    void Awake() => instance = this;
+
+    private void Start() => SetCanMove(true);
 
     private void Update() => Move();
     private void FixedUpdate() => PlayerStats.instance.rigidBody.velocity = movementDir.normalized * PlayerStats.instance.speed * ((canMove == false) ? 0 : 1);

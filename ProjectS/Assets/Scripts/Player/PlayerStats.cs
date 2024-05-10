@@ -14,15 +14,15 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private InputActionAsset asset;
 
     #region Stats
+    [SerializeField] private int maxHp;
+    public int hp { get; private set; }
+
     [SerializeField] private int maxHunger;
     public int hunger { get; private set; }
 
     private Timer hungerTimer;
     private Timer starveTimer;
 
-    [SerializeField] private int maxHp;
-    public int hp { get; private set; }
-    
     [SerializeField] private int maxSpeed;
     public int speed { get; private set; }
 
@@ -34,26 +34,14 @@ public class PlayerStats : MonoBehaviour
     private void Awake()
     {
         instance = this;
-
-        inputActions = new PlayerInputActions(asset);
-        inputActions.Enable();
-    }
-
-    void Start()
-    {
         animator = transform.GetChild(0).GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
 
-        hungerTimer = new Timer(1);
-        hungerTimer.StartTimer();
-        
-        starveTimer = new Timer(1);
 
-        hunger = maxHunger;
-        hp = maxHp;
-        //if (PlayerPrefs.GetInt("prevWorld") <= 1)
-            StartCoroutine(SetStats(maxHp,maxSpeed,maxHunger,Vector2.zero));
-    
+        inputActions = new PlayerInputActions(asset);
+        inputActions.Enable();
+
+        this.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -83,17 +71,39 @@ public class PlayerStats : MonoBehaviour
             starveTimer.RestartTimer();
     }
 
-    public IEnumerator SetStats(int _hp, int _speed, int _hunger, Vector2 pos)
+    public void SetStats()
     {
-        yield return null;
-        hp      = _hp;
-        speed   = _speed;
-        hunger  = _hunger;
-        transform.position = pos;
+        hp                  = maxHp;
+        hunger              = maxHunger;
+        speed               = maxSpeed;
+        transform.position  = Vector3.zero;
 
         UIManager.instance.ShowHp(maxHp, hp);
         UIManager.instance.ShowHunger(maxHunger, hunger);
+
+        hungerTimer = new Timer(1);
+        hungerTimer.StartTimer();
+
+        starveTimer = new Timer(1);
     }
+    public void SetStats(int _hp, int _hunger, int _speed,  Vector3 _pos)
+    {
+        hp      = _hp;
+        speed   = _speed;
+        hunger  = _hunger;
+        transform.position = _pos;
+
+        UIManager.instance.ShowHp(maxHp, hp);
+        UIManager.instance.ShowHunger(maxHunger, hunger);
+
+        hungerTimer = new Timer(1);
+        hungerTimer.StartTimer();
+
+        starveTimer = new Timer(1);
+    }
+
+
+
 
     public void TakeDmg(int dmgAmount)
     {

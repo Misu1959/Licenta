@@ -7,16 +7,19 @@ public class ItemsManager : MonoBehaviour
     public static ItemsManager instance;
     [SerializeField] private GameObject itemUIPrefab;
 
-    Dictionary<ObjectName, Item>        itemsDictionary         = new Dictionary<ObjectName, Item>();
-    Dictionary<ObjectName, Resource>    resourcesDictionary     = new Dictionary<ObjectName, Resource>();
-    Dictionary<ObjectName, MobStats>    mobsDictionary          = new Dictionary<ObjectName, MobStats>();
-    Dictionary<ObjectName, MobSpawner>  mobSpawnersDictionary   = new Dictionary<ObjectName, MobSpawner>();
+    Dictionary<ObjectName, Item>            itemsDictionary         = new Dictionary<ObjectName, Item>();
+    Dictionary<ObjectName, Resource>        resourcesDictionary     = new Dictionary<ObjectName, Resource>();
+    Dictionary<ObjectName, Construction>    constructionsDictionary = new Dictionary<ObjectName, Construction>();
+    Dictionary<ObjectName, MobStats>        mobsDictionary          = new Dictionary<ObjectName, MobStats>();
+    Dictionary<ObjectName, MobSpawner>      mobSpawnersDictionary   = new Dictionary<ObjectName, MobSpawner>();
     
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
         SetDictionaries();
+
+        this.gameObject.SetActive(false);
     }
 
     private void SetDictionaries()
@@ -26,6 +29,9 @@ public class ItemsManager : MonoBehaviour
         
         foreach (Resource res in Resources.LoadAll<Resource>("Res"))
             resourcesDictionary.Add(res.objectName, res);
+
+        foreach (Construction constr in Resources.LoadAll<Construction>("Constructions"))
+            constructionsDictionary.Add(constr.objectName, constr);
 
         foreach (MobStats mob in Resources.LoadAll<MobStats>("Mobs"))
             mobsDictionary.Add(mob.objectName, mob);
@@ -37,6 +43,8 @@ public class ItemsManager : MonoBehaviour
 
     public Item GetOriginalItem(ObjectName nameOfItem) => itemsDictionary.ContainsKey(nameOfItem) ? itemsDictionary[nameOfItem] : null;
     public Resource GetOriginalResource(ObjectName nameOfResource) => resourcesDictionary.ContainsKey(nameOfResource) ? resourcesDictionary[nameOfResource] : null;
+
+    public Construction GetOriginalConstruction(ObjectName nameofConstruction) => constructionsDictionary.ContainsKey(nameofConstruction) ? constructionsDictionary[nameofConstruction] : null;
 
     public MobStats GetOriginalMob(ObjectName nameOfMob) => mobsDictionary.ContainsKey(nameOfMob) ? mobsDictionary[nameOfMob] : null;
 
@@ -121,14 +129,28 @@ public class ItemsManager : MonoBehaviour
         return newItem;
     } 
 
+    public Item CreateItem(ItemData newData) // Create a new item based on loaded data
+    {
+        Item originalItem   = GetOriginalItem(newData.objectName);
+        Item newItem        = Instantiate(originalItem);
+
+        newItem.SetItemData(newData);
+
+        if (newItem.GetComponent<Storage>())
+            newItem.GetComponent<Storage>().SetStorageData(originalItem.GetComponent<Storage>().GetStorageData());
+
+        return newItem;
+    }
+
     public Item CreateItem(ObjectName newItemName) // Create a totaly new item
     {
-        Item oldItem = GetOriginalItem(newItemName);
-        Item newItem = Instantiate(oldItem).GetComponent<Item>();
-        newItem.SetItemData(oldItem.GetItemData());
+        Item originalItem   = GetOriginalItem(newItemName);
+        Item newItem        = Instantiate(originalItem);
+        
+        newItem.SetItemData(originalItem.GetItemData());
 
         if(newItem.GetComponent<Storage>())
-            newItem.GetComponent<Storage>().SetStorageData(oldItem.GetComponent<Storage>().GetStorageData());
+            newItem.GetComponent<Storage>().SetStorageData(originalItem.GetComponent<Storage>().GetStorageData());
 
         return newItem;
     }

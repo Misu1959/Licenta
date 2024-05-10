@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Campfire
   m_EditorClassIdentifier: 
   recipeUI: {fileID: 21300000, guid: b48d04626f2106749ad539cda119fbb6, type: 3}
-  prefabItem: {fileID: 6727790776693729420, guid: d7d936653fcb4be45815421466fdd9e0, type: 3}
+  objectName: 20004
   isLearned: 0
   requirements:
   - name: 1004

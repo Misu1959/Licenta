@@ -11,7 +11,7 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        if (!InteractionManager.CanPlayerInteractWithUI()) return;
+        if (!InteractionManager.instance.CanPlayerInteractWithUI()) return;
 
         if (!itemInSlot) // If I don't have an item in slot
         {

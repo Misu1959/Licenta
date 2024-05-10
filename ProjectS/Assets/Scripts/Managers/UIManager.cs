@@ -23,11 +23,14 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject escapeButton;
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
-        PlayerStats.instance.inputActions.Player.Pause.performed += ShowEscapeScreen;
+        this.gameObject.SetActive(false);
     }
+
+    private void Start() => PlayerStats.instance.inputActions.Player.Pause.performed += ShowEscapeScreen;
+
 
     public void SetClock(float dayLength,float dawnLength)
     {
@@ -98,7 +101,7 @@ public class UIManager : MonoBehaviour
         //CraftingManager.instance.toolTip.gameObject.SetActive(false);
         InventoryManager.instance.SetBackToSlot();
 
-        InteractionManager.SetInteractionStatus(!escapeScreen.activeInHierarchy);
+        InteractionManager.instance.SetInteractionStatus(!escapeScreen.activeInHierarchy);
     }
 
     public void ShowDeathScreen(string causeOfDeath)
@@ -113,7 +116,7 @@ public class UIManager : MonoBehaviour
         Button deathScreenButton = deathScreen.transform.GetChild(2).GetComponent<Button>();
         deathScreenButton.onClick.AddListener(() => SceneManager.LoadScene(0));
 
-        InteractionManager.SetInteractionStatus(false);
+        InteractionManager.instance.SetInteractionStatus(false);
     }
 
 

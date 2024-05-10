@@ -13,17 +13,27 @@ public class Fire : MonoBehaviour
     [SerializeField] protected Timer fireTimer;
     [SerializeField] private int rangeHitBox;
 
-    public virtual void Start()
+    public float GetFireTimer_RemainedTime() => fireTimer.RemainedTime();
+
+    private void Awake()
     {
         animator = transform.GetChild(0).GetComponent<Animator>();
-
-        fireTimer.StartTimer();
-
         lightObject = transform.GetChild(1).gameObject;
         lightObject.SetActive(true);
     }
 
     public virtual void Update() => SetFireLight();
+
+    public void SetFireData()
+    {
+        fireTimer.SetTime(fireTimer.MaxTime());
+        fireTimer.StartTimer();
+    }
+    public void SetFireData(float fireTimer_RemainedTime)
+    {
+        fireTimer.SetTime(fireTimer_RemainedTime);
+        fireTimer.StartTimer();
+    }
 
     void SetFireLight()
     {

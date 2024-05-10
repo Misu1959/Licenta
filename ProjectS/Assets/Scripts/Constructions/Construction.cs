@@ -14,8 +14,10 @@ public class Construction : MonoBehaviour
 
     [Header("Properties")]
 
-    private int canBePlaced;
+    public ObjectName objectName;
+
     [SerializeField] private Timer buildTimer;
+    private int canBePlaced;
 
 
     private void Start() => spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();

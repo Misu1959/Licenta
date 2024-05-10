@@ -5,14 +5,21 @@ using UnityEngine;
 public class ComplexResource : Resource
 {
     [SerializeField] EquipmentActionType howToGather;
-    [SerializeField] private float maxHp;
-    private float hp;
+    [SerializeField] private int maxHp;
+    public int hp { get; private set; }
 
-    protected override void Start()
+    public override void SetResourceData()
     {
-        base.Start();
+        base.SetResourceData();
         hp = maxHp;
     }
+
+    public override void SetResourceData(float growTimer_RemainedTime,int _hp)
+    {
+        base.SetResourceData(growTimer_RemainedTime, _hp);
+        hp = _hp;
+    }
+
 
     public override void SetToGather()
     {

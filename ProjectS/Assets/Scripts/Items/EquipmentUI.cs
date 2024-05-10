@@ -13,9 +13,7 @@ public class EquipmentUI : ItemUI
 
     public override void SetItemData(ItemData newData) => data = new EquipmentData((EquipmentData)newData); 
 
-    public override void OnRightMouseButtonPressed() => Equip();    
-
-    private void Equip() => EquipmentManager.instance.SetEquipment(this, true, false);   
+    public override void OnRightMouseButtonPressed() => Equip();
 
     public override void DisplayItem()
     {
@@ -35,6 +33,16 @@ public class EquipmentUI : ItemUI
             transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = (float)GetEquipmentData().durability / (float)GetEquipmentData().maxDurability * 100 + " %";
         }
     }
+
+
+    public void LoadData(int _stack, int _durability)
+    {
+        data.currentStack = _stack;
+        data.durability = _durability;
+        DisplayItem();
+    }
+
+    private void Equip() => EquipmentManager.instance.SetEquipment(this, true, false);   
 
     public void UseTool()
     {

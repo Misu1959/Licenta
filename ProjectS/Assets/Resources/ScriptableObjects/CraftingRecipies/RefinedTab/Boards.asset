@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Boards
   m_EditorClassIdentifier: 
   recipeUI: {fileID: 21300000, guid: d55fe7ec4cd8e0848aebcdabaf2575d8, type: 3}
-  prefabItem: {fileID: 7854417620319708417, guid: ae67206b7d5fee3468433a8b81a8d877, type: 3}
+  objectName: 1008
   isLearned: 1
   requirements:
   - name: 1002

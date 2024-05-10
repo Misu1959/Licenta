@@ -5,17 +5,28 @@ using UnityEngine;
 public class ComplexMobSpawner : MobSpawner
 {
     private List<MobStats> mobsList = new List<MobStats>();
+    public override void AddMobToList(MobStats mob) => mobsList.Add(mob); 
+
+
     [SerializeField] private Timer respawnTimer;
+    public float GetRespawnTimer_TimeRemained() => respawnTimer.RemainedTime();
 
-    private int mobsToSpawn;
 
-    private IEnumerator Start()
-    {
-        yield return null;
-        mobsToSpawn = maxNumberOfMobs;
-        SpawnMobs();
-    }
     private void Update() => SpawnMobOnTime();
+
+    public override void SetSpawnerData() 
+    {
+        base.SetSpawnerData();
+        respawnTimer.SetTime(respawnTimer.MaxTime());
+    }
+
+    public override void SetSpawnerData(int _mobsToSpawn, float respawnTimer_RemainedTime)
+    {
+        base.SetSpawnerData(_mobsToSpawn,respawnTimer_RemainedTime);
+        respawnTimer.SetTime(respawnTimer_RemainedTime);
+    }
+
+
 
     private void SpawnMobOnTime()
     {
@@ -49,11 +60,11 @@ public class ComplexMobSpawner : MobSpawner
         for (int i = 0; i < mobsToSpawn; i++)
         {
             MobStats newMob = Instantiate(ItemsManager.instance.GetOriginalMob(mobName));
-            newMob.SetSpawner(this.transform);
+            newMob.SetMobData(this.transform);
+
 
             newMob.transform.position = transform.position;
             newMob.transform.SetParent(WorldManager.instance.mobs);
-            mobsList.Add(newMob);
         }
         mobsToSpawn = 0;
 

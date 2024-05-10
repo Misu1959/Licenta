@@ -11,9 +11,9 @@ public class ItemMaterialUI : ItemUI
 {
     [SerializeField]
     private ItemData data;
-    public override ItemData GetItemData() { return data; }
+    public override ItemData GetItemData() => data;
 
-    public override void SetItemData(ItemData newData) { data = new ItemData(newData); }
+    public override void SetItemData(ItemData newData) => data = new ItemData(newData);
 
     public override void OnRightMouseButtonPressed() {}
 
@@ -36,6 +36,12 @@ public class ItemMaterialUI : ItemUI
             transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = GetItemData().currentStack + " " + GetItemData().maxStack;
         }
 
+    }
+
+    public void LoadData(int _stack)
+    {
+        data.currentStack = _stack;
+        DisplayItem();
     }
 
 }

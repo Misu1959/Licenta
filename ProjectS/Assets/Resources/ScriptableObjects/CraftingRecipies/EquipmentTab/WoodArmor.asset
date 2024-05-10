@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WoodArmor
   m_EditorClassIdentifier: 
   recipeUI: {fileID: 21300000, guid: 856cbd40d2939fc4aa2720b58e47d78a, type: 3}
-  prefabItem: {fileID: 7566794954163294703, guid: fb662f2b62ace4d41b154f89f746e7ef, type: 3}
+  objectName: 3009
   isLearned: 0
   requirements:
   - name: 1002

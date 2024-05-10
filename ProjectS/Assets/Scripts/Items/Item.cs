@@ -11,7 +11,7 @@ public abstract class Item : Item_Base, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
+        if (!InteractionManager.instance.CanPlayerInteractWithWorld(false)) return;
         if (!IsOnTheGround()) return;
 
         if (Input.GetMouseButtonDown(0))

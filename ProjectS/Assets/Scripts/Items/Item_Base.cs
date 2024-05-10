@@ -6,8 +6,8 @@ using UnityEngine.EventSystems;
 public abstract class Item_Base : MonoBehaviour
 {
     public abstract ItemData GetItemData();
-    public FoodData GetFoodData() { return (FoodData)GetItemData(); }
-    public EquipmentData GetEquipmentData() { return (EquipmentData)GetItemData(); }
+    public FoodData GetFoodData() => (FoodData)GetItemData();
+    public EquipmentData GetEquipmentData() => (EquipmentData)GetItemData();
 
     public abstract void SetItemData(ItemData newData);
 

@@ -15,7 +15,7 @@ public class Recipe : ScriptableObject
 
 
     public Sprite recipeUI;
-    public GameObject prefabItem;
+    public ObjectName objectName;
     public bool isLearned;
 
 

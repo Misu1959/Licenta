@@ -15,12 +15,14 @@ public class InventoryManager : MonoBehaviour
     private InventorySlot[] chestSlots;
     public InventorySlot selectedItemSlot { get; private set; }
 
-    void Start()
+    void Awake()
     {
         instance = this;
-        SetSlots();
-
+        this.gameObject.SetActive(false);
     }
+
+    private void Start() => SetSlots();
+
 
     private void Update() => MoveSelectedItem(); 
 
@@ -179,6 +181,21 @@ public class InventoryManager : MonoBehaviour
         StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
 
     }
+
+    public void AddItemToInventorySlot(int slotNr, ItemUI itemToAdd)
+    {
+        RemoveItemFromSlot(itemToAdd); // Remove item from old slot
+        inventorySlots[slotNr].SetItemInSlot(itemToAdd); // Add it to the new slot
+
+        itemToAdd.transform.SetParent(inventorySlots[slotNr].transform);
+        itemToAdd.transform.localScale = Vector3.one;
+        itemToAdd.transform.localPosition = Vector2.zero;
+
+        itemToAdd.DisplayItem();
+        StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
+
+    }
+
 
     public void RemoveItemFromSlot(InventorySlot slot) 
     {

@@ -148,8 +148,6 @@ public class MainMenu : MonoBehaviour
         if (SaveLoadManager.Get_Last_world() == worldToDelete)
             SaveLoadManager.Set_Last_world(0);
 
-        // Open confirmation panel
-        // Clear all world related playerprefs
     }
 
     void QuitGame() => Application.Quit();

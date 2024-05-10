@@ -8,7 +8,7 @@ public class EquipmentSlotInspector : InventorySlotInspector
     public override void MouseOver()
     {
         if (!isMouseOver) return;
-        if (!InteractionManager.CanPlayerInteractWithUI()) return;
+        if (!InteractionManager.instance.CanPlayerInteractWithUI()) return;
 
         if (!inventorySlot.CheckIfItHasItem()) // If I don't have an item in slot
         {

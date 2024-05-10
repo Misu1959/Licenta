@@ -55,7 +55,7 @@ public class PlayerBehaviour : MonoBehaviour
     private void SearchForItemInRange(InputAction.CallbackContext context)
     {
         if (!context.performed) return;// If interact_closest button is not pressed return otherwise search for items in range
-        if (!InteractionManager.CanPlayerInteractWithUI()) return;
+        if (!InteractionManager.instance.CanPlayerInteractWithUI()) return;
         if (PlayerController.instance.isMovingByKeyboard) return;// If it's moving from keyboard don't take space action
 
         InventoryManager.instance.SetBackToSlot();
@@ -99,7 +99,7 @@ public class PlayerBehaviour : MonoBehaviour
     private void SearchForMobInRange(InputAction.CallbackContext context)
     {
         if (!context.performed) return;// If attack_closest button is not pressed return otherwise search for items in range
-        if (!InteractionManager.CanPlayerInteractWithUI()) return;
+        if (!InteractionManager.instance.CanPlayerInteractWithUI()) return;
         if (PlayerController.instance.isMovingByKeyboard) return;
         if (!EquipmentManager.instance.GetHandItem())
         {
@@ -153,7 +153,7 @@ public class PlayerBehaviour : MonoBehaviour
         currentAction = _currentAction;
 
         if (currentAction == Action.place)
-            InteractionManager.SetInteractionStatus(false);
+            InteractionManager.instance.SetInteractionStatus(false);
     }
 
     public void PerformAction()
@@ -218,12 +218,12 @@ public class PlayerBehaviour : MonoBehaviour
 
             case Action.place:
                 {
-                    InteractionManager.SetInteractionStatus(false);
+                    InteractionManager.instance.SetInteractionStatus(false);
                     break;
                 }
             case Action.build:
                 {
-                    InteractionManager.SetInteractionStatus(false);
+                    InteractionManager.instance.SetInteractionStatus(false);
                     PlayerStats.instance.animator.SetBool("Gather", true);
 
                     break;
@@ -316,12 +316,12 @@ public class PlayerBehaviour : MonoBehaviour
 
             case Action.place:
                 {
-                    InteractionManager.SetInteractionStatus(true);
+                    InteractionManager.instance.SetInteractionStatus(true);
                     break;
                 }
             case Action.build:
                 {
-                    InteractionManager.SetInteractionStatus(true);
+                    InteractionManager.instance.SetInteractionStatus(true);
                     PlayerStats.instance.animator.SetBool("Gather", false);
 
                     break;
@@ -389,12 +389,12 @@ public class PlayerBehaviour : MonoBehaviour
 
             case Action.place:
                 {
-                    InteractionManager.SetInteractionStatus(true);
+                    InteractionManager.instance.SetInteractionStatus(true);
                     break;
                 }
             case Action.build:
                 {
-                    InteractionManager.SetInteractionStatus(true);
+                    InteractionManager.instance.SetInteractionStatus(true);
 
                     PlayerStats.instance.animator.SetBool("Gather", false);
                     Destroy(currentTarget.gameObject);

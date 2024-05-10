@@ -26,8 +26,8 @@ public class TimeManager : MonoBehaviour
     private int dawnLength;
     private int nightLength;
 
-    private int currentHour;
-    private int currentDay;
+    public int currentHour { get; private set; }
+    public int currentDay { get; private set; }
 
     public DayState dayState { get; private set; }
     private Timer timerHour;
@@ -35,35 +35,10 @@ public class TimeManager : MonoBehaviour
     private Timer timerPlayerInDarkness;
     private int nrOfPopUps;
 
-    private IEnumerator Start()
+    private void Awake()
     {
         instance = this;
-        SetSettings();
-
-        timerHour = new Timer(hourLength * dayDuration);
-        timerPlayerInDarkness = new Timer(6);
-
-
-        yield return null;
-
-        if (currentDay == 0)
-        {
-            currentDay = 1;
-            PlayerPrefs.SetInt("currentDay", currentDay);
-        }
-        else
-            currentDay = PlayerPrefs.GetInt("currentDay");
-
-
-        UIManager.instance.SetClock(dayLength * hourLength, dawnLength * hourLength);
-        UIManager.instance.ShowDayCount(currentDay);
-
-        dayState = DayState.day;
-
-
-        WorldManager.instance.SendMobsToSleep(DayState.day);
-        WorldManager.instance.SendMobsToSleep(DayState.day);
-        WorldManager.instance.SetResourcesToHarvest(DayState.day);
+        this.gameObject.SetActive(false);
     }
 
     void Update()
@@ -75,12 +50,44 @@ public class TimeManager : MonoBehaviour
         DarknessHitPlayer();
     }
 
-    private void SetSettings()
+    public void SetTimeSettings(int _dayDuration, int _daylength, int _nightLength)
     {
-        dayDuration = SaveLoadManager.Get_Day_Duration();
-        dayLength   = SaveLoadManager.Get_Day_Length();
-        nightLength = SaveLoadManager.Get_Night_Length();
-        dawnLength = 16 - dayLength - nightLength;
+        dayDuration = _dayDuration;
+        dayLength   = _daylength;
+        nightLength = _nightLength;
+        dawnLength  = 16 - dayLength - nightLength;
+
+        currentHour = 0;
+        currentDay  = 1;
+        dayState = dayLength == 0 ? DayState.dawn : DayState.day;
+
+        timerHour = new Timer(hourLength * dayDuration);
+        timerPlayerInDarkness = new Timer(6);
+
+        ChangeDayState(dayState, false);
+
+        UIManager.instance.SetClock(dayLength * hourLength, dawnLength * hourLength);
+        UIManager.instance.ShowDayCount(currentDay);
+    }
+
+    public void SetTimeSettings(int _dayDuration,int _daylength,int _nightLength,int _currenthour,int _currentDay,int _dayState)
+    {
+        dayDuration = _dayDuration;
+        dayLength   = _daylength;
+        nightLength = _nightLength;
+        dawnLength  = 16 - dayLength - nightLength;
+
+        currentHour = _currenthour;
+        currentDay = _currentDay;
+        dayState = (DayState)dayState;
+
+        timerHour = new Timer(hourLength * dayDuration);
+        timerPlayerInDarkness = new Timer(6);
+
+        ChangeDayState(dayState, false);
+
+        UIManager.instance.SetClock(dayLength * hourLength, dawnLength * hourLength);
+        UIManager.instance.ShowDayCount(currentDay);
     }
 
 
@@ -117,7 +124,7 @@ public class TimeManager : MonoBehaviour
         // Save world
 
     }
-    private void ChangeDayState(DayState newState)
+    private void ChangeDayState(DayState newState, bool passDay = true)
     {
         WorldManager.instance.SendMobsToSleep(newState);
         WorldManager.instance.WakeUpMobs(newState);
@@ -128,7 +135,9 @@ public class TimeManager : MonoBehaviour
         {
             case DayState.day:
                 {
-                    PassDay();
+                    if(passDay)
+                        PassDay();
+    
                     sun.GetComponent<Animator>().SetBool("isDay", true);
                     break;
                 }
@@ -147,7 +156,7 @@ public class TimeManager : MonoBehaviour
     }
 
 
-    void DarknessHitPlayer()
+    private void DarknessHitPlayer()
     {
 
         if (dayState != DayState.night || PlayerStats.instance.isInLight > 0)

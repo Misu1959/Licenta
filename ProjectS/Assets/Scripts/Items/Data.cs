@@ -87,6 +87,14 @@ public enum ObjectName
 
     #region Constructions
     [InspectorName(null)] constructions = 20000,
+    [InspectorName("Constructions/WoodWall")] woodWall,
+    [InspectorName("Constructions/StoneWall")] stoneWall,
+    [InspectorName("Constructions/Fire")] fire,
+    [InspectorName("Constructions/Campfire")] campfire,
+    [InspectorName("Constructions/Chest")] chest,
+    [InspectorName("Constructions/ScienceMachine")] scienceMachine,
+    [InspectorName("Constructions/BeeBox")] beeBox,
+    [InspectorName("Constructions/PigHouse")] pigHouse,
 
     #endregion
 
@@ -143,18 +151,27 @@ public class ItemData
     public ObjectName objectName;
 
     public int maxStack;
-    [HideInInspector]public int currentStack;
+    public int currentStack;
 
     public int fuelValue;
 
     public ItemData(ItemData newItemData)
     {
-        objectName = newItemData.objectName;
+        objectName      = newItemData.objectName;
 
         uiImg           = newItemData.uiImg;
         maxStack        = newItemData.maxStack;
-        currentStack    = newItemData.currentStack == 0 ? 1 : newItemData.currentStack;
+        currentStack    = (newItemData.currentStack == 0) ? 1 : newItemData.currentStack;
         fuelValue       = newItemData.fuelValue;
+    }
+
+    public ItemData(Sprite _uiImg,ObjectName _objectName,int _maxStack, int _currentStack,int _fuelValue)
+    {
+        uiImg           = _uiImg;
+        objectName      = _objectName;
+        maxStack        = _maxStack;
+        currentStack    = _currentStack;
+        fuelValue       = _fuelValue;
     }
 
     public virtual ItemType GetItemType() => ItemType.material;
@@ -182,6 +199,8 @@ public class FoodData : ItemData
         if (canBeCoocked)
             cookTimer = new Timer(newItemData.cookTimer.MaxTime());
     }
+    public FoodData(Sprite _uiImg, ObjectName _objectName, int _maxStack, int _currentStack, int _fuelValue)
+        : base(_uiImg, _objectName, _maxStack, _currentStack, _fuelValue) { }
 
     public override ItemType GetItemType() => ItemType.food; 
 }
@@ -208,6 +227,12 @@ public class EquipmentData : ItemData
         maxDurability   = newItemData.maxDurability;
         durability      = newItemData.durability == 0 ? newItemData.maxDurability : newItemData.durability;
 
+    }
+
+    public EquipmentData(Sprite _uiImg, ObjectName _objectName, int _maxStack, int _currentStack, int _fuelValue,int _durability)
+        : base(_uiImg, _objectName, _maxStack, _currentStack, _fuelValue)
+    {
+        durability = _durability;
     }
 
     public override ItemType GetItemType() => ItemType.equipment;

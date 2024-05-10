@@ -9,44 +9,55 @@ public class MobStats : MonoBehaviour,IPointerDownHandler
     public Rigidbody  rigidBody     { get; private set; }
     public Animator   animator      { get; private set; }
 
-
-    private Transform spawner;
+    public Transform spawner { get; private set; }
 
     [Header("Stats")]
 
     public ObjectName objectName;
 
+    
     [SerializeField] TimeManager.DayState sleepPeriod;
+    public TimeManager.DayState GetSleepPeriod() => sleepPeriod;
+
+
 
     [SerializeField] private int maxHp;
     public int hp { get; private set; }
 
+
     [SerializeField] private int dmg;
-
-
     [SerializeField] private int walkSpeed;
     [SerializeField] private int runSpeed;
-
-    public TimeManager.DayState GetSleepPeriod() => sleepPeriod;
-    public Transform GetSpawner() => spawner;
-    public void SetSpawner(Transform _spawner) => spawner = _spawner;
-
 
     public int GetDmg() => dmg;
     public int GetWalkSpeed() => walkSpeed;
     public int GetRunSpeed() => runSpeed;
 
-    private void Start()
+
+    private void Awake()
     {
         rigidBody   = GetComponent<Rigidbody>();
         animator    = transform.GetChild(0).GetComponent<Animator>();
-
+    }
+    public void SetMobData(Transform _spawner)
+    {
+        spawner = _spawner;
+        spawner.GetComponent<MobSpawner>().AddMobToList(this);
+  
         hp = maxHp;
     }
+    public void SetMobData(Transform _spawner, int _hp) 
+    {
+        spawner = _spawner;
+        spawner.GetComponent<MobSpawner>().AddMobToList(this);
+
+        hp = _hp; 
+    }
+
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!InteractionManager.CanPlayerInteractWithWorld(false)) return;
+        if (!InteractionManager.instance.CanPlayerInteractWithWorld(false)) return;
 
         if (Input.GetMouseButton(0))
             if (PlayerStats.instance.GetActualDamage() > 0)

@@ -21,7 +21,7 @@ public class InventorySlotInspector : MonoBehaviour,IPointerEnterHandler,IPointe
         if (IsSelectedItemSlot()) return;
 
         if (!isMouseOver) return;
-        if (!InteractionManager.CanPlayerInteractWithUI()) return;
+        if (!InteractionManager.instance.CanPlayerInteractWithUI()) return;
 
         if (!inventorySlot.CheckIfItHasItem()) // If I don't have an item in slot
         {

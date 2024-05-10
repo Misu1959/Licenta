@@ -8,19 +8,38 @@ public class MobSpawner : MonoBehaviour
 
     [SerializeField] protected ObjectName mobName;
     [SerializeField] protected int maxNumberOfMobs;
+    public int mobsToSpawn { get; protected set; }
+    public virtual void AddMobToList(MobStats mob) { } // it's use is in complex mob spawner
 
-    private void Start() => Invoke(nameof(SpawnMobs), .5f);
+    public virtual void SetSpawnerData()
+    {
+        mobsToSpawn = maxNumberOfMobs;
+        SpawnMobs();
+    }
+
+    public virtual void SetSpawnerData(int _mobsToSpawn, float respawnTimer_RemainedTime)
+    {
+        mobsToSpawn = _mobsToSpawn;
+        SpawnMobs();
+    }
 
     protected virtual void SpawnMobs()
     {
+        if(mobsToSpawn <= 0)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
 
         MobStats newMob = Instantiate(ItemsManager.instance.GetOriginalMob(mobName));
-        newMob.SetSpawner(this.transform);
 
         newMob.transform.position = transform.position;
         newMob.transform.SetParent(WorldManager.instance.mobs);
+        
+        newMob.SetMobData(this.transform);
 
-        maxNumberOfMobs--;
+
+        mobsToSpawn--;
         Invoke(nameof(SpawnMobs), .5f);
     }
 }
