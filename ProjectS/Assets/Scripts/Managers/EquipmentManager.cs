@@ -39,7 +39,7 @@ public class EquipmentManager : MonoBehaviour
 
         if (equipmentToAdd.GetComponent<Item>()) // If not an UI item
         {
-            equipmentUIToAdd = ItemsManager.instance.CreateItemUI(equipmentToAdd.GetComponent<Item>());
+            equipmentUIToAdd = ItemsManager.instance.CreateItemUI(equipmentToAdd.GetItemData(), equipmentToAdd.GetComponent<Storage>()?.GetStorageData());
             Destroy(equipmentToAdd.gameObject);
         }
 

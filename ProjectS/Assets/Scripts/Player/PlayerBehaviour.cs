@@ -39,16 +39,18 @@ public class PlayerBehaviour : MonoBehaviour
     public bool isPerformingAction { get; private set; }
 
 
-    void Awake()
+    void Awake() => instance = this;
+
+    private void Start()
     {
-        instance = this;
-        Invoke(nameof(Initialize), .01f);
+        InputManager.instance.GetInputActions().Player.Interact.performed += SearchForItemInRange;
+        InputManager.instance.GetInputActions().Player.Attack.performed += SearchForMobInRange;
     }
 
-    private void Initialize()
+    private void OnDestroy()
     {
-        PlayerStats.instance.inputActions.Player.Interact.performed    += SearchForItemInRange;
-        PlayerStats.instance.inputActions.Player.Attack.performed      += SearchForMobInRange;
+        InputManager.instance.GetInputActions().Player.Interact.performed -= SearchForItemInRange;
+        InputManager.instance.GetInputActions().Player.Attack.performed -= SearchForMobInRange;
     }
 
     void Update() => CancelActionByMoving();

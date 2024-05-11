@@ -90,6 +90,7 @@ public static class SaveLoadManager
 
     public static void Set_Current_Day() => PlayerPrefs.SetInt(Current_World() + S_CURRENT_DAY, TimeManager.instance.currentDay);
     public static int Get_Current_Day() => PlayerPrefs.GetInt(Current_World() + S_CURRENT_DAY);
+    public static int Get_World_Day(int key) => PlayerPrefs.GetInt(World(key) + S_CURRENT_DAY);
 
 
     public static void Set_Current_DayState() => PlayerPrefs.SetInt(Current_World() + S_CURRENT_DAY_STATE, (int)TimeManager.instance.dayState);
@@ -180,7 +181,7 @@ public static class SaveLoadManager
     private const string S_ITEM_POS_X = "Item_Pos_X";
     private const string S_ITEM_POS_Z = "Item_Pos_Z";
 
-    public static void Set_Nr_Of_Items() => PlayerPrefs.SetInt(Current_World() + S_NR_OF_ITEMS, WorldManager.instance.resources.childCount);
+    public static void Set_Nr_Of_Items() => PlayerPrefs.SetInt(Current_World() + S_NR_OF_ITEMS, WorldManager.instance.items.childCount);
     public static int Get_Nr_Of_Items() => PlayerPrefs.GetInt(Current_World() + S_NR_OF_ITEMS);
 
 

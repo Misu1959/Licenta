@@ -58,6 +58,9 @@ public class Resource : MonoBehaviour, IPointerDownHandler
     {
         gatherTimer.SetTime(gatherTimer.MaxTime());
         growTimer.SetTime(growTimer_RemainedTime);
+
+        if (growTimer_RemainedTime != growTimer.MaxTime())
+            growTimer.StartTimer();
     }
 
     public virtual void SetToGather()   =>   PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.gather);
@@ -81,7 +84,6 @@ public class Resource : MonoBehaviour, IPointerDownHandler
         PlayerBehaviour.instance.CompleteAction(); // Complete the action
 
         animator.SetTrigger("PlayerInput");
-        animator.SetInteger("Stage", (int)GrowthStages.empty);
 
         growTimer.StartTimer();
     }
@@ -123,6 +125,9 @@ public class Resource : MonoBehaviour, IPointerDownHandler
             animator.SetInteger("Stage", (int)GrowthStages.almostFull);
         else if (growTimer.IsElapsedPercent(33))
             animator.SetInteger("Stage", (int)GrowthStages.barrelyFull);
+        else
+            animator.SetInteger("Stage", (int)GrowthStages.empty);
+
     }
 
 }

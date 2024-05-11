@@ -120,13 +120,6 @@ public enum ObjectName
     #endregion
 };
 
-public enum ItemType
-{
-    material,
-    food,
-    equipment
-}
-
 public enum EquipmentType
 {
     hand,
@@ -174,8 +167,6 @@ public class ItemData
         fuelValue       = _fuelValue;
     }
 
-    public virtual ItemType GetItemType() => ItemType.material;
-
 }
 
 [Serializable]
@@ -202,7 +193,6 @@ public class FoodData : ItemData
     public FoodData(Sprite _uiImg, ObjectName _objectName, int _maxStack, int _currentStack, int _fuelValue)
         : base(_uiImg, _objectName, _maxStack, _currentStack, _fuelValue) { }
 
-    public override ItemType GetItemType() => ItemType.food; 
 }
 
 [Serializable]
@@ -235,7 +225,7 @@ public class EquipmentData : ItemData
         durability = _durability;
     }
 
-    public override ItemType GetItemType() => ItemType.equipment;
+    public bool HasStorageData() => (actionType == EquipmentActionType.storage) ? true : false;
 }
 
 [Serializable]
@@ -252,11 +242,13 @@ public class StorageData
             if (newStorageData.items[i] != null)
                 if (newStorageData.items[i].objectName != ObjectName.empty)
                 {
-                    if (newStorageData.items[i].GetItemType() == ItemType.material)
+                    Item originalItem = ItemsManager.instance.GetOriginalItem(newStorageData.items[i].objectName);
+
+                    if (originalItem.GetComponent<ItemMaterial>())
                         items[i] = new ItemData(newStorageData.items[i]);
-                    else if (newStorageData.items[i].GetItemType() == ItemType.food)
+                    else if (originalItem.GetComponent<Food>())
                         items[i] = new FoodData((FoodData)newStorageData.items[i]);
-                    else if (newStorageData.items[i].GetItemType() == ItemType.equipment)
+                    else if (originalItem.GetComponent<Equipment>())
                         items[i] = new EquipmentData((EquipmentData)newStorageData.items[i]);
                 }
     }

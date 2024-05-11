@@ -32,7 +32,7 @@ public class ConstructionInspector : BaseInspector
             if (GetComponent<Fireplace>())
             {
                 if (GetComponent<Fireplace>().IsFireOn() &&
-                    selectedItem.GetItemData().GetItemType() == ItemType.food &&
+                    selectedItem.GetComponent<FoodUI>() &&
                     selectedItem.GetFoodData().canBeCoocked)
                 {
                     hoverText = "Lmb - cook\nWheel - inspect";

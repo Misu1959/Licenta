@@ -9,10 +9,6 @@ public class PlayerStats : MonoBehaviour
     public Animator animator { get; private set; }
     public Rigidbody rigidBody { get; private set; }
 
-    public PlayerInputActions inputActions { get; private set; }
-
-    [SerializeField] private InputActionAsset asset;
-
     #region Stats
     [SerializeField] private int maxHp;
     public int hp { get; private set; }
@@ -37,12 +33,10 @@ public class PlayerStats : MonoBehaviour
         animator = transform.GetChild(0).GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
 
-
-        inputActions = new PlayerInputActions(asset);
-        inputActions.Enable();
-
         this.gameObject.SetActive(false);
     }
+
+    private void Start() => InputManager.instance.SetActionMap(InputManager.instance.GetInputActions().Player);
 
     private void Update()
     {

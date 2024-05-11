@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        Vector2 keyboardinput = PlayerStats.instance.inputActions.Player.Move.ReadValue<Vector2>();
+        Vector2 keyboardinput = InputManager.instance.GetInputActions().Player.Move.ReadValue<Vector2>();
         isMovingByKeyboard = (keyboardinput == Vector2.zero) ? false : true;
 
         if (PlayerBehaviour.instance.currentTarget) // If player has a target

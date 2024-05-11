@@ -11,7 +11,7 @@ public class CheckActionPanel : MonoBehaviour
     private Button buttonCancelAction;
     private Button buttonConfirmAction;
     
-    void OnEnable() => SetFields();
+    void Awake() => SetFields();
 
     void SetFields()
     {

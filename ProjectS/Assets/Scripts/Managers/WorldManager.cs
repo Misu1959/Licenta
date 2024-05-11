@@ -6,46 +6,40 @@ public class WorldManager : MonoBehaviour
 {
     public static WorldManager instance;
 
-    [SerializeField] private GameObject world;
+    public Transform ground;
+    public Transform sun;
 
-    public Transform items { get; private set; }
-    public Transform resources { get; private set; }
-    public Transform constructions { get; private set; }
-    public Transform mobs { get; private set; }
-    public Transform mobSpawners { get; private set; }
+    public Transform items;
+    public Transform resources;
+    public Transform constructions;
+    public Transform mobs;
+    public Transform mobSpawners;
 
     void Awake()
     {
         instance = this;
-
-        items           = world.transform.GetChild(2);
-        resources       = world.transform.GetChild(3);
-        constructions   = world.transform.GetChild(4);
-        mobs            = world.transform.GetChild(5);
-        mobSpawners     = world.transform.GetChild(6);
-
         this.gameObject.SetActive(false);
     }
 
 
-    public void SendMobsToSleep(TimeManager.DayState currentDayState)
+    public void SendMobsToSleep()
     {
         foreach (Transform mob in mobs)
         {
             if (mob.GetComponent<MobStats>().GetSleepPeriod() == TimeManager.DayState.night)
             {
-                if (currentDayState == TimeManager.DayState.dawn)
+                if (TimeManager.instance.dayState == TimeManager.DayState.dawn)
                 {
                     if(mob.GetComponent<MobStats>().spawner)
                         mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob.GetComponent<MobStats>().spawner, MobBehaviour.Action.goInside);
                 }
-                else if (currentDayState == TimeManager.DayState.night)
+                else if (TimeManager.instance.dayState == TimeManager.DayState.night)
                     mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob, MobBehaviour.Action.sleep);
 
             }
             else if(mob.GetComponent<MobStats>().GetSleepPeriod() == TimeManager.DayState.day)
             {
-                if (currentDayState == TimeManager.DayState.day)
+                if (TimeManager.instance.dayState == TimeManager.DayState.day)
                     if(mob.GetComponent<MobStats>().spawner)
                         mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob.GetComponent<MobStats>().spawner, MobBehaviour.Action.goInside);
                     else
@@ -54,7 +48,7 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    public void WakeUpMobs(TimeManager.DayState currentDayState)
+    public void WakeUpMobs()
     {
         foreach (Transform mob in mobs)
         {
@@ -62,7 +56,7 @@ public class WorldManager : MonoBehaviour
 
             if (mob.GetComponent<MobStats>().GetSleepPeriod() == TimeManager.DayState.night)
             {
-                if (currentDayState == TimeManager.DayState.day)
+                if (TimeManager.instance.dayState == TimeManager.DayState.day)
                 {
                     mob.gameObject.SetActive(true);
                     mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob,MobBehaviour.Action.wakeUp);
@@ -70,7 +64,7 @@ public class WorldManager : MonoBehaviour
             }
             else if (mob.GetComponent<MobStats>().GetSleepPeriod() == TimeManager.DayState.day)
             {
-                if (currentDayState == TimeManager.DayState.dawn)
+                if (TimeManager.instance.dayState == TimeManager.DayState.dawn)
                 {
                     mob.gameObject.SetActive(true);
                     mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob, MobBehaviour.Action.wakeUp);
@@ -81,7 +75,7 @@ public class WorldManager : MonoBehaviour
     }
 
 
-    public void SetResourcesToHarvest(TimeManager.DayState currentDayState)
+    public void SetResourcesToHarvest()
     {
         foreach (Transform res in resources)
             if (res.GetComponent<Resource>().GetHarvestPeriod() == TimeManager.DayState.allDay) 
@@ -90,13 +84,12 @@ public class WorldManager : MonoBehaviour
             {
                 if (res.GetChild(0).GetComponent<Animator>().GetInteger("Stage") >= (int)Resource.GrowthStages.full)
                 {
-                    if (res.GetComponent<Resource>().GetHarvestPeriod() != currentDayState)
+                    if (res.GetComponent<Resource>().GetHarvestPeriod() != TimeManager.instance.dayState)
                         res.GetChild(0).GetComponent<Animator>().SetInteger("Stage", (int)Resource.GrowthStages.hide);
                     else
                         res.GetChild(0).GetComponent<Animator>().SetInteger("Stage", (int)Resource.GrowthStages.show);
                 }
             }
-
     }
 
 }

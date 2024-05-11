@@ -10,15 +10,16 @@ public class WorldGenerator : MonoBehaviour
 {
     private static System.Random rnd = new System.Random();
 
+    public static WorldGenerator instance;
     void Awake()
     {
+        instance = this;
         if (SaveLoadManager.Get_Old_World_Current() == 0)
             StartCoroutine(GenerateWorld());
         else
             StartCoroutine(LoadWorld());
 
         SaveLoadManager.Set_Old_World_Current(1);
-        Invoke(nameof(SaveWorld), 3);
     }
 
     void FinishGenerating()
@@ -33,6 +34,8 @@ public class WorldGenerator : MonoBehaviour
         TimeManager.instance.gameObject.SetActive(true);
         ItemsManager.instance.gameObject.SetActive(true);
         WorldManager.instance.gameObject.SetActive(true);
+
+        StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
     }
 
     #region Generate
@@ -41,12 +44,14 @@ public class WorldGenerator : MonoBehaviour
     {
         Debug.Log("Generate world");
         yield return null;
-        SetTimeSettings();
+
         PlayerStats.instance.SetStats();
-        
         SpawnObjects();
 
+        SetTimeSettings();
         FinishGenerating();
+
+        SaveWorld();
     }
 
     private void SetTimeSettings()
@@ -130,7 +135,6 @@ public class WorldGenerator : MonoBehaviour
         Debug.Log("Load world");
         yield return null;
 
-        LoadTimeSettings();
         LoadPlayer();
         LoadInventory();
         
@@ -141,7 +145,7 @@ public class WorldGenerator : MonoBehaviour
 
         LoadMobs(); // needs to be loaded after the spawners
 
-
+        LoadTimeSettings();
         FinishGenerating();
     }
 
@@ -178,6 +182,7 @@ public class WorldGenerator : MonoBehaviour
 
             Item originalItem = ItemsManager.instance.GetOriginalItem(_name);
             ItemData data = null;
+            StorageData storageData = null;
 
             Sprite _uiImg = originalItem.GetItemData().uiImg;
             int _maxStack = originalItem.GetItemData().maxStack;
@@ -185,7 +190,7 @@ public class WorldGenerator : MonoBehaviour
 
             int _curentStack = SaveLoadManager.Get_Item_Stack(i);
 
-            if (originalItem.GetComponent<Item>())
+            if (originalItem.GetComponent<ItemMaterial>())
             {
                 data = new ItemData(_uiImg, _name, _maxStack, _curentStack, _fuelValue);
                 
@@ -204,7 +209,7 @@ public class WorldGenerator : MonoBehaviour
                 //Load equipment data
             }
 
-            Item item = ItemsManager.instance.CreateItem(data);
+            Item item = ItemsManager.instance.CreateItem(data, storageData);
 
             item.transform.SetParent(WorldManager.instance.items);
             item.transform.position = SaveLoadManager.Get_Item_Pos(i);
@@ -295,6 +300,8 @@ public class WorldGenerator : MonoBehaviour
 
             Item originalItem = ItemsManager.instance.GetOriginalItem(_name);
             ItemData data = null;
+            StorageData storageData = null;
+
 
             Sprite _uiImg = originalItem.GetItemData().uiImg;
             int _maxStack = originalItem.GetItemData().maxStack;
@@ -302,7 +309,7 @@ public class WorldGenerator : MonoBehaviour
 
             int _curentStack = SaveLoadManager.Get_Inventory_Item_Stack(i);
 
-            if (originalItem.GetComponent<Item>())
+            if (originalItem.GetComponent<ItemMaterial>())
             {
                 data = new ItemData(_uiImg, _name, _maxStack, _curentStack, _fuelValue);
 
@@ -315,18 +322,21 @@ public class WorldGenerator : MonoBehaviour
             }
             else if (originalItem.GetComponent<Equipment>())
             {
-                int _durability = SaveLoadManager.Get_Item_Durability(i);
+                int _durability = SaveLoadManager.Get_Inventory_Item_Durability(i);
                 data = new EquipmentData(_uiImg, _name, _maxStack, _curentStack, _fuelValue, _durability);
+
+
+                if(originalItem.GetComponent<Storage>())
+                {
+                    // load backpack storage info
+                }
 
                 //Load equipment data
             }
             int slotNr = SaveLoadManager.Get_Inventory_Item_Parent_Slot(i);
 
-            Item tempitem = ItemsManager.instance.CreateItem(data);
-
-            ItemUI itemUI = ItemsManager.instance.CreateItemUI(tempitem);
+            ItemUI itemUI = ItemsManager.instance.CreateItemUI(data, storageData);
             InventoryManager.instance.AddItemToInventorySlot(slotNr, itemUI);
-
         }
         /*
         if (PlayerPrefs.GetInt("selectedItem") == 1)
@@ -380,13 +390,23 @@ public class WorldGenerator : MonoBehaviour
     {
         Debug.Log("Save world");
 
+        SaveTime();
+
         SavePlayer();
+        SaveInventory();
 
         SaveItems();
         SaveResources();
         SaveConstructions();
         SaveMobs();
         SaveSpawners();
+    }
+
+    void SaveTime()
+    {
+        SaveLoadManager.Set_Current_Hour();
+        SaveLoadManager.Set_Current_Day();
+        SaveLoadManager.Set_Current_DayState();
     }
 
     void SavePlayer()
@@ -406,20 +426,20 @@ public class WorldGenerator : MonoBehaviour
         for (int i = 0; i < 15; i++)
             if (InventoryManager.instance.inventoryPanel.GetChild(i).childCount > 0)
             {
-                ItemUI item = InventoryManager.instance.inventoryPanel.GetChild(i).GetComponent<InventorySlot>().GetItemInSlot();
+                ItemUI itemUI = InventoryManager.instance.inventoryPanel.GetChild(i).GetComponent<InventorySlot>().GetItemInSlot();
 
                 SaveLoadManager.Set_Inventory_Item_Parent_Slot(nrOfItemsInInventory, i);
 
-                SaveLoadManager.Set_Inventory_Item_Name(i, (int)item.GetItemData().objectName);
-                SaveLoadManager.Set_Inventory_Item_Stack(i, item.GetItemData().currentStack);
+                SaveLoadManager.Set_Inventory_Item_Name(nrOfItemsInInventory, (int)itemUI.GetItemData().objectName);
+                SaveLoadManager.Set_Inventory_Item_Stack(nrOfItemsInInventory, itemUI.GetItemData().currentStack);
 
-                if (item.GetComponent<Food>()) // Save food info
+                if (itemUI.GetComponent<FoodUI>()) // Save food info
                 {
                     // For now there is no data that needs to be saved
                 }
-                else if (item.GetComponent<Equipment>()) // Save equipment info
+                else if (itemUI.GetComponent<EquipmentUI>()) // Save equipment info
                 {
-                    SaveLoadManager.Set_Inventory_Item_Durability(i, item.GetEquipmentData().durability);
+                    SaveLoadManager.Set_Inventory_Item_Durability(nrOfItemsInInventory, itemUI.GetEquipmentData().durability);
                 }
 
                 nrOfItemsInInventory++;
@@ -487,6 +507,7 @@ public class WorldGenerator : MonoBehaviour
             }
         }
     }
+
     void SaveResources()
     {
         

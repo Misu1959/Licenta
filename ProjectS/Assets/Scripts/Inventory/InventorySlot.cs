@@ -40,7 +40,7 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler
 
                     if (amount != itemInSlot.GetItemData().currentStack)
                     {
-                        itemToSelect = ItemsManager.instance.CreateItemUI(itemInSlot.GetItemData(), amount);
+                        //itemToSelect = ItemsManager.instance.CreateItemUI(itemInSlot.GetItemData(), amount);
                         itemInSlot.TakeFromStack(amount);
                     }
                     InventoryManager.instance.SetSelectedItem(itemToSelect);

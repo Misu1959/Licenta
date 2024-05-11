@@ -56,7 +56,7 @@ public class CraftingRecipe : MonoBehaviour
 
             yield return null;
 
-            ItemUI craftedItemUI = ItemsManager.instance.CreateItemUI(ItemsManager.instance.GetOriginalItem(recipe.objectName));
+            ItemUI craftedItemUI = ItemsManager.instance.CreateItemUI(recipe.objectName);
             InventoryManager.instance.AddItemToInventory(craftedItemUI);
         }
 

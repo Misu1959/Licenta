@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class ItemsManager : MonoBehaviour
 {
@@ -50,109 +51,107 @@ public class ItemsManager : MonoBehaviour
 
 
     public MobSpawner GetOriginalMobSpawner(ObjectName nameOfMobSpawner) => mobSpawnersDictionary.ContainsKey(nameOfMobSpawner) ? mobSpawnersDictionary[nameOfMobSpawner] : null;
-    public ItemUI CreateItemUI(Item item) // Create a new itemUI based on an Item
+    public ItemUI CreateItemUI(ObjectName itemName) // Create a completey new itemUI
     {
         GameObject newItemUI = Instantiate(itemUIPrefab);
 
-        switch (item.GetItemData().GetItemType())
+        Item originalItem = GetOriginalItem(itemName);
+
+        if (originalItem.GetComponent<ItemMaterial>())
+            newItemUI.AddComponent<ItemMaterialUI>();
+        else if(originalItem.GetComponent<Food>())
+            newItemUI.AddComponent<FoodUI>();
+        else if (originalItem.GetComponent<Equipment>())
         {
-            case ItemType.material:
+            newItemUI.AddComponent<EquipmentUI>();
+            
+            if (originalItem.GetEquipmentData().actionType == EquipmentActionType.torch)
+                newItemUI.AddComponent<TorchUI>();
+        
+            if(originalItem.GetComponent<Storage>())
             {
-                newItemUI.AddComponent<ItemMaterialUI>();
-                break;
+                newItemUI.AddComponent<Storage>();
+                newItemUI.GetComponent<Storage>().SetStorageData(originalItem.GetComponent<Storage>().GetStorageData());
             }
-            case ItemType.food:
-            {
-                newItemUI.AddComponent<FoodUI>();
-                break;
-            }
-            case ItemType.equipment:
-            {
-                newItemUI.AddComponent<EquipmentUI>();
 
-                if (item.GetEquipmentData().actionType == EquipmentActionType.torch)
-                    newItemUI.AddComponent<TorchUI>();
-
-                break;
-            }
-        }
-        newItemUI.GetComponent<ItemUI>().SetItemData(item.GetItemData());
-
-        if (item.GetComponent<Storage>())
-        {
-            newItemUI.AddComponent<Storage>();
-            newItemUI.GetComponent<Storage>().SetStorageData(item.GetComponent<Storage>().GetStorageData());
         }
 
+        newItemUI.GetComponent<ItemUI>().SetItemData(originalItem.GetItemData());
+
+        
         return newItemUI.GetComponent<ItemUI>();
     }
 
-    public ItemUI CreateItemUI(ItemData newData, int amount = -1) // Create a new itemUI based on an ItemUI data
+    public ItemUI CreateItemUI(ItemData itemData, StorageData storageData) // Create a new itemUI based on an old item data 
     {
         GameObject newItemUI = Instantiate(itemUIPrefab);
 
-        switch (newData.GetItemType())
-        {
-            case ItemType.material:
-                {
-                    newItemUI.AddComponent<ItemMaterialUI>();
-                    break;
-                }
-            case ItemType.food:
-                {
-                    newItemUI.AddComponent<FoodUI>();
-                    break;
-                }
-            case ItemType.equipment:
-                {
-                    newItemUI.AddComponent<EquipmentUI>();
-                    break;
-                }
-        }
-        newItemUI.GetComponent<ItemUI>().SetItemData(newData);
+        Item originalItem = GetOriginalItem(itemData.objectName);
 
-        if(amount != -1)
-            newItemUI.GetComponent<ItemUI>().GetItemData().currentStack = amount;
+        if (originalItem.GetComponent<ItemMaterial>())
+            newItemUI.AddComponent<ItemMaterialUI>();
+        else if (originalItem.GetComponent<Food>())
+            newItemUI.AddComponent<FoodUI>();
+        else if (originalItem.GetComponent<Equipment>())
+        {
+            newItemUI.AddComponent<EquipmentUI>();
+
+            if (originalItem.GetEquipmentData().actionType == EquipmentActionType.torch)
+                newItemUI.AddComponent<TorchUI>();
+
+            if (originalItem.GetComponent<Storage>())
+            {
+                newItemUI.AddComponent<Storage>();
+
+                if(storageData == null)
+                    newItemUI.GetComponent<Storage>().SetStorageData(originalItem.GetComponent<Storage>().GetStorageData());
+                else
+                    newItemUI.GetComponent<Storage>().SetStorageData(storageData);
+
+            }
+
+        }
+
+        newItemUI.GetComponent<ItemUI>().SetItemData(itemData);
+
 
         return newItemUI.GetComponent<ItemUI>();
 
     }
 
-    public Item CreateItem(ItemUI item) // Create a new item based on an ui Item
-    {
-        Item newItem = Instantiate(GetOriginalItem(item.GetItemData().objectName));
-        newItem.SetItemData(item.GetItemData());
 
-        if (item.GetComponent<Storage>())
-            newItem.GetComponent<Storage>().SetStorageData(item.GetComponent<Storage>().GetStorageData());
+    public Item CreateItem(ObjectName newItemName) // Create a totaly new item
+    {
+        Item originalItem = GetOriginalItem(newItemName);
+        Item newItem = Instantiate(originalItem);
+
+        newItem.SetItemData(originalItem.GetItemData());
+
+        if (originalItem.GetComponent<Storage>())
+            newItem.GetComponent<Storage>().SetStorageData(originalItem.GetComponent<Storage>().GetStorageData());
+
 
         return newItem;
-    } 
+    }
 
-    public Item CreateItem(ItemData newData) // Create a new item based on loaded data
+
+    public Item CreateItem(ItemData newData, StorageData storageData) // // Create a new itemUI based on an old item data
     {
         Item originalItem   = GetOriginalItem(newData.objectName);
         Item newItem        = Instantiate(originalItem);
 
         newItem.SetItemData(newData);
 
-        if (newItem.GetComponent<Storage>())
-            newItem.GetComponent<Storage>().SetStorageData(originalItem.GetComponent<Storage>().GetStorageData());
+        if (originalItem.GetComponent<Storage>())
+        {
+            if (storageData == null)
+                newItem.GetComponent<Storage>().SetStorageData(originalItem.GetComponent<Storage>().GetStorageData());
+            else
+                newItem.GetComponent<Storage>().SetStorageData(storageData);
+        }
 
         return newItem;
     }
 
-    public Item CreateItem(ObjectName newItemName) // Create a totaly new item
-    {
-        Item originalItem   = GetOriginalItem(newItemName);
-        Item newItem        = Instantiate(originalItem);
-        
-        newItem.SetItemData(originalItem.GetItemData());
-
-        if(newItem.GetComponent<Storage>())
-            newItem.GetComponent<Storage>().SetStorageData(originalItem.GetComponent<Storage>().GetStorageData());
-
-        return newItem;
-    }
 
 }

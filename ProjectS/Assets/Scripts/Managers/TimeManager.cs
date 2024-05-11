@@ -14,9 +14,6 @@ public class TimeManager : MonoBehaviour
         allDay
     }
 
-
-    [SerializeField] private GameObject sun;
-
     private const int nrOfHoursInDay = 16;
     private const float hourLength = 100 / (float)nrOfHoursInDay / 100; // How much does one hour represent of a day length in percents 
 
@@ -59,7 +56,7 @@ public class TimeManager : MonoBehaviour
 
         currentHour = 0;
         currentDay  = 1;
-        dayState = dayLength == 0 ? DayState.dawn : DayState.day;
+        dayState    = dayLength == 0 ? DayState.dawn : DayState.day;
 
         timerHour = new Timer(hourLength * dayDuration);
         timerPlayerInDarkness = new Timer(6);
@@ -78,8 +75,8 @@ public class TimeManager : MonoBehaviour
         dawnLength  = 16 - dayLength - nightLength;
 
         currentHour = _currenthour;
-        currentDay = _currentDay;
-        dayState = (DayState)dayState;
+        currentDay  = _currentDay;
+        dayState    = (DayState)_dayState;
 
         timerHour = new Timer(hourLength * dayDuration);
         timerPlayerInDarkness = new Timer(6);
@@ -126,10 +123,10 @@ public class TimeManager : MonoBehaviour
     }
     private void ChangeDayState(DayState newState, bool passDay = true)
     {
-        WorldManager.instance.SendMobsToSleep(newState);
-        WorldManager.instance.WakeUpMobs(newState);
+        WorldManager.instance.SendMobsToSleep();
+        WorldManager.instance.WakeUpMobs();
 
-        WorldManager.instance.SetResourcesToHarvest(newState);
+        WorldManager.instance.SetResourcesToHarvest();
 
         switch (newState)
         {
@@ -138,7 +135,7 @@ public class TimeManager : MonoBehaviour
                     if(passDay)
                         PassDay();
     
-                    sun.GetComponent<Animator>().SetBool("isDay", true);
+                    WorldManager.instance.sun.GetComponent<Animator>().SetBool("isDay", true);
                     break;
                 }
             case DayState.dawn:
@@ -148,7 +145,7 @@ public class TimeManager : MonoBehaviour
                 }
             case DayState.night:
                 {
-                    sun.GetComponent<Animator>().SetBool("isDay", false);
+                    WorldManager.instance.sun.GetComponent<Animator>().SetBool("isDay", false);
                     break;
                 }
         }

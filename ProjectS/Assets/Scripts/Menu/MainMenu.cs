@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
+using static PlasticPipe.Server.MonitorStats;
 
 public class MainMenu : MonoBehaviour
 {
@@ -36,31 +38,27 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button buttonBackFromControlsMenu;
     
     [SerializeField] private Button buttonResetControlsCheck;
-    [SerializeField] private InputActionAsset input;
 
     [Header("- Quit game panel buttons")]
 
     [SerializeField] private Button buttonQuitGameCheck;
 
 
-    PlayerInputActions inputActions;
-    private void Start() => SetButtonsFunctionality();
 
-    private void OnEnable()
+    private void Awake() => instance = this;
+    private void Start()
     {
-        instance = this;
 
-        inputActions = new PlayerInputActions();
-        inputActions.Menu.BackToMenu.performed += BackToMainMenu;
-        inputActions.Menu.Enable();
+        InputManager.instance.GetInputActions().Menu.BackToMenu.performed += BackToMainMenu;
 
+        InputManager.instance.SetActionMap(InputManager.instance.GetInputActions().Menu);
+
+        SetButtonsFunctionality();
     }
 
-    private void OnDisable()
-    {
-        inputActions.Menu.Disable();
-    }
+//    private void OnEnable() => 
 
+    private void OnDestroy() => InputManager.instance.GetInputActions().Menu.BackToMenu.performed -= BackToMainMenu;
 
 
     #region Buttons setup
@@ -127,8 +125,19 @@ public class MainMenu : MonoBehaviour
         SetMainButtonsInteractable(false);
 
         for (int i = 0; i < 3; i++)
-            buttonDeleteWorld[i].gameObject.SetActive(SaveLoadManager.Get_Old_World(i + 1) == 1);
+        {
+            int x = i + 1;
+            bool oldWorld = (SaveLoadManager.Get_Old_World(x) == 0) ? false : true;
 
+            if (oldWorld)
+            {
+                string selectedWorld = "World " + SaveLoadManager.Get_Selected_world();
+                string currentDay = " Day " + SaveLoadManager.Get_World_Day(x);
+                //buttonSelectWorld[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = selectedWorld +" - "+ currentDay;
+            }
+            buttonDeleteWorld[i].gameObject.SetActive(oldWorld);
+        
+        }
     }
 
     void SelectWorld(int worldToSelect) 
@@ -142,6 +151,7 @@ public class MainMenu : MonoBehaviour
     }
     void DeleteWorld(int worldToDelete)
     {
+       /// buttonSelectWorld[worldToDelete - 1].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "World " + worldToDelete + " - New game";
         buttonDeleteWorld[worldToDelete - 1].gameObject.SetActive(false);
         SaveLoadManager.Set_Old_World(worldToDelete, 0);
 
@@ -226,7 +236,7 @@ public class MainMenu : MonoBehaviour
 
     private void ResetControlsSettings()
     {
-        foreach(InputActionMap map in input.actionMaps)
+        foreach(InputActionMap map in InputManager.instance.GetInputAsset().actionMaps)
             map.RemoveAllBindingOverrides();
 
         SaveLoadManager.Delete_Rebinds();

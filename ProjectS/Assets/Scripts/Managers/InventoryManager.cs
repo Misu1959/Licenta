@@ -18,10 +18,11 @@ public class InventoryManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        SetSlots();
         this.gameObject.SetActive(false);
     }
 
-    private void Start() => SetSlots();
+//    private void Start() => 
 
 
     private void Update() => MoveSelectedItem(); 
@@ -115,7 +116,7 @@ public class InventoryManager : MonoBehaviour
         ItemUI itemUIToAdd = itemToAdd.GetComponent<ItemUI>();
         if (itemToAdd.GetComponent<Item>()) // If not an UI item
         {
-            itemUIToAdd = ItemsManager.instance.CreateItemUI(itemToAdd.GetComponent<Item>());
+            itemUIToAdd = ItemsManager.instance.CreateItemUI(itemToAdd.GetItemData(), itemToAdd.GetComponent<Storage>()?.GetStorageData());
             Destroy(itemToAdd.gameObject);
         }
 
@@ -192,7 +193,7 @@ public class InventoryManager : MonoBehaviour
         itemToAdd.transform.localPosition = Vector2.zero;
 
         itemToAdd.DisplayItem();
-        StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
+        
 
     }
 
@@ -280,8 +281,8 @@ public class InventoryManager : MonoBehaviour
 
     public void DropItem(ItemUI itemToDrop, Vector3 positionToDrop)
     {
-        
-        Item item = ItemsManager.instance.CreateItem(itemToDrop);
+
+        Item item = ItemsManager.instance.CreateItem(itemToDrop.GetItemData(), GetComponent<Storage>()?.GetStorageData());
         
         item.transform.SetParent(WorldManager.instance.items);
         item.transform.localPosition = new Vector3(positionToDrop.x, 0, positionToDrop.z);
@@ -428,7 +429,7 @@ public class InventoryManager : MonoBehaviour
                 if (storageData.items[i] != null)
                     if (storageData.items[i].objectName != ObjectName.empty)
                     {
-                        ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.items[i]);
+                        ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.items[i], null); // We know for sure that it's not a storage type obj
                         AddItemToSlot(backpackSlots[i], itemUI);
                     }
         }
@@ -455,7 +456,7 @@ public class InventoryManager : MonoBehaviour
                 if (storageData.items[i] != null)
                     if (storageData.items[i].objectName != ObjectName.empty)
                     {
-                        ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.items[i]);
+                        ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.items[i], null);// We know for sure that it's not a storage type obj
                         AddItemToSlot(chestSlots[i], itemUI);
                     }
         }
