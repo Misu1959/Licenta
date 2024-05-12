@@ -17,12 +17,13 @@ public class TimeManager : MonoBehaviour
     private const int nrOfHoursInDay = 16;
     private const float hourLength = 100 / (float)nrOfHoursInDay / 100; // How much does one hour represent of a day length in percents 
 
-
     private int dayDuration;
     private int dayLength;
     private int dawnLength;
     private int nightLength;
 
+
+    public float currentTime { get; private set; }
     public int currentHour { get; private set; }
     public int currentDay { get; private set; }
 
@@ -54,6 +55,7 @@ public class TimeManager : MonoBehaviour
         nightLength = _nightLength;
         dawnLength  = 16 - dayLength - nightLength;
 
+        currentTime = 0;
         currentHour = 0;
         currentDay  = 1;
         dayState    = dayLength == 0 ? DayState.dawn : DayState.day;
@@ -63,32 +65,42 @@ public class TimeManager : MonoBehaviour
 
         ChangeDayState(dayState, false);
 
-        UIManager.instance.SetClock(dayLength * hourLength, dawnLength * hourLength);
+        UIManager.instance.SetClock(dayLength * hourLength, dawnLength * hourLength, 0);
         UIManager.instance.ShowDayCount(currentDay);
     }
 
-    public void SetTimeSettings(int _dayDuration,int _daylength,int _nightLength,int _currenthour,int _currentDay,int _dayState)
+    public void SetTimeSettings(int _dayDuration,int _daylength,int _nightLength,int _currentTime,int _currentHour,int _currentDay,int _dayState)
     {
         dayDuration = _dayDuration;
         dayLength   = _daylength;
         nightLength = _nightLength;
         dawnLength  = 16 - dayLength - nightLength;
 
-        currentHour = _currenthour;
+        currentTime = _currentTime;
+        currentHour = _currentHour;
         currentDay  = _currentDay;
         dayState    = (DayState)_dayState;
 
-        timerHour = new Timer(hourLength * dayDuration);
+        float hourDuration = hourLength * dayDuration;
+        float remainedTimeFromHour = _currentTime % hourDuration;
+        timerHour = new Timer(hourDuration, hourDuration - remainedTimeFromHour);
         timerPlayerInDarkness = new Timer(6);
 
         ChangeDayState(dayState, false);
 
-        UIManager.instance.SetClock(dayLength * hourLength, dawnLength * hourLength);
+
+
+        UIManager.instance.SetClock(dayLength * hourLength, dawnLength * hourLength, 360 * (currentTime / dayDuration));
         UIManager.instance.ShowDayCount(currentDay);
     }
 
 
-    private void PassTime() => UIManager.instance.ShowTime((360 / dayDuration) * Time.deltaTime);
+    private void PassTime()
+    {
+        currentTime += Time.deltaTime;
+        UIManager.instance.ShowTime((360f / dayDuration) * Time.deltaTime);
+    
+    }
     private void PassHour()
     {
         timerHour.StartTimer();

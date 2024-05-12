@@ -34,14 +34,6 @@ public class EquipmentUI : ItemUI
         }
     }
 
-
-    public void LoadData(int _stack, int _durability)
-    {
-        data.currentStack = _stack;
-        data.durability = _durability;
-        DisplayItem();
-    }
-
     private void Equip() => EquipmentManager.instance.SetEquipment(this, true, false);   
 
     public void UseTool()

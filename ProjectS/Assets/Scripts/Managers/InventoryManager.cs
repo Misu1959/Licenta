@@ -179,7 +179,9 @@ public class InventoryManager : MonoBehaviour
             PlayerBehaviour.instance.currentTarget?.GetComponent<Storage>()?.AddData(itemToAdd.GetItemData(), slot.transform.GetSiblingIndex());
         
         itemToAdd.DisplayItem();
-        StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
+    
+        if(this.gameObject.activeInHierarchy)
+            StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
 
     }
 

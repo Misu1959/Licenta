@@ -50,10 +50,12 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void SetClock(float dayLength,float dawnLength)
+    public void SetClock(float dayLength,float dawnLength,float currentTime)
     {
         clock.parent.GetChild(0).GetComponent<Image>().fillAmount = dawnLength + dayLength;
         clock.parent.GetChild(1).GetComponent<Image>().fillAmount = dayLength;
+
+        clock.GetChild(0).eulerAngles = new Vector3(0, 0, -currentTime);
     }
     public void ShowTime(float timeSpeed) => clock.GetChild(0).eulerAngles -= new Vector3(0, 0, timeSpeed);
     public void ShowDayCount(int currentDay) => clock.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Day\n" + currentDay.ToString();

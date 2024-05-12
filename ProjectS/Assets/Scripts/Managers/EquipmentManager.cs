@@ -16,10 +16,9 @@ public class EquipmentManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        SetEquipmentSlots();
         this.gameObject.SetActive(false);
     }
-
-    private void Start() => SetEquipmentSlots();
 
     private void SetEquipmentSlots()
     {
@@ -162,11 +161,11 @@ public class EquipmentManager : MonoBehaviour
             SetEquipment(newItem, true, false);
     }
 
-    public ItemUI GetHandItem() => handSlot.CheckIfItHasItem() == true ? handSlot.GetItemInSlot() : null;
+    public ItemUI GetHandItem() => (handSlot.CheckIfItHasItem() == true) ? handSlot.GetItemInSlot() : null;
 
-    public ItemUI GetBodyItem() => bodySlot.CheckIfItHasItem() == true ? bodySlot.GetItemInSlot() : null;
+    public ItemUI GetBodyItem() => (bodySlot.CheckIfItHasItem() == true) ? bodySlot.GetItemInSlot() : null;
 
-    public ItemUI GetHeadItem() => headSlot.CheckIfItHasItem() == true ? headSlot.GetItemInSlot() : null;
+    public ItemUI GetHeadItem() => (headSlot.CheckIfItHasItem() == true) ? headSlot.GetItemInSlot() : null;
 
     public Storage BackpackStorage()    
     {

@@ -9,9 +9,4 @@ public class ItemMaterial : Item
 
     public override void OnRightMouseButtonPressed(){}
 
-
-
-    public void LoadData(int _stack) => data.currentStack = _stack;
-
-
 }

@@ -38,10 +38,4 @@ public class ItemMaterialUI : ItemUI
 
     }
 
-    public void LoadData(int _stack)
-    {
-        data.currentStack = _stack;
-        DisplayItem();
-    }
-
 }

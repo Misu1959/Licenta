@@ -15,6 +15,5 @@ public class Food : Item
     public override void OnRightMouseButtonPressed() => PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.eat);
 
 
-    public void LoadData(int _stack) => data.currentStack = _stack;
 
 }

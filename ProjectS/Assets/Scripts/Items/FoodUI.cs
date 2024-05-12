@@ -33,12 +33,6 @@ public class FoodUI : ItemUI
     }
 
 
-    public void LoadData(int _stack)
-    {
-        data.currentStack = _stack;
-        DisplayItem();
-    }
-
     private void Eat() => PlayerStats.instance.Eat(GetComponent<Item_Base>());
     
 

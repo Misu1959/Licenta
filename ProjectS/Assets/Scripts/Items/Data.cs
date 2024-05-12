@@ -158,13 +158,16 @@ public class ItemData
         fuelValue       = newItemData.fuelValue;
     }
 
-    public ItemData(Sprite _uiImg,ObjectName _objectName,int _maxStack, int _currentStack,int _fuelValue)
+    public ItemData(ObjectName _objectName, int _currentStack)
     {
-        uiImg           = _uiImg;
+        Item originalItme = ItemsManager.instance.GetOriginalItem(_objectName);
+            
         objectName      = _objectName;
-        maxStack        = _maxStack;
         currentStack    = _currentStack;
-        fuelValue       = _fuelValue;
+
+        uiImg           = originalItme.GetItemData().uiImg;
+        maxStack        = originalItme.GetItemData().maxStack;
+        fuelValue       = originalItme.GetItemData().fuelValue;
     }
 
 }
@@ -190,8 +193,19 @@ public class FoodData : ItemData
         if (canBeCoocked)
             cookTimer = new Timer(newItemData.cookTimer.MaxTime());
     }
-    public FoodData(Sprite _uiImg, ObjectName _objectName, int _maxStack, int _currentStack, int _fuelValue)
-        : base(_uiImg, _objectName, _maxStack, _currentStack, _fuelValue) { }
+    public FoodData(ObjectName _objectName, int _currentStack)
+        : base(_objectName, _currentStack) 
+    {
+        Item originalItme = ItemsManager.instance.GetOriginalItem(_objectName);
+
+        hungerAmount    = originalItme.GetFoodData().hungerAmount;
+        hpAmount        = originalItme.GetFoodData().hpAmount;
+        quickEat        = originalItme.GetFoodData().quickEat;
+        canBeCoocked    = originalItme.GetFoodData().canBeCoocked;
+
+        if (canBeCoocked)
+            cookTimer = new Timer(originalItme.GetFoodData().cookTimer.MaxTime());
+    }
 
 }
 
@@ -219,10 +233,19 @@ public class EquipmentData : ItemData
 
     }
 
-    public EquipmentData(Sprite _uiImg, ObjectName _objectName, int _maxStack, int _currentStack, int _fuelValue,int _durability)
-        : base(_uiImg, _objectName, _maxStack, _currentStack, _fuelValue)
+    public EquipmentData(ObjectName _objectName, int _currentStack,int _durability)
+        : base(_objectName, _currentStack)
     {
+        Item originalItme = ItemsManager.instance.GetOriginalItem(_objectName);
+
         durability = _durability;
+
+        equipmentType   = originalItme.GetEquipmentData().equipmentType;
+        actionType      = originalItme.GetEquipmentData().actionType;
+        dmg             = originalItme.GetEquipmentData().dmg;
+        maxDurability   = originalItme.GetEquipmentData().maxDurability;
+    
+    
     }
 
     public bool HasStorageData() => (actionType == EquipmentActionType.storage) ? true : false;
@@ -233,6 +256,17 @@ public class StorageData
 {
     public int size;
     public ItemData[] items;
+
+    public StorageData(int _size) 
+    {
+        size = _size;
+
+        items = new ItemData[size];
+
+        for (int i = 0; i < size; i++)
+            items[i] = null;
+    }
+
     public StorageData(StorageData newStorageData)
     {
         size = newStorageData.size;
@@ -253,5 +287,16 @@ public class StorageData
                 }
     }
 
+    public void SetItem(ItemData itemData,int pos)
+    {
+        Item originalItem = ItemsManager.instance.GetOriginalItem(itemData.objectName);
+
+        if (originalItem.GetComponent<ItemMaterial>())
+            items[pos] = new ItemData(itemData);
+        else if (originalItem.GetComponent<Food>())
+            items[pos] = new FoodData((FoodData)itemData);
+        else if (originalItem.GetComponent<Equipment>())
+            items[pos] = new EquipmentData((EquipmentData)itemData);
+    }
 
 }

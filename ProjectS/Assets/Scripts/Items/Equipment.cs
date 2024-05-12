@@ -15,10 +15,4 @@ public class Equipment : Item
     public override void OnRightMouseButtonPressed() => PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.equip);
 
 
-    public void LoadData(int _stack,int _durability)
-    {
-        data.currentStack = _stack;
-        data.durability   = _durability;
-        
-    }
 }
