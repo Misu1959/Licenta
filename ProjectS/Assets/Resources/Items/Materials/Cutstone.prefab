@@ -78,11 +78,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    uiImg: {fileID: 21300000, guid: 3184302c0526e154599f301acb4672cf, type: 3}
-    objectName: 1009
-    maxStack: 20
-    currentStack: 0
-    fuelValue: 0
+    _uiImg: {fileID: 21300000, guid: 3184302c0526e154599f301acb4672cf, type: 3}
+    _objectName: 1009
+    _maxStack: 10
+    _fuelValue: 0
 --- !u!114 &-112196022564073839
 MonoBehaviour:
   m_ObjectHideFlags: 0

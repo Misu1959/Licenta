@@ -24,13 +24,13 @@ public abstract class Item_Base : MonoBehaviour
 
     public virtual void AddToStack(int _amountToAdd)
     {
-        GetItemData().currentStack += _amountToAdd;
+        GetItemData().SetCurrentStack(GetItemData().currentStack + _amountToAdd);
     }
 
     public virtual void TakeFromStack(int _amountToTake)
     {
-        GetItemData().currentStack -= _amountToTake;
-
+        GetItemData().SetCurrentStack(GetItemData().currentStack - _amountToTake);
+        
         if (GetItemData().currentStack <= 0)
             Destroy(this.gameObject);
 

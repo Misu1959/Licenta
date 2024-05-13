@@ -23,7 +23,7 @@ public class Fireplace : Fire, IPointerDownHandler
             {
                 if (IsFireOn() &&
                    selectedItem.GetComponent<FoodUI>() &&
-                   selectedItem.GetFoodData().canBeCoocked)
+                   selectedItem.GetFoodData().canBeCooked)
                     PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.cook);
                 else if(selectedItem.GetItemData().fuelValue > 0)
                     PlayerBehaviour.instance.SetTargetAndAction(this.transform, PlayerBehaviour.Action.addFuel);

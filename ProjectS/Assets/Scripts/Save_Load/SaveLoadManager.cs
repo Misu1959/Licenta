@@ -112,7 +112,8 @@ public static class SaveLoadManager
         InventoryItem,
         SelectedItem,
         Equipment,
-        Storage,
+
+        StoredItem,
 
         Item,
         Resource,
@@ -143,94 +144,94 @@ public static class SaveLoadManager
     private const string S_SPAWNER_mobs_respawn_time    = "MobsRespawnTime";
 
 
-    public static void Set_Amount_Of_Objects(Paths path, int value) => PlayerPrefs.SetInt(Current_World() + S_AMOUNT_OF + path.ToString(), value);
-    public static int Get_Amount_Of_Objects(Paths path) => PlayerPrefs.GetInt(Current_World() + S_AMOUNT_OF + path.ToString());
+    public static void Set_Amount_Of_Objects(string path, int value) => PlayerPrefs.SetInt(Current_World() + S_AMOUNT_OF + path, value);
+    public static int Get_Amount_Of_Objects(string path) => PlayerPrefs.GetInt(Current_World() + S_AMOUNT_OF + path);
 
-    public static void Set_Object_Name(Paths path, int key, ObjectName name) => PlayerPrefs.SetInt(Current_World() + path.ToString() + key + S_NAME, (int)name);
-    public static ObjectName Get_Object_Name(Paths path, int key) => (ObjectName)PlayerPrefs.GetInt(Current_World() + path.ToString() + key + S_NAME);
+    public static void Set_Object_Name(string path,  ObjectName name) => PlayerPrefs.SetInt(Current_World() + path  + S_NAME, (int)name);
+    public static ObjectName Get_Object_Name(string path) => (ObjectName)PlayerPrefs.GetInt(Current_World() + path  + S_NAME);
 
 
-    public static void Set_Object_Pos(Paths path, int key, Vector3 pos)
+    public static void Set_Object_Pos(string path,  Vector3 pos)
     {
-        Set_Object_Pos_X(path, key, pos.x);
-        Set_Object_Pos_Z(path, key, pos.z);
+        Set_Object_Pos_X(path, pos.x);
+        Set_Object_Pos_Z(path, pos.z);
     }
-    private static void Set_Object_Pos_X(Paths path, int key, float value) => PlayerPrefs.SetFloat(Current_World() + path.ToString() + key + S_POS_X, value);
-    private static void Set_Object_Pos_Z(Paths path, int key, float value) => PlayerPrefs.SetFloat(Current_World() + path.ToString() + key + S_POS_Z, value);
+    private static void Set_Object_Pos_X(string path,  float value) => PlayerPrefs.SetFloat(Current_World() + path  + S_POS_X, value);
+    private static void Set_Object_Pos_Z(string path,  float value) => PlayerPrefs.SetFloat(Current_World() + path  + S_POS_Z, value);
 
 
-    public static Vector3 Get_Object_Pos(Paths path, int key) => new Vector3(Get_Object_Pos_X(path, key), 0, Get_Object_Pos_Z(path, key));
-    private static float Get_Object_Pos_X(Paths path, int key) => PlayerPrefs.GetFloat(Current_World() + path.ToString() + key + S_POS_X);
-    private static float Get_Object_Pos_Z(Paths path, int key) => PlayerPrefs.GetFloat(Current_World() + path.ToString() + key + S_POS_Z);
-
-
-
-    public static void Set_Object_Hp(Paths path, int key, int value) => PlayerPrefs.SetInt(Current_World() + path.ToString() + key + S_HP, value);
-    public static int Get_Object_Hp(Paths path, int key) => PlayerPrefs.GetInt(Current_World() + path.ToString() + key + S_HP);
-
-    public static void Set_Object_Hunger(Paths path, int key, int value) => PlayerPrefs.SetInt(Current_World() + path.ToString() + key + S_HUNGER, value);
-    public static int Get_Object_Hunger(Paths path, int key) => PlayerPrefs.GetInt(Current_World() + path.ToString() + key + S_HUNGER);
-
-    public static void Set_Object_Dmg(Paths path, int key, int value) => PlayerPrefs.SetInt(Current_World() + path.ToString() + key + S_DMG, value);
-    public static int Get_Object_Dmg(Paths path, int key) => PlayerPrefs.GetInt(Current_World() + path.ToString() + key + S_DMG);
-
-    public static void Set_Object_Speed(Paths path, int key, int value) => PlayerPrefs.SetInt(Current_World() + path.ToString() + key + S_SPEED, value);
-    public static int Get_Object_Speed(Paths path, int key) => PlayerPrefs.GetInt(Current_World() + path.ToString() + key + S_SPEED);
+    public static Vector3 Get_Object_Pos(string path) => new Vector3(Get_Object_Pos_X(path), 0, Get_Object_Pos_Z(path));
+    private static float Get_Object_Pos_X(string path) => PlayerPrefs.GetFloat(Current_World() + path  + S_POS_X);
+    private static float Get_Object_Pos_Z(string path) => PlayerPrefs.GetFloat(Current_World() + path  + S_POS_Z);
 
 
 
+    public static void Set_Object_Hp(string path, int value) => PlayerPrefs.SetInt(Current_World() + path  + S_HP, value);
+    public static int Get_Object_Hp(string path) => PlayerPrefs.GetInt(Current_World() + path  + S_HP);
 
-    public static void Set_ITEM_Stack(Paths path, int key, int value) => PlayerPrefs.SetInt(Current_World() + path.ToString() + key + S_ITEM_stack, value);
-    public static int Get_ITEM_Stack(Paths path, int key) => PlayerPrefs.GetInt(Current_World() + path.ToString() + key + S_ITEM_stack);
+    public static void Set_Object_Hunger(string path,  int value) => PlayerPrefs.SetInt(Current_World() + path  + S_HUNGER, value);
+    public static int Get_Object_Hunger(string path) => PlayerPrefs.GetInt(Current_World() + path  + S_HUNGER);
 
-    public static void Set_ITEM_Durability(Paths path, int key, int value) => PlayerPrefs.SetInt(Current_World() + path.ToString() + key + S_ITEM_durability, value);
-    public static int Get_ITEM_Durability(Paths path, int key) => PlayerPrefs.GetInt(Current_World() + path.ToString() + key + S_ITEM_durability);
+    public static void Set_Object_Dmg(string path,  int value) => PlayerPrefs.SetInt(Current_World() + path  + S_DMG, value);
+    public static int Get_Object_Dmg(string path) => PlayerPrefs.GetInt(Current_World() + path  + S_DMG);
+
+    public static void Set_Object_Speed(string path,  int value) => PlayerPrefs.SetInt(Current_World() + path  + S_SPEED, value);
+    public static int Get_Object_Speed(string path) => PlayerPrefs.GetInt(Current_World() + path  + S_SPEED);
 
 
 
 
-    public static void Set_RESOURCE_Time_To_Grow(int key, float value) => PlayerPrefs.SetFloat(Current_World() + Paths.Resource.ToString() + key + S_RESOUCER_time_to_grow, value);
-    public static float Get_RESOURCE_Time_To_Grow(int key) => PlayerPrefs.GetFloat(Current_World() + Paths.Resource.ToString() + key + S_RESOUCER_time_to_grow);
+    public static void Set_ITEM_Stack(string path,  int value) => PlayerPrefs.SetInt(Current_World() + path  + S_ITEM_stack, value);
+    public static int Get_ITEM_Stack(string path) => PlayerPrefs.GetInt(Current_World() + path  + S_ITEM_stack);
 
-
-
-    public static void Set_CONSTRUCTION_Fire_Time(int key, float value) => PlayerPrefs.SetFloat(Current_World() + Paths.Construction.ToString() + key + S_CONSTRUCTION_fire_time, value);
-    public static float Get_CONSTRUCTION_Fire_Time(int key) => PlayerPrefs.GetFloat(Current_World() + Paths.Construction.ToString() + key + S_CONSTRUCTION_fire_time);
-
-
-
-    public static void Set_MOB_Spawner_Index(int key, float value) => PlayerPrefs.SetFloat(Current_World() + Paths.Mob.ToString() + key + S_MOB_spawner_index, value);
-    public static float Get_MOB_Spawner_Index(int key) => PlayerPrefs.GetInt(Current_World() + Paths.Mob.ToString() + key + S_MOB_spawner_index);
+    public static void Set_ITEM_Durability(string path,  int value) => PlayerPrefs.SetInt(Current_World() + path  + S_ITEM_durability, value);
+    public static int Get_ITEM_Durability(string path) => PlayerPrefs.GetInt(Current_World() + path  + S_ITEM_durability);
 
 
 
 
-    public static void Set_SPAWNER_Mobs_Amount(int key, int value) => PlayerPrefs.SetInt(Current_World() + Paths.Spawner.ToString() + key + S_SPAWNER_mobs_respawn_amount, value);
-    public static int Get_SPAWNER_Mobs_Amount(int key) => PlayerPrefs.GetInt(Current_World() + Paths.Spawner.ToString() + key + S_SPAWNER_mobs_respawn_amount);
-
-    public static void Set_SPAWNER_Mobs_Respawn_Time(int key, float value) => PlayerPrefs.SetFloat(Current_World() + Paths.Spawner.ToString() + key + S_SPAWNER_mobs_respawn_time, value);
-    public static float Get_SPAWNER_Mobs_Respawn_Time(int key) => PlayerPrefs.GetFloat(Current_World() + Paths.Spawner.ToString() + key + S_SPAWNER_mobs_respawn_time);
+    public static void Set_RESOURCE_Time_To_Grow(string path, float value) => PlayerPrefs.SetFloat(Current_World() + path + S_RESOUCER_time_to_grow, value);
+    public static float Get_RESOURCE_Time_To_Grow(string path) => PlayerPrefs.GetFloat(Current_World() + path + S_RESOUCER_time_to_grow);
 
 
 
-    public static void Set_ITEM_UI_Parent_Slot(Paths path, int key, int value) => PlayerPrefs.SetInt(Current_World() + path.ToString() + key + S_ITEM_UI_parent_slot, value);
-    public static int Get_ITEM_UI_Parent_Slot(Paths path, int key) => PlayerPrefs.GetInt(Current_World() + path.ToString() + key + S_ITEM_UI_parent_slot);
+    public static void Set_CONSTRUCTION_Fire_Time(string path, float value) => PlayerPrefs.SetFloat(Current_World() + path + S_CONSTRUCTION_fire_time, value);
+    public static float Get_CONSTRUCTION_Fire_Time(string path) => PlayerPrefs.GetFloat(Current_World() + path + S_CONSTRUCTION_fire_time);
 
 
-    public static void Set_Has_Selected_Item(bool value)
-    {
-        int aux = (value == false) ? 0 : 1;
-        PlayerPrefs.SetInt(Current_World() + Paths.SelectedItem.ToString(), aux);
-    }
-    public static bool Get_Has_Selected_Item() => (PlayerPrefs.GetInt(Current_World() + Paths.SelectedItem.ToString()) == 0) ? false : true;
+
+    public static void Set_MOB_Spawner_Index(string path, float value) => PlayerPrefs.SetFloat(Current_World() + path  + S_MOB_spawner_index, value);
+    public static float Get_MOB_Spawner_Index(string path) => PlayerPrefs.GetInt(Current_World() + path + S_MOB_spawner_index);
 
 
-    public static void Set_Has_Equipment(EquipmentType key, bool value)
+
+
+    public static void Set_SPAWNER_Mobs_Amount(string path, int value) => PlayerPrefs.SetInt(Current_World() + path + S_SPAWNER_mobs_respawn_amount, value);
+    public static int Get_SPAWNER_Mobs_Amount(string path) => PlayerPrefs.GetInt(Current_World() + path + S_SPAWNER_mobs_respawn_amount);
+
+    public static void Set_SPAWNER_Mobs_Respawn_Time(string path, float value) => PlayerPrefs.SetFloat(Current_World() + path + S_SPAWNER_mobs_respawn_time, value);
+    public static float Get_SPAWNER_Mobs_Respawn_Time(string path) => PlayerPrefs.GetFloat(Current_World() + path + S_SPAWNER_mobs_respawn_time);
+
+
+
+    public static void Set_ITEM_UI_Parent_Slot(string path,  int value) => PlayerPrefs.SetInt(Current_World() + path  + S_ITEM_UI_parent_slot, value);
+    public static int Get_ITEM_UI_Parent_Slot(string path) => PlayerPrefs.GetInt(Current_World() + path  + S_ITEM_UI_parent_slot);
+
+
+    public static void Set_Has_Selected_Item(string path, bool value)
     {
         int aux = (value == false) ? 0 : 1;
-        PlayerPrefs.SetInt(Current_World() + Paths.Equipment.ToString() + key, aux);
+        PlayerPrefs.SetInt(Current_World() + path, aux);
     }
-    public static bool Get_Has_Equipment(EquipmentType key) => PlayerPrefs.GetInt(Current_World() + Paths.Equipment.ToString() + key) == 0 ? false : true;
+    public static bool Get_Has_Selected_Item(string path) => (PlayerPrefs.GetInt(Current_World() + path) == 0) ? false : true;
+
+
+    public static void Set_Has_Equipment(string path, bool value)
+    {
+        int aux = (value == false) ? 0 : 1;
+        PlayerPrefs.SetInt(Current_World() + path , aux);
+    }
+    public static bool Get_Has_Equipment(string path) => PlayerPrefs.GetInt(Current_World() + path) == 0 ? false : true;
 
     #endregion
 }

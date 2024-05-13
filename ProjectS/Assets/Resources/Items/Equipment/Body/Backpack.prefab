@@ -190,16 +190,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    uiImg: {fileID: 21300000, guid: 45dac911de8d140488633eb9e2e6e4f8, type: 3}
-    objectName: 3007
-    maxStack: 1
-    currentStack: 0
-    fuelValue: 0
-    equipmentType: 1
-    actionType: 4
-    dmg: 0
-    maxDurability: 100
-    durability: 0
+    _uiImg: {fileID: 21300000, guid: 45dac911de8d140488633eb9e2e6e4f8, type: 3}
+    _objectName: 3007
+    _maxStack: 1
+    _fuelValue: 0
+    _equipmentType: 1
+    _actionType: 4
+    _dmg: 0
+    _maxDurability: 100
 --- !u!114 &-4485857812694653194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,48 +211,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   storageData:
-    size: 8
     items:
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
 --- !u!114 &1619669827645063861
 MonoBehaviour:
   m_ObjectHideFlags: 0

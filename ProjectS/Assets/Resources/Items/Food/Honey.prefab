@@ -189,16 +189,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    uiImg: {fileID: 21300000, guid: 752b2f123b1d23d4e84168b4271db3e8, type: 3}
-    objectName: 2013
-    maxStack: 20
-    currentStack: 0
-    fuelValue: 0
-    hungerAmount: 5
-    hpAmount: 20
-    quickEat: 1
-    canBeCoocked: 0
-    cookTimer:
+    _uiImg: {fileID: 21300000, guid: 752b2f123b1d23d4e84168b4271db3e8, type: 3}
+    _objectName: 2013
+    _maxStack: 20
+    _fuelValue: 0
+    _hungerAmount: 5
+    _hpAmount: 20
+    _quickEat: 1
+    _canBeCooked: 0
+    _cookTimer:
       maxTime: 0
 --- !u!114 &-1231608990759657256
 MonoBehaviour:

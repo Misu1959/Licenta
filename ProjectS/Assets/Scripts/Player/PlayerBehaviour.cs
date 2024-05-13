@@ -291,7 +291,7 @@ public class PlayerBehaviour : MonoBehaviour
                 }
             case Action.drop:
                 {
-                    currentTarget.GetComponent<Item>().SetTransparent(false);
+                    currentTarget?.GetComponent<Item>().SetTransparent(false);
                     break;
                 }
             case Action.equip:
@@ -355,11 +355,11 @@ public class PlayerBehaviour : MonoBehaviour
                 }
         }
 
-        PlayerController.instance.SetCanMove(true);
 
         isPerformingAction = false;
-        
         SetTargetAndAction(null, Action.nothing);
+        PlayerController.instance.SetCanMove(true);
+
         PopUpManager.instance.ShowPopUp(this.transform, "Action completed!");
 
     }
@@ -452,8 +452,10 @@ public class PlayerBehaviour : MonoBehaviour
         // If player has no target there is nothing to cancel
         if (!currentTarget) return;
 
-        // If player is moving on X or Z axis from keyboard cancel the action
+        // If player is moving from keyboard cancel the action
+        if (!PlayerController.instance.canMove) return;
         if (!PlayerController.instance.isMovingByKeyboard) return;
+
         CancelAction();
     }
 

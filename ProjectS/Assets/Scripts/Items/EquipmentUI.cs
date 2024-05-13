@@ -38,7 +38,7 @@ public class EquipmentUI : ItemUI
 
     public void UseTool()
     {
-        data.durability--;
+        data.SetDurability(data.durability - 1);
         if (data.durability <= 0)
         {
             InventoryManager.instance.RemoveItemFromSlot(this);

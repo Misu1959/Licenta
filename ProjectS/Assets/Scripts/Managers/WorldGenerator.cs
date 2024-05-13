@@ -8,6 +8,7 @@ using static SaveLoadManager;
 using System.IO;
 using static UnityEditor.Progress;
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 
 public class WorldGenerator : MonoBehaviour
 {
@@ -170,10 +171,10 @@ public class WorldGenerator : MonoBehaviour
 
     void LoadPlayer()
     {
-        int _hp         = Get_Object_Hp(Paths.Player, 1);
-        int _hunger     = Get_Object_Hunger(Paths.Player, 1);
-        int _speed      = Get_Object_Speed(Paths.Player, 1);
-        Vector3 _pos    = Get_Object_Pos(Paths.Player, 1);
+        int _hp         = Get_Object_Hp(Paths.Player.ToString());
+        int _hunger     = Get_Object_Hunger(Paths.Player.ToString());
+        int _speed      = Get_Object_Speed(Paths.Player.ToString());
+        Vector3 _pos    = Get_Object_Pos(Paths.Player.ToString());
 
 
         PlayerStats.instance.SetStats(_hp, _hunger , _speed,  _pos);
@@ -183,10 +184,12 @@ public class WorldGenerator : MonoBehaviour
     void LoadInventory()
     {
 
-        for (int i = 0; i < Get_Amount_Of_Objects(Paths.InventoryItem); i++)
+        for (int i = 0; i < Get_Amount_Of_Objects(Paths.InventoryItem.ToString()); i++)
         {
-            ObjectName name = Get_Object_Name(Paths.InventoryItem, i);
-            int curentStack = Get_ITEM_Stack(Paths.InventoryItem,i);
+            string inventoryItem_LoadPath = Paths.InventoryItem.ToString() + i.ToString();
+
+            ObjectName name = Get_Object_Name(inventoryItem_LoadPath);
+            int curentStack = Get_ITEM_Stack(inventoryItem_LoadPath);
 
             Item originalItem = ItemsManager.instance.GetOriginalItem(name);
             ItemData data = null;
@@ -205,7 +208,7 @@ public class WorldGenerator : MonoBehaviour
             }
             else if (originalItem.GetComponent<Equipment>())
             {
-                int durability = Get_ITEM_Durability(Paths.InventoryItem, i);
+                int durability = Get_ITEM_Durability(inventoryItem_LoadPath);
                 data = new EquipmentData(name, curentStack, durability);
 
 
@@ -217,20 +220,21 @@ public class WorldGenerator : MonoBehaviour
                 //Load equipment data
             }
 
-            int slotNr = Get_ITEM_UI_Parent_Slot(Paths.InventoryItem, i);
+            int slotNr = Get_ITEM_UI_Parent_Slot(inventoryItem_LoadPath);
 
             ItemUI itemUI = ItemsManager.instance.CreateItemUI(data, storageData);
             InventoryManager.instance.AddItemToInventorySlot(slotNr, itemUI);
         }
         // Load Selected item and drop it on the ground
-        if (!Get_Has_Selected_Item()) return;
+        if (!Get_Has_Selected_Item(Paths.SelectedItem.ToString())) return;
 
-        ObjectName selectedItemName = Get_Object_Name(Paths.SelectedItem, 1);
-        int selectedItemStack = Get_ITEM_Stack(Paths.SelectedItem, 1);
+        string selectedItem_LoadPath = Paths.SelectedItem.ToString();
+
+        ObjectName selectedItemName = Get_Object_Name(selectedItem_LoadPath);
+        int selectedItemStack = Get_ITEM_Stack(selectedItem_LoadPath);
 
         Item originalSelectedItem = ItemsManager.instance.GetOriginalItem(selectedItemName);
         ItemData selectedItemData = null;
-        StorageData selectedItemStorageData = null;
 
         if (originalSelectedItem.GetComponent<ItemMaterial>())
         {
@@ -247,14 +251,19 @@ public class WorldGenerator : MonoBehaviour
         else if (originalSelectedItem.GetComponent<Equipment>()) // Save equipment info
         {
 
-            int selectedItemDurability = Get_ITEM_Durability(Paths.SelectedItem, 1); 
+            int selectedItemDurability = Get_ITEM_Durability(selectedItem_LoadPath); 
 
             selectedItemData = new EquipmentData(selectedItemName, selectedItemStack, selectedItemDurability);
         }
 
-        ItemUI selectedItemUI = ItemsManager.instance.CreateItemUI(selectedItemData, selectedItemStorageData);
+        ItemUI selectedItemUI = ItemsManager.instance.CreateItemUI(selectedItemData, null);
+
+        if (selectedItemUI.GetComponent<Storage>())
+            LoadStorage(selectedItem_LoadPath, selectedItemUI.GetComponent<Storage>().GetStorageData());
 
         InventoryManager.instance.DropItem(selectedItemUI,PlayerBehaviour.instance.transform.position);
+
+
     }
 
     void LoadEquipment()
@@ -263,40 +272,51 @@ public class WorldGenerator : MonoBehaviour
         ItemUI bodyitem;
         ItemUI headitem;
 
-        ItemData data           = null;
-        StorageData storageData = null;
+        ItemData data;
 
-        if (Get_Has_Equipment(EquipmentType.hand))
+        if (Get_Has_Equipment(EquipmentType.hand.ToString()))
         {
-            ObjectName name = Get_Object_Name(Paths.Equipment, (int)EquipmentType.hand);
-            int stack       = Get_ITEM_Stack(Paths.Equipment,  (int)EquipmentType.hand);
-            int durability  = Get_ITEM_Durability(Paths.Equipment, (int)EquipmentType.hand);
+            string handItem_LoadPath = Paths.Equipment.ToString() + EquipmentType.hand.ToString();
+
+            ObjectName name = Get_Object_Name(handItem_LoadPath);
+            int stack       = Get_ITEM_Stack(handItem_LoadPath);
+            int durability  = Get_ITEM_Durability(handItem_LoadPath);
 
             data = new EquipmentData(name, stack, durability);
 
-            handitem = ItemsManager.instance.CreateItemUI(data, storageData);
+            handitem = ItemsManager.instance.CreateItemUI(data, null);
             EquipmentManager.instance.SetEquipment(handitem, false, false);
 
         }
-        if (Get_Has_Equipment(EquipmentType.body))
+        if (Get_Has_Equipment(EquipmentType.body.ToString()))
         {
-            ObjectName name = Get_Object_Name(Paths.Equipment, (int)EquipmentType.body);
-            int stack       = Get_ITEM_Stack(Paths.Equipment, (int)EquipmentType.body);
-            int durability  = Get_ITEM_Durability(Paths.Equipment, (int)EquipmentType.body);
+            string bodyItem_LoadPath = Paths.Equipment.ToString() + EquipmentType.body.ToString();
+
+            ObjectName name = Get_Object_Name(bodyItem_LoadPath);
+            int stack       = Get_ITEM_Stack(bodyItem_LoadPath);
+            int durability  = Get_ITEM_Durability(bodyItem_LoadPath);
 
             data = new EquipmentData(name, stack, durability);
 
-            bodyitem = ItemsManager.instance.CreateItemUI(data, storageData);
+            bodyitem = ItemsManager.instance.CreateItemUI(data, null);
             EquipmentManager.instance.SetEquipment(bodyitem, false, false);
+
+            if (bodyitem.GetComponent<Storage>())
+            {
+                LoadStorage(bodyItem_LoadPath, bodyitem.GetComponent<Storage>().GetStorageData());
+                InventoryManager.instance.DisplayBackpack(bodyitem.GetComponent<Storage>());
+            }
         }
-        if (Get_Has_Equipment(EquipmentType.head))
+        if (Get_Has_Equipment(EquipmentType.head.ToString()))
         {
-            ObjectName name = Get_Object_Name(Paths.Equipment, (int)EquipmentType.head);
-            int stack       = Get_ITEM_Stack(Paths.Equipment, (int)EquipmentType.head);
-            int durability  = Get_ITEM_Durability(Paths.Equipment, (int)EquipmentType.head);
+            string headItem_LoadPath = Paths.Equipment.ToString() + EquipmentType.head.ToString();
+
+            ObjectName name = Get_Object_Name(headItem_LoadPath);
+            int stack       = Get_ITEM_Stack(headItem_LoadPath);
+            int durability  = Get_ITEM_Durability(headItem_LoadPath);
 
             data = new EquipmentData(name, stack, durability);
-            headitem = ItemsManager.instance.CreateItemUI(data, storageData);
+            headitem = ItemsManager.instance.CreateItemUI(data, null);
             EquipmentManager.instance.SetEquipment(headitem, false, false);
 
         }
@@ -305,17 +325,16 @@ public class WorldGenerator : MonoBehaviour
 
     void LoadItems()
     {
-        for (int i = 0; i < Get_Amount_Of_Objects(Paths.Item); i++)
+        for (int i = 0; i < Get_Amount_Of_Objects(Paths.Item.ToString()); i++)
         {
-            ObjectName _name = Get_Object_Name(Paths.Item, i);
-            int _curentStack = Get_ITEM_Stack(Paths.Item, i);
+            string item_LoadPath = Paths.Item.ToString() + i.ToString();
+
+            ObjectName _name = Get_Object_Name(item_LoadPath);
+            int _curentStack = Get_ITEM_Stack(item_LoadPath);
 
             
             Item originalItem = ItemsManager.instance.GetOriginalItem(_name);
             ItemData data = null;
-            StorageData storageData = null;
-
-
 
             if (originalItem.GetComponent<ItemMaterial>())
             {
@@ -330,29 +349,34 @@ public class WorldGenerator : MonoBehaviour
             }
             else if (originalItem.GetComponent<Equipment>())
             {
-                int _durability = Get_ITEM_Durability(Paths.Item, (int)i);
+                int _durability = Get_ITEM_Durability(item_LoadPath);
                 data = new EquipmentData(_name, _curentStack, _durability);
 
                 //Load equipment data
             }
 
-            Item item = ItemsManager.instance.CreateItem(data, storageData);
+            Item item = ItemsManager.instance.CreateItem(data, null);
+            
+            if (item.GetComponent<Storage>())
+                LoadStorage(item_LoadPath, item.GetComponent<Storage>().GetStorageData());
 
             item.transform.SetParent(WorldManager.instance.items);
-            item.transform.position = Get_Object_Pos(Paths.Item, i);
+            item.transform.position = Get_Object_Pos(item_LoadPath);
         }
     }
     void LoadResources()
     {
-        for (int i = 0; i < Get_Amount_Of_Objects(Paths.Resource); i++)
+        for (int i = 0; i < Get_Amount_Of_Objects(Paths.Resource.ToString()); i++)
         {
-            Resource resource = Instantiate(ItemsManager.instance.GetOriginalResource(Get_Object_Name(Paths.Resource, i)));
+            string resource_LoadPath = Paths.Resource.ToString() + i.ToString();
+
+            Resource resource = Instantiate(ItemsManager.instance.GetOriginalResource(Get_Object_Name(resource_LoadPath)));
 
             resource.transform.SetParent(WorldManager.instance.resources);
-            resource.transform.position = Get_Object_Pos(Paths.Resource, i);
+            resource.transform.position = Get_Object_Pos(resource_LoadPath);
 
-            float growTimer_RemainedTime = Get_RESOURCE_Time_To_Grow(i);
-            int res_hp = Get_Object_Hp(Paths.Resource, i);
+            float growTimer_RemainedTime = Get_RESOURCE_Time_To_Grow(resource_LoadPath);
+            int res_hp = Get_Object_Hp(resource_LoadPath);
 
             resource.SetResourceData(growTimer_RemainedTime, res_hp);
         }
@@ -361,33 +385,37 @@ public class WorldGenerator : MonoBehaviour
 
     void LoadConstructions()
     {
-        for (int i = 0; i < Get_Amount_Of_Objects(Paths.Construction); i++)
+        for (int i = 0; i < Get_Amount_Of_Objects(Paths.Construction.ToString()); i++)
         {
-            Construction construction = Instantiate(ItemsManager.instance.GetOriginalConstruction(Get_Object_Name(Paths.Construction, i)));
+            string construction_LoadPath = Paths.Construction.ToString() + i.ToString();
+
+            Construction construction = Instantiate(ItemsManager.instance.GetOriginalConstruction(Get_Object_Name(construction_LoadPath)));
 
             construction.transform.SetParent(WorldManager.instance.constructions);
-            construction.transform.position = Get_Object_Pos(Paths.Construction, i);
+            construction.transform.position = Get_Object_Pos(construction_LoadPath);
 
-            float fireTimer_RemainedTime = Get_CONSTRUCTION_Fire_Time(i);
+            float fireTimer_RemainedTime = Get_CONSTRUCTION_Fire_Time(construction_LoadPath);
 
             if (construction.GetComponent<Fireplace>())
                 construction.GetComponent<Fireplace>().SetFireData(fireTimer_RemainedTime);
 
-            //if (construction.GetComponent<Storage>())
-             //   construction.GetComponent<Storage>().SetStorageData(Get_Construction_Storage_Data(i));
+            if (construction.GetComponent<Storage>())
+                LoadStorage(construction_LoadPath, construction.GetComponent<Storage>().GetStorageData());
         }
     }
 
     void LoadMobs()
     {
-        for (int i = 0; i < Get_Amount_Of_Objects(Paths.Mob); i++)
+        for (int i = 0; i < Get_Amount_Of_Objects(Paths.Mob.ToString()); i++)
         {
-            MobStats mob = Instantiate(ItemsManager.instance.GetOriginalMob(Get_Object_Name(Paths.Mob, i)));
+            string mob_LoadPath = Paths.Mob.ToString() + i.ToString();
+
+            MobStats mob = Instantiate(ItemsManager.instance.GetOriginalMob(Get_Object_Name(mob_LoadPath)));
 
             mob.transform.SetParent(WorldManager.instance.mobs);
-            mob.transform.position = Get_Object_Pos(Paths.Mob, i);
+            mob.transform.position = Get_Object_Pos(mob_LoadPath);
 
-            float spawnerIndex = Get_MOB_Spawner_Index(i);
+            float spawnerIndex = Get_MOB_Spawner_Index(mob_LoadPath);
 
             Transform _spawner;
             if((int)spawnerIndex != spawnerIndex)
@@ -395,7 +423,7 @@ public class WorldGenerator : MonoBehaviour
             else
                 _spawner = (spawnerIndex == -1) ? null : WorldManager.instance.mobSpawners.GetChild((int)spawnerIndex);
 
-            int _hp = Get_Object_Hp(Paths.Mob, i);
+            int _hp = Get_Object_Hp(mob_LoadPath);
 
             mob.SetMobData(_spawner, _hp);
         }
@@ -403,17 +431,56 @@ public class WorldGenerator : MonoBehaviour
 
     void LoadSpawners()
     {
-        for (int i = 0; i < Get_Amount_Of_Objects(Paths.Spawner); i++)
+        for (int i = 0; i < Get_Amount_Of_Objects(Paths.Spawner.ToString()); i++)
         {
-            MobSpawner spawner = Instantiate(ItemsManager.instance.GetOriginalMobSpawner(Get_Object_Name(Paths.Spawner, i)));
+            string spawner_LoadPath = Paths.Spawner.ToString() + i.ToString();
+
+            MobSpawner spawner = Instantiate(ItemsManager.instance.GetOriginalMobSpawner(Get_Object_Name(spawner_LoadPath)));
 
             spawner.transform.SetParent(WorldManager.instance.mobSpawners);
-            spawner.transform.position = Get_Object_Pos(Paths.Spawner, i);
+            spawner.transform.position = Get_Object_Pos(spawner_LoadPath);
 
-            int mobsToSpawn                 = Get_SPAWNER_Mobs_Amount(i);
-            float respawnTimer_RemainedTime = Get_SPAWNER_Mobs_Respawn_Time(i);
+            int mobsToSpawn                 = Get_SPAWNER_Mobs_Amount(spawner_LoadPath);
+            float respawnTimer_RemainedTime = Get_SPAWNER_Mobs_Respawn_Time(spawner_LoadPath);
             
             spawner.SetSpawnerData(mobsToSpawn,respawnTimer_RemainedTime);
+        }
+    }
+
+
+    void LoadStorage(string path, StorageData storageData)
+    {
+        for (int i = 0; i < Get_Amount_Of_Objects(path + Paths.StoredItem.ToString()); i++)
+        {
+            string storedItem_LoadPath = path + Paths.StoredItem.ToString() + i.ToString();
+
+            ObjectName name = Get_Object_Name(storedItem_LoadPath);
+            int curentStack = Get_ITEM_Stack(storedItem_LoadPath);
+            int slotNr      = Get_ITEM_UI_Parent_Slot(storedItem_LoadPath);
+
+            Item originalItem = ItemsManager.instance.GetOriginalItem(name);
+            ItemData data = null;
+
+            if (originalItem.GetComponent<ItemMaterial>())
+            {
+                data = new ItemData(name, curentStack);
+
+                //Load material data
+            }
+            else if (originalItem.GetComponent<Food>())
+            {
+                data = new FoodData(name, curentStack);
+                // No new data to be loaded for food at the moment
+            }
+            else if (originalItem.GetComponent<Equipment>())
+            {
+                int durability = Get_ITEM_Durability(storedItem_LoadPath);
+                data = new EquipmentData(name, curentStack, durability);
+
+                //Load equipment data
+            }
+
+            storageData.AddData(data, slotNr);
         }
     }
 
@@ -449,13 +516,11 @@ public class WorldGenerator : MonoBehaviour
 
     void SavePlayer()
     {
-        Set_Object_Hp(Paths.Player, 1, PlayerStats.instance.hp);
-        Set_Object_Hunger(Paths.Player, 1, PlayerStats.instance.hunger);
-        Set_Object_Speed(Paths.Player, 1, PlayerStats.instance.speed);
-        Set_Object_Pos(Paths.Player, 1, PlayerStats.instance.transform.position);
+        Set_Object_Hp(Paths.Player.ToString(), PlayerStats.instance.hp);
+        Set_Object_Hunger(Paths.Player.ToString(), PlayerStats.instance.hunger);
+        Set_Object_Speed(Paths.Player.ToString(), PlayerStats.instance.speed);
+        Set_Object_Pos(Paths.Player.ToString(), PlayerStats.instance.transform.position);
 
-        //SaveInventory();
-        // Save equipment
     }
 
     void SaveInventory()
@@ -464,12 +529,13 @@ public class WorldGenerator : MonoBehaviour
         for (int i = 0; i < 15; i++)
             if (InventoryManager.instance.inventoryPanel.GetChild(i).childCount > 0)
             {
+                string inventoryItem_SavePath = Paths.InventoryItem.ToString() + nrOfItemsInInventory;
                 ItemUI itemUI = InventoryManager.instance.inventoryPanel.GetChild(i).GetComponent<InventorySlot>().GetItemInSlot();
 
-                Set_ITEM_UI_Parent_Slot(Paths.InventoryItem, nrOfItemsInInventory, i);
+                Set_ITEM_UI_Parent_Slot(inventoryItem_SavePath, i);
 
-                Set_Object_Name(Paths.InventoryItem,nrOfItemsInInventory, itemUI.GetItemData().objectName);
-                Set_ITEM_Stack(Paths.InventoryItem, nrOfItemsInInventory, itemUI.GetItemData().currentStack);
+                Set_Object_Name(inventoryItem_SavePath, itemUI.GetItemData().objectName);
+                Set_ITEM_Stack(inventoryItem_SavePath, itemUI.GetItemData().currentStack);
 
                 if (itemUI.GetComponent<FoodUI>()) // Save food info
                 {
@@ -477,21 +543,23 @@ public class WorldGenerator : MonoBehaviour
                 }
                 else if (itemUI.GetComponent<EquipmentUI>()) // Save equipment info
                 {
-                    Set_ITEM_Durability(Paths.InventoryItem, nrOfItemsInInventory, itemUI.GetEquipmentData().durability);
+                    Set_ITEM_Durability(inventoryItem_SavePath, itemUI.GetEquipmentData().durability);
                 }
 
                 nrOfItemsInInventory++;
             }
-        Set_Amount_Of_Objects(Paths.InventoryItem, nrOfItemsInInventory);
-        // Save selected item
+        Set_Amount_Of_Objects(Paths.InventoryItem.ToString(), nrOfItemsInInventory);
         
+        // Save selected item
+
+        string selectedItemUI_SavePath = Paths.SelectedItem.ToString();
         ItemUI selectedItemUI = InventoryManager.instance.selectedItemSlot.GetItemInSlot();
-        Set_Has_Selected_Item((selectedItemUI == null) ? false : true);
+        Set_Has_Selected_Item(selectedItemUI_SavePath, (selectedItemUI == null) ? false : true);
         if (!selectedItemUI) return;
 
 
-        Set_Object_Name(Paths.SelectedItem, 1, selectedItemUI.GetItemData().objectName);
-        Set_ITEM_Stack(Paths.SelectedItem, 1, selectedItemUI.GetItemData().currentStack);
+        Set_Object_Name(selectedItemUI_SavePath, selectedItemUI.GetItemData().objectName);
+        Set_ITEM_Stack(selectedItemUI_SavePath, selectedItemUI.GetItemData().currentStack);
 
         if (selectedItemUI.GetComponent<FoodUI>()) // Save food info
         {
@@ -499,7 +567,10 @@ public class WorldGenerator : MonoBehaviour
         }
         else if (selectedItemUI.GetComponent<EquipmentUI>()) // Save equipment info
         {
-            Set_ITEM_Durability(Paths.SelectedItem, 1, selectedItemUI.GetEquipmentData().durability);
+            Set_ITEM_Durability(selectedItemUI_SavePath, selectedItemUI.GetEquipmentData().durability);
+
+            if (selectedItemUI.GetComponent<Storage>())
+                SaveStorage(selectedItemUI_SavePath, selectedItemUI.GetComponent<Storage>().GetStorageData());
         }
     }
 
@@ -509,42 +580,53 @@ public class WorldGenerator : MonoBehaviour
         ItemUI bodyitem = EquipmentManager.instance.GetBodyItem();
         ItemUI headitem = EquipmentManager.instance.GetHeadItem();
 
-        Set_Has_Equipment(EquipmentType.hand, (handitem == null) ? false : true);
-        Set_Has_Equipment(EquipmentType.body, (bodyitem == null) ? false : true);
-        Set_Has_Equipment(EquipmentType.head, (headitem == null) ? false : true);
+        Set_Has_Equipment(EquipmentType.hand.ToString(), (handitem == null) ? false : true);
+        Set_Has_Equipment(EquipmentType.body.ToString(), (bodyitem == null) ? false : true);
+        Set_Has_Equipment(EquipmentType.head.ToString(), (headitem == null) ? false : true);
 
         if (handitem)
         {
-            Set_Object_Name(Paths.Equipment,    (int)EquipmentType.hand, handitem.GetItemData().objectName);
-            Set_ITEM_Stack(Paths.Equipment,     (int)EquipmentType.hand, handitem.GetItemData().currentStack);
-            Set_ITEM_Durability(Paths.Equipment,(int)EquipmentType.hand, handitem.GetEquipmentData().durability);
+            string handItem_SavePath = Paths.Equipment.ToString() + EquipmentType.hand.ToString();
+
+            Set_Object_Name(handItem_SavePath, handitem.GetItemData().objectName);
+            Set_ITEM_Stack(handItem_SavePath, handitem.GetItemData().currentStack);
+            Set_ITEM_Durability(handItem_SavePath, handitem.GetEquipmentData().durability);
         }
         if (bodyitem)
         {
-            Set_Object_Name(Paths.Equipment,    (int)EquipmentType.body, bodyitem.GetItemData().objectName);
-            Set_ITEM_Stack(Paths.Equipment,     (int)EquipmentType.body, bodyitem.GetItemData().currentStack);
-            Set_ITEM_Durability(Paths.Equipment,(int)EquipmentType.body, bodyitem.GetEquipmentData().durability);
+            string bodyItem_SavePath = Paths.Equipment.ToString() + EquipmentType.body.ToString();
+
+            Set_Object_Name(bodyItem_SavePath, bodyitem.GetItemData().objectName);
+            Set_ITEM_Stack(bodyItem_SavePath, bodyitem.GetItemData().currentStack);
+            Set_ITEM_Durability(bodyItem_SavePath, bodyitem.GetEquipmentData().durability);
+
+            if (bodyitem.GetComponent<Storage>())
+                SaveStorage(bodyItem_SavePath, bodyitem.GetComponent<Storage>().GetStorageData());
         }
         if (headitem)
         {
-            Set_Object_Name(Paths.Equipment,    (int)EquipmentType.head, headitem.GetItemData().objectName);
-            Set_ITEM_Stack(Paths.Equipment,     (int)EquipmentType.head, headitem.GetItemData().currentStack);
-            Set_ITEM_Durability(Paths.Equipment,(int)EquipmentType.head, headitem.GetEquipmentData().durability);
+            string headItem_SavePath = Paths.Equipment.ToString() + EquipmentType.head.ToString();
+
+            Set_Object_Name(headItem_SavePath, headitem.GetItemData().objectName);
+            Set_ITEM_Stack(headItem_SavePath, headitem.GetItemData().currentStack);
+            Set_ITEM_Durability(headItem_SavePath, headitem.GetEquipmentData().durability);
         }
     }
 
 
     void SaveItems()
     {
-        Set_Amount_Of_Objects(Paths.Item, WorldManager.instance.items.childCount);
+        Set_Amount_Of_Objects(Paths.Item.ToString(), WorldManager.instance.items.childCount);
         for (int i = 0; i < WorldManager.instance.items.childCount; i++)
         {
+            string item_SavePath = Paths.Item.ToString() + i.ToString();
+
             Item item = WorldManager.instance.items.GetChild(i).GetComponent<Item>();
 
-            Set_Object_Name(Paths.Item, i, item.GetItemData().objectName);
-            Set_Object_Pos(Paths.Item, i, item.transform.position);
+            Set_Object_Name(item_SavePath, item.GetItemData().objectName);
+            Set_Object_Pos(item_SavePath, item.transform.position);
 
-            Set_ITEM_Stack(Paths.Item, i, item.GetItemData().currentStack);
+            Set_ITEM_Stack(item_SavePath, item.GetItemData().currentStack);
 
             if(item.GetComponent<Food>()) // Save food info
             {
@@ -552,7 +634,10 @@ public class WorldGenerator : MonoBehaviour
             }
             else if (item.GetComponent<Equipment>()) // Save equipment info
             {
-                Set_ITEM_Durability(Paths.Item, i, item.GetEquipmentData().durability);
+                Set_ITEM_Durability(item_SavePath, item.GetEquipmentData().durability);
+
+                if (item.GetComponent<Storage>())
+                    SaveStorage(item_SavePath, item.GetComponent<Storage>().GetStorageData());
             }
         }
     }
@@ -560,53 +645,59 @@ public class WorldGenerator : MonoBehaviour
     void SaveResources()
     {
         
-        Set_Amount_Of_Objects(Paths.Resource, WorldManager.instance.resources.childCount);
+        Set_Amount_Of_Objects(Paths.Resource.ToString(), WorldManager.instance.resources.childCount);
 
         for (int i = 0; i < WorldManager.instance.resources.childCount; i++)
         {
+            string resource_SavePath = Paths.Resource.ToString() + i.ToString();
+
             Transform resource = WorldManager.instance.resources.GetChild(i);
 
-            Set_Object_Name(Paths.Resource, i, resource.GetComponent<Resource>().objectName);
-            Set_Object_Pos(Paths.Resource, i, resource.position);
+            Set_Object_Name(resource_SavePath, resource.GetComponent<Resource>().objectName);
+            Set_Object_Pos(resource_SavePath, resource.position);
 
             if (resource.GetComponent<ComplexResource>())
-                Set_Object_Hp(Paths.Resource, i, resource.GetComponent<ComplexResource>().hp);
+                Set_Object_Hp(resource_SavePath, resource.GetComponent<ComplexResource>().hp);
 
 
-            Set_RESOURCE_Time_To_Grow(i, resource.GetComponent<Resource>().GetGrowTimer_RemainedTime());
+            Set_RESOURCE_Time_To_Grow(resource_SavePath, resource.GetComponent<Resource>().GetGrowTimer_RemainedTime());
         }
     }
     void SaveConstructions()
     {
-        Set_Amount_Of_Objects(Paths.Construction, WorldManager.instance.constructions.childCount);
+        Set_Amount_Of_Objects(Paths.Construction.ToString(), WorldManager.instance.constructions.childCount);
 
         for (int i = 0; i < WorldManager.instance.constructions.childCount; i++)
         {
+            string construction_SavePath = Paths.Construction.ToString() + i.ToString();
+
             Transform construction = WorldManager.instance.constructions.GetChild(i);
 
-            Set_Object_Name(Paths.Construction,i, construction.GetComponent<Construction>().objectName);
-            Set_Object_Pos(Paths.Construction, i, construction.position);
+            Set_Object_Name(construction_SavePath, construction.GetComponent<Construction>().objectName);
+            Set_Object_Pos(construction_SavePath, construction.position);
 
 
             if (construction.GetComponent<Fireplace>())
-                Set_CONSTRUCTION_Fire_Time(i, construction.GetComponent<Fireplace>().GetFireTimer_RemainedTime());
+                Set_CONSTRUCTION_Fire_Time(construction_SavePath, construction.GetComponent<Fireplace>().GetFireTimer_RemainedTime());
 
-//            if(construction.GetComponent<Storage>())
-  //              Set_CONSTRUCTION_Storage_Data(i, construction.GetComponent<Storage>().GetStorageData());
+            if (construction.GetComponent<Storage>())
+                SaveStorage(construction_SavePath, construction.GetComponent<Storage>().GetStorageData());
         }
     }
 
     void SaveMobs()
     {
-        Set_Amount_Of_Objects(Paths.Mob, WorldManager.instance.mobs.childCount);
+        Set_Amount_Of_Objects(Paths.Mob.ToString(), WorldManager.instance.mobs.childCount);
 
         for (int i = 0; i < WorldManager.instance.mobs.childCount; i++)
         {
+            string mob_SavePath = Paths.Mob.ToString() + i.ToString();
+
             Transform mob = WorldManager.instance.mobs.GetChild(i);
 
-            Set_Object_Name(Paths.Mob, i, mob.GetComponent<MobStats>().objectName);
-            Set_Object_Hp(Paths.Mob, i, mob.GetComponent<MobStats>().hp);
-            Set_Object_Pos(Paths.Mob, i, mob.position);
+            Set_Object_Name(mob_SavePath, mob.GetComponent<MobStats>().objectName);
+            Set_Object_Hp(mob_SavePath, mob.GetComponent<MobStats>().hp);
+            Set_Object_Pos(mob_SavePath, mob.position);
 
 
             float spawnerIndex = -1;
@@ -617,26 +708,57 @@ public class WorldGenerator : MonoBehaviour
                 if (mob.GetComponent<MobStats>().spawner.GetComponent<Construction>())
                     spawnerIndex += .1f;
             }
-            Set_MOB_Spawner_Index(i, spawnerIndex);
+            Set_MOB_Spawner_Index(mob_SavePath, spawnerIndex);
            
         }
     }
 
     void SaveSpawners()
     {
-        Set_Amount_Of_Objects(Paths.Spawner, WorldManager.instance.mobSpawners.childCount);
+        Set_Amount_Of_Objects(Paths.Spawner.ToString(), WorldManager.instance.mobSpawners.childCount);
 
         for (int i = 0; i < WorldManager.instance.mobSpawners.childCount; i++)
         {
+            string spawner_SavePath = Paths.Spawner.ToString() + i.ToString();
+
             Transform spawner = WorldManager.instance.mobSpawners.GetChild(i);
 
-            Set_Object_Name(Paths.Spawner, i, spawner.GetComponent<ComplexMobSpawner>().objectName);
-            Set_Object_Pos(Paths.Spawner, i, spawner.position);
+            Set_Object_Name(spawner_SavePath, spawner.GetComponent<ComplexMobSpawner>().objectName);
+            Set_Object_Pos(spawner_SavePath, spawner.position);
 
-            Set_SPAWNER_Mobs_Amount(i, spawner.GetComponent<ComplexMobSpawner>().mobsToSpawn);
-            Set_SPAWNER_Mobs_Respawn_Time(i, spawner.GetComponent<ComplexMobSpawner>().GetRespawnTimer_TimeRemained());
+            Set_SPAWNER_Mobs_Amount(spawner_SavePath, spawner.GetComponent<ComplexMobSpawner>().mobsToSpawn);
+            Set_SPAWNER_Mobs_Respawn_Time(spawner_SavePath, spawner.GetComponent<ComplexMobSpawner>().GetRespawnTimer_TimeRemained());
 
         }
+    }
+
+
+    void SaveStorage(string path, StorageData storageData)
+    {
+        int nrOfItemsInStorage = 0;
+        for (int i = 0; i < storageData.GetSize(); i++)
+            if (storageData.HasElement(i))
+            {
+                string storedItem_SavePath = path + Paths.StoredItem.ToString() + nrOfItemsInStorage.ToString();
+
+                Item originalitem = ItemsManager.instance.GetOriginalItem(storageData.GetElement(i).objectName);
+
+                Set_Object_Name(storedItem_SavePath, storageData.GetElement(i).objectName);
+                Set_ITEM_Stack(storedItem_SavePath, storageData.GetElement(i).currentStack);
+                Set_ITEM_UI_Parent_Slot(storedItem_SavePath, i);
+
+                if (originalitem.GetComponent<Food>()) // Save food info
+                {
+                    // For now there is no data that needs to be saved
+                }
+                else if (originalitem.GetComponent<Equipment>()) // Save equipment info
+                {
+                    Set_ITEM_Durability(storedItem_SavePath, ((EquipmentData)storageData.GetElement(i)).durability);
+                }
+
+                nrOfItemsInStorage++;
+            }
+        Set_Amount_Of_Objects(path + Paths.StoredItem.ToString(), nrOfItemsInStorage);
     }
 
     #endregion

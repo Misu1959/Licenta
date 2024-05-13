@@ -115,7 +115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loot:
   - name: 2003
-    amount: 1
+    amount: 2
 --- !u!1 &6377630255506869822
 GameObject:
   m_ObjectHideFlags: 0

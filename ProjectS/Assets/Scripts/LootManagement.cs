@@ -38,8 +38,18 @@ public class LootManagement : MonoBehaviour
     {
         for (int i = 0; i < loot.Count; i++)
         {
-            Item item = ItemsManager.instance.CreateItem(loot[i].name);
-            InventoryManager.instance.AddItemToInventory(item);
+            Item originaItem = ItemsManager.instance.GetOriginalItem(loot[i].name);
+            ItemData data = null;
+
+            if (originaItem.GetComponent<ItemMaterial>())
+                data = new ItemData(loot[i].name, loot[i].amount);
+            else if (originaItem.GetComponent<Food>())
+                data = new FoodData(loot[i].name, loot[i].amount);
+            else if (originaItem.GetComponent<Equipment>())
+                data = new EquipmentData(loot[i].name, loot[i].amount, originaItem.GetEquipmentData().maxDurability);
+
+            ItemUI itemUI = ItemsManager.instance.CreateItemUI(data, null);
+            InventoryManager.instance.AddItemToInventory(itemUI);
         }
     }
 

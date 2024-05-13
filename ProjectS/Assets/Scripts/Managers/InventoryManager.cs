@@ -173,10 +173,10 @@ public class InventoryManager : MonoBehaviour
         itemToAdd.transform.localPosition   = Vector2.zero;
 
         if (slot.IsBackpackSlot())
-            EquipmentManager.instance.BackpackStorage()?.AddData(itemToAdd.GetItemData(), slot.transform.GetSiblingIndex());
+            EquipmentManager.instance.BackpackStorage()?.GetStorageData().AddData(itemToAdd.GetItemData(), slot.transform.GetSiblingIndex());
 
         if (slot.IsChestSlot())
-            PlayerBehaviour.instance.currentTarget?.GetComponent<Storage>()?.AddData(itemToAdd.GetItemData(), slot.transform.GetSiblingIndex());
+            PlayerBehaviour.instance.currentTarget?.GetComponent<Storage>()?.GetStorageData().AddData(itemToAdd.GetItemData(), slot.transform.GetSiblingIndex());
         
         itemToAdd.DisplayItem();
     
@@ -203,10 +203,10 @@ public class InventoryManager : MonoBehaviour
     public void RemoveItemFromSlot(InventorySlot slot) 
     {
         if (slot.IsBackpackSlot())
-            EquipmentManager.instance.BackpackStorage().RemoveData(slot.transform.GetSiblingIndex());
+            EquipmentManager.instance.BackpackStorage().GetStorageData().RemoveData(slot.transform.GetSiblingIndex());
 
         if (slot.IsChestSlot())
-            PlayerBehaviour.instance.currentTarget?.GetComponent<Storage>()?.RemoveData(slot.transform.GetSiblingIndex());
+            PlayerBehaviour.instance.currentTarget?.GetComponent<Storage>()?.GetStorageData().RemoveData(slot.transform.GetSiblingIndex());
         
         slot.SetItemInSlot(null);
     }
@@ -284,7 +284,7 @@ public class InventoryManager : MonoBehaviour
     public void DropItem(ItemUI itemToDrop, Vector3 positionToDrop)
     {
 
-        Item item = ItemsManager.instance.CreateItem(itemToDrop.GetItemData(), GetComponent<Storage>()?.GetStorageData());
+        Item item = ItemsManager.instance.CreateItem(itemToDrop.GetItemData(), itemToDrop.GetComponent<Storage>()?.GetStorageData());
         
         item.transform.SetParent(WorldManager.instance.items);
         item.transform.localPosition = new Vector3(positionToDrop.x, 0, positionToDrop.z);
@@ -411,7 +411,7 @@ public class InventoryManager : MonoBehaviour
             backpackPanel.gameObject.SetActive(true);
 
             StorageData storageData = backpackStorage.GetStorageData();
-            if (storageData.size > 8)
+            if (storageData.GetSize() > 8)
             {
                 backpackPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 400);
                 for (int i = 8; i < backpackPanel.childCount; i++)
@@ -427,13 +427,12 @@ public class InventoryManager : MonoBehaviour
 
             }
 
-            for (int i = 0; i < storageData.size; i++)
-                if (storageData.items[i] != null)
-                    if (storageData.items[i].objectName != ObjectName.empty)
-                    {
-                        ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.items[i], null); // We know for sure that it's not a storage type obj
-                        AddItemToSlot(backpackSlots[i], itemUI);
-                    }
+            for (int i = 0; i < storageData.GetSize(); i++)
+                if (storageData.HasElement(i))
+                {
+                    ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.GetElement(i), null); // We know for sure that it's not a storage type obj
+                    AddItemToSlot(backpackSlots[i], itemUI);
+                }
         }
     }
 
@@ -454,13 +453,12 @@ public class InventoryManager : MonoBehaviour
             chestPanel.gameObject.SetActive(true);
 
             StorageData storageData = chestStorage.GetStorageData();
-            for (int i = 0; i < storageData.size; i++)
-                if (storageData.items[i] != null)
-                    if (storageData.items[i].objectName != ObjectName.empty)
-                    {
-                        ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.items[i], null);// We know for sure that it's not a storage type obj
-                        AddItemToSlot(chestSlots[i], itemUI);
-                    }
+            for (int i = 0; i < storageData.GetSize(); i++)
+                if (storageData.HasElement(i))
+                {
+                    ItemUI itemUI = ItemsManager.instance.CreateItemUI(storageData.GetElement(i), null);// We know for sure that it's not a storage type obj
+                    AddItemToSlot(chestSlots[i], itemUI);
+                }
         }
     }
 

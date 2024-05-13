@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-
 
 public enum ObjectType
 {
@@ -12,7 +9,6 @@ public enum ObjectType
     mob,
     spawner
 }
-
 public enum ObjectName
 {
 
@@ -120,6 +116,7 @@ public enum ObjectName
     #endregion
 };
 
+
 public enum EquipmentType
 {
     hand,
@@ -139,14 +136,40 @@ public enum EquipmentActionType
 [Serializable]
 public class ItemData
 {
-    public Sprite uiImg;
+    [SerializeField] private Sprite _uiImg;
+    public Sprite uiImg 
+    {
+        get  => _uiImg; 
+        private set => _uiImg = value;
+    }
 
-    public ObjectName objectName;
 
-    public int maxStack;
-    public int currentStack;
+    [SerializeField] private ObjectName _objectName;
+    public ObjectName objectName
+    {
+        get => _objectName;
+        private set => _objectName = value;
+    }
 
-    public int fuelValue;
+
+    [SerializeField] private int _maxStack;
+    public int maxStack 
+    {
+        get=> _maxStack;
+        private set => _maxStack = value;
+    }
+
+
+    [SerializeField] private int _fuelValue;
+    public int fuelValue
+    {
+        get => _fuelValue;
+        private set => _fuelValue = value;
+    }
+
+
+    public int currentStack { get; private set; }
+    public void SetCurrentStack(int newStackSize) => currentStack = newStackSize;
 
     public ItemData(ItemData newItemData)
     {
@@ -175,22 +198,54 @@ public class ItemData
 [Serializable]
 public class FoodData : ItemData
 {
-    public int hungerAmount;
-    public int hpAmount;
+    [SerializeField] private int _hungerAmount;
+    public int hungerAmount 
+    {
+        get => _hungerAmount;
+        private set=> _hungerAmount = value;
+    }
+    
 
-    public bool quickEat;
+    [SerializeField] private int _hpAmount;
+    public int hpAmount
+    {
+        get => _hpAmount;
+        private set=> _hpAmount = value;
+    }
 
-    public bool canBeCoocked;
-    public Timer cookTimer;
+
+    [SerializeField] private bool _quickEat;
+    public bool quickEat
+    {
+        get => _quickEat;
+        private set => _quickEat = value;
+    }
+
+
+    [SerializeField] private bool _canBeCooked;
+    public bool canBeCooked
+    {
+        get => _canBeCooked; 
+        private set => _canBeCooked = value;
+    }
+
+    
+    [SerializeField] private Timer _cookTimer;
+    public Timer cookTimer
+    {
+        get => _cookTimer; 
+        private set => _cookTimer = value;
+    }
+
 
     public FoodData(FoodData newItemData) : base(newItemData)
     {
         hungerAmount    = newItemData.hungerAmount;
         hpAmount        = newItemData.hpAmount;
         quickEat        = newItemData.quickEat;
-        canBeCoocked    = newItemData.canBeCoocked;
+        canBeCooked     = newItemData.canBeCooked;
 
-        if (canBeCoocked)
+        if (canBeCooked)
             cookTimer = new Timer(newItemData.cookTimer.MaxTime());
     }
     public FoodData(ObjectName _objectName, int _currentStack)
@@ -201,9 +256,9 @@ public class FoodData : ItemData
         hungerAmount    = originalItme.GetFoodData().hungerAmount;
         hpAmount        = originalItme.GetFoodData().hpAmount;
         quickEat        = originalItme.GetFoodData().quickEat;
-        canBeCoocked    = originalItme.GetFoodData().canBeCoocked;
+        canBeCooked     = originalItme.GetFoodData().canBeCooked;
 
-        if (canBeCoocked)
+        if (canBeCooked)
             cookTimer = new Timer(originalItme.GetFoodData().cookTimer.MaxTime());
     }
 
@@ -212,14 +267,45 @@ public class FoodData : ItemData
 [Serializable]
 public class EquipmentData : ItemData
 {
+    [SerializeField] private EquipmentType _equipmentType;
+    public EquipmentType equipmentType
+    {
+        get => _equipmentType;
+        private set => _equipmentType = value;
+    }
 
-    public EquipmentType equipmentType;
-    public EquipmentActionType actionType;
 
-    public int dmg;
+    [SerializeField] private EquipmentActionType _actionType;
+    public EquipmentActionType actionType
+    {
+        get => _actionType;
+        private set => _actionType = value;
+    }
 
-    public int maxDurability;
-    [HideInInspector] public int durability;
+
+    [SerializeField] private int _dmg;
+    public int dmg 
+    {
+        get => _dmg;
+        private set => _dmg = value;
+    }
+    
+    
+    [SerializeField] private int _maxDurability;
+    public int maxDurability
+    {
+        get => _maxDurability; 
+        private set => _maxDurability = value;
+    }
+
+
+    [HideInInspector] private int _durability;
+    public int durability
+    {
+        get => _durability; 
+        private set => _durability = value;
+    }
+    public void SetDurability(int newDurability) => durability = newDurability;
 
 
     public EquipmentData(EquipmentData newItemData) : base(newItemData)
@@ -229,7 +315,7 @@ public class EquipmentData : ItemData
             
         dmg             = newItemData.dmg;  
         maxDurability   = newItemData.maxDurability;
-        durability      = newItemData.durability == 0 ? newItemData.maxDurability : newItemData.durability;
+        durability      = (newItemData.durability == 0) ? newItemData.maxDurability : newItemData.durability;
 
     }
 
@@ -248,55 +334,47 @@ public class EquipmentData : ItemData
     
     }
 
-    public bool HasStorageData() => (actionType == EquipmentActionType.storage) ? true : false;
 }
+
+
 
 [Serializable]
 public class StorageData
 {
-    public int size;
-    public ItemData[] items;
-
-    public StorageData(int _size) 
-    {
-        size = _size;
-
-        items = new ItemData[size];
-
-        for (int i = 0; i < size; i++)
-            items[i] = null;
-    }
+    [SerializeField] private ItemData[] items;
 
     public StorageData(StorageData newStorageData)
     {
-        size = newStorageData.size;
-
-        items = new ItemData[size];
+        items = new ItemData[newStorageData.GetSize()];
         for (int i = 0; i < newStorageData.items.Length; i++)
-            if (newStorageData.items[i] != null)
-                if (newStorageData.items[i].objectName != ObjectName.empty)
-                {
-                    Item originalItem = ItemsManager.instance.GetOriginalItem(newStorageData.items[i].objectName);
+            if (newStorageData.HasElement(i))
+            {
+                Item originalItem = ItemsManager.instance.GetOriginalItem(newStorageData.items[i].objectName);
 
-                    if (originalItem.GetComponent<ItemMaterial>())
-                        items[i] = new ItemData(newStorageData.items[i]);
-                    else if (originalItem.GetComponent<Food>())
-                        items[i] = new FoodData((FoodData)newStorageData.items[i]);
-                    else if (originalItem.GetComponent<Equipment>())
-                        items[i] = new EquipmentData((EquipmentData)newStorageData.items[i]);
-                }
+                if (originalItem.GetComponent<ItemMaterial>())
+                    items[i] = new ItemData(newStorageData.items[i]);
+                else if (originalItem.GetComponent<Food>())
+                    items[i] = new FoodData((FoodData)newStorageData.items[i]);
+                else if (originalItem.GetComponent<Equipment>())
+                    items[i] = new EquipmentData((EquipmentData)newStorageData.items[i]);
+            }
     }
 
-    public void SetItem(ItemData itemData,int pos)
+    public int GetSize() => items.Length;
+    public ItemData[] GetList() => items;
+    public ItemData GetElement(int pos) => items[pos];
+
+
+    public bool HasElement(int pos)
     {
-        Item originalItem = ItemsManager.instance.GetOriginalItem(itemData.objectName);
+        if (items[pos] == null) return false;
+        if (items[pos].objectName == ObjectName.empty) return false;
 
-        if (originalItem.GetComponent<ItemMaterial>())
-            items[pos] = new ItemData(itemData);
-        else if (originalItem.GetComponent<Food>())
-            items[pos] = new FoodData((FoodData)itemData);
-        else if (originalItem.GetComponent<Equipment>())
-            items[pos] = new EquipmentData((EquipmentData)itemData);
+        return true;
     }
+
+    public void AddData(ItemData dataToAdd, int posToAddAt) => items[posToAddAt] = dataToAdd;
+
+    public void RemoveData(int posToRemoveAt) => items[posToRemoveAt] = null;
 
 }
