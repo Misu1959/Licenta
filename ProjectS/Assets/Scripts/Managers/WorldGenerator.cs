@@ -9,12 +9,15 @@ using System.IO;
 using static UnityEditor.Progress;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
+using TMPro;
 
 public class WorldGenerator : MonoBehaviour
 {
     private static System.Random rnd = new System.Random();
 
     public static WorldGenerator instance;
+
+    [SerializeField] private TextMeshProUGUI labelGenerationStep;
     void Awake()
     {
         instance = this;
@@ -26,7 +29,7 @@ public class WorldGenerator : MonoBehaviour
         Set_Old_World_Current(1);
     }
 
-    void FinishGenerating()
+    IEnumerator FinishGenerating()
     {
         PlayerStats.instance.gameObject.SetActive(true);
 
@@ -39,6 +42,9 @@ public class WorldGenerator : MonoBehaviour
         ItemsManager.instance.gameObject.SetActive(true);
         WorldManager.instance.gameObject.SetActive(true);
 
+
+        yield return new WaitForSeconds(1);
+        labelGenerationStep.transform.parent.gameObject.SetActive(false);
         StartCoroutine(CraftingManager.instance.RefreshCraftingMenu());
     }
 
@@ -46,15 +52,16 @@ public class WorldGenerator : MonoBehaviour
 
     private IEnumerator GenerateWorld()
     {
-        Debug.Log("Generate world");
         yield return null;
+
+        LoadTerrain();
 
         PlayerStats.instance.SetStats();
         SpawnObjects();
 
         SetTimeSettings();
-        FinishGenerating();
 
+        StartCoroutine(FinishGenerating());
         SaveWorld();
     }
 
@@ -84,50 +91,61 @@ public class WorldGenerator : MonoBehaviour
         else if (ItemsManager.instance.GetOriginalResource(objectName) != null)
             SpawnResources(objectName, objectSpawnValue);
         else if (ItemsManager.instance.GetOriginalMobSpawner(objectName) != null)
-            SpawnMobSpawners(objectName, objectSpawnValue);
+            if(objectName != ObjectName.houndSpawner)
+                SpawnMobSpawners(objectName, objectSpawnValue);
     }
     private void SpawnItems(ObjectName objectName, int objectSpawnValue)
     {
+        labelGenerationStep.text = "Generating world...\n Generating items data!";
+
         int nr = rnd.Next((int)(objectSpawnValue * .75f), (int)(objectSpawnValue * 1.25f));
-        int worldSize = Get_World_Size();
+        int spawnRange = Get_World_Size() / 2;
+
 
         for (int i = 0; i < nr; i++)
         {
             Item item = ItemsManager.instance.CreateItem(objectName);
 
             item.transform.SetParent(WorldManager.instance.items);
-            item.transform.position = new Vector3(Random.Range(-1 * worldSize, worldSize), 0, Random.Range(-1 * worldSize, worldSize));
+            item.transform.position = new Vector3(Random.Range(-1 * spawnRange, spawnRange), 0, Random.Range(-1 * spawnRange, spawnRange));
 
         }
     }
     private void SpawnResources(ObjectName objectName, int objectSpawnValue)
     {
+        labelGenerationStep.text = "Generating world...\n Generating resources data!";
+
         int nr = rnd.Next((int)(objectSpawnValue * .75f), (int)(objectSpawnValue * 1.25f));
-        int worldSize = Get_World_Size();
+        int spawnRange = Get_World_Size() / 2;
 
         for (int i = 0; i < nr; i++)
         {
             Resource resource = Instantiate(ItemsManager.instance.GetOriginalResource(objectName));
 
             resource.transform.SetParent(WorldManager.instance.resources);
-            resource.transform.position = new Vector3(Random.Range(-1 * worldSize, worldSize), 0, Random.Range(-1 * worldSize, worldSize));
+            resource.transform.position = new Vector3(Random.Range(-1 * spawnRange, spawnRange), 0, Random.Range(-1 * spawnRange, spawnRange));
 
             resource.GetComponent<Resource>().SetResourceData();
+
+            resource.gameObject.AddComponent<SpawnOverlapZone>();
         }
     }
     private void SpawnMobSpawners(ObjectName objectName, int objectSpawnValue)
     {
+        labelGenerationStep.text = "Generating world...\n Generating spawners data!";
+
         int nr = rnd.Next((int)(objectSpawnValue * .75f), (int)(objectSpawnValue * 1.25f));
-        int worldSize = Get_World_Size();
+        int spawnRange = Get_World_Size() / 2;
 
         for (int i = 0; i < nr; i++)
         {
             MobSpawner mobSpawner = Instantiate(ItemsManager.instance.GetOriginalMobSpawner(objectName));
 
             mobSpawner.transform.SetParent(WorldManager.instance.mobSpawners);
-            mobSpawner.transform.position = new Vector3(Random.Range(-1 * worldSize, worldSize), 0, Random.Range(-1 * worldSize, worldSize));
+            mobSpawner.transform.position = new Vector3(Random.Range(-1 * spawnRange, spawnRange), 0, Random.Range(-1 * spawnRange, spawnRange));
 
             mobSpawner.GetComponent<ComplexMobSpawner>().SetSpawnerData();
+            mobSpawner.gameObject.AddComponent<SpawnOverlapZone>();
         }
     }
     #endregion
@@ -136,8 +154,9 @@ public class WorldGenerator : MonoBehaviour
     #region Load
     private IEnumerator LoadWorld()
     {
-        Debug.Log("Load world");
         yield return null;
+
+        LoadTerrain();
 
         LoadPlayer();
         LoadInventory();
@@ -151,7 +170,23 @@ public class WorldGenerator : MonoBehaviour
         LoadMobs(); // needs to be loaded after the spawners
 
         LoadTimeSettings();
-        FinishGenerating();
+        StartCoroutine(FinishGenerating());
+    }
+
+    void LoadTerrain()
+    {
+        int size = Get_World_Size();
+        foreach (Transform border in WorldManager.instance.border)
+        {
+            if (border.position.x > 0)
+                border.position = new Vector3(-size / 2, border.position.y, border.position.z);
+            else if (border.position.x < 0)
+                border.position = new Vector3(size / 2, border.position.y, border.position.z);
+            else if (border.position.z > 0)
+                border.position = new Vector3(border.position.x, border.position.y, size / 2);
+            else if (border.position.z < 0)
+                border.position = new Vector3(border.position.x, border.position.y, -size / 2);
+        }
     }
 
     void LoadTimeSettings()
@@ -171,6 +206,8 @@ public class WorldGenerator : MonoBehaviour
 
     void LoadPlayer()
     {
+        labelGenerationStep.text = "Generating world...\n Loading player data!";
+
         int _hp         = Get_Object_Hp(Paths.Player.ToString());
         int _hunger     = Get_Object_Hunger(Paths.Player.ToString());
         int _speed      = Get_Object_Speed(Paths.Player.ToString());
@@ -183,6 +220,7 @@ public class WorldGenerator : MonoBehaviour
 
     void LoadInventory()
     {
+        labelGenerationStep.text = "Generating world...\n Loading inventory data!";
 
         for (int i = 0; i < Get_Amount_Of_Objects(Paths.InventoryItem.ToString()); i++)
         {
@@ -268,6 +306,8 @@ public class WorldGenerator : MonoBehaviour
 
     void LoadEquipment()
     {
+        labelGenerationStep.text = "Generating world...\n Loading equipment data!";
+
         ItemUI handitem;
         ItemUI bodyitem;
         ItemUI headitem;
@@ -325,6 +365,8 @@ public class WorldGenerator : MonoBehaviour
 
     void LoadItems()
     {
+        labelGenerationStep.text = "Generating world...\n Loading items data!";
+
         for (int i = 0; i < Get_Amount_Of_Objects(Paths.Item.ToString()); i++)
         {
             string item_LoadPath = Paths.Item.ToString() + i.ToString();
@@ -366,6 +408,8 @@ public class WorldGenerator : MonoBehaviour
     }
     void LoadResources()
     {
+        labelGenerationStep.text = "Generating world...\n Loading resources data!";
+
         for (int i = 0; i < Get_Amount_Of_Objects(Paths.Resource.ToString()); i++)
         {
             string resource_LoadPath = Paths.Resource.ToString() + i.ToString();
@@ -385,6 +429,8 @@ public class WorldGenerator : MonoBehaviour
 
     void LoadConstructions()
     {
+        labelGenerationStep.text = "Generating world...\n Loading constructions data!";
+
         for (int i = 0; i < Get_Amount_Of_Objects(Paths.Construction.ToString()); i++)
         {
             string construction_LoadPath = Paths.Construction.ToString() + i.ToString();
@@ -406,6 +452,8 @@ public class WorldGenerator : MonoBehaviour
 
     void LoadMobs()
     {
+        labelGenerationStep.text = "Generating world...\n Loading mobs data!";
+
         for (int i = 0; i < Get_Amount_Of_Objects(Paths.Mob.ToString()); i++)
         {
             string mob_LoadPath = Paths.Mob.ToString() + i.ToString();
@@ -431,6 +479,8 @@ public class WorldGenerator : MonoBehaviour
 
     void LoadSpawners()
     {
+        labelGenerationStep.text = "Generating world...\n Loading spawners data!";
+
         for (int i = 0; i < Get_Amount_Of_Objects(Paths.Spawner.ToString()); i++)
         {
             string spawner_LoadPath = Paths.Spawner.ToString() + i.ToString();
@@ -491,8 +541,6 @@ public class WorldGenerator : MonoBehaviour
 
     public void SaveWorld()
     {
-        Debug.Log("Save world");
-
         SaveTime();
 
         SavePlayer();

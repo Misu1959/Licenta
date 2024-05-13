@@ -6,6 +6,7 @@ public class WorldManager : MonoBehaviour
 {
     public static WorldManager instance;
 
+    public Transform border;
     public Transform ground;
     public Transform sun;
 

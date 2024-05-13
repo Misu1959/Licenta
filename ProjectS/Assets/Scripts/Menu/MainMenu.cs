@@ -56,8 +56,6 @@ public class MainMenu : MonoBehaviour
         SetButtonsFunctionality();
     }
 
-//    private void OnEnable() => 
-
     private void OnDestroy() => InputManager.instance.GetInputActions().Menu.BackToMenu.performed -= BackToMainMenu;
 
 

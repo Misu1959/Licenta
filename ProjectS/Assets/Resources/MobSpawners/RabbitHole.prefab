@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8795154024323937029}
   - component: {fileID: 8795154024323937028}
   - component: {fileID: 2283754644667922361}
+  - component: {fileID: 9070102930685576211}
   m_Layer: 14
   m_Name: RabbitHole
   m_TagString: Untagged
@@ -82,6 +83,20 @@ MonoBehaviour:
   maxNumberOfMobs: 1
   respawnTimer:
     maxTime: 3
+--- !u!114 &9070102930685576211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8795154024323937025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d7655c836d5c9f438f9a1e711a829b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: 
+  inspectionTexts: []
 --- !u!1 &8795154026345667903
 GameObject:
   m_ObjectHideFlags: 0

@@ -33,7 +33,7 @@ public class CheckActionPanel : MonoBehaviour
     public void OpenPanel(Transform obj, string _text, Action act)
     {
         GetComponent<Animator>().SetBool("ShowPanel", true);
-        transform.position = obj.position + Vector3.right * (obj.GetComponent<RectTransform>().rect.width);
+        transform.position = obj.position + Vector3.right * ((obj.GetComponent<RectTransform>().rect.width / 2) + GetComponent<RectTransform>().rect.width / 2 + 10);
 
 
         label.text = _text;

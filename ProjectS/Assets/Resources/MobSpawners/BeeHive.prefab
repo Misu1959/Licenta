@@ -144,6 +144,7 @@ GameObject:
   - component: {fileID: 1439272874577478578}
   - component: {fileID: 1439272874577478579}
   - component: {fileID: 8522636021730592526}
+  - component: {fileID: -4801268385226725728}
   m_Layer: 14
   m_Name: BeeHive
   m_TagString: Untagged
@@ -214,3 +215,17 @@ MonoBehaviour:
   maxNumberOfMobs: 3
   respawnTimer:
     maxTime: 3
+--- !u!114 &-4801268385226725728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439272874577478582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d7655c836d5c9f438f9a1e711a829b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: 
+  inspectionTexts: []

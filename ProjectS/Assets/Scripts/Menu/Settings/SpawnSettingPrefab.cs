@@ -18,7 +18,7 @@ public class SpawnSettingPrefab : SettingPrefab
 
     int CalculateSetting()
     {
-        return (int)(worldSettingsDictionary[WorldSettingName.WorldSize][SettingValue.normal] * 
+        return  (int) (SaveLoadManager.Get_World_Size() / 2 * 
                 ((float)spawnSettingsDictionary[objectType][currentSettingValue] / 100) * 
                 ((float)objectSpawnRarity / 100));
 

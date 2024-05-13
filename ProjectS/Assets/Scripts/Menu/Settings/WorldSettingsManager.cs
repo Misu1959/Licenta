@@ -189,12 +189,14 @@ public class WorldSettingsManager : MonoBehaviour
     public static void SaveAllSetings()
     {
 
-        int x = 0;
         for(int i=0;i<settingPrefabs.Length;i++)
+            if (settingPrefabs[i].GetComponent<WorldSettingPrefab>())
+                settingPrefabs[i].SaveSetting();
+
+        int x = 0;
+        for (int i = 0; i < settingPrefabs.Length; i++)
             if (settingPrefabs[i].GetComponent<SpawnSettingPrefab>())
                 settingPrefabs[i].SaveSetting(x++);
-            else
-                settingPrefabs[i].SaveSetting();
 
         SaveLoadManager.Set_Spawn_Setting_Amount(x);
     }
