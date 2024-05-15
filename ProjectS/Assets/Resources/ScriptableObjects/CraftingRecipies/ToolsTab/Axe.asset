@@ -17,4 +17,6 @@ MonoBehaviour:
   isLearned: 1
   requirements:
   - name: 1001
+    quantity: 2
+  - name: 1003
     quantity: 1

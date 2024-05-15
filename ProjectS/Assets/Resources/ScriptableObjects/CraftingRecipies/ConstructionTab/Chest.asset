@@ -16,5 +16,7 @@ MonoBehaviour:
   objectName: 20005
   isLearned: 1
   requirements:
-  - name: 1001
+  - name: 1008
+    quantity: 2
+  - name: 1010
     quantity: 1

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
-using static PlasticPipe.Server.MonitorStats;
 
 public class MainMenu : MonoBehaviour
 {

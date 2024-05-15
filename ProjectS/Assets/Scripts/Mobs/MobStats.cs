@@ -52,6 +52,8 @@ public class MobStats : MonoBehaviour,IPointerDownHandler
         spawner.GetComponent<MobSpawner>().AddMobToList(this);
 
         hp = _hp; 
+    
+//        sleepPeriod = ItemsManager
     }
 
 

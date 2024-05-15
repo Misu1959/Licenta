@@ -31,20 +31,22 @@ public class WorldManager : MonoBehaviour
             {
                 if (TimeManager.instance.dayState == TimeManager.DayState.dawn)
                 {
-                    if(mob.GetComponent<MobStats>().spawner)
+                    if (mob.GetComponent<MobStats>().spawner)
                         mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob.GetComponent<MobStats>().spawner, MobBehaviour.Action.goInside);
                 }
                 else if (TimeManager.instance.dayState == TimeManager.DayState.night)
                     mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob, MobBehaviour.Action.sleep);
 
             }
-            else if(mob.GetComponent<MobStats>().GetSleepPeriod() == TimeManager.DayState.day)
+            else if (mob.GetComponent<MobStats>().GetSleepPeriod() == TimeManager.DayState.day)
             {
                 if (TimeManager.instance.dayState == TimeManager.DayState.day)
-                    if(mob.GetComponent<MobStats>().spawner)
+                {
+                    if (mob.GetComponent<MobStats>().spawner)
                         mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob.GetComponent<MobStats>().spawner, MobBehaviour.Action.goInside);
                     else
                         mob.GetComponent<MobBehaviour>().SetNewTargetAndAction(mob, MobBehaviour.Action.sleep);
+                }
             }
         }
     }

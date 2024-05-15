@@ -39,14 +39,14 @@ public class WorldSettingsManager : MonoBehaviour
 
     };
 
-    private static Dictionary<SettingValue, int> dawnLengthDictionary = new Dictionary<SettingValue, int>()
-    {
-        { SettingValue.none,    0  },
-        { SettingValue.less,    120  },
-        { SettingValue.normal,  240  },
-        { SettingValue.more,    360  }
-
-    };
+  //  private static Dictionary<SettingValue, int> dawnLengthDictionary = new Dictionary<SettingValue, int>()
+  //  {
+  //      { SettingValue.none,    0  },
+  //      { SettingValue.less,    120  },
+  //      { SettingValue.normal,  240  },
+  //      { SettingValue.more,    360  }
+  //
+  //  };
 
     private static Dictionary<SettingValue, int> nightLengthDictionary = new Dictionary<SettingValue, int>()
     {
@@ -63,7 +63,7 @@ public class WorldSettingsManager : MonoBehaviour
         {WorldSettingName.WorldSize,    worldSizeDictionary},
         {WorldSettingName.DayDuration,  dayDurationDictionary},
         {WorldSettingName.DayLength,    dayLengthDictionary},
-        {WorldSettingName.DawnLength,   dawnLengthDictionary},
+       // {WorldSettingName.DawnLength,   dawnLengthDictionary},
         {WorldSettingName.NightLength,  nightLengthDictionary}
 
 

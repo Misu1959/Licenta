@@ -109,37 +109,36 @@ public class TimeManager : MonoBehaviour
         if(timerHour.IsElapsed())
         {
             currentHour++;
-            
-            if (currentHour >= dayLength && dayState == DayState.day) // Turn dawn
+
+            if (currentHour == dayLength && dayState == DayState.day) // Turn dawn
+                ChangeDayState(DayState.dawn);
+            else if (currentHour == dawnLength && dayState == DayState.dawn) // Turn night
             {
-                if(dawnLength>dayLength) // There is dawn
-                    ChangeDayState(DayState.dawn);
-                else // There is no dawn
+                if (nightLength > 0)
                     ChangeDayState(DayState.night);
+                else if (dayLength > 0)
+                    ChangeDayState(DayState.day);
+            }
+            else if (currentHour == nightLength && dayState == DayState.night) // Turn day
+            {
+                if (dayLength > 0)
+                    ChangeDayState(DayState.day);
+                else
+                    ChangeDayState(DayState.dawn);
 
             }
-            else if (currentHour >= dawnLength && dayState == DayState.dawn) // Turn night
-                ChangeDayState(DayState.night);
-            else if (currentHour >= nrOfHoursInDay) // Turn day
-                ChangeDayState(DayState.day);
-
         }
     }
     private void PassDay()
     {
-        currentHour = 0;
         currentDay++;
         UIManager.instance.ShowDayCount(currentDay);
-        // Save world
+        
+        WorldGenerator.instance.SaveWorld();
 
     }
     private void ChangeDayState(DayState newState, bool passDay = true)
     {
-        WorldManager.instance.SendMobsToSleep();
-        WorldManager.instance.WakeUpMobs();
-
-        WorldManager.instance.SetResourcesToHarvest();
-
         switch (newState)
         {
             case DayState.day:
@@ -162,6 +161,11 @@ public class TimeManager : MonoBehaviour
                 }
         }
         dayState = newState;
+        currentHour = 0;
+
+        WorldManager.instance.SendMobsToSleep();
+        WorldManager.instance.WakeUpMobs();
+        WorldManager.instance.SetResourcesToHarvest();
     }
 
 

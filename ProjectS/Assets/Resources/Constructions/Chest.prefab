@@ -51,7 +51,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!136 &-8521593462054478001
 CapsuleCollider:
@@ -115,53 +115,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   storageData:
-    size: 9
     items:
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
-    - uiImg: {fileID: 0}
-      objectName: 0
-      maxStack: 0
-      currentStack: 0
-      fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
+    - _uiImg: {fileID: 0}
+      _objectName: 0
+      _maxStack: 0
+      _fuelValue: 0
 --- !u!1 &7662175354133985105
 GameObject:
   m_ObjectHideFlags: 0

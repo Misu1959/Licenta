@@ -196,7 +196,7 @@ MonoBehaviour:
     _equipmentType: 0
     _actionType: 1
     _dmg: 20
-    _maxDurability: 100
+    _maxDurability: 10
 --- !u!114 &-2911407597478236158
 MonoBehaviour:
   m_ObjectHideFlags: 0
