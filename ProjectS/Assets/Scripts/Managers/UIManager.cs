@@ -134,13 +134,12 @@ public class UIManager : MonoBehaviour
         ShowDeathText(causeOfDeath);
         deathScreen.gameObject.SetActive(true);
 
-
-        PlayerPrefs.SetInt("prevWorld", 0);
         Time.timeScale = 0;
-        //CraftingManager.instance.toolTip.gameObject.SetActive(false);
-        
+        SaveLoadManager.Set_Old_World_Current(0);
+        SaveLoadManager.Set_Last_world(0);
+
         Button deathScreenButton = deathScreen.GetChild(2).GetComponent<Button>();
-        deathScreenButton.onClick.AddListener(() => SceneManager.LoadScene(0));
+        deathScreenButton.onClick.AddListener(() => GoBackToMainMenu());
 
         InteractionManager.instance.SetInteractionStatus(false);
     }

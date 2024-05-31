@@ -47,7 +47,6 @@ public class MainMenu : MonoBehaviour
     private void Awake() => instance = this;
     private void Start()
     {
-
         InputManager.instance.GetInputActions().Menu.BackToMenu.performed += BackToMainMenu;
 
         InputManager.instance.SetActionMap(InputManager.instance.GetInputActions().Menu);
@@ -114,8 +113,11 @@ public class MainMenu : MonoBehaviour
 
     #region Main menu
 
-    void ContinueGame() => SceneManager.LoadScene(SaveLoadManager.Get_Last_world());
-
+    void ContinueGame()
+    {
+        SaveLoadManager.Set_Selected_world(SaveLoadManager.Get_Last_world());
+        SceneManager.LoadScene(SaveLoadManager.Get_Last_world());
+    }
     void OpenWorldSelectionPanel()
     {
         buttonOpenWorldSelectionPanel.GetComponent<Animator>().SetBool("ShowPanel", true);
@@ -128,27 +130,30 @@ public class MainMenu : MonoBehaviour
 
             if (oldWorld)
             {
-                string selectedWorld = "World " + SaveLoadManager.Get_Selected_world();
+                string selectedWorld = "World " + x;
                 string currentDay = " Day " + SaveLoadManager.Get_World_Day(x);
-                //buttonSelectWorld[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = selectedWorld +" - "+ currentDay;
+                buttonSelectWorld[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = selectedWorld +" - "+ currentDay;
             }
             buttonDeleteWorld[i].gameObject.SetActive(oldWorld);
         
         }
     }
 
-    void SelectWorld(int worldToSelect) 
+    void SelectWorld(int worldToSelect)
     {
         SaveLoadManager.Set_Selected_world(worldToSelect);
 
         if (SaveLoadManager.Get_Old_World_Current() == 0)
             OpenWorldSettingsMenu();
         else
+        {
+            SaveLoadManager.Set_Last_world(SaveLoadManager.Get_Selected_world());
             SceneManager.LoadScene(worldToSelect);
+        }
     }
     void DeleteWorld(int worldToDelete)
     {
-       /// buttonSelectWorld[worldToDelete - 1].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "World " + worldToDelete + " - New game";
+        buttonSelectWorld[worldToDelete - 1].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "World " + worldToDelete + " - New game";
         buttonDeleteWorld[worldToDelete - 1].gameObject.SetActive(false);
         SaveLoadManager.Set_Old_World(worldToDelete, 0);
 
